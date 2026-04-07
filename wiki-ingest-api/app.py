@@ -167,6 +167,51 @@ async def ingest_json(
     return IngestResponse(status="ok", path=str(path.relative_to(RAW_DIR.parent)))
 
 
+@app.post("/api/ingest/form", response_model=IngestResponse)
+async def ingest_form(
+    type: str = Form(...),
+    content: str = Form(...),
+    title: str = Form(""),
+    tags: str = Form(""),
+    source: str = Form("android-share"),
+    authorization: str | None = Header(None),
+) -> IngestResponse:
+    """Ingest via form fields — reliable from HTTP Shortcuts / Android share."""
+    verify_token(authorization)
+
+    if type not in ("url", "text", "note"):
+        raise HTTPException(status_code=400, detail="type must be: url, text, or note")
+
+    if not content:
+        raise HTTPException(status_code=400, detail="content is required")
+
+    resolved_title = title or content[:80]
+    path = generate_raw_path(resolved_title)
+
+    counter = 1
+    original_path = path
+    while path.exists():
+        path = original_path.with_stem(f"{original_path.stem}-{counter}")
+        counter += 1
+
+    url = content if type == "url" else None
+    tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
+
+    write_raw_source(
+        path=path,
+        title=resolved_title,
+        source_type=type,
+        content=content,
+        source_channel=source,
+        tags=tag_list,
+        url=url,
+    )
+
+    await notify(resolved_title)
+
+    return IngestResponse(status="ok", path=str(path.relative_to(RAW_DIR.parent)))
+
+
 @app.post("/api/ingest/file", response_model=IngestResponse)
 async def ingest_file(
     file: UploadFile = File(...),

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/schema/opencode.json",
+  "agents": {
+    "wiki-maintainer": {
+      "description": "Primary wiki maintenance agent. Handles ingest, compilation, linting, and index management.",
+      "model": "gpt-5.1-codex",
+      "tools": ["read", "write", "edit", "bash", "grep", "glob"],
+      "instructions": "Read AGENTS.md for full wiki conventions. Use skills in .opencode/skills/ for structured operations."
+    },
+    "researcher": {
+      "description": "Deep research subagent for source evaluation and fact verification.",
+      "model": "sonar-pro",
+      "tools": ["read", "grep", "glob", "bash", "web_search"],
+      "instructions": "Focus on accuracy and attribution. See agents/researcher.md for priority hierarchy."
+    }
+  }
+}

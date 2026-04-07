@@ -1,0 +1,27 @@
+{
+  "hooks": [
+    {
+      "event": "post-edit",
+      "pattern": "wiki/**/*.md",
+      "actions": [
+        {
+          "type": "skill",
+          "skill": "wiki-lint",
+          "args": ["--fix"],
+          "description": "Auto-fix lint issues after wiki page edits (rebuild index, update scores)"
+        }
+      ]
+    },
+    {
+      "event": "post-edit",
+      "pattern": "raw/**/*.md",
+      "actions": [
+        {
+          "type": "notify",
+          "message": "New source added to raw/. Run /wiki-ingest to process it.",
+          "description": "Remind to ingest when new raw sources are added"
+        }
+      ]
+    }
+  ]
+}

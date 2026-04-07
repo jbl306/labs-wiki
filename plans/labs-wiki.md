@@ -149,7 +149,8 @@ labs-wiki/
 ├── opencode.json                     # OpenCode agent/model configuration
 ├── setup.sh                          # Bootstrap: symlinks, tool configs, deps validation
 │
-├── raw/                              # Layer 1: Immutable source documents
+├── raw/                              # Layer 1: Immutable source documents (inbox)
+│   ├── assets/                       # Binary files (images, PDFs) from ingest API
 │   └── .gitkeep
 │
 ├── wiki/                             # Layer 2: LLM-compiled knowledge pages
@@ -166,7 +167,13 @@ labs-wiki/
 │   ├── curator.md                    # Cross-referencing, gap analysis
 │   └── auditor.md                    # Quality scoring, staleness checks
 │
-├── .github/                          # VS Code Copilot + Copilot CLI
+├── wiki-ingest-api/                  # FastAPI capture service (Docker)
+│   ├── Dockerfile
+│   ├── app.py                        # POST /api/ingest — text, URL, file
+│   ├── requirements.txt
+│   └── README.md                     # API docs, auth setup
+│
+├── .github/                          # VS Code Copilot + Copilot CLI + CI
 │   ├── copilot-instructions.md       # Always-on Copilot instructions
 │   ├── skills/                       # Canonical skill location
 │   │   ├── wiki-setup/
@@ -181,8 +188,10 @@ labs-wiki/
 │   │   │   └── SKILL.md             # /wiki-update — revise with provenance
 │   │   └── wiki-orchestrate/
 │   │       └── SKILL.md             # /wiki-orchestrate — multi-step workflows
-│   └── hooks/                        # Copilot lifecycle hooks
-│       └── post-edit.json            # Auto-actions after wiki edits
+│   ├── hooks/                        # Copilot lifecycle hooks
+│   │   └── post-edit.json            # Auto-actions after wiki edits
+│   └── workflows/                    # GitHub Actions
+│       └── ingest-from-issue.yml     # Issue-based source capture
 │
 ├── .opencode/                        # OpenCode (symlinked from .github/skills)
 │   └── skills/ → ../.github/skills   # Symlink — single source of truth
@@ -190,7 +199,8 @@ labs-wiki/
 ├── scripts/                          # Utility scripts (offline/CI use)
 │   ├── scaffold.py                   # Initialize wiki structure
 │   ├── lint_wiki.py                  # Standalone lint (broken links, orphans, staleness)
-│   └── compile_index.py              # Rebuild index.md with topic clustering
+│   ├── compile_index.py              # Rebuild index.md with topic clustering
+│   └── ntfy-wiki-watcher.sh          # ntfy → ingest API bridge
 │
 ├── templates/                        # Page templates with frontmatter standards
 │   ├── source-summary.md             # Template for raw/ → wiki/sources/ pages
@@ -198,12 +208,16 @@ labs-wiki/
 │   ├── entity-page.md                # Template for named entities
 │   └── synthesis-page.md             # Template for cross-cutting analysis
 │
-└── docs/                             # Meta-documentation
-    ├── architecture.md               # How labs-wiki works (mermaid diagrams)
-    ├── memory-model.md               # Staleness, provenance, quality scoring
-    ├── workflows.md                  # Ingest, query, lint, update workflows
-    ├── obsidian-setup.md             # Obsidian vault integration guide
-    └── tool-setup.md                 # VS Code, Copilot CLI, OpenCode setup
+├── docs/                             # Meta-documentation
+│   ├── architecture.md               # How labs-wiki works (mermaid diagrams)
+│   ├── memory-model.md               # Staleness, provenance, quality scoring
+│   ├── capture-sources.md            # Multi-device ingestion setup guide
+│   ├── workflows.md                  # Ingest, query, lint, update workflows
+│   ├── obsidian-setup.md             # Obsidian vault integration guide
+│   └── tool-setup.md                 # VS Code, Copilot CLI, OpenCode setup
+│
+└── plans/                            # Implementation plans
+    └── labs-wiki.md                  # This file
 ```
 
 ### Wiki Page Frontmatter Standard
@@ -308,6 +322,313 @@ Four core personas:
 
 ---
 
+## Multi-Device Source Ingestion
+
+The hardest part of any second brain is **getting stuff into it**. If adding a source requires SSH-ing into a server and running commands, you won't do it. This section defines a frictionless multi-channel capture system that feeds `raw/` from any device.
+
+### Design Principles
+
+1. **< 10 seconds from "I found something" to captured** — share sheet, bookmarklet, or CLI one-liner
+2. **Works from any device** — phone (iOS/Android), laptop browser, terminal, tablet
+3. **All roads lead to `raw/`** — every channel writes to the same inbox directory
+4. **Server-side processing** — capture is dumb (just save); compilation is smart (LLM ingest skill)
+5. **Leverage existing infra** — use ntfy (already deployed), Caddy (already proxying), homelab server
+
+### Architecture Overview
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    CAPTURE CHANNELS                      │
+├──────────┬──────────┬──────────┬──────────┬─────────────┤
+│📱 Phone  │💻 Browser│⌨️ Terminal│📧 Email  │🔗 GitHub    │
+│  Share   │  Book-   │  CLI     │  Forward │  Issue /    │
+│  Sheet   │  marklet │  `wa`    │  (future)│  PR comment │
+└────┬─────┴────┬─────┴────┬─────┴────┬─────┴──────┬──────┘
+     │          │          │          │            │
+     ▼          ▼          ▼          ▼            ▼
+┌─────────────────────────────────────────────────────────┐
+│              WIKI INGEST API (FastAPI)                    │
+│         POST /api/ingest — homelab container             │
+│     Accepts: text, URL, file upload, image               │
+│     Auth: Bearer token from .env                         │
+│     Writes to: ~/projects/labs-wiki/raw/                 │
+│     Notifies: ntfy topic on capture                      │
+└────────────────────────┬────────────────────────────────┘
+                         │
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│                   raw/ INBOX                             │
+│     YYYY-MM-DD-<slug>.md (auto-generated frontmatter)   │
+│     raw/assets/<uuid>.<ext> (images, PDFs)              │
+└────────────────────────┬────────────────────────────────┘
+                         │ (manual or cron-triggered)
+                         ▼
+┌─────────────────────────────────────────────────────────┐
+│          /wiki-ingest SKILL (LLM compilation)            │
+│     Two-phase: extract concepts → generate wiki pages   │
+└─────────────────────────────────────────────────────────┘
+```
+
+### Channel Details
+
+#### 1. Wiki Ingest API (the hub)
+
+A lightweight FastAPI container on the homelab server. All other channels POST to this.
+
+```python
+# POST /api/ingest
+# Content-Type: application/json or multipart/form-data
+#
+# JSON body:
+{
+  "type": "url" | "text" | "note",    # what kind of source
+  "content": "https://...",            # the URL, text, or note body
+  "title": "Optional title",          # auto-generated if omitted
+  "tags": ["ml", "transformers"],      # optional tags
+  "source": "phone-share"             # which channel sent this
+}
+#
+# File upload (multipart):
+#   file: <binary>
+#   title: "Optional title"
+#   tags: "ml,transformers"
+```
+
+**What it does:**
+- Validates + sanitizes input
+- For URLs: fetches page title, saves URL + metadata as markdown
+- For text/notes: wraps in markdown with frontmatter
+- For files: saves to `raw/assets/`, creates markdown reference
+- Writes `raw/YYYY-MM-DD-<slug>.md` with standardized frontmatter
+- Sends ntfy notification: "📥 New source captured: <title>"
+- Returns `{ "status": "ok", "path": "raw/2026-04-07-rope-encoding.md" }`
+
+**Deployment:** Docker container in homelab, reverse-proxied via Caddy at `wiki-api.jbl.sh` (or similar internal domain).
+
+```yaml
+# compose/compose.wiki.yml (new stack)
+services:
+  wiki-ingest-api:
+    build: ./wiki-ingest-api
+    container_name: wiki-ingest-api
+    restart: unless-stopped
+    volumes:
+      - ${LABS_WIKI_PATH:-/home/jbl/projects/labs-wiki}/raw:/app/raw
+    environment:
+      - WIKI_API_TOKEN=${WIKI_API_TOKEN}
+      - NTFY_SERVER=${NTFY_SERVER:-https://ntfy.sh}
+      - NTFY_TOPIC=${NTFY_TOPIC}
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+          cpus: '0.25'
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    labels:
+      caddy: wiki-api.internal
+      caddy.reverse_proxy: "{{upstreams 8000}}"
+```
+
+#### 2. 📱 Phone — iOS Shortcut / Android Share Sheet
+
+**iOS Shortcut** (appears in Share Sheet):
+1. Receive input from Share Sheet (URL, text, image)
+2. `Get Contents of URL` → POST to `https://wiki-api.jbl.sh/api/ingest`
+3. Set headers: `Authorization: Bearer <token>`
+4. Body: `{ "type": "url", "content": "<shared URL>", "source": "ios-share" }`
+5. Show notification: "✅ Captured to wiki"
+
+**Android** (via HTTP Shortcuts app or Tasker):
+- Same POST request, configured as a share target
+- [HTTP Shortcuts](https://http-shortcuts.rto.ch/) is free/open-source and perfect for this
+
+**Usage:** See an interesting article → Share → "Add to Wiki" → done in 3 taps.
+
+#### 3. 💻 Browser — Bookmarklet
+
+A JavaScript bookmarklet that captures the current page:
+
+```javascript
+// "Add to Wiki" bookmarklet
+javascript:void(fetch('https://wiki-api.jbl.sh/api/ingest',{
+  method:'POST',
+  headers:{'Content-Type':'application/json','Authorization':'Bearer TOKEN'},
+  body:JSON.stringify({type:'url',content:location.href,title:document.title,source:'bookmarklet'})
+}).then(r=>r.json()).then(d=>alert('✅ '+d.path)).catch(e=>alert('❌ '+e)))
+```
+
+Works on any browser (laptop, tablet, phone browser). One click capture.
+
+#### 4. ⌨️ Terminal — CLI Function `wa` (wiki-add)
+
+A shell function for terminal users (laptop or SSH'd into server):
+
+```bash
+# Add to ~/.bashrc or ~/.zshrc
+wa() {
+  local type="${1:-text}"
+  local content="$2"
+  local title="${3:-}"
+
+  if [[ "$type" == "url" && -z "$content" ]]; then
+    echo "Usage: wa url <URL> [title]"; return 1
+  fi
+
+  if [[ "$type" == "text" && -z "$content" ]]; then
+    # Read from stdin (pipe support)
+    content=$(cat)
+  fi
+
+  curl -s -X POST "https://wiki-api.jbl.sh/api/ingest" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $WIKI_API_TOKEN" \
+    -d "$(jq -n --arg t "$type" --arg c "$content" --arg ti "$title" \
+      '{type:$t, content:$c, title:$ti, source:"cli"}')" \
+    | jq -r '.path // .error'
+}
+
+# Upload a file
+waf() {
+  local file="$1"
+  local title="${2:-$(basename "$file")}"
+  curl -s -X POST "https://wiki-api.jbl.sh/api/ingest" \
+    -H "Authorization: Bearer $WIKI_API_TOKEN" \
+    -F "file=@$file" \
+    -F "title=$title" \
+    -F "source=cli" \
+    | jq -r '.path // .error'
+}
+```
+
+**Usage examples:**
+```bash
+wa url "https://arxiv.org/abs/2104.09864" "RoFormer paper"
+wa text "Key insight: RoPE encodes position in rotation angle"
+echo "Some long notes..." | wa text
+waf screenshot.png "VRAM usage chart"
+```
+
+#### 5. 🔗 GitHub Issues as Inbox (zero-infra option)
+
+For when you're already in GitHub (e.g., reading code):
+- Create an issue in `jbl306/labs-wiki` with label `ingest`
+- A GitHub Actions workflow picks it up, writes to `raw/`, closes the issue
+
+```yaml
+# .github/workflows/ingest-from-issue.yml
+name: Ingest from Issue
+on:
+  issues:
+    types: [labeled]
+jobs:
+  ingest:
+    if: contains(github.event.label.name, 'ingest')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Create raw source
+        run: |
+          SLUG=$(echo "${{ github.event.issue.title }}" | tr ' ' '-' | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9-]//g')
+          DATE=$(date +%Y-%m-%d)
+          cat > "raw/${DATE}-${SLUG}.md" << 'EOF'
+          ---
+          title: "${{ github.event.issue.title }}"
+          captured: "${DATE}"
+          source: github-issue
+          issue: ${{ github.event.issue.number }}
+          tags: []
+          ---
+
+          ${{ github.event.issue.body }}
+          EOF
+      - name: Commit and close
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add raw/
+          git commit -m "ingest: ${{ github.event.issue.title }}"
+          git push
+          gh issue close ${{ github.event.issue.number }} --comment "✅ Ingested to wiki"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
+#### 6. 🔄 ntfy.sh as Transport (leverage existing infra)
+
+Since ntfy is already running on the homelab, you can send sources via any ntfy client:
+
+```bash
+# From any device with ntfy CLI or app
+curl -d "https://arxiv.org/abs/2104.09864" \
+  -H "Title: RoFormer paper" \
+  -H "Tags: ingest,ml" \
+  ntfy.sh/jbl-wiki-ingest
+```
+
+A watcher script on the server subscribes to the topic and feeds to the ingest API:
+
+```bash
+#!/usr/bin/env bash
+# scripts/ntfy-wiki-watcher.sh — runs as systemd service or Docker sidecar
+ntfy subscribe jbl-wiki-ingest --from-config | while read -r msg; do
+  content=$(echo "$msg" | jq -r '.message')
+  title=$(echo "$msg" | jq -r '.title // empty')
+  curl -s -X POST "http://localhost:8000/api/ingest" \
+    -H "Content-Type: application/json" \
+    -H "Authorization: Bearer $WIKI_API_TOKEN" \
+    -d "$(jq -n --arg c "$content" --arg t "$title" \
+      '{type:"text", content:$c, title:$t, source:"ntfy"}')"
+done
+```
+
+### Channel Comparison
+
+| Channel | Device | Friction | Supports | Best For |
+|---------|--------|----------|----------|----------|
+| **iOS Shortcut** | iPhone/iPad | ⭐ 3 taps | URLs, text, images | Browsing on phone |
+| **Android Share** | Android | ⭐ 3 taps | URLs, text, images | Browsing on phone |
+| **Bookmarklet** | Any browser | ⭐ 1 click | Current page URL | Laptop research |
+| **CLI `wa`** | Terminal | ⭐⭐ typing | URLs, text, files, pipes | Devs, SSH sessions |
+| **GitHub Issue** | GitHub UI | ⭐⭐ new issue | Text, markdown | Reading code/repos |
+| **ntfy** | Any ntfy client | ⭐⭐ send msg | Text, URLs | Quick capture anywhere |
+
+### Raw Source Format (auto-generated by ingest API)
+
+Every captured source lands as a markdown file with consistent frontmatter:
+
+```yaml
+---
+title: "RoFormer: Enhanced Transformer with Rotary Position Embedding"
+type: url                             # url | text | note | file
+captured: 2026-04-07T03:15:00Z
+source: ios-share                     # which channel
+url: "https://arxiv.org/abs/2104.09864"
+content_hash: "sha256:a1b2c3..."      # for incremental compilation
+tags: [ml, transformers, positional-encoding]
+status: pending                       # pending | ingested | failed
+---
+
+# RoFormer: Enhanced Transformer with Rotary Position Embedding
+
+Source: https://arxiv.org/abs/2104.09864
+
+<!-- Content fetched at capture time (for URLs) or pasted content (for text/notes) -->
+```
+
+### Security Considerations
+
+- **Bearer token auth** on all API endpoints (token stored in homelab `.env`)
+- **Caddy HTTPS** termination + rate limiting
+- **No public exposure** — API accessible only via Cloudflare Tunnel or LAN
+- **Input sanitization** — validate URLs, limit file sizes (15MB max), strip scripts
+- **ntfy topic auth** — use authenticated topic for wiki ingest channel
+
+---
+
 ## Implementation Todos
 
 ### Phase 1: Foundation
@@ -341,7 +662,17 @@ Four core personas:
 - `obsidian-doc` — docs/obsidian-setup.md integration guide
 - `tool-setup-doc` — docs/tool-setup.md for VS Code, Copilot CLI, OpenCode
 
-### Phase 5: Seed Content & Ship
+### Phase 5: Multi-Device Ingestion
+- `ingest-api` — FastAPI app: POST /api/ingest endpoint (text, URL, file upload)
+- `ingest-docker` — Dockerfile + compose stack (compose.wiki.yml) for ingest API
+- `ingest-cli` — Shell functions `wa` and `waf` for terminal capture
+- `ingest-bookmarklet` — JavaScript bookmarklet for browser capture
+- `ingest-ios-shortcut` — iOS Shortcut instructions + export file
+- `ingest-github-action` — .github/workflows/ingest-from-issue.yml
+- `ingest-ntfy-watcher` — scripts/ntfy-wiki-watcher.sh for ntfy channel
+- `ingest-doc` — docs/capture-sources.md (setup guide for all channels)
+
+### Phase 6: Seed Content & Ship
 - `seed-index` — Create initial wiki/index.md and wiki/log.md
 - `push` — Commit all files, push to GitHub
 
@@ -349,7 +680,9 @@ Four core personas:
 - Phase 2 depends on Phase 1 (schema + templates must exist before skills reference them)
 - Phase 3 can run parallel with Phase 2
 - Phase 4 can run parallel with Phase 2-3
-- Phase 5 depends on all others
+- Phase 5 depends on Phase 1 (repo-setup for raw/ directory)
+- Phase 5 can run parallel with Phase 2-4
+- Phase 6 depends on all others
 
 ---
 
@@ -366,21 +699,22 @@ Four core personas:
 9. **Obsidian-compatible** — `[[wikilinks]]`, YAML frontmatter, graph-viewable structure
 10. **Skills over scripts** — Primary interaction through slash commands; Python scripts for offline/CI use
 11. **Human curates, LLM maintains** — User adds sources and asks questions; LLM does all bookkeeping, cross-referencing, and maintenance
+12. **Multi-channel capture with single API hub** — All devices POST to one FastAPI endpoint; capture is dumb, compilation is smart
+13. **< 10 second capture** — Every channel optimized for minimum friction (3 taps on phone, 1 click in browser, one-liner in terminal)
 
-## Comparison: v2 → v3 Changes
+## Comparison: v3 → v3.1 Changes
 
-| Aspect | v2 (Previous) | v3 (Current) |
-|--------|---------------|-------------|
-| Ingest pipeline | Single-phase | Two-phase extract → compile (atomicmemory + agentmemory) |
-| Provenance | Not tracked | Every page links to raw sources via frontmatter |
-| Staleness | Not tracked | `source_hash` + `last_verified` + Ebbinghaus decay |
-| Quality | Lint pass/fail | 0-100 quality scoring per page |
-| Wiki structure | Flat `wiki/` | Sub-organized: sources, concepts, entities, synthesis |
-| Agent model | Generic LLM | 4 specialized personas with priority hierarchies |
-| Skills | 4 skills | 6 skills (+setup wizard, +orchestrator) |
-| Setup | Manual | Idempotent `/wiki-setup` wizard (second-brain pattern) |
-| Consolidation | None | Hot → Established → Core → Workflow tiers |
-| Documentation | 4 docs | 5 docs (+memory-model.md) |
+| Aspect | v3 (Previous) | v3.1 (Current) |
+|--------|---------------|----------------|
+| Source capture | Manual — drop files in `raw/` | 6 channels: iOS, Android, bookmarklet, CLI, GitHub Issues, ntfy |
+| Ingest API | None | FastAPI container on homelab, auth'd, Caddy-proxied |
+| Phone capture | Not supported | iOS Shortcut + Android Share Sheet → API |
+| Browser capture | Not supported | One-click bookmarklet |
+| Terminal capture | Manual file creation | `wa` / `waf` shell functions |
+| Notifications | None on capture | ntfy push on every new source |
+| Architecture | No API layer | `wiki-ingest-api/` Docker service + `compose.wiki.yml` |
+| Phases | 5 phases | 6 phases (+multi-device ingestion) |
+| Docs | 5 docs | 6 docs (+capture-sources.md) |
 
 ---
 

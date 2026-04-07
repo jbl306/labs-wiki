@@ -163,7 +163,7 @@ Shared content from Android's share sheet is received via **global variables** w
 #### Step 2: Create a New Shortcut
 
 1. Go back to the main screen → tap **+** → **Scripting Shortcut**
-   > **Important:** Choose **Scripting**, not Regular. We send the HTTP request entirely from JavaScript using `sendHttpRequest()`. This avoids body-parsing bugs where `{variable}` placeholders inside a JSON body field are treated as literal text.
+   > **Important:** Choose **Scripting**, not Regular. We use `sendHttpRequest()` with form-encoded data to the `/api/ingest/form` endpoint. This avoids body-parsing bugs where JSON bodies arrive empty (422 errors).
 2. Name it **"Add to Wiki"**
 3. Set icon to 📥 (or any icon you like)
 
@@ -181,22 +181,20 @@ const urlMatch = shared.match(/https?:\/\/[^\s]+/);
 const type    = urlMatch ? "url" : "text";
 const content = urlMatch ? urlMatch[0] : shared;
 
-// Build JSON body — JSON.stringify handles special chars safely
-const body = JSON.stringify({
-  type:    type,
-  content: content,
-  title:   title || content.substring(0, 80),
-  source:  "android-share"
-});
+// Build URL-encoded form body (avoids JSON parsing issues)
+const body = "type=" + encodeURIComponent(type)
+  + "&content=" + encodeURIComponent(content)
+  + "&title=" + encodeURIComponent(title || content.substring(0, 80))
+  + "&source=android-share";
 
-// Send the request
+// Send the request to the form endpoint
 const result = sendHttpRequest(
-  "https://YOUR_API_URL/api/ingest",
+  "https://YOUR_API_URL/api/ingest/form",
   {
     method:  "POST",
     body:    body,
     headers: {
-      "Content-Type":  "application/json",
+      "Content-Type":  "application/x-www-form-urlencoded",
       "Authorization": "Bearer YOUR_TOKEN"
     }
   }
@@ -244,6 +242,7 @@ HTTP Shortcuts supports home screen widgets for one-tap access:
 | "No suitable shortcuts found" | Global variables must have **Allow Receiving Value from Share Dialog** enabled |
 | Share sheet doesn't show "Add to Wiki" | Enable **Accept shared text from other apps** in Trigger & Execution Settings |
 | 400 Bad Request / invalid type | Check the script — `type` must be `"url"`, `"text"`, or `"note"` |
+| 422 Unprocessable Entity / body null | Use `/api/ingest/form` with form-encoded body — JSON bodies can arrive empty from HTTP Shortcuts |
 | `{variable}` sent as literal JSON | Use a **Scripting Shortcut** with `sendHttpRequest()` — don't put variables in a body field |
 | 401 error | Double-check the `Authorization` header and token in the script |
 | Empty content captured | Set **Use shared value as → Text** in the variable's Advanced Settings |
@@ -303,6 +302,20 @@ curl -X POST https://wiki-api.internal/api/ingest \
   -H "Content-Type: application/json" \
   -H "Authorization: Bearer $TOKEN" \
   -d '{"type":"url","content":"https://example.com","title":"Example","tags":["test"]}'
+```
+
+### Form-Encoded (text/URL/note)
+
+Preferred for clients that struggle with JSON bodies (Android share, HTTP Shortcuts):
+
+```bash
+curl -X POST https://wiki-api.internal/api/ingest/form \
+  -H "Authorization: Bearer $TOKEN" \
+  -d "type=url" \
+  -d "content=https://example.com" \
+  -d "title=Example" \
+  -d "tags=test,ml" \
+  -d "source=cli"
 ```
 
 ### File Upload

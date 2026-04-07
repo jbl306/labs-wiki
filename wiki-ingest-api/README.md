@@ -4,11 +4,12 @@ FastAPI service for capturing sources into `raw/` from any device.
 
 ## Endpoints
 
-| Method | Path | Purpose |
-|--------|------|---------|
-| `GET` | `/health` | Health check |
-| `POST` | `/api/ingest` | JSON body: text, URL, or note |
-| `POST` | `/api/ingest/file` | Multipart: file upload |
+| Method | Path | Content-Type | Purpose |
+|--------|------|-------------|---------|
+| `GET` | `/health` | — | Health check |
+| `POST` | `/api/ingest` | `application/json` | JSON body: text, URL, or note |
+| `POST` | `/api/ingest/form` | `application/x-www-form-urlencoded` | Form fields: same as above (for Android/HTTP Shortcuts) |
+| `POST` | `/api/ingest/file` | `multipart/form-data` | File upload |
 
 ## Authentication
 

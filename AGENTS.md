@@ -5,15 +5,52 @@
 
 ## Project Overview
 
-labs-wiki is a personal LLM-powered knowledge wiki based on [Karpathy's LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern. Sources go in, compiled knowledge pages come out.
+labs-wiki is a personal LLM-powered knowledge wiki based on [Karpathy's LLM Wiki](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) pattern. Sources go in, compiled knowledge pages come out. The LLM incrementally builds and maintains a persistent wiki — a structured, interlinked collection of markdown pages that compounds over time.
+
+> "The wiki is a persistent, compounding artifact." — The key difference from RAG: knowledge is compiled once and kept current, not re-derived on every query.
 
 ### Three-Layer Architecture
 
 ```
-raw/   → Layer 1: Immutable source documents (inbox)
-wiki/  → Layer 2: LLM-compiled knowledge pages
-AGENTS.md → Layer 3: Schema and conventions (this file)
+raw/       → Layer 1: Immutable source documents (inbox)
+wiki/      → Layer 2: LLM-compiled knowledge pages (the artifact)
+AGENTS.md  → Layer 3: Schema, conventions, and workflows (this file)
 ```
+
+- **Layer 1** is your source of truth — the LLM reads but never modifies it
+- **Layer 2** is LLM-owned — it creates, updates, and maintains everything here
+- **Layer 3** is co-evolved — you and the LLM refine the schema as patterns emerge
+
+### How Sources Enter the Wiki
+
+```
+Android Share / Browser / CLI / API
+        │
+        ▼
+  wiki-ingest-api (FastAPI, Docker)
+        │
+        ▼
+  raw/YYYY-MM-DD-<slug>.md  (status: pending)
+        │
+        ▼
+  wiki-auto-ingest (Docker sidecar, file watcher)
+        ├── Detects new pending file (~5s)
+        ├── Smart URL fetch (Twitter/GitHub/HTML+vision)
+        ├── LLM extraction via GPT-4.1 (GitHub Models API)
+        ├── Generates wiki pages from templates
+        ├── Updates index, log, cross-references
+        └── Marks raw source → status: ingested
+```
+
+**Primary path:** Fully automated. Drop a source → wiki pages appear.
+**Manual fallback:** `/wiki-ingest` skill or `python3 scripts/auto_ingest.py` for targeted re-processing.
+
+### Services
+
+| Service | Container | Purpose |
+|---------|-----------|---------|
+| `wiki-ingest-api` | Docker | HTTP API for capturing sources into `raw/` |
+| `wiki-auto-ingest` | Docker sidecar | Watches `raw/`, auto-processes pending sources via GPT-4.1 |
 
 ---
 
@@ -61,7 +98,7 @@ tags: [topic, subtopic]
 ```
 
 **Required fields:** `title`, `type`, `created`, `sources`
-**Auto-populated by skills:** `source_hash`, `quality_score`, `last_verified`, `concepts`, `related`
+**Auto-populated by auto-ingest/skills:** `source_hash`, `quality_score`, `last_verified`, `concepts`, `related`
 
 ### Raw Source Frontmatter
 
@@ -72,7 +109,7 @@ Files in `raw/` have a different schema:
 title: "Source Title"
 type: url                       # url | text | note | file
 captured: 2025-07-17T03:15:00Z
-source: ios-share               # capture channel
+source: android-share           # capture channel
 url: "https://..."              # for url type
 content_hash: "sha256:a1b2c3..."
 tags: [ml, transformers]
@@ -93,9 +130,30 @@ status: pending                 # pending | ingested | failed
 
 ## Workflows
 
-### Ingest Workflow (`/wiki-ingest`)
+### Auto-Ingest (Primary Path)
 
-Two-phase pipeline for processing raw sources into wiki pages:
+The `wiki-auto-ingest` Docker service handles source processing automatically:
+
+1. File watcher detects new/modified `.md` in `raw/` with `status: pending`
+2. **Smart URL fetch** based on URL type:
+   - **Twitter/X** (twitter.com, x.com, t.co) → fxtwitter API for tweet text, author, media URLs
+   - **GitHub repos** (github.com/owner/repo) → REST API for metadata + README
+   - **GitHub gists** → raw content fetch
+   - **HTML pages** → fetch + tag stripping + og:image/img extraction
+3. **Vision processing** — downloads images (tweet photos, og:image), base64-encodes them, sends as multimodal content to GPT-4.1
+4. **LLM extraction** (GPT-4.1 via GitHub Models API) → structured JSON: concepts, entities, source summary
+5. **Page generation** from templates → source page + concept pages + entity pages
+6. **Cross-referencing** — bidirectional `[[wikilinks]]` between related pages
+7. **Index + log** — rebuilds `wiki/index.md`, appends to `wiki/log.md`
+8. **Status update** — marks raw source `status: ingested`
+9. **Notification** — sends ntfy alert on success/failure
+
+**Model:** GPT-4.1 (149 req/min, 148K tok/min, vision-capable)
+**Config:** `GITHUB_MODELS_TOKEN`, `GITHUB_MODELS_MODEL`, `DEBOUNCE_SECONDS` env vars
+
+### Manual Ingest (`/wiki-ingest`)
+
+For targeted re-processing or when auto-ingest is not running:
 
 **Phase 1: EXTRACT**
 1. Read source from `raw/`
@@ -113,7 +171,7 @@ Two-phase pipeline for processing raw sources into wiki pages:
 6. Rebuild `wiki/index.md`
 
 **Rules:**
-- Never modify files in `raw/` — they are immutable
+- Never modify files in `raw/` (except `status` field)
 - Every fact in a wiki page must trace to a source via `sources:` field
 - One raw source may produce multiple wiki pages (concepts, entities)
 - Always update `wiki/log.md` with timestamp, operation, and targets
@@ -125,6 +183,7 @@ Two-phase pipeline for processing raw sources into wiki pages:
 3. Synthesize answer from page content
 4. Cite sources using `[[wikilinks]]`
 5. If information is insufficient, say so — don't hallucinate
+6. **Good answers can be filed back as wiki pages** — comparisons, analyses, and connections should compound in the knowledge base
 
 ### Lint Workflow (`/wiki-lint`)
 
@@ -156,11 +215,17 @@ Check all pages in `wiki/` for:
 
 ### Orchestrate Workflow (`/wiki-orchestrate`)
 
-Multi-step coordination:
-1. Scan `raw/` for `status: pending` sources → run `/wiki-ingest` on each
-2. Run `/wiki-lint` → collect issues
-3. Fix auto-fixable issues (rebuild index, update stale `last_verified`)
+Multi-step coordination (note: auto-ingest handles pending sources automatically):
+
+1. Run `/wiki-lint` → collect issues
+2. Fix auto-fixable issues (rebuild index, update stale `last_verified`)
+3. Delegate gap analysis to **Wiki Curator** for synthesis opportunities
 4. Report remaining issues requiring human review
+
+Orchestrate modes:
+- `audit` — full quality audit with auto-fix
+- `maintenance` — stale page review + tier promotion + index rebuild
+- `ingest` — manually process any remaining pending sources (fallback)
 
 ---
 
@@ -191,7 +256,7 @@ Auto-generated catalog of all wiki pages. Format:
 - Cluster by page type (concepts, entities, sources, synthesis)
 - Include one-line summary, tier, and quality score
 - Sort alphabetically within each cluster
-- Rebuild after every ingest or update operation
+- Rebuilt automatically after every ingest operation
 
 ### log.md
 
@@ -200,7 +265,7 @@ Structured audit log. Every operation appends an entry:
 ```yaml
 - timestamp: 2025-07-17T14:30:00Z
   operation: ingest
-  agent: compiler
+  agent: auto-ingest
   targets:
     - wiki/concepts/positional-encoding.md
     - wiki/sources/rope-paper.md
@@ -235,11 +300,11 @@ Six skills are available in `.github/skills/wiki-*/SKILL.md`:
 | Skill | Purpose |
 |-------|---------|
 | `wiki-setup` | Idempotent initialization — creates dirs, validates structure |
-| `wiki-ingest` | Two-phase source processing (extract → compile) |
+| `wiki-ingest` | Manual source processing (fallback when auto-ingest unavailable) |
 | `wiki-query` | Search index, read pages, synthesize answers |
 | `wiki-lint` | Health checks: orphans, broken links, staleness, quality |
 | `wiki-update` | Revise existing pages with provenance tracking |
-| `wiki-orchestrate` | Multi-step workflows (bulk ingest, full audit) |
+| `wiki-orchestrate` | Audit, maintenance, and gap analysis workflows |
 
 ---
 

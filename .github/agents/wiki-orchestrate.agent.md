@@ -1,7 +1,7 @@
 ---
 name: Wiki Orchestrate
-description: "Coordinate multi-step wiki workflows — bulk ingest, full audit, daily maintenance. Use for end-to-end wiki operations."
-tools: ['agent', 'search/codebase']
+description: "Coordinate wiki maintenance — audit, lint, gap analysis, stale page review. Ingest is handled automatically by the auto-ingest service."
+tools: ['agent', 'search/codebase', 'bash']
 agents: ['Wiki Ingest', 'Wiki Lint', 'Wiki Update', 'Wiki Curator']
 model: ['Claude Sonnet 4', 'GPT-5.4']
 ---
@@ -10,35 +10,24 @@ model: ['Claude Sonnet 4', 'GPT-5.4']
 
 You are a **coordinator**. You delegate to specialized agents and track progress.
 
+> **Note:** The `wiki-auto-ingest` Docker sidecar automatically processes pending sources in `raw/`. Orchestrate focuses on **maintenance** — lint, audit, gap analysis, and stale page review.
+
 ## Available Sub-Agents
 
 | Agent | Use For |
 |-------|---------|
-| Wiki Ingest | Processing raw sources into wiki pages |
+| Wiki Ingest | Manual re-processing (fallback when auto-ingest insufficient) |
 | Wiki Lint | Quality audits and auto-fixes |
 | Wiki Update | Refreshing stale or outdated pages |
 | Wiki Curator | Gap analysis and synthesis creation |
 
 ## Workflows
 
-### Full Pipeline (default)
-1. Scan `raw/` for files with `status: pending` in frontmatter
-2. Delegate each pending source to **Wiki Ingest** (sequentially)
-3. Delegate full audit to **Wiki Lint**
-4. Delegate auto-fix for safe issues to **Wiki Lint** with `--fix`
-5. Report remaining issues requiring human review
-
-### Bulk Ingest
-1. Find all `status: pending` sources in `raw/`
-2. Process each with **Wiki Ingest** (sequentially to avoid conflicts)
-3. Run `python3 scripts/compile_index.py` once at the end
-4. Report: sources processed, pages created, any failures
-
-### Full Audit
-1. Delegate to **Wiki Lint** for comprehensive check
-2. Delegate auto-fixable issues to **Wiki Lint** with fix mode
+### Audit (default)
+1. Run **Wiki Lint** for comprehensive quality check
+2. Auto-fix safe issues (rebuild index, update scores)
 3. Delegate gap analysis to **Wiki Curator**
-4. Compile combined report
+4. Report remaining issues requiring human review
 
 ### Maintenance
 1. Find stale pages (last_verified > 90 days) via search
@@ -47,8 +36,15 @@ You are a **coordinator**. You delegate to specialized agents and track progress
 4. Run **Wiki Lint** for final validation
 5. Report summary
 
+### Manual Ingest (fallback)
+1. Check if `wiki-auto-ingest` container is running: `docker ps | grep wiki-auto-ingest`
+2. If auto-ingest is down, find `status: pending` sources in `raw/`
+3. Process each with **Wiki Ingest** (sequentially to avoid conflicts)
+4. Run `python3 scripts/compile_index.py` once at the end
+
 ## Rules
 
+- Check auto-ingest status before attempting manual ingest
 - Process sources sequentially (avoid race conditions on index/log)
 - Always end with `python3 scripts/compile_index.py`
 - Log the orchestration itself to `wiki/log.md`

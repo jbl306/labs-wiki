@@ -1,6 +1,6 @@
 ---
 name: wiki-ingest
-description: Process raw sources into wiki pages using a two-phase pipeline (extract → compile).
+description: Manually process raw sources into wiki pages (fallback — auto-ingest handles this automatically).
 allowed-tools:
   - read
   - write
@@ -13,7 +13,9 @@ allowed-tools:
 
 # /wiki-ingest
 
-Process one or more raw sources from `raw/` into wiki pages. Uses a **two-phase pipeline** with hash-based incremental compilation.
+Manually process one or more raw sources from `raw/` into wiki pages. Uses a **two-phase pipeline** with hash-based incremental compilation.
+
+> **Primary path:** The `wiki-auto-ingest` Docker sidecar automatically processes pending sources within ~5 seconds using GPT-4.1. It handles Twitter/X, GitHub repos, HTML pages, and images with vision support. Use this skill as a fallback for manual re-processing or quality improvements.
 
 ## Usage
 

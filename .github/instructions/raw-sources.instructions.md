@@ -35,7 +35,9 @@ status: pending | ingested | failed
 ## Processing
 
 - Raw sources are **automatically processed** by the `wiki-auto-ingest` Docker service
-- The service watches `raw/` and triggers within 5 seconds of a new file
-- Processing: GPT-4o extracts concepts/entities → generates wiki pages → updates index/log
+- The service watches `raw/` and triggers within ~5 seconds of a new file
+- Processing: GPT-4.1 extracts concepts/entities → generates wiki pages → updates index/log
+- **Smart URL handlers**: Twitter/X tweets, GitHub repos, HTML pages with image extraction
+- **Vision support**: Charts, diagrams, and text-in-images are analyzed via GPT-4.1 multimodal
 - Manual alternative: `python3 scripts/auto_ingest.py` or `/wiki-ingest` skill
 - Use `status: pending` for unprocessed sources (auto-ingest only picks up pending)

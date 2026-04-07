@@ -1,6 +1,6 @@
 ---
 name: wiki-orchestrate
-description: Coordinate multi-step wiki workflows — bulk ingest, full audit, and maintenance.
+description: Coordinate wiki maintenance — audit, lint, gap analysis, and stale page review.
 allowed-tools:
   - read
   - write
@@ -13,43 +13,28 @@ allowed-tools:
 
 # /wiki-orchestrate
 
-Coordinate multi-step wiki workflows. This is the meta-skill that chains other skills together for bulk operations.
+Coordinate wiki maintenance workflows. Ingest is handled automatically by the `wiki-auto-ingest` Docker sidecar.
+
+> **Auto-ingest handles pending sources.** This skill focuses on quality — lint, audit, gap analysis, and stale page review.
 
 ## Usage
 
 ```
-/wiki-orchestrate                    # Full pipeline: ingest pending → lint → fix → rebuild
-/wiki-orchestrate ingest             # Bulk ingest all pending raw sources
+/wiki-orchestrate                    # Audit + maintenance + gap analysis
 /wiki-orchestrate audit              # Full audit with auto-fix
 /wiki-orchestrate maintenance        # Stale page review + index rebuild
+/wiki-orchestrate ingest             # Manual fallback: ingest pending sources
 ```
 
 ## Workflows
 
-### Full Pipeline (default)
+### Audit (default)
 
-1. **Scan `raw/`** for sources with `status: pending`
-2. **Run `/wiki-ingest`** on each pending source (sequentially to avoid conflicts)
-3. **Run `/wiki-lint`** on all wiki pages
-4. **Auto-fix** safe issues (rebuild index, update scores)
-5. **Report** remaining issues requiring human review
-6. **Summary** — pages created, pages updated, issues found, issues auto-fixed
-
-### Bulk Ingest
-
-1. Find all `raw/*.md` files with `status: pending` (or no status)
-2. Process each through `/wiki-ingest` (Phase 1 + Phase 2)
-3. Track results: success/skip/fail for each source
-4. Rebuild `wiki/index.md` once (not after each ingest)
-5. Report summary
-
-### Full Audit
-
-1. Run `/wiki-lint` on every page in `wiki/`
-2. Use `/wiki-lint --fix` to auto-fix safe issues
-3. Run `/wiki-lint` again to verify fixes
-4. Report remaining issues with suggested actions
-5. Use the **Curator** persona for gap analysis
+1. **Run `/wiki-lint`** on all wiki pages
+2. **Auto-fix** safe issues (rebuild index, update scores)
+3. **Gap analysis** via Curator persona
+4. **Report** remaining issues requiring human review
+5. **Summary** — pages audited, issues found, issues auto-fixed
 
 ### Maintenance
 
@@ -59,8 +44,19 @@ Coordinate multi-step wiki workflows. This is the meta-skill that chains other s
    - If source still valid → bump `last_verified`
    - If source changed → run `/wiki-update`
    - If source missing → flag for human review
-3. Rebuild `wiki/index.md`
-4. Report summary
+3. Review tier promotions (hot → established, established → core)
+4. Rebuild `wiki/index.md`
+5. Report summary
+
+### Manual Ingest (fallback)
+
+Only use when auto-ingest is unavailable:
+
+1. Check auto-ingest status: `docker ps | grep wiki-auto-ingest`
+2. If down, find all `raw/*.md` files with `status: pending`
+3. Process each through `/wiki-ingest` (sequentially)
+4. Track results: success/skip/fail for each source
+5. Rebuild `wiki/index.md` once at the end
 
 ## Rules
 

@@ -1,6 +1,6 @@
 ---
 name: Wiki Ingest
-description: "Process raw sources into wiki pages using the two-phase pipeline (extract → compile). Use when adding new knowledge to the wiki from raw/ sources."
+description: "Manually process raw sources into wiki pages. Use as a fallback when auto-ingest needs overriding, or for targeted re-processing of specific sources."
 tools: ['search/codebase', 'search/usages', 'web/fetch']
 model: ['Claude Sonnet 4', 'GPT-5.4']
 ---
@@ -8,6 +8,8 @@ model: ['Claude Sonnet 4', 'GPT-5.4']
 # Wiki Ingest Agent
 
 You are the **Compiler** persona. Your job is to process raw source documents into structured wiki pages.
+
+> **Note:** Most sources are processed automatically by the `wiki-auto-ingest` Docker sidecar (GPT-4.1, smart URL handlers for Twitter/GitHub/HTML, vision support). Use this agent for manual re-processing, quality improvements, or when auto-ingest is unavailable.
 
 ## Before Starting
 

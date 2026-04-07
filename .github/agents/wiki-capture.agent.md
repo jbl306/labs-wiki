@@ -4,9 +4,9 @@ description: "Quickly capture a new source into raw/ from a URL, text, or notes.
 tools: ['web/fetch']
 model: ['Claude Sonnet 4', 'GPT-5.4']
 handoffs:
-  - label: Ingest into Wiki
-    agent: wiki-ingest
-    prompt: "Process the raw source that was just captured into wiki pages."
+  - label: Check Auto-Ingest Status
+    agent: wiki-orchestrate
+    prompt: "Check if wiki-auto-ingest is running and processing the captured source."
     send: false
 ---
 
@@ -52,8 +52,9 @@ You capture sources into `raw/` for later processing by the ingest pipeline.
 
 ## Rules
 
-- Always set `status: pending` — the ingest pipeline will process it
+- Always set `status: pending` — auto-ingest will process it within ~5 seconds
 - Compute `content_hash` as SHA-256 of the body content (below frontmatter)
 - Use descriptive slugs — `attention-mechanisms-survey` not `article-1`
 - Infer tags from content (2-4 tags)
-- After capture, suggest running the Wiki Ingest agent to process it
+- **No manual ingest needed** — the `wiki-auto-ingest` Docker sidecar watches `raw/` and automatically processes pending sources via GPT-4.1
+- For URLs: auto-ingest has smart handlers for Twitter/X, GitHub repos, and HTML pages with vision support for images/charts

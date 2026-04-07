@@ -7,10 +7,16 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
+import json
+import logging
+from urllib.parse import parse_qs
+
 import httpx
-from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile
+from fastapi import FastAPI, File, Form, Header, HTTPException, Request, UploadFile
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
+
+logger = logging.getLogger("wiki-ingest")
 
 app = FastAPI(title="Wiki Ingest API", version="1.0.0")
 
@@ -127,61 +133,87 @@ async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/api/ingest", response_model=IngestResponse)
-async def ingest_json(
-    request: IngestRequest,
-    authorization: str | None = Header(None),
-) -> IngestResponse:
-    """Ingest a text, URL, or note source."""
-    verify_token(authorization)
+async def _parse_ingest_params(request: Request) -> dict[str, str]:
+    """Extract ingest params from any request format: query, JSON, form, or raw body.
 
-    if request.type not in ("url", "text", "note"):
+    Tries in order: query params → JSON body → form body → URL-encoded body.
+    This handles HTTP Shortcuts' sendHttpRequest() which may send bodies
+    in unexpected formats depending on version and Content-Type negotiation.
+    """
+    params: dict[str, str] = {}
+
+    # 1. Query parameters (always available, highest priority for overrides)
+    for key in ("type", "content", "title", "tags", "source"):
+        val = request.query_params.get(key)
+        if val:
+            params[key] = val
+
+    # If we got the required fields from query params, done
+    if params.get("type") and params.get("content"):
+        logger.info("Parsed params from query string")
+        return params
+
+    # 2. Try reading the raw body
+    body = await request.body()
+    if not body:
+        logger.warning("Empty request body, using query params only")
+        return params
+
+    content_type = (request.headers.get("content-type") or "").lower()
+    body_text = body.decode("utf-8", errors="replace")
+    logger.info("Body received (%d bytes), Content-Type: %s", len(body), content_type)
+
+    # 3. Try JSON
+    if "json" in content_type or body_text.lstrip().startswith("{"):
+        try:
+            data = json.loads(body_text)
+            if isinstance(data, dict):
+                for key in ("type", "content", "title", "tags", "source"):
+                    val = data.get(key)
+                    if val is not None:
+                        params.setdefault(key, str(val) if not isinstance(val, str) else val)
+                logger.info("Parsed params from JSON body")
+                return params
+        except json.JSONDecodeError:
+            logger.debug("JSON parse failed, trying other formats")
+
+    # 4. Try form-encoded
+    if "form" in content_type or "=" in body_text:
+        try:
+            form_data = parse_qs(body_text, keep_blank_values=True)
+            for key in ("type", "content", "title", "tags", "source"):
+                vals = form_data.get(key)
+                if vals:
+                    params.setdefault(key, vals[0])
+            if params.get("type") and params.get("content"):
+                logger.info("Parsed params from form-encoded body")
+                return params
+        except Exception:
+            logger.debug("Form parse failed")
+
+    # 5. Fallback: treat entire body as content (assume URL if it looks like one)
+    if not params.get("content") and body_text.strip():
+        stripped = body_text.strip()
+        params.setdefault("content", stripped)
+        if stripped.startswith("http://") or stripped.startswith("https://"):
+            params.setdefault("type", "url")
+        else:
+            params.setdefault("type", "text")
+        logger.info("Fallback: treating raw body as content")
+
+    return params
+
+
+def _do_ingest(
+    ingest_type: str,
+    content: str,
+    title: str,
+    tags: list[str],
+    source: str,
+) -> Path:
+    """Core ingest logic — validate, write raw file, return path."""
+    if ingest_type not in ("url", "text", "note"):
         raise HTTPException(status_code=400, detail="type must be: url, text, or note")
-
-    if not request.content:
-        raise HTTPException(status_code=400, detail="content is required")
-
-    title = request.title or request.content[:80]
-    path = generate_raw_path(title)
-
-    # Avoid overwriting existing files
-    counter = 1
-    original_path = path
-    while path.exists():
-        path = original_path.with_stem(f"{original_path.stem}-{counter}")
-        counter += 1
-
-    url = request.content if request.type == "url" else None
-    write_raw_source(
-        path=path,
-        title=title,
-        source_type=request.type,
-        content=request.content,
-        source_channel=request.source,
-        tags=request.tags,
-        url=url,
-    )
-
-    await notify(title)
-
-    return IngestResponse(status="ok", path=str(path.relative_to(RAW_DIR.parent)))
-
-
-@app.post("/api/ingest/form", response_model=IngestResponse)
-async def ingest_form(
-    type: str = Form(...),
-    content: str = Form(...),
-    title: str = Form(""),
-    tags: str = Form(""),
-    source: str = Form("android-share"),
-    authorization: str | None = Header(None),
-) -> IngestResponse:
-    """Ingest via form fields — reliable from HTTP Shortcuts / Android share."""
-    verify_token(authorization)
-
-    if type not in ("url", "text", "note"):
-        raise HTTPException(status_code=400, detail="type must be: url, text, or note")
-
     if not content:
         raise HTTPException(status_code=400, detail="content is required")
 
@@ -194,20 +226,44 @@ async def ingest_form(
         path = original_path.with_stem(f"{original_path.stem}-{counter}")
         counter += 1
 
-    url = content if type == "url" else None
-    tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
-
+    url = content if ingest_type == "url" else None
     write_raw_source(
         path=path,
         title=resolved_title,
-        source_type=type,
+        source_type=ingest_type,
         content=content,
         source_channel=source,
-        tags=tag_list,
+        tags=tags,
         url=url,
     )
+    return path
 
-    await notify(resolved_title)
+
+@app.post("/api/ingest", response_model=IngestResponse)
+@app.post("/api/ingest/form", response_model=IngestResponse)
+async def ingest(
+    request: Request,
+    authorization: str | None = Header(None),
+) -> IngestResponse:
+    """Universal ingest — accepts JSON, form-encoded, query params, or raw body."""
+    verify_token(authorization)
+
+    params = await _parse_ingest_params(request)
+
+    ingest_type = params.get("type", "")
+    content = params.get("content", "")
+    title = params.get("title", "")
+    tags_raw = params.get("tags", "")
+    source = params.get("source", "android-share")
+
+    if isinstance(tags_raw, str):
+        tag_list = [t.strip() for t in tags_raw.split(",") if t.strip()]
+    else:
+        tag_list = list(tags_raw) if tags_raw else []
+
+    path = _do_ingest(ingest_type, content, title, tag_list, source)
+
+    await notify(title or content[:80])
 
     return IngestResponse(status="ok", path=str(path.relative_to(RAW_DIR.parent)))
 

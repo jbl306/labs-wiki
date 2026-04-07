@@ -163,7 +163,7 @@ Shared content from Android's share sheet is received via **global variables** w
 #### Step 2: Create a New Shortcut
 
 1. Go back to the main screen → tap **+** → **Scripting Shortcut**
-   > **Important:** Choose **Scripting**, not Regular. We use `sendHttpRequest()` with form-encoded data to the `/api/ingest/form` endpoint. This avoids body-parsing bugs where JSON bodies arrive empty (422 errors).
+   > **Important:** Choose **Scripting**, not Regular. We use `sendHttpRequest()` with query parameters. This avoids body-parsing bugs where JSON or form bodies arrive empty (422 errors).
 2. Name it **"Add to Wiki"**
 3. Set icon to 📥 (or any icon you like)
 
@@ -181,20 +181,18 @@ const urlMatch = shared.match(/https?:\/\/[^\s]+/);
 const type    = urlMatch ? "url" : "text";
 const content = urlMatch ? urlMatch[0] : shared;
 
-// Build URL-encoded form body (avoids JSON parsing issues)
-const body = "type=" + encodeURIComponent(type)
+// Build query string — most reliable transport for HTTP Shortcuts
+const qs = "type=" + encodeURIComponent(type)
   + "&content=" + encodeURIComponent(content)
   + "&title=" + encodeURIComponent(title || content.substring(0, 80))
   + "&source=android-share";
 
-// Send the request to the form endpoint
+// Send the request (params in URL — avoids body-parsing issues)
 const result = sendHttpRequest(
-  "https://YOUR_API_URL/api/ingest/form",
+  "https://YOUR_API_URL/api/ingest?" + qs,
   {
     method:  "POST",
-    body:    body,
     headers: {
-      "Content-Type":  "application/x-www-form-urlencoded",
       "Authorization": "Bearer YOUR_TOKEN"
     }
   }

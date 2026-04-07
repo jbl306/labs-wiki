@@ -2,7 +2,7 @@
 
 > How to add sources to labs-wiki from any device.
 
-All channels feed into the **Wiki Ingest API** (`wiki-ingest-api/`), which writes standardized markdown files to `raw/`. The `/wiki-ingest` skill then processes them into wiki pages.
+All channels feed into the **Wiki Ingest API** (`wiki-ingest-api/`), which writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service then automatically processes them into wiki pages via GPT-4o within seconds.
 
 ---
 
@@ -313,4 +313,5 @@ curl -X POST https://wiki-api.internal/api/ingest/file \
 | 413 File Too Large | Files are limited to 15MB |
 | Connection refused | Ensure API is running: `curl http://localhost:8000/health` |
 | File not appearing in raw/ | Check API logs: `docker logs wiki-ingest-api` |
+| Source not auto-processing | Check auto-ingest logs: `docker logs wiki-auto-ingest` |
 | ntfy watcher stops | Restart the script; it auto-reconnects |

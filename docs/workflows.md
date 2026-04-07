@@ -1,10 +1,10 @@
 # Workflows
 
-> Step-by-step guides for the five core wiki operations.
+> Step-by-step guides for wiki operations. Sources are **automatically processed** — manual skills are available for targeted operations.
 
 ## 1. Ingest a New Source
 
-Add a raw source and process it into wiki pages.
+Add a raw source — it's automatically processed into wiki pages.
 
 ### Steps
 
@@ -32,19 +32,28 @@ Add a raw source and process it into wiki pages.
    waf ~/Downloads/paper.pdf "Research Paper on Attention"
    ```
 
-2. **Run the ingest skill:**
-   ```
-   /wiki-ingest raw/2025-07-17-interesting-article.md
-   ```
+2. **Auto-ingest processes it** (within ~5 seconds):
+   - The `wiki-auto-ingest` Docker service detects the new file
+   - Fetches URL content (for `type: url` sources)
+   - Extracts concepts, entities, and facts via GPT-4o
+   - Generates wiki pages from templates
+   - Updates index and log
+   - Marks raw source `status: ingested`
 
-3. **What happens:**
-   - Phase 1 (Researcher): extracts concepts, entities, facts
-   - Phase 2 (Compiler): creates wiki pages, updates index + log
-   - Raw source status changes to `ingested`
+3. **Verify:**
+   ```bash
+   # Check auto-ingest logs
+   docker logs wiki-auto-ingest
 
-4. **Verify:**
-   ```
+   # Or run lint
    /wiki-lint
+   ```
+
+4. **Manual alternative** (if auto-ingest is not running):
+   ```bash
+   python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md
+   # Or use the Copilot skill:
+   /wiki-ingest raw/2025-07-17-interesting-article.md
    ```
 
 ## 2. Query the Wiki
@@ -124,7 +133,7 @@ Revise an existing wiki page with new information.
 
 ## 5. Orchestrate a Full Pipeline
 
-Run the complete ingest → lint → fix cycle.
+Run lint → fix → maintenance cycle. (Ingestion is handled automatically by the auto-ingest service.)
 
 ### Steps
 
@@ -134,17 +143,15 @@ Run the complete ingest → lint → fix cycle.
    ```
 
 2. **What happens:**
-   - Finds all `raw/` sources with `status: pending`
-   - Ingests each (Phase 1 + Phase 2)
    - Runs lint on all wiki pages
    - Auto-fixes safe issues
    - Reports remaining issues
 
 3. **Other modes:**
    ```
-   /wiki-orchestrate ingest        # Just bulk ingest
    /wiki-orchestrate audit         # Just full audit
    /wiki-orchestrate maintenance   # Stale page review + index rebuild
+   /wiki-orchestrate ingest        # Manually ingest any remaining pending sources
    ```
 
 ---

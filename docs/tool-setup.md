@@ -127,7 +127,7 @@ Add to your workspace `.vscode/settings.json`:
 ### "I found an interesting article"
 
 1. **Capture:** `@wiki-capture https://example.com/article` — saves to `raw/`
-2. **Ingest:** Click "Ingest into Wiki" handoff (or `@wiki-ingest`) — creates wiki pages
+2. **Auto-processed:** `wiki-auto-ingest` creates wiki pages within seconds
 3. **Verify:** `@wiki-lint` — checks the new pages for quality issues
 
 ### "I want a wiki status check"

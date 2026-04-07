@@ -6,35 +6,32 @@ A personal LLM-powered knowledge wiki based on [Karpathy's LLM Wiki](https://gis
 
 ```mermaid
 graph LR
-    subgraph "Layer 1: Sources"
-        R[raw/] --> |immutable| A[articles]
-        R --> B[papers]
-        R --> C[notes]
+    subgraph "Capture"
+        P[📱 Phone] --> API[Ingest API]
+        B[💻 Browser] --> API
+        T[⌨️ Terminal] --> API
     end
 
-    subgraph "Layer 2: Wiki"
-        S[wiki/sources/] --> |1:1 summaries| R
-        CO[wiki/concepts/] --> |deep dives| S
-        E[wiki/entities/] --> |tools, people| S
-        SY[wiki/synthesis/] --> |cross-cutting| CO
+    subgraph "Auto-Ingest"
+        API --> RAW[raw/]
+        RAW --> W[File Watcher]
+        W --> LLM[GPT-4o Extraction]
     end
 
-    subgraph "Layer 3: Schema"
-        AG[AGENTS.md] --> |conventions| S
-        AG --> |conventions| CO
-        AG --> |conventions| E
-        AG --> |conventions| SY
+    subgraph "Wiki"
+        LLM --> S[wiki/sources/]
+        LLM --> C[wiki/concepts/]
+        LLM --> E[wiki/entities/]
     end
 
-    style R fill:#e1f5fe
+    style RAW fill:#e1f5fe
     style S fill:#f3e5f5
-    style CO fill:#f3e5f5
+    style C fill:#f3e5f5
     style E fill:#f3e5f5
-    style SY fill:#f3e5f5
-    style AG fill:#fff3e0
+    style API fill:#e8f5e9
 ```
 
-**Sources** (`raw/`) are immutable documents — articles, papers, notes — captured from any device. The **wiki** (`wiki/`) contains LLM-compiled knowledge pages organized by type. **AGENTS.md** defines the schema and conventions that all AI tools follow.
+**Sources** are captured from any device via the Ingest API → written to `raw/` → **automatically processed** by the auto-ingest service (GPT-4o via GitHub Models API) → wiki pages created with cross-references. **AGENTS.md** defines the schema that all AI tools follow.
 
 ## Architecture
 
@@ -51,8 +48,9 @@ labs-wiki/
 │   └── log.md              # Structured audit log
 ├── agents/                 # Agent persona definitions
 ├── templates/              # Page templates with frontmatter
-├── scripts/                # Python utilities (scaffold, lint, index)
+├── scripts/                # Python utilities (scaffold, lint, index, auto-ingest)
 ├── wiki-ingest-api/        # FastAPI capture service
+├── Dockerfile.auto-ingest  # Auto-ingest watcher service
 ├── docs/                   # Documentation
 ├── .github/skills/         # AI skills (6 wiki operations)
 ├── AGENTS.md               # Universal schema (Layer 3)
@@ -69,8 +67,7 @@ cd labs-wiki
 # Run setup (creates symlinks, validates structure)
 ./setup.sh
 
-# Add a source
-cp ~/Downloads/interesting-paper.pdf raw/assets/
+# Add a source (auto-processed by the watcher service within seconds)
 cat > raw/2025-07-17-interesting-paper.md << 'EOF'
 ---
 title: "Interesting Paper"
@@ -84,21 +81,24 @@ status: pending
 See `raw/assets/interesting-paper.pdf`
 EOF
 
-# Use the wiki-ingest skill to process it
-# (in VS Code Copilot, Copilot CLI, or OpenCode)
-/wiki-ingest
+# Sources with status: pending are auto-ingested by the wiki-auto-ingest
+# Docker service. Or process manually:
+python3 scripts/auto_ingest.py raw/2025-07-17-interesting-paper.md
 ```
 
 ## Capture Sources
 
-Add sources from anywhere — phone, browser, terminal:
+Add sources from anywhere — they're automatically processed into wiki pages:
 
-| Channel | How |
-|---------|-----|
-| 📱 Phone | iOS Shortcut / Android Share Sheet → ingest API |
-| 💻 Browser | Bookmarklet → ingest API |
-| ⌨️ Terminal | `wa url https://...` or `waf paper.pdf` |
-| 🔗 GitHub | Create issue with `ingest` label |
+| Channel | How | Processing |
+|---------|-----|------------|
+| 📱 Phone | iOS Shortcut / Android Share Sheet → ingest API | ⚡ Auto |
+| 💻 Browser | Bookmarklet → ingest API | ⚡ Auto |
+| ⌨️ Terminal | `wa url https://...` or `waf paper.pdf` | ⚡ Auto |
+| 🔗 GitHub | Create issue with `ingest` label | ⚡ Auto |
+| 📝 Manual | Create `.md` file in `raw/` | ⚡ Auto |
+
+The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GPT-4o (GitHub Models API) within seconds.
 
 See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 
@@ -106,12 +106,19 @@ See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 
 | Skill | Purpose |
 |-------|---------|
-| `/wiki-setup` | Initialize or validate wiki structure |
-| `/wiki-ingest` | Process raw sources into wiki pages |
+| `/wiki-ingest` | Manually process raw sources into wiki pages (auto-ingest handles this normally) |
 | `/wiki-query` | Search and synthesize from wiki |
 | `/wiki-lint` | Check health: orphans, broken links, staleness |
 | `/wiki-update` | Revise pages with provenance tracking |
-| `/wiki-orchestrate` | Multi-step workflows |
+| `/wiki-orchestrate` | Multi-step workflows (lint, fix, maintenance) |
+| `/wiki-setup` | Initialize or validate wiki structure |
+
+## Services
+
+| Service | Purpose |
+|---------|---------|
+| `wiki-ingest-api` | FastAPI — receives sources from all capture channels |
+| `wiki-auto-ingest` | File watcher — auto-processes pending sources via GPT-4o |
 
 ## Toolchain
 

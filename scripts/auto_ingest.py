@@ -155,7 +155,12 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
         log.info("Fetching tweet via fxtwitter API: %s", tweet_id)
         try:
             api_url = f"https://api.fxtwitter.com/i/status/{tweet_id}"
-            resp = httpx.get(api_url, follow_redirects=True, timeout=URL_FETCH_TIMEOUT)
+            resp = httpx.get(
+                api_url,
+                follow_redirects=True,
+                timeout=URL_FETCH_TIMEOUT,
+                headers={"User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"},
+            )
             resp.raise_for_status()
             data = resp.json()
             tweet = data.get("tweet", {})

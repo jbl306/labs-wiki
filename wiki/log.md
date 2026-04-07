@@ -45,4 +45,62 @@
   source: raw/2026-04-07-transformer-architecture-note.md
   status: success
   notes: "Auto-ingested 6 pages (4 concepts, 1 entities)"
+
+- timestamp: 2026-04-07T19:52:47+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/htmx-html-over-the-wire.md
+    - wiki/concepts/html-over-the-wire.md
+    - wiki/entities/htmx.md
+    - wiki/entities/intercooler-js.md
+  source: raw/2026-04-07-test-github-repo.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities)"
+
+- timestamp: 2026-04-07T19:52:49+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/test-tweet-with-image.md
+  source: raw/2026-04-07-test-tweet.md
+  status: success
+  notes: "Auto-ingested 1 pages (0 concepts, 0 entities)"
+
+- timestamp: 2026-04-07T19:54:17+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/karpathy-llm-os-tweet.md
+    - wiki/concepts/llm-operating-system.md
+    - wiki/entities/andrej-karpathy.md
+  source: raw/2026-04-07-test-tweet.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities)"
+
+- timestamp: 2026-04-07T19:55:23+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/karpathy-llm-os-tweet.md
+    - wiki/concepts/llm-operating-system.md
+    - wiki/entities/andrej-karpathy.md
+  source: raw/2026-04-07-test-tweet.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities)"
+
+- timestamp: 2026-04-07T19:57:16+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/karpathy-llm-os-tweet.md
+    - wiki/concepts/llm-operating-system.md
+    - wiki/concepts/embedding-based-filesystem.md
+    - wiki/concepts/context-window.md
+    - wiki/entities/llm-os.md
+    - wiki/entities/openai-gpt-4-turbo.md
+    - wiki/entities/ada002.md
+  source: raw/2026-04-07-test-tweet.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities)"
 ```

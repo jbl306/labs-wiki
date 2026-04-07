@@ -117,12 +117,137 @@ javascript:void(fetch('YOUR_API_URL/api/ingest',{method:'POST',headers:{'Content
 
 See an article → Share → "Add to Wiki" → done in 3 taps.
 
-### Android
+### Android — HTTP Shortcuts
 
-Use [HTTP Shortcuts](https://http-shortcuts.rto.ch/) (free, open-source):
-1. Install from F-Droid or Play Store
-2. Create a new shortcut with the same POST request
-3. Set it as a share target
+[HTTP Shortcuts](https://http-shortcuts.rto.ch/) is a free, open-source Android app for creating custom HTTP request shortcuts. Install from [Google Play](https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts) or [F-Droid](https://f-droid.org/packages/ch.rmy.android.http_shortcuts/).
+
+#### Step 1: Create a New Shortcut
+
+1. Open HTTP Shortcuts → tap **+** → **Regular Shortcut**
+2. Name it **"Add to Wiki"**
+3. Set icon to 📥 (or any icon you like)
+
+#### Step 2: Configure the Request
+
+| Field | Value |
+|-------|-------|
+| **Method** | `POST` |
+| **URL** | `https://YOUR_API_URL/api/ingest` |
+
+#### Step 3: Add Headers
+
+Tap **Request Headers** → add two entries:
+
+| Header | Value |
+|--------|-------|
+| `Content-Type` | `application/json` |
+| `Authorization` | `Bearer YOUR_TOKEN` |
+
+#### Step 4: Set the Request Body
+
+1. Tap **Request Body** → select **Custom Text**
+2. Set content type to `application/json`
+3. Paste this JSON body:
+
+```json
+{
+  "type": "url",
+  "content": "{url}",
+  "title": "{title}",
+  "source": "android-share"
+}
+```
+
+> **Variable placeholders:** `{url}` and `{title}` are resolved at runtime — see Step 6.
+
+#### Step 5: Define Variables
+
+Tap **Scripting** → **Run before execution** → add this JavaScript:
+
+```javascript
+// Grab the shared text from the share intent
+const shared = getVariable("sharing_text") || "";
+
+// Try to extract a URL from the shared text
+const urlMatch = shared.match(/https?:\/\/[^\s]+/);
+const url = urlMatch ? urlMatch[0] : shared;
+const title = getVariable("sharing_title") || "";
+
+setVariable("url", url);
+setVariable("title", title);
+```
+
+Then create two **static variables** (Settings → Variables):
+
+| Variable Name | Type |
+|---------------|------|
+| `url` | Static (empty default) |
+| `title` | Static (empty default) |
+
+#### Step 6: Enable Share Sheet Integration
+
+1. Go back to shortcut settings
+2. Tap **Trigger & Execution** → **Share Into Shortcut**
+3. Toggle **Accept text shared from other apps** → **ON**
+4. Optionally toggle **Accept files** if you want file upload support
+
+#### Step 7: Test It
+
+1. Open Chrome, find an article
+2. Tap **Share** → select **"Add to Wiki"**
+3. You should see a success toast or response dialog
+
+#### Optional: Share Text Notes
+
+To also capture plain text (not just URLs), update the Scripting block to detect the content type:
+
+```javascript
+const shared = getVariable("sharing_text") || "";
+const urlMatch = shared.match(/https?:\/\/[^\s]+/);
+
+if (urlMatch) {
+  setVariable("url", urlMatch[0]);
+  setVariable("type", "url");
+} else {
+  setVariable("url", shared);
+  setVariable("type", "text");
+}
+setVariable("title", getVariable("sharing_title") || "");
+```
+
+Then update the request body to use the `type` variable:
+
+```json
+{
+  "type": "{type}",
+  "content": "{url}",
+  "title": "{title}",
+  "source": "android-share"
+}
+```
+
+And add a third variable:
+
+| Variable Name | Type | Default |
+|---------------|------|---------|
+| `type` | Static | `url` |
+
+#### Optional: Home Screen Widget
+
+HTTP Shortcuts supports home screen widgets for one-tap access:
+1. Long-press your home screen → **Widgets**
+2. Find **HTTP Shortcuts** → drag a 1×1 widget
+3. Select your "Add to Wiki" shortcut
+4. Tap the widget to trigger a quick-capture dialog
+
+#### Troubleshooting
+
+| Problem | Solution |
+|---------|----------|
+| Share sheet doesn't show "Add to Wiki" | Ensure **Share Into Shortcut** is enabled in trigger settings |
+| 401 error | Double-check the `Authorization` header value |
+| Empty URL captured | The sharing app may not pass text — check `sharing_text` variable in response debug |
+| Want to see the raw response | In shortcut settings → **Response Handling** → **Show as dialog** |
 
 ---
 

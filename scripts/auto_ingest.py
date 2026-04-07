@@ -327,8 +327,8 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
     if repo_match:
         owner, repo = repo_match.groups()
         log.info("Fetching GitHub repo info: %s/%s", owner, repo)
-        gh_token = os.environ.get("GITHUB_MODELS_TOKEN", "") or os.environ.get(
-            "GITHUB_TOKEN", ""
+        gh_token = os.environ.get("GITHUB_TOKEN", "") or os.environ.get(
+            "GITHUB_MODELS_TOKEN", ""
         )
         gh_headers: dict[str, str] = {
             "Accept": "application/vnd.github+json",

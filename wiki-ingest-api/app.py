@@ -9,6 +9,7 @@ from pathlib import Path
 
 import httpx
 from fastapi import FastAPI, File, Form, Header, HTTPException, UploadFile
+from fastapi.responses import RedirectResponse
 from pydantic import BaseModel
 
 app = FastAPI(title="Wiki Ingest API", version="1.0.0")
@@ -114,6 +115,11 @@ def sanitize_filename(filename: str) -> str:
     if not name or name.startswith("."):
         name = f"upload-{uuid.uuid4().hex[:8]}"
     return name
+
+
+@app.get("/", include_in_schema=False)
+async def root() -> RedirectResponse:
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health")

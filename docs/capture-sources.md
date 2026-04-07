@@ -152,85 +152,65 @@ Tap **Request Headers** → add two entries:
 ```json
 {
   "type": "url",
-  "content": "{url}",
-  "title": "{title}",
+  "content": "{{sharing_text}}",
+  "title": "{{sharing_title}}",
   "source": "android-share"
 }
 ```
 
-> **Variable placeholders:** `{url}` and `{title}` are resolved at runtime — see Step 6.
+> **`{{sharing_text}}`** and **`{{sharing_title}}`** are built-in variables that HTTP Shortcuts auto-populates from the Android share intent. Use them directly in the request body — no scripting or user-defined variables needed for the basic case.
 
-#### Step 5: Define Variables
-
-Tap **Scripting** → **Run before execution** → add this JavaScript:
-
-```javascript
-// Grab the shared text from the share intent
-const shared = getVariable("sharing_text") || "";
-
-// Try to extract a URL from the shared text
-const urlMatch = shared.match(/https?:\/\/[^\s]+/);
-const url = urlMatch ? urlMatch[0] : shared;
-const title = getVariable("sharing_title") || "";
-
-setVariable("url", url);
-setVariable("title", title);
-```
-
-Then create two **static variables** (Settings → Variables):
-
-| Variable Name | Type |
-|---------------|------|
-| `url` | Static (empty default) |
-| `title` | Static (empty default) |
-
-#### Step 6: Enable Share Sheet Integration
+#### Step 5 (cont): Share Sheet Settings
 
 1. Go back to shortcut settings
 2. Tap **Trigger & Execution** → **Share Into Shortcut**
 3. Toggle **Accept text shared from other apps** → **ON**
 4. Optionally toggle **Accept files** if you want file upload support
 
-#### Step 7: Test It
+#### Step 6: Test It
 
 1. Open Chrome, find an article
 2. Tap **Share** → select **"Add to Wiki"**
 3. You should see a success toast or response dialog
 
-#### Optional: Share Text Notes
+#### Optional: Auto-Detect URL vs Text
 
-To also capture plain text (not just URLs), update the Scripting block to detect the content type:
+To automatically set `type` based on whether the shared content is a URL or plain text, add scripting:
 
-```javascript
-const shared = getVariable("sharing_text") || "";
-const urlMatch = shared.match(/https?:\/\/[^\s]+/);
+1. Create two **user variables** (shortcut settings → Variables → **+**):
 
-if (urlMatch) {
-  setVariable("url", urlMatch[0]);
-  setVariable("type", "url");
-} else {
-  setVariable("url", shared);
-  setVariable("type", "text");
-}
-setVariable("title", getVariable("sharing_title") || "");
-```
+   | Variable Name | Type | Default |
+   |---------------|------|---------|
+   | `detected_type` | Static | `text` |
+   | `detected_content` | Static | (empty) |
 
-Then update the request body to use the `type` variable:
+2. Tap **Scripting** → **Run before execution** → add:
 
-```json
-{
-  "type": "{type}",
-  "content": "{url}",
-  "title": "{title}",
-  "source": "android-share"
-}
-```
+   ```javascript
+   const shared = getVariable("sharing_text");
+   const urlMatch = shared.match(/https?:\/\/[^\s]+/);
 
-And add a third variable:
+   if (urlMatch) {
+     setVariable("detected_type", "url");
+     setVariable("detected_content", urlMatch[0]);
+   } else {
+     setVariable("detected_type", "text");
+     setVariable("detected_content", shared);
+   }
+   ```
 
-| Variable Name | Type | Default |
-|---------------|------|---------|
-| `type` | Static | `url` |
+   > **Note:** `getVariable("sharing_text")` works inside scripting blocks. The `{{sharing_text}}` placeholder syntax is for request body templates. In scripting JS, use `getVariable()`.
+
+3. Update the request body to use the user variables:
+
+   ```json
+   {
+     "type": "{{detected_type}}",
+     "content": "{{detected_content}}",
+     "title": "{{sharing_title}}",
+     "source": "android-share"
+   }
+   ```
 
 #### Optional: Home Screen Widget
 

@@ -133,118 +133,65 @@ See an article → Share → "Add to Wiki" → done in 3 taps.
 
 [HTTP Shortcuts](https://http-shortcuts.rmy.ch/) is a free, open-source Android app for creating custom HTTP request shortcuts. Install from [Google Play](https://play.google.com/store/apps/details?id=ch.rmy.android.http_shortcuts) or [F-Droid](https://f-droid.org/packages/ch.rmy.android.http_shortcuts/).
 
-#### Step 1: Create Global Variables
+#### Step 1: Create a Global Variable
 
-Shared content from Android's share sheet is received via **global variables** with the "Allow Receiving Value from Share Dialog" option enabled. You must create these **before** building the shortcut.
-
-1. Open HTTP Shortcuts → tap the **⋮ menu** (top-right) → **Global Variables**
+1. Open HTTP Shortcuts → tap the **⋮ menu** (top-right) → **Variables**
 2. Tap **+** to create a new variable:
 
    | Field | Value |
    |-------|-------|
-   | **Name** | `shared_text` |
+   | **Key** | `shared_text` |
    | **Type** | Static Variable |
    | **Value** | _(leave empty)_ |
 
-3. Scroll down to **Advanced Settings** and enable:
-   - ✅ **Allow Receiving Value from Share Dialog**
-   - Set **Use shared value as:** → **Text**
+3. Enable **Share as value for this variable** and set the sharing type to **Text / URL**
+4. Do **not** enable JSON encode
 
-4. Create a second variable:
+#### Step 2: Create a Regular Shortcut
 
-   | Field | Value |
-   |-------|-------|
-   | **Name** | `shared_title` |
-   | **Type** | Static Variable |
-   | **Value** | _(leave empty)_ |
+1. Go back to the main screen → tap **+** → **Regular Shortcut**
+2. Name it **"Add to Wiki"**, set icon to 📥
 
-5. Same as above — enable **Allow Receiving Value from Share Dialog**, set to **Title / Subject**
+#### Step 3: Configure the Request
 
-#### Step 2: Create a New Shortcut
+| Setting | Value |
+|---------|-------|
+| **Method** | `POST` |
+| **URL** | `https://YOUR_API_URL/api/ingest` |
+| **Body** | **Custom Text** |
+| **Content Type** | `text/plain` |
+| **Custom Body** | `{shared_text}` |
 
-1. Go back to the main screen → tap **+** → **Scripting Shortcut**
-   > **Important:** Choose **Scripting**, not Regular. We use `sendHttpRequest()` with query parameters. This avoids body-parsing bugs where JSON or form bodies arrive empty (422 errors).
-2. Name it **"Add to Wiki"**
-3. Set icon to 📥 (or any icon you like)
+Under **Headers**, add:
 
-#### Step 3: Write the Script
-
-In the script editor, paste the following:
-
-```javascript
-// Read shared content from global variables
-const shared = getVariable("shared_text");
-const title  = getVariable("shared_title");
-
-// Detect if shared content is a URL or plain text
-const urlMatch = shared.match(/https?:\/\/[^\s]+/);
-const type    = urlMatch ? "url" : "text";
-const content = urlMatch ? urlMatch[0] : shared;
-
-// Build query string — most reliable transport for HTTP Shortcuts
-const qs = "type=" + encodeURIComponent(type)
-  + "&content=" + encodeURIComponent(content)
-  + "&title=" + encodeURIComponent(title || content.substring(0, 80))
-  + "&source=android-share";
-
-// Send the request (params in URL — avoids body-parsing issues)
-const result = sendHttpRequest(
-  "https://YOUR_API_URL/api/ingest?" + qs,
-  {
-    method:  "POST",
-    headers: {
-      "Authorization": "Bearer YOUR_TOKEN"
-    }
-  }
-);
-
-// Show result
-if (result.status === "success") {
-  showDialog(result.response.body, "✅ Captured");
-} else if (result.status === "httpError") {
-  showDialog(
-    "Status " + result.response.statusCode + "\n" + result.response.body,
-    "❌ API Error"
-  );
-} else {
-  showDialog(result.networkError, "❌ Network Error");
-}
-```
+| Header | Value |
+|--------|-------|
+| `Authorization` | `Bearer YOUR_TOKEN` |
 
 Replace `YOUR_API_URL` and `YOUR_TOKEN` with your actual values.
 
-#### Step 4: Enable Share Sheet Integration
+> The server auto-detects whether the content is a URL or plain text — no `type` field needed.
+
+#### Step 4: Enable Share Sheet
 
 1. Go to the shortcut's **Trigger & Execution Settings**
 2. Enable **Accept shared text from other apps**
-3. Optionally enable **Direct Share** (Android 11+) for the shortcut to appear in the Direct Share row
 
 #### Step 5: Test It
 
 1. Open Chrome, find an article
 2. Tap **Share** → select **"Add to Wiki"**
-3. You should see a dialog with the API response (the `raw/` file path on success)
-
-#### Optional: Home Screen Widget
-
-HTTP Shortcuts supports home screen widgets for one-tap access:
-1. Long-press your home screen → **Widgets**
-2. Find **HTTP Shortcuts** → drag a 1×1 widget
-3. Select your "Add to Wiki" shortcut
-4. Tap the widget to trigger a quick-capture dialog
+3. You should see a success response with the `raw/` file path
 
 #### Troubleshooting
 
 | Problem | Solution |
 |---------|----------|
-| "No suitable shortcuts found" | Global variables must have **Allow Receiving Value from Share Dialog** enabled |
-| Share sheet doesn't show "Add to Wiki" | Enable **Accept shared text from other apps** in Trigger & Execution Settings |
-| 400 Bad Request / invalid type | Check the script — `type` must be `"url"`, `"text"`, or `"note"` |
-| 422 Unprocessable Entity / body null | Use `/api/ingest/form` with form-encoded body — JSON bodies can arrive empty from HTTP Shortcuts |
-| `{variable}` sent as literal JSON | Use a **Scripting Shortcut** with `sendHttpRequest()` — don't put variables in a body field |
-| 401 error | Double-check the `Authorization` header and token in the script |
-| Empty content captured | Set **Use shared value as → Text** in the variable's Advanced Settings |
-| Network error in dialog | Check URL is reachable; try opening it in Chrome first |
+| Share sheet doesn't show "Add to Wiki" | Enable **Accept shared text** in Trigger & Execution Settings |
+| "Variable doesn't exist" error | Variable key must be exactly `shared_text` with **Share as value** enabled |
+| 400 "content is required" | Check that `{shared_text}` is in the body and the variable has a value |
+| 401 Unauthorized | Double-check the `Authorization` header and token |
+| Empty content captured | Set sharing type to **Text / URL** (not Title) on the variable |
 
 ---
 

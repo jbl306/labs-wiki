@@ -133,6 +133,21 @@ async def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.api_route("/api/debug", methods=["GET", "POST", "PUT"])
+async def debug_request(request: Request) -> dict:
+    """Dump the full raw request for debugging. No auth required."""
+    body = await request.body()
+    return {
+        "method": request.method,
+        "url": str(request.url),
+        "query_params": dict(request.query_params),
+        "headers": dict(request.headers),
+        "content_type": request.headers.get("content-type"),
+        "body_length": len(body),
+        "body_text": body.decode("utf-8", errors="replace")[:2000],
+    }
+
+
 async def _parse_ingest_params(request: Request) -> dict[str, str]:
     """Extract ingest params from any request format: query, JSON, form, or raw body.
 
@@ -141,6 +156,22 @@ async def _parse_ingest_params(request: Request) -> dict[str, str]:
     in unexpected formats depending on version and Content-Type negotiation.
     """
     params: dict[str, str] = {}
+
+    # Dump full request for debugging
+    body = await request.body()
+    content_type = (request.headers.get("content-type") or "").lower()
+    body_text = body.decode("utf-8", errors="replace") if body else ""
+    logger.warning(
+        "INGEST DEBUG | method=%s url=%s content_type=%s "
+        "body_len=%d body=%r query=%s headers=%s",
+        request.method,
+        str(request.url),
+        content_type,
+        len(body) if body else 0,
+        body_text[:500],
+        dict(request.query_params),
+        {k: v for k, v in request.headers.items() if k.lower() not in ("authorization",)},
+    )
 
     # 1. Query parameters (always available, highest priority for overrides)
     for key in ("type", "content", "title", "tags", "source"):
@@ -153,14 +184,11 @@ async def _parse_ingest_params(request: Request) -> dict[str, str]:
         logger.info("Parsed params from query string")
         return params
 
-    # 2. Try reading the raw body
-    body = await request.body()
+    # 2. Try reading the body (already read above)
     if not body:
         logger.warning("Empty request body, using query params only")
         return params
 
-    content_type = (request.headers.get("content-type") or "").lower()
-    body_text = body.decode("utf-8", errors="replace")
     logger.info("Body received (%d bytes), Content-Type: %s", len(body), content_type)
 
     # 3. Try JSON
@@ -212,10 +240,20 @@ def _do_ingest(
     source: str,
 ) -> Path:
     """Core ingest logic — validate, write raw file, return path."""
-    if ingest_type not in ("url", "text", "note"):
-        raise HTTPException(status_code=400, detail="type must be: url, text, or note")
     if not content:
         raise HTTPException(status_code=400, detail="content is required")
+
+    # Auto-detect type from content if not provided
+    if not ingest_type:
+        content_stripped = content.strip()
+        if content_stripped.startswith("http://") or content_stripped.startswith("https://"):
+            ingest_type = "url"
+        else:
+            ingest_type = "text"
+        logger.info("Auto-detected type=%s from content", ingest_type)
+
+    if ingest_type not in ("url", "text", "note"):
+        raise HTTPException(status_code=400, detail="type must be: url, text, or note")
 
     resolved_title = title or content[:80]
     path = generate_raw_path(resolved_title)

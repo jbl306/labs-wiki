@@ -30,7 +30,7 @@ log = logging.getLogger("auto-ingest")
 # ---------------------------------------------------------------------------
 
 GITHUB_MODELS_URL = os.environ.get(
-    "GITHUB_MODELS_URL", "https://models.inference.ai.azure.com"
+    "GITHUB_MODELS_URL", "https://models.github.ai/inference"
 )
 DEFAULT_MODEL = "gpt-4o"
 MAX_RETRIES = 3

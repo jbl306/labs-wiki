@@ -123,6 +123,125 @@ def compute_sha256(text: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# GitHub repo tree crawling
+# ---------------------------------------------------------------------------
+
+# File extensions worth fetching from repos (lowercase)
+_CRAWL_EXTENSIONS = {
+    ".md", ".txt", ".rst",                         # docs
+    ".py", ".js", ".ts", ".go", ".rs", ".sh",      # code
+    ".yml", ".yaml", ".toml", ".json", ".ini",      # config
+    ".cfg", ".env.example", ".conf",                # config
+}
+# Exact filenames to always include (case-insensitive match)
+_CRAWL_EXACT = {
+    "dockerfile", "makefile", "justfile", "procfile",
+    "caddyfile", "gemfile", "rakefile",
+    ".env.example", ".gitignore", "license",
+}
+# Directories to prioritise (contents fetched first)
+_PRIORITY_DIRS = ("docs", "doc", "documentation", "guides", "wiki")
+# Max individual file size (chars) to include
+_MAX_FILE_CHARS = 8_000
+
+
+def _should_crawl(path: str) -> bool:
+    """Return True if a tree entry is worth fetching."""
+    name = path.rsplit("/", 1)[-1].lower()
+    if name in _CRAWL_EXACT:
+        return True
+    _, ext = os.path.splitext(name)
+    return ext.lower() in _CRAWL_EXTENSIONS
+
+
+def _priority_sort_key(path: str) -> tuple[int, str]:
+    """Sort key: priority dirs first, then docs, then alphabetical."""
+    lower = path.lower()
+    parts = lower.split("/")
+    # Top-level priority dirs first
+    if any(p in _PRIORITY_DIRS for p in parts):
+        return (0, lower)
+    # Root-level files next
+    if "/" not in path:
+        return (1, lower)
+    return (2, lower)
+
+
+def _crawl_github_tree(
+    owner: str,
+    repo: str,
+    headers: dict[str, str],
+    budget: int = 30_000,
+) -> list[str]:
+    """Recursively crawl a GitHub repo and return file contents as sections.
+
+    Uses the Git Trees API (single request) then fetches individual files
+    via the raw content endpoint.  Stays within *budget* total characters.
+    """
+    # 1. Get recursive tree (single API call)
+    tree_url = f"https://api.github.com/repos/{owner}/{repo}/git/trees/HEAD?recursive=1"
+    try:
+        resp = httpx.get(
+            tree_url, headers=headers,
+            follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
+        )
+        resp.raise_for_status()
+    except Exception as e:
+        log.warning("GitHub tree API failed for %s/%s: %s", owner, repo, e)
+        return []
+
+    tree = resp.json().get("tree", [])
+
+    # 2. Filter to crawlable blobs (skip README — already fetched)
+    candidates = [
+        entry["path"]
+        for entry in tree
+        if entry.get("type") == "blob"
+        and _should_crawl(entry["path"])
+        and entry["path"].lower() not in ("readme.md", "readme.txt", "readme.rst", "readme")
+    ]
+    candidates.sort(key=_priority_sort_key)
+
+    log.info(
+        "GitHub tree crawl: %d total entries, %d crawlable files",
+        len(tree), len(candidates),
+    )
+
+    # 3. Fetch file contents within budget
+    parts: list[str] = []
+    used = 0
+    raw_headers = {**headers, "Accept": "application/vnd.github.raw+json"}
+
+    for fpath in candidates:
+        if used >= budget:
+            remaining = len(candidates) - len(parts)
+            parts.append(f"\n(… {remaining} more files omitted due to size limit)")
+            break
+
+        raw_url = (
+            f"https://api.github.com/repos/{owner}/{repo}/contents/{fpath}"
+        )
+        try:
+            file_resp = httpx.get(
+                raw_url, headers=raw_headers,
+                follow_redirects=True, timeout=15,
+            )
+            file_resp.raise_for_status()
+        except Exception as e:
+            log.debug("Skipping %s: %s", fpath, e)
+            continue
+
+        text = file_resp.text[:_MAX_FILE_CHARS]
+        section = f"\n## File: {fpath}\n\n```\n{text}\n```\n"
+        parts.append(section)
+        used += len(section)
+        log.debug("Crawled %s (%d chars, budget %d/%d)", fpath, len(text), used, budget)
+
+    log.info("GitHub crawl fetched %d files (%d chars)", len(parts), used)
+    return parts
+
+
+# ---------------------------------------------------------------------------
 # URL content fetching
 # ---------------------------------------------------------------------------
 
@@ -252,9 +371,17 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
             )
             readme_resp.raise_for_status()
             parts.append("## README\n")
-            parts.append(readme_resp.text[:40_000])
+            parts.append(readme_resp.text[:20_000])
         except Exception as e:
             log.warning("GitHub README fetch failed for %s/%s: %s", owner, repo, e)
+
+        # Crawl repo tree for additional files
+        try:
+            parts.extend(
+                _crawl_github_tree(owner, repo, gh_headers, budget=30_000)
+            )
+        except Exception as e:
+            log.warning("GitHub tree crawl failed for %s/%s: %s", owner, repo, e)
 
         return ("\n".join(parts)[:50_000], [])
 

@@ -150,84 +150,72 @@ Shared content from Android's share sheet is received via **global variables** w
 
 #### Step 2: Create a New Shortcut
 
-1. Go back to the main screen → tap **+** → **Regular Shortcut**
+1. Go back to the main screen → tap **+** → **Scripting Shortcut**
+   > **Important:** Choose **Scripting**, not Regular. We send the HTTP request entirely from JavaScript using `sendHttpRequest()`. This avoids body-parsing bugs where `{variable}` placeholders inside a JSON body field are treated as literal text.
 2. Name it **"Add to Wiki"**
 3. Set icon to 📥 (or any icon you like)
 
-#### Step 3: Configure the Request
+#### Step 3: Write the Script
 
-| Field | Value |
-|-------|-------|
-| **Method** | `POST` |
-| **URL** | `https://YOUR_API_URL/api/ingest` |
+In the script editor, paste the following:
 
-#### Step 4: Add Headers
+```javascript
+// Read shared content from global variables
+const shared = getVariable("shared_text");
+const title  = getVariable("shared_title");
 
-Tap **Request Headers** → add two entries:
+// Detect if shared content is a URL or plain text
+const urlMatch = shared.match(/https?:\/\/[^\s]+/);
+const type    = urlMatch ? "url" : "text";
+const content = urlMatch ? urlMatch[0] : shared;
 
-| Header | Value |
-|--------|-------|
-| `Content-Type` | `application/json` |
-| `Authorization` | `Bearer YOUR_TOKEN` |
+// Build JSON body — JSON.stringify handles special chars safely
+const body = JSON.stringify({
+  type:    type,
+  content: content,
+  title:   title || content.substring(0, 80),
+  source:  "android-share"
+});
 
-#### Step 5: Build the Request Body via Scripting
+// Send the request
+const result = sendHttpRequest(
+  "https://YOUR_API_URL/api/ingest",
+  {
+    method:  "POST",
+    body:    body,
+    headers: {
+      "Content-Type":  "application/json",
+      "Authorization": "Bearer YOUR_TOKEN"
+    }
+  }
+);
 
-Shared content often contains characters (quotes, `&`, query params) that break JSON when inserted as raw placeholders. Build the body in a **scripting block** instead, where `JSON.stringify` handles escaping.
+// Show result
+if (result.status === "success") {
+  showDialog(result.response.body, "✅ Captured");
+} else if (result.status === "httpError") {
+  showDialog(
+    "Status " + result.response.statusCode + "\n" + result.response.body,
+    "❌ API Error"
+  );
+} else {
+  showDialog(result.networkError, "❌ Network Error");
+}
+```
 
-1. Create one more global variable for the body:
+Replace `YOUR_API_URL` and `YOUR_TOKEN` with your actual values.
 
-   | Field | Value |
-   |-------|-------|
-   | **Name** | `request_body` |
-   | **Type** | Static Variable |
-   | **Value** | `{}` |
-
-2. In the shortcut editor → **Scripting** → **Run before execution** → add:
-
-   ```javascript
-   const shared = getVariable("shared_text");
-   const title = getVariable("shared_title");
-
-   // Detect if shared content is a URL or plain text
-   const urlMatch = shared.match(/https?:\/\/[^\s]+/);
-   const type = urlMatch ? "url" : "text";
-   const content = urlMatch ? urlMatch[0] : shared;
-
-   const body = JSON.stringify({
-     type: type,
-     content: content,
-     title: title || content.substring(0, 80),
-     source: "android-share"
-   });
-
-   setVariable("request_body", body);
-   ```
-
-3. Set **Request Body** → **Custom Text** → content type `application/json`
-4. For the body text, insert just the variable placeholder:
-
-   ```
-   {request_body}
-   ```
-
-   Use the **{ }** button to insert `request_body`, or type it manually. The entire JSON is built by the script — the body field just passes it through.
-
-#### Step 6: Enable Share Sheet Integration
+#### Step 4: Enable Share Sheet Integration
 
 1. Go to the shortcut's **Trigger & Execution Settings**
 2. Enable **Accept shared text from other apps**
 3. Optionally enable **Direct Share** (Android 11+) for the shortcut to appear in the Direct Share row
 
-#### Step 7: Configure Response Display
-
-1. In shortcut settings → **Response Handling**
-2. Set to **Show as dialog** (for testing) or **Show as toast** (for production use)
-
-#### Step 8: Test It
+#### Step 5: Test It
 
 1. Open Chrome, find an article
 2. Tap **Share** → select **"Add to Wiki"**
-3. You should see a success response with the `raw/` file path
+3. You should see a dialog with the API response (the `raw/` file path on success)
 
 #### Optional: Home Screen Widget
 
@@ -243,11 +231,11 @@ HTTP Shortcuts supports home screen widgets for one-tap access:
 |---------|----------|
 | "No suitable shortcuts found" | Global variables must have **Allow Receiving Value from Share Dialog** enabled |
 | Share sheet doesn't show "Add to Wiki" | Enable **Accept shared text from other apps** in Trigger & Execution Settings |
-| 400 Bad Request / invalid type | Shared content has special chars breaking JSON — use the scripting approach in Step 5 |
-| `{shared_text}` sent as literal text | Use the **{ }** button to insert placeholders — don't type braces manually |
-| 401 error | Double-check the `Authorization` header value |
+| 400 Bad Request / invalid type | Check the script — `type` must be `"url"`, `"text"`, or `"note"` |
+| `{variable}` sent as literal JSON | Use a **Scripting Shortcut** with `sendHttpRequest()` — don't put variables in a body field |
+| 401 error | Double-check the `Authorization` header and token in the script |
 | Empty content captured | Set **Use shared value as → Text** in the variable's Advanced Settings |
-| Want to debug the request | **Response Handling** → **Show as dialog** to see the full API response |
+| Network error in dialog | Check URL is reachable; try opening it in Chrome first |
 
 ---
 

@@ -149,15 +149,69 @@ Run the complete ingest → lint → fix cycle.
 
 ---
 
+## 6. Auto-Ingest (Automated Processing)
+
+New sources added via the API (Android share, bookmarklet, iOS) are automatically
+processed by the `wiki-auto-ingest` Docker service.
+
+### How It Works
+
+1. **Android share / API** creates `raw/YYYY-MM-DD-slug.md` with `status: pending`
+2. **File watcher** (watchdog) detects the new file within 5 seconds
+3. **LLM pipeline** (GPT-4o via GitHub Models API):
+   - Fetches URL content for `type: url` sources
+   - Extracts concepts, entities, and facts
+   - Generates wiki pages from templates
+4. **Post-processing**: updates cross-references, log, and index
+5. **Notification**: sends ntfy alert on completion
+
+### Manual Trigger
+
+```bash
+# Process a specific file
+python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root .
+
+# Process all pending files
+python3 scripts/auto_ingest.py --project-root .
+```
+
+### Docker Service
+
+The `wiki-auto-ingest` container runs alongside `wiki-ingest-api` in
+`compose.wiki.yml`. It watches the shared `raw/` volume and processes new
+sources automatically.
+
+```bash
+# View logs
+docker logs -f wiki-auto-ingest
+
+# Restart
+docker compose -f compose.wiki.yml restart wiki-auto-ingest
+```
+
+### Environment Variables
+
+| Variable | Default | Purpose |
+|----------|---------|---------|
+| `GITHUB_MODELS_TOKEN` | — | GitHub PAT with Models API access (required) |
+| `GITHUB_MODELS_MODEL` | `gpt-4o` | LLM model for extraction |
+| `DEBOUNCE_SECONDS` | `5` | Wait time after file creation before processing |
+| `NTFY_SERVER` | — | ntfy notification server URL |
+| `NTFY_TOPIC` | — | ntfy topic for alerts |
+
+---
+
 ## Workflow Quick Reference
 
 | I want to... | Command |
 |--------------|---------|
-| Add and process a new source | Copy to `raw/` → `/wiki-ingest` |
+| Add and process a new source | Copy to `raw/` → auto-processed, or `/wiki-ingest` |
+| Share from Android | Share → HTTP Shortcuts → auto-processed |
 | Find information | `/wiki-query <question>` |
 | Check wiki health | `/wiki-lint` |
 | Fix quality issues | `/wiki-lint --fix` |
 | Update a page with new info | `/wiki-update <path>` |
-| Process all pending sources | `/wiki-orchestrate` |
+| Process all pending sources | `/wiki-orchestrate` or `python3 scripts/auto_ingest.py` |
 | Run offline lint | `python3 scripts/lint_wiki.py` |
 | Rebuild index | `python3 scripts/compile_index.py` |
+| Check auto-ingest logs | `docker logs -f wiki-auto-ingest` |

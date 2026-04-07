@@ -170,22 +170,47 @@ Tap **Request Headers** → add two entries:
 | `Content-Type` | `application/json` |
 | `Authorization` | `Bearer YOUR_TOKEN` |
 
-#### Step 5: Set the Request Body
+#### Step 5: Build the Request Body via Scripting
 
-1. Tap **Request Body** → select **Custom Text**
-2. Set content type to `application/json`
-3. Paste this JSON body (use the **{ }** button next to the text field to insert variable placeholders, or type them manually):
+Shared content often contains characters (quotes, `&`, query params) that break JSON when inserted as raw placeholders. Build the body in a **scripting block** instead, where `JSON.stringify` handles escaping.
 
-```json
-{
-  "type": "url",
-  "content": "{shared_text}",
-  "title": "{shared_title}",
-  "source": "android-share"
-}
-```
+1. Create one more global variable for the body:
 
-> **Placeholder syntax:** Global variables use single braces `{variable_name}` (shown in purple). Local variables use double braces `{{variable_name}}` (shown in orange). Since `shared_text` and `shared_title` are global variables, use single braces.
+   | Field | Value |
+   |-------|-------|
+   | **Name** | `request_body` |
+   | **Type** | Static Variable |
+   | **Value** | `{}` |
+
+2. In the shortcut editor → **Scripting** → **Run before execution** → add:
+
+   ```javascript
+   const shared = getVariable("shared_text");
+   const title = getVariable("shared_title");
+
+   // Detect if shared content is a URL or plain text
+   const urlMatch = shared.match(/https?:\/\/[^\s]+/);
+   const type = urlMatch ? "url" : "text";
+   const content = urlMatch ? urlMatch[0] : shared;
+
+   const body = JSON.stringify({
+     type: type,
+     content: content,
+     title: title || content.substring(0, 80),
+     source: "android-share"
+   });
+
+   setVariable("request_body", body);
+   ```
+
+3. Set **Request Body** → **Custom Text** → content type `application/json`
+4. For the body text, insert just the variable placeholder:
+
+   ```
+   {request_body}
+   ```
+
+   Use the **{ }** button to insert `request_body`, or type it manually. The entire JSON is built by the script — the body field just passes it through.
 
 #### Step 6: Enable Share Sheet Integration
 
@@ -204,43 +229,6 @@ Tap **Request Headers** → add two entries:
 2. Tap **Share** → select **"Add to Wiki"**
 3. You should see a success response with the `raw/` file path
 
-#### Optional: Auto-Detect URL vs Text
-
-To automatically set `type` based on whether the shared content is a URL or plain text:
-
-1. Create two more global variables (no share dialog options needed):
-
-   | Variable Name | Type | Default |
-   |---------------|------|---------|
-   | `detected_type` | Static | `url` |
-   | `detected_content` | Static | _(empty)_ |
-
-2. In the shortcut editor → **Scripting** → **Run before execution** → add:
-
-   ```javascript
-   const shared = getVariable("shared_text");
-   const urlMatch = shared.match(/https?:\/\/[^\s]+/);
-
-   if (urlMatch) {
-     setVariable("detected_type", "url");
-     setVariable("detected_content", urlMatch[0]);
-   } else {
-     setVariable("detected_type", "text");
-     setVariable("detected_content", shared);
-   }
-   ```
-
-3. Update the request body to use the detected variables:
-
-   ```json
-   {
-     "type": "{detected_type}",
-     "content": "{detected_content}",
-     "title": "{shared_title}",
-     "source": "android-share"
-   }
-   ```
-
 #### Optional: Home Screen Widget
 
 HTTP Shortcuts supports home screen widgets for one-tap access:
@@ -255,6 +243,7 @@ HTTP Shortcuts supports home screen widgets for one-tap access:
 |---------|----------|
 | "No suitable shortcuts found" | Global variables must have **Allow Receiving Value from Share Dialog** enabled |
 | Share sheet doesn't show "Add to Wiki" | Enable **Accept shared text from other apps** in Trigger & Execution Settings |
+| 400 Bad Request / invalid type | Shared content has special chars breaking JSON — use the scripting approach in Step 5 |
 | `{shared_text}` sent as literal text | Use the **{ }** button to insert placeholders — don't type braces manually |
 | 401 error | Double-check the `Authorization` header value |
 | Empty content captured | Set **Use shared value as → Text** in the variable's Advanced Settings |

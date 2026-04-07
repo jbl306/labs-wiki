@@ -48,7 +48,7 @@ echo ""
 # 3. Validate structure
 echo "Checking directory structure..."
 DIRS_OK=true
-for dir in raw raw/assets wiki/sources wiki/concepts wiki/entities wiki/synthesis agents templates scripts docs; do
+for dir in raw raw/assets wiki/sources wiki/concepts wiki/entities wiki/synthesis agents templates scripts docs .github/instructions .github/agents .github/prompts; do
     if [ -d "$ROOT_DIR/$dir" ]; then
         echo "  ✅ $dir/"
     else
@@ -74,6 +74,18 @@ echo ""
 # 5. Check skills
 SKILL_COUNT=$(find "$ROOT_DIR/.github/skills" -name 'SKILL.md' 2>/dev/null | wc -l)
 echo "✅ Found $SKILL_COUNT skills in .github/skills/"
+
+# 6. Check custom agents
+AGENT_COUNT=$(find "$ROOT_DIR/.github/agents" -name '*.agent.md' 2>/dev/null | wc -l)
+echo "✅ Found $AGENT_COUNT custom agents in .github/agents/"
+
+# 7. Check instructions
+INSTRUCTION_COUNT=$(find "$ROOT_DIR/.github/instructions" -name '*.instructions.md' 2>/dev/null | wc -l)
+echo "✅ Found $INSTRUCTION_COUNT scoped instructions in .github/instructions/"
+
+# 8. Check prompt files
+PROMPT_COUNT=$(find "$ROOT_DIR/.github/prompts" -name '*.prompt.md' 2>/dev/null | wc -l)
+echo "✅ Found $PROMPT_COUNT prompt files in .github/prompts/"
 
 echo ""
 echo "=== Setup complete ==="

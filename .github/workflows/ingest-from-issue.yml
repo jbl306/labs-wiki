@@ -1,0 +1,68 @@
+name: Ingest from Issue
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  ingest:
+    if: contains(github.event.label.name, 'ingest')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create raw source file
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          DATE=$(date -u +%Y-%m-%d)
+          SLUG=$(echo "$ISSUE_TITLE" | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | sed 's/--*/-/g' | head -c 60)
+          FILENAME="raw/${DATE}-${SLUG}.md"
+          TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          cat > "$FILENAME" << ENDOFRAW
+          ---
+          title: "${ISSUE_TITLE}"
+          type: note
+          captured: ${TIMESTAMP}
+          source: github-issue
+          tags: []
+          status: pending
+          ---
+
+          ${ISSUE_BODY}
+          ENDOFRAW
+
+          # Remove leading whitespace from heredoc
+          sed -i 's/^          //' "$FILENAME"
+
+          echo "FILENAME=$FILENAME" >> "$GITHUB_ENV"
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "raw/"
+          git commit -m "Ingest from issue #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
+          git push
+
+      - name: Close issue with confirmation
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: `✅ Source captured to \`${process.env.FILENAME}\`\n\nRun \`/wiki-ingest\` to process it into wiki pages.`
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              state: 'closed'
+            });

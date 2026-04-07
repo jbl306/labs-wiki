@@ -69,17 +69,25 @@ The universal schema that all AI tools read. Defines conventions, workflows, fro
 
 ## Two-Phase Ingest Pipeline
 
-Sources are automatically processed by the `wiki-auto-ingest` service using GPT-4o via GitHub Models API. The pipeline can also be triggered manually via `/wiki-ingest` or `python3 scripts/auto_ingest.py`.
+Sources are automatically processed by the `wiki-auto-ingest` service using GPT-4.1 via GitHub Models API. The pipeline can also be triggered manually via `/wiki-ingest` or `python3 scripts/auto_ingest.py`.
 
 ```mermaid
 flowchart LR
     subgraph "Phase 1: EXTRACT"
         RAW[raw/ source] --> FETCH{URL?}
-        FETCH -->|yes| GET[Fetch content]
+        FETCH -->|yes| ROUTE{URL type}
         FETCH -->|no| HASH
-        GET --> HASH{Hash check}
-        HASH -->|unchanged| SKIP[Skip]
-        HASH -->|new/changed| EXTRACT[GPT-4o extracts concepts, entities, facts]
+        ROUTE -->|twitter/x| TW[fxtwitter API: text + images]
+        ROUTE -->|github repo| GH[REST API: README + metadata + tree]
+        ROUTE -->|other| HTML[HTML fetch + image download]
+        TW --> HASH
+        GH --> HASH
+        HTML --> HASH
+        HASH{Hash check} -->|unchanged| SKIP[Skip]
+        HASH -->|new/changed| VISION{Images?}
+        VISION -->|yes| IMG[GPT-4.1 vision analysis]
+        VISION -->|no| EXTRACT[GPT-4.1 extracts concepts, entities, facts]
+        IMG --> EXTRACT
     end
 
     subgraph "Phase 2: COMPILE"
@@ -93,7 +101,7 @@ flowchart LR
     style IDX fill:#f3e5f5
 ```
 
-**Phase 1** extracts structured data — concepts, entities, and facts — from the source content (fetching URL content when needed). **Phase 2** generates wiki pages from templates, updates cross-references, and rebuilds the index. Hash-based skip ensures sources aren't reprocessed unnecessarily.
+**Phase 1** routes URLs through specialized handlers — Twitter/X URLs use the fxtwitter API (extracts tweet text, author, timestamps, and media), GitHub repo URLs use the REST API (README, metadata, file tree), and all other URLs use standard HTML fetch. Images from any source are analyzed via GPT-4.1 vision (charts, diagrams, screenshots). Shortened t.co URLs are auto-followed. **Phase 2** generates wiki pages from templates, updates cross-references, and rebuilds the index. Hash-based skip ensures sources aren't reprocessed unnecessarily.
 
 ---
 
@@ -109,7 +117,7 @@ flowchart TB
 
     API[FastAPI Ingest API] --> RAW[raw/ inbox]
     RAW --> AUTO[wiki-auto-ingest service]
-    AUTO --> LLM[GPT-4o via GitHub Models]
+    AUTO --> LLM[GPT-4.1 via GitHub Models]
     LLM --> WIKI[wiki/ compiled pages]
 
     style API fill:#e8f5e9
@@ -118,7 +126,7 @@ flowchart TB
     style WIKI fill:#f3e5f5
 ```
 
-All capture channels feed into a single FastAPI endpoint. The API writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service (watchdog file watcher) detects new files within 5 seconds and automatically processes them via GPT-4o, creating wiki pages with cross-references.
+All capture channels feed into a single FastAPI endpoint. The API writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service (watchdog file watcher) detects new files within 5 seconds and automatically processes them via GPT-4.1, creating wiki pages with cross-references. Twitter/X and GitHub repo URLs are routed to specialized handlers; images are analyzed via GPT-4.1 vision.
 
 Manual processing is also available via `/wiki-ingest` skill or `python3 scripts/auto_ingest.py`.
 

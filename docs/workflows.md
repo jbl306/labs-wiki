@@ -165,8 +165,13 @@ processed by the `wiki-auto-ingest` Docker service.
 
 1. **Android share / API** creates `raw/YYYY-MM-DD-slug.md` with `status: pending`
 2. **File watcher** (watchdog) detects the new file within 5 seconds
-3. **LLM pipeline** (GPT-4o via GitHub Models API):
-   - Fetches URL content for `type: url` sources
+3. **LLM pipeline** (GPT-4.1 via GitHub Models API):
+   - Fetches URL content for `type: url` sources with specialized handlers:
+     - **Twitter/X:** extracts tweet text, author, timestamps, and images via fxtwitter API (supports twitter.com, x.com, t.co, vxtwitter, fxtwitter URLs)
+     - **GitHub repos:** fetches README, metadata (description, stars, language, topics), and file tree via REST API
+     - **HTML pages:** standard fetch with content extraction
+   - **Vision support:** downloads images from tweets and pages, analyzes charts/diagrams/screenshots via GPT-4.1 multimodal
+   - Auto-follows t.co shortened URLs
    - Extracts concepts, entities, and facts
    - Generates wiki pages from templates
 4. **Post-processing**: updates cross-references, log, and index
@@ -201,7 +206,7 @@ docker compose -f compose.wiki.yml restart wiki-auto-ingest
 | Variable | Default | Purpose |
 |----------|---------|---------|
 | `GITHUB_MODELS_TOKEN` | — | GitHub PAT with Models API access (required) |
-| `GITHUB_MODELS_MODEL` | `gpt-4o` | LLM model for extraction |
+| `GITHUB_MODELS_MODEL` | `gpt-4.1` | LLM model for extraction (supports vision) |
 | `DEBOUNCE_SECONDS` | `5` | Wait time after file creation before processing |
 | `NTFY_SERVER` | — | ntfy notification server URL |
 | `NTFY_TOPIC` | — | ntfy topic for alerts |

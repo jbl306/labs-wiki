@@ -2,7 +2,19 @@
 
 > How to add sources to labs-wiki from any device.
 
-All channels feed into the **Wiki Ingest API** (`wiki-ingest-api/`), which writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service then automatically processes them into wiki pages via GPT-4o within seconds.
+All channels feed into the **Wiki Ingest API** (`wiki-ingest-api/`), which writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service then automatically processes them into wiki pages via GPT-4.1 within seconds.
+
+### Specially Handled URL Types
+
+The auto-ingest pipeline routes certain URLs through specialized handlers for richer extraction:
+
+| URL Type | Handler | What's Extracted |
+|----------|---------|-----------------|
+| **Twitter/X** (`twitter.com`, `x.com`, `t.co`, `vxtwitter`, `fxtwitter`) | fxtwitter API | Tweet text, author, timestamp, media URLs + image analysis via GPT-4.1 vision |
+| **GitHub repos** (`github.com/<owner>/<repo>`) | GitHub REST API | Description, stars, language, topics, README content, file tree |
+| **Other URLs** | HTML fetch | Page content + any embedded images analyzed via GPT-4.1 vision |
+
+Shortened `t.co` URLs are automatically followed to their destination before handler routing.
 
 ---
 

@@ -15,7 +15,7 @@ graph LR
     subgraph "Auto-Ingest"
         API --> RAW[raw/]
         RAW --> W[File Watcher]
-        W --> LLM[GPT-4o Extraction]
+        W --> LLM[GPT-4.1 Extraction]
     end
 
     subgraph "Wiki"
@@ -31,7 +31,7 @@ graph LR
     style API fill:#e8f5e9
 ```
 
-**Sources** are captured from any device via the Ingest API → written to `raw/` → **automatically processed** by the auto-ingest service (GPT-4o via GitHub Models API) → wiki pages created with cross-references. **AGENTS.md** defines the schema that all AI tools follow.
+**Sources** are captured from any device via the Ingest API → written to `raw/` → **automatically processed** by the auto-ingest service (GPT-4.1 via GitHub Models API) → wiki pages created with cross-references. Twitter/X and GitHub repo URLs get specialized extraction; images are analyzed via GPT-4.1 vision. **AGENTS.md** defines the schema that all AI tools follow.
 
 ## Architecture
 
@@ -97,8 +97,10 @@ Add sources from anywhere — they're automatically processed into wiki pages:
 | ⌨️ Terminal | `wa url https://...` or `waf paper.pdf` | ⚡ Auto |
 | 🔗 GitHub | Create issue with `ingest` label | ⚡ Auto |
 | 📝 Manual | Create `.md` file in `raw/` | ⚡ Auto |
+| 🐦 Twitter/X | Share tweet URL → fxtwitter API extracts text + images | ⚡ Auto |
+| 🐙 GitHub Repo | Share repo URL → REST API fetches README + metadata | ⚡ Auto |
 
-The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GPT-4o (GitHub Models API) within seconds.
+The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GPT-4.1 (GitHub Models API) within seconds. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed via GPT-4.1 vision.
 
 See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 
@@ -118,7 +120,7 @@ See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 | Service | Purpose |
 |---------|---------|
 | `wiki-ingest-api` | FastAPI — receives sources from all capture channels |
-| `wiki-auto-ingest` | File watcher — auto-processes pending sources via GPT-4o |
+| `wiki-auto-ingest` | File watcher — auto-processes pending sources via GPT-4.1 |
 
 ## Toolchain
 

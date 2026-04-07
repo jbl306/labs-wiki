@@ -3,12 +3,13 @@
 Auto-ingest: Process raw wiki sources through an LLM pipeline.
 
 Reads a raw markdown source from raw/, extracts concepts/entities via
-GitHub Models API (GPT-4o), generates wiki pages, and updates the index.
+GitHub Models API (GPT-4.1), generates wiki pages, and updates the index.
 """
 
 from __future__ import annotations
 
 import argparse
+import base64
 import hashlib
 import json
 import logging
@@ -32,9 +33,11 @@ log = logging.getLogger("auto-ingest")
 GITHUB_MODELS_URL = os.environ.get(
     "GITHUB_MODELS_URL", "https://models.github.ai/inference"
 )
-DEFAULT_MODEL = "gpt-4o"
+DEFAULT_MODEL = "gpt-4.1"
 MAX_RETRIES = 3
 URL_FETCH_TIMEOUT = 30
+MAX_IMAGES = 5  # Max images to process per source for vision
+MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB max per image download
 
 # ---------------------------------------------------------------------------
 # Frontmatter helpers
@@ -124,9 +127,133 @@ def compute_sha256(text: str) -> str:
 # ---------------------------------------------------------------------------
 
 
-def fetch_url_content(url: str) -> str:
-    """Fetch text content from a URL. Handles GitHub gists specially."""
-    # GitHub gist → fetch raw content
+def fetch_url_content(url: str) -> tuple[str, list[str]]:
+    """Fetch text content from a URL. Returns (text, image_urls).
+
+    Handles Twitter/X, GitHub repos, GitHub gists, and generic HTML.
+    image_urls contains any images found for vision processing.
+    """
+    # --- t.co redirect handler ---
+    if re.match(r"https?://t\.co/", url):
+        log.info("Resolving t.co redirect: %s", url)
+        try:
+            resp = httpx.head(url, follow_redirects=True, timeout=URL_FETCH_TIMEOUT)
+            resolved = str(resp.url)
+            log.info("t.co resolved to: %s", resolved)
+            return fetch_url_content(resolved)
+        except Exception as e:
+            log.warning("Failed to resolve t.co URL %s: %s", url, e)
+            return ("", [])
+
+    # --- Twitter/X handler ---
+    twitter_pattern = re.match(
+        r"https?://(?:(?:www\.)?(?:twitter\.com|x\.com)|[fv]xtwitter\.com)/([^/]+)/status/(\d+)",
+        url,
+    )
+    if twitter_pattern:
+        _user, tweet_id = twitter_pattern.groups()
+        log.info("Fetching tweet via fxtwitter API: %s", tweet_id)
+        try:
+            api_url = f"https://api.fxtwitter.com/i/status/{tweet_id}"
+            resp = httpx.get(api_url, follow_redirects=True, timeout=URL_FETCH_TIMEOUT)
+            resp.raise_for_status()
+            data = resp.json()
+            tweet = data.get("tweet", {})
+
+            author = tweet.get("author", {})
+            author_name = author.get("name", "Unknown")
+            screen_name = author.get("screen_name", "")
+            created_at = tweet.get("created_at", "")
+            text = tweet.get("text", "")
+
+            parts = [
+                f"Tweet by {author_name} (@{screen_name})",
+                f"Date: {created_at}" if created_at else "",
+                "",
+                text,
+            ]
+
+            # Quoted tweet
+            quote = tweet.get("quote")
+            if quote:
+                q_author = quote.get("author", {})
+                parts.append("")
+                parts.append(
+                    f"> Quoting @{q_author.get('screen_name', '?')}: {quote.get('text', '')}"
+                )
+
+            image_urls: list[str] = []
+            media = tweet.get("media", {})
+            if media:
+                photos = media.get("photos", [])
+                for photo in photos[:MAX_IMAGES]:
+                    photo_url = photo.get("url", "")
+                    if photo_url:
+                        image_urls.append(photo_url)
+
+            content = "\n".join(p for p in parts)
+            return (content[:50_000], image_urls)
+        except Exception as e:
+            log.warning("fxtwitter API failed for %s: %s", tweet_id, e)
+            return ("", [])
+
+    # --- GitHub repo handler ---
+    clean_url = re.sub(r"[?#].*$", "", url)
+    repo_match = re.match(r"https?://github\.com/([^/]+)/([^/]+)/?$", clean_url)
+    if repo_match:
+        owner, repo = repo_match.groups()
+        log.info("Fetching GitHub repo info: %s/%s", owner, repo)
+        gh_token = os.environ.get("GITHUB_MODELS_TOKEN", "") or os.environ.get(
+            "GITHUB_TOKEN", ""
+        )
+        gh_headers: dict[str, str] = {
+            "Accept": "application/vnd.github+json",
+            "User-Agent": "labs-wiki-bot/1.0",
+        }
+        if gh_token:
+            gh_headers["Authorization"] = f"Bearer {gh_token}"
+
+        parts = []
+        try:
+            repo_resp = httpx.get(
+                f"https://api.github.com/repos/{owner}/{repo}",
+                headers=gh_headers,
+                follow_redirects=True,
+                timeout=URL_FETCH_TIMEOUT,
+            )
+            repo_resp.raise_for_status()
+            info = repo_resp.json()
+            parts.append(f"Repository: {info.get('full_name', f'{owner}/{repo}')}")
+            parts.append(f"Description: {info.get('description', 'N/A')}")
+            parts.append(f"Stars: {info.get('stargazers_count', 0)}")
+            parts.append(f"Language: {info.get('language', 'N/A')}")
+            topics = info.get("topics", [])
+            if topics:
+                parts.append(f"Topics: {', '.join(topics)}")
+            parts.append("")
+        except Exception as e:
+            log.warning("GitHub repo API failed for %s/%s: %s", owner, repo, e)
+            parts.append(f"Repository: {owner}/{repo}")
+            parts.append("")
+
+        # Fetch README
+        try:
+            readme_headers = {**gh_headers, "Accept": "application/vnd.github.raw+json"}
+            readme_resp = httpx.get(
+                f"https://api.github.com/repos/{owner}/{repo}/readme",
+                headers=readme_headers,
+                follow_redirects=True,
+                timeout=URL_FETCH_TIMEOUT,
+            )
+            readme_resp.raise_for_status()
+            parts.append("## README\n")
+            parts.append(readme_resp.text[:40_000])
+        except Exception as e:
+            log.warning("GitHub README fetch failed for %s/%s: %s", owner, repo, e)
+
+        return ("\n".join(parts)[:50_000], [])
+
+    # --- GitHub gist handler ---
     gist_match = re.match(
         r"https://gist\.github\.com/([^/]+)/([a-f0-9]+)", url
     )
@@ -136,8 +263,9 @@ def fetch_url_content(url: str) -> str:
         log.info("Fetching GitHub gist raw content: %s", raw_url)
         resp = httpx.get(raw_url, follow_redirects=True, timeout=URL_FETCH_TIMEOUT)
         resp.raise_for_status()
-        return resp.text
+        return (resp.text, [])
 
+    # --- Default HTML handler ---
     log.info("Fetching URL content: %s", url)
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; labs-wiki-bot/1.0)",
@@ -148,14 +276,74 @@ def fetch_url_content(url: str) -> str:
 
     content_type = resp.headers.get("content-type", "")
     if "html" in content_type:
-        # Strip HTML tags for a rough text extraction
-        text = re.sub(r"<script[^>]*>.*?</script>", "", resp.text, flags=re.S)
+        raw_html = resp.text
+
+        # Extract image URLs before stripping tags
+        image_urls = []
+        # og:image meta tag
+        og_match = re.search(
+            r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
+            raw_html,
+            flags=re.I,
+        )
+        if not og_match:
+            og_match = re.search(
+                r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
+                raw_html,
+                flags=re.I,
+            )
+        if og_match:
+            image_urls.append(og_match.group(1))
+
+        # Prominent <img> tags
+        img_matches = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw_html, flags=re.I)
+        for img_src in img_matches:
+            if img_src not in image_urls and not img_src.startswith("data:"):
+                image_urls.append(img_src)
+                if len(image_urls) >= MAX_IMAGES:
+                    break
+
+        image_urls = image_urls[:MAX_IMAGES]
+
+        # Strip HTML tags for text extraction
+        text = re.sub(r"<script[^>]*>.*?</script>", "", raw_html, flags=re.S)
         text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.S)
         text = re.sub(r"<[^>]+>", " ", text)
         text = re.sub(r"\s+", " ", text).strip()
-        return text[:50_000]
+        return (text[:50_000], image_urls)
 
-    return resp.text[:50_000]
+    return (resp.text[:50_000], [])
+
+
+def download_images_as_base64(image_urls: list[str], max_count: int = MAX_IMAGES) -> list[str]:
+    """Download images and return as base64 data URIs for vision API."""
+    results: list[str] = []
+    for img_url in image_urls[:max_count]:
+        try:
+            resp = httpx.get(
+                img_url,
+                follow_redirects=True,
+                timeout=15,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; labs-wiki-bot/1.0)"},
+            )
+            resp.raise_for_status()
+
+            ct = resp.headers.get("content-type", "")
+            if not ct.startswith("image/"):
+                log.warning("Skipping non-image content-type %s for %s", ct, img_url)
+                continue
+
+            if len(resp.content) > MAX_IMAGE_SIZE:
+                log.warning("Skipping oversized image (%d bytes): %s", len(resp.content), img_url)
+                continue
+
+            mime = ct.split(";")[0].strip()
+            b64 = base64.b64encode(resp.content).decode("ascii")
+            results.append(f"data:{mime};base64,{b64}")
+            log.debug("Encoded image (%d bytes): %s", len(resp.content), img_url)
+        except Exception as e:
+            log.warning("Failed to download image %s: %s", img_url, e)
+    return results
 
 
 # ---------------------------------------------------------------------------
@@ -209,6 +397,9 @@ SYSTEM_PROMPT = textwrap.dedent("""\
     6. Slugs are kebab-case (e.g., "rotary-position-embedding")
     7. Keep descriptions concise but informative
     8. If the source is short or is just a link/stub, extract what you can — it's OK to have few or no concepts/entities
+    9. If images are included, describe any charts, diagrams, code screenshots, or text visible in them
+    10. For chart/diagram images, extract the underlying data and relationships shown
+    11. Note in the output when information came from an image rather than text
 
     ## Output Format
     Return ONLY valid JSON matching this schema (no markdown fencing):
@@ -219,7 +410,7 @@ SYSTEM_PROMPT = textwrap.dedent("""\
         "key_points": ["point 1", "point 2", "point 3"],
         "author": "Author name or null",
         "publication_date": "Date or null",
-        "source_type": "article|paper|video|note|gist|guide",
+        "source_type": "article|paper|video|note|gist|guide|tweet|repo",
         "notable_quotes": [{"quote": "...", "attribution": "..."}]
       },
       "concepts": [
@@ -261,6 +452,7 @@ def call_llm(
     existing_pages: dict[str, str],
     token: str,
     model: str,
+    images: list[str] | None = None,
 ) -> dict:
     """Call GitHub Models API to extract knowledge from source content."""
     client = OpenAI(base_url=GITHUB_MODELS_URL, api_key=token)
@@ -281,6 +473,15 @@ Title: {source_title}
 ## Content
 {content[:30_000]}"""
 
+    # Build user message: multimodal if images present, plain text otherwise
+    if images:
+        user_content: list[dict] = [{"type": "text", "text": user_prompt}]
+        for img_uri in images:
+            user_content.append({"type": "image_url", "image_url": {"url": img_uri}})
+        user_message: str | list[dict] = user_content
+    else:
+        user_message = user_prompt
+
     last_error = None
     for attempt in range(1, MAX_RETRIES + 1):
         try:
@@ -289,7 +490,7 @@ Title: {source_title}
                 model=model,
                 messages=[
                     {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": user_prompt},
+                    {"role": "user", "content": user_message},
                 ],
                 temperature=0.3,
                 max_tokens=8000,
@@ -662,13 +863,21 @@ def ingest_raw_source(
 
     # For URL sources, fetch the actual content
     content = body
+    image_urls: list[str] = []
     if source_type == "url" and source_url:
         try:
-            content = fetch_url_content(source_url)
-            log.info("Fetched %d chars from URL", len(content))
+            content, image_urls = fetch_url_content(source_url)
+            log.info("Fetched %d chars from URL, %d images found", len(content), len(image_urls))
         except Exception as e:
             log.error("Failed to fetch URL %s: %s", source_url, e)
-            content = body  # Fall back to body text
+            content = body
+
+    # Download and encode images for vision
+    images_b64: list[str] = []
+    if image_urls:
+        log.info("Downloading %d images for vision analysis...", len(image_urls))
+        images_b64 = download_images_as_base64(image_urls)
+        log.info("Successfully encoded %d images", len(images_b64))
 
     if not content or len(content.strip()) < 10:
         log.warning("Source content too short for meaningful extraction")
@@ -687,7 +896,7 @@ def ingest_raw_source(
 
     # LLM extraction
     log.info("Calling LLM for extraction...")
-    extraction = call_llm(content, title, source_url, existing_pages, token, model)
+    extraction = call_llm(content, title, source_url, existing_pages, token, model, images=images_b64)
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     raw_rel = str(raw_path.relative_to(project_root))

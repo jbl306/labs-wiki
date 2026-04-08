@@ -427,10 +427,15 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
         if og_match:
             image_urls.append(og_match.group(1))
 
-        # Prominent <img> tags
+        # Prominent <img> tags (skip logos, icons, SVGs, tiny images)
+        _SKIP_IMG_PATTERNS = re.compile(
+            r"logo|icon|favicon|badge|avatar|sprite|\.svg", re.I
+        )
         img_matches = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw_html, flags=re.I)
         for img_src in img_matches:
             if img_src not in image_urls and not img_src.startswith("data:"):
+                if _SKIP_IMG_PATTERNS.search(img_src):
+                    continue
                 image_urls.append(img_src)
                 if len(image_urls) >= MAX_IMAGES:
                     break
@@ -461,8 +466,11 @@ def download_images_as_base64(image_urls: list[str], max_count: int = MAX_IMAGES
             resp.raise_for_status()
 
             ct = resp.headers.get("content-type", "")
-            if not ct.startswith("image/"):
-                log.warning("Skipping non-image content-type %s for %s", ct, img_url)
+            mime = ct.split(";")[0].strip()
+            # Vision API only supports raster formats
+            _VISION_MIMES = {"image/png", "image/jpeg", "image/webp", "image/gif"}
+            if mime not in _VISION_MIMES:
+                log.warning("Skipping unsupported image format %s for %s", mime, img_url)
                 continue
 
             if len(resp.content) > MAX_IMAGE_SIZE:

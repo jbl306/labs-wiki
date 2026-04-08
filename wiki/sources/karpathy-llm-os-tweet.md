@@ -1,50 +1,42 @@
 ---
 title: "Karpathy LLM OS Tweet"
 type: source
-created: 2026-04-07
-last_verified: 2026-04-07
+created: 2026-04-08
+last_verified: 2026-04-08
 source_hash: "a4e125acd956ed0ccf70ba66d6510f746deb20fa870597168af46311ee8dd133"
 sources:
   - raw/2026-04-07-test-tweet.md
 quality_score: 0
 concepts:
-  - llm-operating-system
-  - embedding-based-filesystem
-  - context-window
+  - llm-operating-system-architecture
 related:
-  - "[[LLM Operating System]]"
-  - "[[Embedding-Based Filesystem]]"
-  - "[[Context Window]]"
-  - "[[LLM OS]]"
+  - "[[LLM Operating System Architecture]]"
   - "[[OpenAI GPT-4 Turbo]]"
   - "[[Ada002]]"
 tier: hot
-tags: [ai, context-window, operating-system, llm, architecture, embedding]
+tags: [multimodal, architecture, llm, ai, os, embeddings, agent]
 ---
 
 # Karpathy LLM OS Tweet
 
 ## Summary
 
-Andrej Karpathy shares a conceptual diagram and specifications for an 'LLM OS', envisioning a large language model as the central processor of a new kind of operating system. The diagram illustrates how an LLM interacts with traditional software tools, filesystems, browsers, other LLMs, and peripheral devices like audio and video. The tweet outlines hardware-like specs for the LLM, including batch size, processing speed, context window, and embedding-based filesystem.
+Andrej Karpathy sketches a conceptual architecture for an 'LLM OS,' positioning a large language model as the central processor in a computing environment. The tweet outlines hardware-like specs for the LLM and presents a diagram showing the LLM's integration with classical software tools, filesystems, browsers, peripheral devices, and other LLMs. The vision is to treat the LLM as the CPU, orchestrating interactions across traditional and modern computational resources.
 
 ## Key Points
 
-- LLM OS positions a large language model as the CPU of a new computing paradigm.
-- The system integrates classical software tools, filesystems, browsers, and peripheral devices.
-- Specifications include OpenAI GPT-4 Turbo, 128K token RAM, and Ada002-based filesystem.
+- LLM OS envisions an LLM as the central processing unit of a new computing paradigm.
+- Specs include OpenAI GPT-4 Turbo with 256 core batch processing, 128K token RAM, and Ada002-based filesystem.
+- Diagram shows LLM interacting with classical software tools, filesystems, browsers, peripherals, and other LLMs.
 
 ## Concepts Extracted
 
-- **[[LLM Operating System]]** — An LLM Operating System (LLM OS) is a conceptual framework where a large language model acts as the central processing unit, orchestrating interactions between classical software tools, filesystems, browsers, other LLMs, and peripheral devices.
-- **[[Embedding-Based Filesystem]]** — A filesystem that stores not only traditional data but also embeddings, allowing LLMs to efficiently retrieve and reason over stored information.
-- **[[Context Window]]** — The context window refers to the amount of information (tokens) an LLM can process at once, analogous to RAM in traditional computers.
+- **[[LLM Operating System Architecture]]** — LLM Operating System Architecture is a conceptual framework that treats a large language model (LLM) as the central processing unit (CPU) of a computing environment. This architecture integrates the LLM with classical software tools, filesystems, browsers, peripheral devices, and other LLMs, enabling it to orchestrate and mediate all computational interactions.
 
 ## Entities Mentioned
 
-- **[[LLM OS]]** — A conceptual operating system where a large language model is the central processor, managing interactions with software tools, filesystems, browsers, other LLMs, and peripheral devices.
-- **[[OpenAI GPT-4 Turbo]]** — A high-performance variant of OpenAI's GPT-4 model, used as the CPU in the LLM OS concept.
-- **[[Ada002]]** — An OpenAI embedding model referenced as the filesystem in the LLM OS, enabling semantic data storage and retrieval.
+- **[[OpenAI GPT-4 Turbo]]** — OpenAI GPT-4 Turbo is a high-performance variant of the GPT-4 language model, optimized for speed and cost. It supports large batch sizes and extended context windows, making it suitable for demanding applications such as LLM OS.
+- **[[Ada002]]** — Ada002 is an OpenAI embedding model used for generating semantic vector representations of text. In the LLM OS architecture, it powers the filesystem's embedding capabilities, enabling efficient document retrieval and memory augmentation.
 
 ## Notable Quotes
 

@@ -1,8 +1,8 @@
 ---
 title: "OpenAI GPT-4 Turbo"
 type: entity
-created: 2026-04-07
-last_verified: 2026-04-07
+created: 2026-04-08
+last_verified: 2026-04-08
 source_hash: "a4e125acd956ed0ccf70ba66d6510f746deb20fa870597168af46311ee8dd133"
 sources:
   - raw/2026-04-07-test-tweet.md
@@ -10,8 +10,7 @@ quality_score: 0
 concepts:
   - openai-gpt-4-turbo
 related:
-  - "[[LLM Operating System]]"
-  - "[[Context Window]]"
+  - "[[LLM Operating System Architecture]]"
   - "[[Karpathy LLM OS Tweet]]"
 tier: hot
 tags: [llm, openai, gpt-4, model]
@@ -21,7 +20,7 @@ tags: [llm, openai, gpt-4, model]
 
 ## Overview
 
-A high-performance variant of OpenAI's GPT-4 model, used as the CPU in the LLM OS concept.
+OpenAI GPT-4 Turbo is a high-performance variant of the GPT-4 language model, optimized for speed and cost. It supports large batch sizes and extended context windows, making it suitable for demanding applications such as LLM OS.
 
 ## Key Facts
 
@@ -35,12 +34,11 @@ A high-performance variant of OpenAI's GPT-4 model, used as the CPU in the LLM O
 
 ## Relevance
 
-Serves as the central processing unit in LLM OS, enabling advanced reasoning and interaction.
+Serves as the central processor in the LLM OS architecture, enabling fast, large-scale language processing.
 
 ## Associated Concepts
 
-- **[[LLM Operating System]]** — Acts as the CPU in the OS architecture.
-- **[[Context Window]]** — Supports large context windows for complex tasks.
+- **[[LLM Operating System Architecture]]** — Acts as the CPU in the architecture.
 
 ## Related Entities
 

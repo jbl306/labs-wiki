@@ -1,47 +1,48 @@
 ---
 title: "htmx - HTML Over The Wire"
 type: source
-created: 2026-04-07
-last_verified: 2026-04-07
-source_hash: "87579d0831ce86818b98c6f5cb060e8e0954df3f10a2f54e1b2e307d2c152733"
+created: 2026-04-08
+last_verified: 2026-04-08
+source_hash: "241ccd0756ba8b32170ef8926eb8e21ef7a4a5e8450e14851d915d820e753c51"
 sources:
   - raw/2026-04-07-test-github-repo.md
 quality_score: 0
 concepts:
-  - html-over-the-wire
+  - html-over-the-wire-with-htmx
+  - htmx-attribute-api
 related:
-  - "[[HTML Over The Wire]]"
+  - "[[HTML Over The Wire With htmx]]"
+  - "[[htmx Attribute API]]"
   - "[[htmx]]"
-  - "[[Intercooler.js]]"
 tier: hot
-tags: [htmx, rest, html, hateoas, ajax, javascript, web-development]
+tags: [rest, websockets, tool, html, javascript, ajax, sse, declarative]
 ---
 
 # htmx - HTML Over The Wire
 
 ## Summary
 
-htmx is a JavaScript library enabling modern user interfaces directly in HTML by leveraging attributes for AJAX, CSS transitions, WebSockets, and Server-Sent Events. It emphasizes simplicity and hypertext power, removing constraints on HTTP requests and event handling.
+htmx is a lightweight, dependency-free JavaScript library that enables dynamic web application features—such as AJAX, CSS transitions, WebSockets, and Server Sent Events—directly from HTML using custom attributes. It aims to extend the capabilities of HTML by removing arbitrary limitations on what elements and events can trigger HTTP requests, allowing developers to build modern, interactive interfaces with minimal JavaScript. The project is actively maintained, well-documented, and supports an extension ecosystem for further customization.
 
 ## Key Points
 
-- htmx allows direct integration of AJAX, CSS transitions, WebSockets, and Server-Sent Events into HTML using attributes.
-- It is small (~14k min.gz'd), dependency-free, and extendable.
-- htmx is the successor to intercooler.js and aims to complete HTML as hypertext.
+- htmx allows AJAX, CSS transitions, WebSockets, and Server Sent Events to be triggered directly from HTML attributes.
+- It removes traditional constraints of HTML, enabling any element and event to initiate HTTP requests with any method.
+- The library is small (~14k minified and gzipped), dependency-free, and highly extensible.
 
 ## Concepts Extracted
 
-- **[[HTML Over The Wire]]** — HTML Over The Wire refers to the approach of using HTML attributes to enable dynamic web functionality, such as AJAX requests and WebSockets, directly within HTML elements.
+- **[[HTML Over The Wire With htmx]]** — HTML Over The Wire is a web development paradigm enabled by htmx, where dynamic interactions and server communication are managed directly through HTML attributes rather than imperative JavaScript. This approach brings the power of AJAX, CSS transitions, WebSockets, and Server Sent Events into the HTML layer, allowing developers to create modern, interactive user interfaces with minimal JavaScript code.
+- **[[htmx Attribute API]]** — The htmx Attribute API is a set of custom HTML attributes (prefixed with `hx-`) that declaratively define client-server interactions, event triggers, and DOM update strategies. This API is the primary interface for developers to add dynamic behavior to web pages without writing imperative JavaScript.
 
 ## Entities Mentioned
 
-- **[[htmx]]** — htmx is a JavaScript library that enables dynamic web functionality directly in HTML using attributes, supporting AJAX, CSS transitions, WebSockets, and Server-Sent Events.
-- **[[Intercooler.js]]** — Intercooler.js was a JavaScript library that served as the predecessor to htmx, providing similar functionality for dynamic web interfaces using HTML attributes.
+- **[[htmx]]** — htmx is an open-source JavaScript library that enables dynamic, interactive web applications by allowing HTML elements to issue HTTP requests and update the DOM declaratively via custom attributes. It is designed to extend the capabilities of HTML while minimizing the need for custom JavaScript.
 
 ## Notable Quotes
 
-> "Why should only `<a>` and `<form>` be able to make HTTP requests?" — htmx README
-> "*javascript fatigue: longing for a hypertext already in hand*" — htmx README
+> "Why should only <a> and <form> be able to make HTTP requests? Why should only click & submit events trigger them? Why should only GET & POST be available? Why should you only be able to replace the entire screen?" — htmx README
+> "By removing these arbitrary constraints htmx completes HTML as a hypertext" — htmx README
 
 ## Source Details
 
@@ -49,6 +50,6 @@ htmx is a JavaScript library enabling modern user interfaces directly in HTML by
 |-------|-------|
 | Original | `raw/2026-04-07-test-github-repo.md` |
 | Type | repo |
-| Author | Unknown |
+| Author | bigskysoftware |
 | Date | Unknown |
 | URL | https://github.com/bigskysoftware/htmx |

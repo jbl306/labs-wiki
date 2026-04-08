@@ -1,8 +1,8 @@
 ---
 title: "Transformer Architecture Note"
 type: source
-created: 2026-04-07
-last_verified: 2026-04-07
+created: 2026-04-08
+last_verified: 2026-04-08
 source_hash: "526c9c18bb793ad371844f633b6ee7b5a9c81a887586b409bfcc05845b0dc1bb"
 sources:
   - raw/2026-04-07-transformer-architecture-note.md
@@ -17,34 +17,32 @@ related:
   - "[[Self-Attention Mechanism]]"
   - "[[Multi-Head Attention]]"
   - "[[Positional Encoding]]"
-  - "[[Attention Is All You Need]]"
 tier: hot
-tags: [attention, deep-learning, multi-head-attention, transformers, positional-encoding, nlp, self-attention, transformer]
+tags: [transformer, attention, self-attention, deep-learning, sequence-modeling, nlp, transformers]
 ---
 
 # Transformer Architecture Note
 
 ## Summary
 
-The note discusses the Transformer architecture introduced in 'Attention Is All You Need,' highlighting its key innovation: the self-attention mechanism that replaces recurrence. It also mentions the use of multi-head attention and positional encoding to handle sequence data.
+This note summarizes the core innovations of the Transformer architecture as introduced in 'Attention Is All You Need.' It highlights the replacement of recurrence with self-attention, the use of multi-head attention for richer representations, and the necessity of positional encoding.
 
 ## Key Points
 
-- The Transformer architecture was introduced in 'Attention Is All You Need.'
-- Self-attention replaces recurrence, enabling parallelization.
-- Multi-head attention allows the model to focus on different representation subspaces.
+- Transformer replaces recurrence with self-attention.
+- Multi-head attention enables attending to multiple representation subspaces.
 - Positional encoding is used to provide sequence order information.
 
 ## Concepts Extracted
 
-- **[[Transformer Architecture]]** — The Transformer architecture is a neural network model introduced in 'Attention Is All You Need' that uses self-attention mechanisms instead of recurrence for sequence modeling.
-- **[[Self-Attention Mechanism]]** — A technique in neural networks where each element in a sequence attends to all other elements, enabling the model to capture dependencies regardless of their distance.
-- **[[Multi-Head Attention]]** — A mechanism in the Transformer architecture that allows the model to focus on different representation subspaces simultaneously.
-- **[[Positional Encoding]]** — A technique used in the Transformer architecture to provide sequence order information to the model, which lacks inherent sequential structure.
+- **[[Transformer Architecture]]** — The Transformer architecture is a deep learning model introduced to handle sequence transduction tasks without relying on recurrence. Its main innovation is the self-attention mechanism, which enables parallel processing of sequence elements and efficient modeling of long-range dependencies.
+- **[[Self-Attention Mechanism]]** — Self-attention is a mechanism that allows each element of a sequence to attend to all other elements, enabling the model to capture dependencies regardless of their distance. It is the foundational building block of the Transformer architecture.
+- **[[Multi-Head Attention]]** — Multi-head attention is an extension of the self-attention mechanism that allows the model to attend to information from multiple representation subspaces simultaneously. It enhances the model's ability to capture diverse relationships within the data.
+- **[[Positional Encoding]]** — Positional encoding is a technique used in Transformer models to inject information about the order of sequence elements, compensating for the lack of recurrence or convolution. It enables the model to distinguish between different positions in the input sequence.
 
 ## Entities Mentioned
 
-- **[[Attention Is All You Need]]** — A seminal paper that introduced the Transformer architecture, revolutionizing natural language processing and other fields.
+No entities mentioned.
 
 ## Notable Quotes
 

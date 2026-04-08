@@ -1,26 +1,28 @@
 ---
 title: "Obsidian"
 type: entity
-created: 2026-04-07
-last_verified: 2026-04-07
+created: 2026-04-08
+last_verified: 2026-04-08
 source_hash: "dc3efe98ae62f23dd08acad13aba2e95287beb20b6bec2f4af0423557fe37401"
 sources:
+  - raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
   - raw/2026-04-07-llm-wiki.md
 quality_score: 0
 concepts:
   - obsidian
 related:
-  - "[[LLM Wiki]]"
+  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
-tags: [note-taking, knowledge-management, markdown]
+tags: [knowledge-management, markdown, tool, wiki]
 ---
 
 # Obsidian
 
 ## Overview
 
-Obsidian is a note-taking and knowledge management application that uses markdown files and offers features like graph views, plugins, and local storage.
+Obsidian is a markdown-based knowledge management tool that enables users to organize, link, and visualize notes and documents. It supports plugins for enhanced functionality, including graph view, slide deck generation, and dynamic querying.
 
 ## Key Facts
 
@@ -34,11 +36,12 @@ Obsidian is a note-taking and knowledge management application that uses markdow
 
 ## Relevance
 
-Used as the interface for browsing and managing the LLM Wiki.
+Obsidian serves as the primary interface for browsing and interacting with the LLM-maintained wiki, offering real-time visualization and navigation.
 
 ## Associated Concepts
 
-- **[[LLM Wiki]]** — Used as the interface for the wiki.
+- **[[LLM-Maintained Persistent Wiki Pattern]]** — Obsidian is used to browse, visualize, and interact with the wiki generated and maintained by the LLM.
+- **[[LLM Wiki Architecture]]** — Obsidian provides the IDE environment for the wiki layer in the architecture.
 
 ## Related Entities
 
@@ -47,3 +50,4 @@ No related entities documented yet.
 ## Sources
 
 - [[LLM Wiki]] — where this entity was mentioned
+- [[The Hardening Principle | 10 Claude Code Principles]] — additional source

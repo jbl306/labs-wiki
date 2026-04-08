@@ -1,8 +1,8 @@
 ---
 title: "Positional Encoding"
 type: concept
-created: 2026-04-07
-last_verified: 2026-04-07
+created: 2026-04-08
+last_verified: 2026-04-08
 source_hash: "526c9c18bb793ad371844f633b6ee7b5a9c81a887586b409bfcc05845b0dc1bb"
 sources:
   - raw/2026-04-07-transformer-architecture-note.md
@@ -13,31 +13,55 @@ related:
   - "[[Transformer Architecture]]"
   - "[[Transformer Architecture Note]]"
 tier: hot
-tags: [positional-encoding, transformer, nlp]
+tags: [positional-encoding, transformer, sequence-modeling]
 ---
 
 # Positional Encoding
 
 ## Overview
 
-A technique used in the Transformer architecture to provide sequence order information to the model, which lacks inherent sequential structure.
+Positional encoding is a technique used in Transformer models to inject information about the order of sequence elements, compensating for the lack of recurrence or convolution. It enables the model to distinguish between different positions in the input sequence.
 
 ## How It Works
 
-Positional encoding adds a unique vector to each input token based on its position in the sequence. These vectors are often derived using sinusoidal functions, ensuring that each position has a unique representation.
+Since the Transformer processes all tokens in a sequence simultaneously and does not have a built-in notion of order, positional encodings are added to the input embeddings to provide sequence information. The original Transformer paper uses sinusoidal positional encodings, where each dimension of the encoding corresponds to a sinusoid of a different frequency:
+
+\[
+PE_{(pos, 2i)} = \sin(pos / 10000^{2i/d_{model}})
+\]
+\[
+PE_{(pos, 2i+1)} = \cos(pos / 10000^{2i/d_{model}})
+\]
+
+where \(pos\) is the position and \(i\) is the dimension. These encodings are added to the input embeddings before being fed into the model. The sinusoidal design allows the model to learn to attend by relative positions, as any fixed offset between positions can be represented as a linear function of the encodings.
+
+Alternatively, learned positional embeddings can be used, where each position has a trainable vector. This approach allows the model to adapt the positional information during training but may not generalize to longer sequences than seen during training.
+
+Positional encodings are essential for any task where the order of elements matters, such as language modeling or translation. Without them, the model would treat the input as a bag of tokens, ignoring sequence structure.
+
+The choice between sinusoidal and learned positional encodings involves trade-offs between generalization and flexibility. Sinusoidal encodings generalize to unseen sequence lengths, while learned embeddings can better fit the training data but may not extrapolate.
 
 ## Key Properties
 
-- **Sequence Order:** Encodes the position of each token in the sequence.
-- **Sinusoidal Functions:** Commonly used to generate positional encodings.
+- **Order Information:** Encodes the position of each token, enabling the model to capture sequence structure.
+- **Sinusoidal or Learned:** Can be fixed (sinusoidal) or learned during training.
+- **Addition to Embeddings:** Positional encodings are added to token embeddings before input to the model.
+
+## Limitations
+
+Sinusoidal encodings may not capture complex positional relationships as well as learned embeddings. Learned embeddings may not generalize to longer sequences than those seen during training. Both approaches add parameters and computation.
+
+## Example
+
+For a 10-token sequence, each token embedding is augmented with a positional encoding vector (using sin/cos functions or learned vectors) before being processed by the Transformer.
 
 ## Relationship to Other Concepts
 
-- **[[Transformer Architecture]]** — Essential for handling sequence data in Transformers.
+- **[[Transformer Architecture]]** — Positional encoding is required for Transformers to process sequences meaningfully.
 
 ## Practical Applications
 
-Used in tasks where sequence order is critical, such as language translation and speech recognition.
+Used in all Transformer-based models for NLP, speech, and other sequential data. Critical for tasks where the order of elements affects meaning, such as translation or summarization.
 
 ## Sources
 

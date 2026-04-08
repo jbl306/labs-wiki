@@ -526,7 +526,9 @@ def check_already_processed(wiki_dir: Path, source_hash: str) -> bool:
 
 SYSTEM_PROMPT = textwrap.dedent("""\
     You are a knowledge extraction agent for a personal wiki system.
-    Given a source document, you extract structured knowledge.
+    Given a source document, you extract structured knowledge that will
+    become standalone wiki pages — each page should be a useful reference
+    on its own, not just a pointer back to the source.
 
     ## Rules
     1. Extract CONCEPTS — ideas, techniques, patterns, methodologies
@@ -535,11 +537,19 @@ SYSTEM_PROMPT = textwrap.dedent("""\
     4. Every claim must be grounded in the source — no hallucination
     5. Use Title Case for all titles (e.g., "Rotary Position Embedding")
     6. Slugs are kebab-case (e.g., "rotary-position-embedding")
-    7. Keep descriptions concise but informative
-    8. If the source is short or is just a link/stub, extract what you can — it's OK to have few or no concepts/entities
-    9. If images are included, describe any charts, diagrams, code screenshots, or text visible in them
-    10. For chart/diagram images, extract the underlying data and relationships shown
-    11. Note in the output when information came from an image rather than text
+    7. If the source is short or is just a link/stub, extract what you can — it's OK to have few or no concepts/entities
+    8. If images are included, describe any charts, diagrams, code screenshots, or text visible in them
+    9. For chart/diagram images, extract the underlying data and relationships shown
+    10. Note in the output when information came from an image rather than text
+
+    ## CRITICAL: Depth Over Breadth
+    - Write THOROUGH, DETAILED content for each concept — aim for 3-5 substantial paragraphs in how_it_works
+    - Include specific details: formulas, algorithms, step-by-step processes, complexity analysis
+    - Transfer ALL useful information from the source into the extraction — don't summarize away details
+    - If the source contains code examples, pseudocode, or mathematical notation, preserve them
+    - If the source contains performance characteristics (time/space complexity), include them in key_properties
+    - Prefer fewer, richer concept pages over many shallow ones
+    - Each concept should read as a standalone mini-article, not a glossary definition
 
     ## Output Format
     Return ONLY valid JSON matching this schema (no markdown fencing):
@@ -557,11 +567,16 @@ SYSTEM_PROMPT = textwrap.dedent("""\
         {
           "title": "Concept Title",
           "slug": "concept-slug",
-          "overview": "2-3 sentence explanation",
-          "how_it_works": "Detailed explanation paragraph",
-          "key_properties": [{"name": "Property", "description": "..."}],
+          "overview": "2-4 sentence explanation establishing what this is and why it matters",
+          "how_it_works": "Multi-paragraph detailed explanation. Include the mechanism, algorithm steps, mathematical intuition, and internal logic. Use markdown formatting (lists, bold, code) for clarity. Aim for 3-5 paragraphs.",
+          "key_properties": [
+            {"name": "Property", "description": "Detailed description with specifics (e.g., 'Time Complexity: O(n log n) for training, O(log n) for prediction')"}
+          ],
+          "limitations": "Known weaknesses, failure modes, or assumptions that can break down",
+          "example": "A concrete example, use case walkthrough, or pseudocode snippet showing how this works in practice. Use markdown code blocks if appropriate.",
+          "visual_description": "Description of any diagram, chart, or figure from the source that illustrates this concept. Null if no relevant image.",
           "related_concepts": [{"title": "Other Concept", "relationship": "how they relate"}],
-          "practical_applications": "Where/how this is used",
+          "practical_applications": "Specific real-world uses with enough detail to understand when and why to apply this",
           "tags": ["tag1", "tag2"]
         }
       ],
@@ -633,7 +648,7 @@ Title: {source_title}
                     {"role": "user", "content": user_message},
                 ],
                 temperature=0.3,
-                max_tokens=8000,
+                max_tokens=16000,
                 response_format={"type": "json_object"},
             )
             raw = response.choices[0].message.content
@@ -807,7 +822,34 @@ tags: [{', '.join(concept.get("tags", []))}]
 ## Key Properties
 
 {properties or "No key properties identified."}
+"""
 
+    # Optional sections — only include if present
+    limitations = concept.get("limitations")
+    if limitations:
+        content += f"""
+## Limitations
+
+{limitations}
+"""
+
+    example = concept.get("example")
+    if example:
+        content += f"""
+## Example
+
+{example}
+"""
+
+    visual = concept.get("visual_description")
+    if visual:
+        content += f"""
+## Visual
+
+{visual}
+"""
+
+    content += f"""
 ## Relationship to Other Concepts
 
 {relationships or "No relationships identified yet."}

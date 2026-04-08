@@ -20,6 +20,7 @@ import sys
 import textwrap
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urljoin
 
 import httpx
 from openai import OpenAI
@@ -252,6 +253,32 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
     Handles Twitter/X, GitHub repos, GitHub gists, and generic HTML.
     image_urls contains any images found for vision processing.
     """
+    # --- arxiv handler: rewrite /pdf/ and /abs/ to /html/ for full text ---
+    arxiv_match = re.match(
+        r"https?://arxiv\.org/(?:pdf|abs)/(\d+\.\d+)(?:v\d+)?(?:\.pdf)?$", url
+    )
+    if arxiv_match:
+        paper_id = arxiv_match.group(1)
+        html_url = f"https://arxiv.org/html/{paper_id}"
+        log.info("arxiv detected — rewriting to HTML: %s → %s", url, html_url)
+        try:
+            resp = httpx.get(
+                html_url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; labs-wiki-bot/1.0)"},
+                follow_redirects=True,
+                timeout=URL_FETCH_TIMEOUT,
+            )
+            resp.raise_for_status()
+            if "html" in resp.headers.get("content-type", ""):
+                log.info("arxiv HTML version available, fetching full paper")
+                return fetch_url_content(html_url)
+        except Exception:
+            pass
+        # Fallback: fetch the abstract page
+        abs_url = f"https://arxiv.org/abs/{paper_id}"
+        log.warning("arxiv HTML not available for %s, falling back to abstract", paper_id)
+        return fetch_url_content(abs_url)
+
     # --- t.co redirect handler ---
     if re.match(r"https?://t\.co/", url):
         log.info("Resolving t.co redirect: %s", url)
@@ -407,6 +434,12 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
     resp.raise_for_status()
 
     content_type = resp.headers.get("content-type", "")
+
+    # Reject binary formats that can't be meaningfully parsed as text
+    if "application/pdf" in content_type:
+        log.warning("URL returned PDF binary (unsupported): %s", url)
+        return (f"[PDF document at {url} — content could not be extracted]", [])
+
     if "html" in content_type:
         raw_html = resp.text
 
@@ -441,6 +474,15 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
                     break
 
         image_urls = image_urls[:MAX_IMAGES]
+
+        # Resolve relative URLs against the page base URL
+        page_base = str(resp.url)
+        if not page_base.endswith("/"):
+            page_base += "/"
+        image_urls = [
+            urljoin(page_base, img) if not img.startswith(("http://", "https://")) else img
+            for img in image_urls
+        ]
 
         # Strip HTML tags for text extraction
         text = re.sub(r"<script[^>]*>.*?</script>", "", raw_html, flags=re.S)

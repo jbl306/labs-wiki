@@ -576,22 +576,36 @@ SYSTEM_PROMPT = textwrap.dedent("""\
     1. Extract CONCEPTS — ideas, techniques, patterns, methodologies
     2. Extract ENTITIES — tools, people, organizations, datasets, models
     3. Write a SOURCE SUMMARY — concise overview of the document
-    4. Every claim must be grounded in the source — no hallucination
-    5. Use Title Case for all titles (e.g., "Rotary Position Embedding")
-    6. Slugs are kebab-case (e.g., "rotary-position-embedding")
-    7. If the source is short or is just a link/stub, extract what you can — it's OK to have few or no concepts/entities
-    8. If images are included, describe any charts, diagrams, code screenshots, or text visible in them
-    9. For chart/diagram images, extract the underlying data and relationships shown
-    10. Note in the output when information came from an image rather than text
+    4. Suggest SYNTHESIS opportunities when the source overlaps with existing wiki pages
+    5. Every claim must be grounded in the source — no hallucination
+    6. Use Title Case for all titles (e.g., "Rotary Position Embedding")
+    7. Slugs are kebab-case (e.g., "rotary-position-embedding")
+    8. If the source is short or is just a link/stub, extract what you can — it's OK to have few or no concepts/entities
+    9. If images are included, describe any charts, diagrams, code screenshots, or text visible in them
+    10. For chart/diagram images, extract the underlying data and relationships shown
+    11. Note in the output when information came from an image rather than text
 
     ## CRITICAL: Depth Over Breadth
-    - Write THOROUGH, DETAILED content for each concept — aim for 3-5 substantial paragraphs in how_it_works
-    - Include specific details: formulas, algorithms, step-by-step processes, complexity analysis
+    - Extract at most 3-4 concepts — pick the MOST important ones and go deep
+    - Write THOROUGH, DETAILED content for each concept — aim for 5+ substantial paragraphs in how_it_works
+    - Include specific details: formulas (use LaTeX where appropriate), algorithm pseudocode, step-by-step processes, complexity analysis
     - Transfer ALL useful information from the source into the extraction — don't summarize away details
-    - If the source contains code examples, pseudocode, or mathematical notation, preserve them
+    - If the source contains code examples, pseudocode, or mathematical notation, PRESERVE them verbatim
     - If the source contains performance characteristics (time/space complexity), include them in key_properties
-    - Prefer fewer, richer concept pages over many shallow ones
-    - Each concept should read as a standalone mini-article, not a glossary definition
+    - Each concept should read as a standalone mini-article that someone could learn from WITHOUT reading the source
+    - how_it_works should explain the WHY, not just the WHAT — include intuition, trade-offs, and edge cases
+    - A concept with 500+ words in how_it_works is better than 5 concepts with 50 words each
+
+    ## Synthesis Suggestions
+    Look at the EXISTING WIKI PAGES list provided. If the current source covers topics
+    that OVERLAP or CONTRAST with concepts already in the wiki, suggest synthesis pages.
+    Good synthesis candidates:
+    - Two algorithms that solve the same problem differently (e.g., SVM vs Decision Tree)
+    - Competing approaches or frameworks
+    - Evolution of a technique (old approach vs new approach)
+    - Trade-off analysis (e.g., accuracy vs interpretability)
+    Only suggest synthesis when there is genuine overlap — do NOT force it. Max 2 suggestions.
+    Leave the array empty if nothing warrants comparison.
 
     ## Output Format
     Return ONLY valid JSON matching this schema (no markdown fencing):
@@ -610,11 +624,11 @@ SYSTEM_PROMPT = textwrap.dedent("""\
           "title": "Concept Title",
           "slug": "concept-slug",
           "overview": "2-4 sentence explanation establishing what this is and why it matters",
-          "how_it_works": "Multi-paragraph detailed explanation. Include the mechanism, algorithm steps, mathematical intuition, and internal logic. Use markdown formatting (lists, bold, code) for clarity. Aim for 3-5 paragraphs.",
+          "how_it_works": "Multi-paragraph detailed explanation (5+ paragraphs). Include the mechanism, algorithm steps, mathematical formulas, intuition for WHY it works, and internal logic. Use markdown formatting (lists, bold, code blocks, LaTeX). Cover edge cases and trade-offs.",
           "key_properties": [
             {"name": "Property", "description": "Detailed description with specifics (e.g., 'Time Complexity: O(n log n) for training, O(log n) for prediction')"}
           ],
-          "limitations": "Known weaknesses, failure modes, or assumptions that can break down",
+          "limitations": "Known weaknesses, failure modes, or assumptions that can break down. Be specific — include when and why it fails.",
           "example": "A concrete example, use case walkthrough, or pseudocode snippet showing how this works in practice. Use markdown code blocks if appropriate.",
           "visual_description": "Description of any diagram, chart, or figure from the source that illustrates this concept. Null if no relevant image.",
           "related_concepts": [{"title": "Other Concept", "relationship": "how they relate"}],
@@ -635,6 +649,16 @@ SYSTEM_PROMPT = textwrap.dedent("""\
           "relevance": "Why this matters",
           "associated_concepts": [{"title": "...", "relationship": "..."}],
           "tags": ["tag1", "tag2"]
+        }
+      ],
+      "synthesis_suggestions": [
+        {
+          "title": "Synthesis Page Title (e.g., Decision Trees vs Random Forests)",
+          "slug": "synthesis-slug",
+          "question": "The cross-cutting question this synthesis answers",
+          "concepts_to_compare": ["Existing Wiki Page Title 1", "Existing Wiki Page Title 2"],
+          "dimensions": ["dimension 1 to compare", "dimension 2", "dimension 3"],
+          "rationale": "Why this comparison adds value to the wiki"
         }
       ],
       "tags": ["tag1", "tag2"]
@@ -703,6 +727,106 @@ Title: {source_title}
                 time.sleep(2 ** attempt)
 
     raise RuntimeError(f"LLM call failed after {MAX_RETRIES} attempts: {last_error}")
+
+
+# ---------------------------------------------------------------------------
+# Synthesis LLM call
+# ---------------------------------------------------------------------------
+
+SYNTHESIS_SYSTEM_PROMPT = textwrap.dedent("""\
+    You are a synthesis writer for a personal knowledge wiki.
+    Given two or more wiki concept/entity pages, you produce a SYNTHESIS page
+    that compares, contrasts, and connects them.
+
+    ## Rules
+    1. Every claim must be grounded in the provided wiki pages — no hallucination
+    2. Be SPECIFIC — use concrete details, numbers, formulas from the source pages
+    3. The synthesis should answer a clear question (provided in the prompt)
+    4. Include a structured comparison table with 4-6 meaningful dimensions
+    5. The Analysis section should be 3-5 paragraphs identifying patterns,
+       trade-offs, and practical decision criteria
+    6. Key Insights should be non-obvious observations that emerge from the comparison
+    7. Open Questions should identify genuine gaps where more sources are needed
+
+    ## Output Format
+    Return ONLY valid JSON (no markdown fencing):
+    {
+      "title": "Synthesis Title",
+      "question": "The cross-cutting question this answers",
+      "summary": "2-3 sentence answer to the question",
+      "comparison": [
+        {
+          "dimension": "Dimension Name",
+          "entries": [
+            {"concept": "Concept A", "description": "How A handles this"},
+            {"concept": "Concept B", "description": "How B handles this"}
+          ]
+        }
+      ],
+      "analysis": "3-5 paragraph deep analysis in markdown. Cover: when to choose each, performance trade-offs, common misconceptions, how they complement each other.",
+      "key_insights": [
+        {"insight": "Non-obvious observation", "supporting_pages": ["Page Title 1", "Page Title 2"]}
+      ],
+      "open_questions": ["Question 1", "Question 2"],
+      "tags": ["tag1", "tag2"]
+    }
+""")
+
+MAX_SYNTHESIS_PER_INGEST = 2
+
+
+def call_llm_synthesis(
+    concept_pages: dict[str, str],
+    question: str,
+    dimensions: list[str],
+    token: str,
+    model: str,
+) -> dict | None:
+    """Call LLM to generate synthesis content from existing wiki pages.
+
+    Args:
+        concept_pages: {title: page_content} for the pages to compare
+        question: The cross-cutting question to answer
+        dimensions: Suggested comparison dimensions
+        token: API token
+        model: Model ID
+
+    Returns:
+        Parsed JSON synthesis or None on failure.
+    """
+    client = OpenAI(base_url=GITHUB_MODELS_URL, api_key=token)
+
+    pages_text = "\n\n---\n\n".join(
+        f"## {title}\n\n{content}" for title, content in concept_pages.items()
+    )
+
+    user_prompt = f"""## Synthesis Task
+
+Question: {question}
+
+Suggested comparison dimensions: {', '.join(dimensions)}
+
+## Wiki Pages to Synthesize
+
+{pages_text[:25_000]}"""
+
+    try:
+        log.info("Synthesis LLM call (model: %s, pages: %d)", model, len(concept_pages))
+        response = client.chat.completions.create(
+            model=model,
+            messages=[
+                {"role": "system", "content": SYNTHESIS_SYSTEM_PROMPT},
+                {"role": "user", "content": user_prompt},
+            ],
+            temperature=0.3,
+            max_tokens=8000,
+            response_format={"type": "json_object"},
+        )
+        raw = response.choices[0].message.content
+        return json.loads(raw)
+    except Exception as e:
+        log.warning("Synthesis LLM call failed: %s", e)
+        return None
 
 
 # ---------------------------------------------------------------------------
@@ -979,6 +1103,120 @@ No related entities documented yet.
     return filename, content
 
 
+def generate_synthesis_page(
+    synthesis: dict,
+    raw_paths: list[str],
+    source_titles: list[str],
+    today: str,
+) -> tuple[str, str]:
+    """Generate a synthesis wiki page. Returns (filename, content)."""
+    title = synthesis.get("title", "Untitled Synthesis")
+    slug = slugify(title)
+    filename = f"{slug}.md"
+
+    # Build comparison table
+    comparison = synthesis.get("comparison", [])
+    if comparison:
+        # Determine concept columns from first entry
+        concepts = [e["concept"] for e in comparison[0].get("entries", [])]
+        if not concepts:
+            table = "No comparison dimensions available."
+            comparison = []  # reset so downstream loops don't break
+        else:
+            header = "| Dimension | " + " | ".join(f"[[{c}]]" for c in concepts) + " |"
+            sep = "|-----------|" + "|".join("---------------------|" for _ in concepts)
+            rows = []
+            for dim in comparison:
+                descs = [e["description"] for e in dim.get("entries", [])]
+                rows.append(f"| {dim['dimension']} | " + " | ".join(descs) + " |")
+            table = "\n".join([header, sep] + rows)
+    else:
+        table = "No comparison dimensions available."
+
+    # Key insights
+    insights = synthesis.get("key_insights", [])
+    insights_section = "\n".join(
+        f'{i + 1}. **{ins["insight"]}** — supported by '
+        + ", ".join(f'[[{p}]]' for p in ins.get("supporting_pages", []))
+        for i, ins in enumerate(insights)
+    ) or "No key insights identified."
+
+    # Open questions
+    open_qs = synthesis.get("open_questions", [])
+    oq_section = "\n".join(f"- {q}" for q in open_qs) or "- No open questions identified."
+
+    # Sources section
+    sources_section = "\n".join(f"- [[{t}]]" for t in source_titles)
+
+    # Related links
+    all_related = list(set(source_titles + [
+        e["concept"]
+        for dim in comparison
+        for e in dim.get("entries", [])
+    ]))
+    related_links = "\n".join(f'  - "[[{r}]]"' for r in all_related)
+
+    # Concept slugs from compared items
+    concept_slugs = list(set(
+        slugify(e["concept"])
+        for dim in comparison
+        for e in dim.get("entries", [])
+    ))
+
+    tags = synthesis.get("tags", [])
+
+    sources_fm = "\n".join(f"  - {rp}" for rp in raw_paths)
+
+    content = f"""---
+title: "{title}"
+type: synthesis
+created: {today}
+last_verified: {today}
+source_hash: "synthesis-generated"
+sources:
+{sources_fm}
+quality_score: 0
+concepts:
+{chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
+related:
+{related_links if related_links else '  []'}
+tier: hot
+tags: [{', '.join(tags)}]
+---
+
+# {title}
+
+## Question
+
+{synthesis.get("question", "Cross-cutting comparison.")}
+
+## Summary
+
+{synthesis.get("summary", "Summary not available.")}
+
+## Comparison
+
+{table}
+
+## Analysis
+
+{synthesis.get("analysis", "Analysis not yet available.")}
+
+## Key Insights
+
+{insights_section}
+
+## Open Questions
+
+{oq_section}
+
+## Sources
+
+{sources_section}
+"""
+    return filename, content
+
+
 # ---------------------------------------------------------------------------
 # Log + index
 # ---------------------------------------------------------------------------
@@ -1188,6 +1426,77 @@ def ingest_raw_source(
 
         created_pages.append(f"wiki/entities/{filename}")
 
+    # Generate synthesis pages from suggestions
+    synthesis_count = 0
+    suggestions = extraction.get("synthesis_suggestions", [])
+    for suggestion in suggestions[:MAX_SYNTHESIS_PER_INGEST]:
+        syn_slug = slugify(suggestion.get("title", ""))
+        if not syn_slug:
+            continue
+
+        # Skip if synthesis page already exists
+        syn_path = wiki_dir / "synthesis" / f"{syn_slug}.md"
+        if syn_path.exists():
+            log.info("Synthesis already exists: %s", syn_path.name)
+            continue
+
+        # Resolve concept pages to compare — look in wiki for matching titles
+        concepts_to_compare = suggestion.get("concepts_to_compare", [])
+        concept_pages: dict[str, str] = {}
+        for concept_title in concepts_to_compare:
+            # Search in existing wiki pages
+            cslug = slugify(concept_title)
+            for category in ("concepts", "entities", "sources"):
+                candidate = wiki_dir / category / f"{cslug}.md"
+                if candidate.exists():
+                    _, page_body = parse_frontmatter(candidate)
+                    concept_pages[concept_title] = page_body
+                    break
+
+        if len(concept_pages) < 2:
+            log.info(
+                "Skipping synthesis '%s' — only %d/%d pages found",
+                suggestion["title"], len(concept_pages), len(concepts_to_compare),
+            )
+            continue
+
+        # Call LLM to generate synthesis content
+        synthesis_result = call_llm_synthesis(
+            concept_pages=concept_pages,
+            question=suggestion.get("question", suggestion["title"]),
+            dimensions=suggestion.get("dimensions", []),
+            token=token,
+            model=model,
+        )
+        if not synthesis_result:
+            continue
+
+        # Collect raw paths from the compared pages' sources
+        syn_raw_paths = [raw_rel]
+        syn_source_titles = [source_title]
+        for concept_title in concept_pages:
+            cslug = slugify(concept_title)
+            for category in ("concepts", "entities", "sources"):
+                candidate = wiki_dir / category / f"{cslug}.md"
+                if candidate.exists():
+                    cfm, _ = parse_frontmatter(candidate)
+                    for src in cfm.get("sources", []):
+                        if src not in syn_raw_paths:
+                            syn_raw_paths.append(src)
+                    break
+            if concept_title not in syn_source_titles:
+                syn_source_titles.append(concept_title)
+
+        syn_filename, syn_content = generate_synthesis_page(
+            synthesis_result, syn_raw_paths, syn_source_titles, today,
+        )
+        syn_path = wiki_dir / "synthesis" / syn_filename
+        syn_path.parent.mkdir(parents=True, exist_ok=True)
+        syn_path.write_text(syn_content)
+        created_pages.append(f"wiki/synthesis/{syn_filename}")
+        synthesis_count += 1
+        log.info("Created synthesis: wiki/synthesis/%s", syn_filename)
+
     # Append to log
     log_path = wiki_dir / "log.md"
     append_log(log_path, {
@@ -1196,7 +1505,7 @@ def ingest_raw_source(
         "targets": created_pages,
         "source": raw_rel,
         "status": "success",
-        "notes": f"Auto-ingested {len(created_pages)} pages ({len(extraction.get('concepts', []))} concepts, {len(extraction.get('entities', []))} entities)",
+        "notes": f"Auto-ingested {len(created_pages)} pages ({len(extraction.get('concepts', []))} concepts, {len(extraction.get('entities', []))} entities, {synthesis_count} synthesis)",
     })
 
     # Rebuild index

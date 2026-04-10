@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
   - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
-quality_score: 0
+quality_score: 100
 concepts:
   - adaboost
   - xgboost
@@ -16,8 +16,6 @@ related:
   - "[[LightGBM Leaf-Wise Tree Growth]]"
   - "[[AdaBoost Algorithm]]"
   - "[[LightGBM]]"
-  - "[[XGBoost]]"
-  - "[[AdaBoost]]"
   - "[[LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks]]"
 tier: hot
 tags: [boosting, ensemble learning, LightGBM, AdaBoost, XGBoost, tree algorithms, machine learning]
@@ -35,7 +33,7 @@ LightGBM, AdaBoost, and XGBoost employ distinct boosting strategies, impacting t
 
 ## Comparison
 
-| Dimension | [[LightGBM]] | [[AdaBoost]] | [[XGBoost]] |
+| Dimension | [[LightGBM]] | AdaBoost | XGBoost |
 |-----------|---------------------||---------------------||---------------------|
 | Tree Growth Strategy | Leaf-wise growth: splits the leaf with the largest reduction in loss, resulting in unbalanced, deep trees. | No explicit tree growth; uses sequential weak learners (often decision stumps) trained on reweighted samples. | Level-wise growth: splits all leaves at a given depth, producing balanced trees (not detailed in provided pages). |
 | Sampling Techniques | Histogram-based binning for features; focuses splits on leaves with highest loss reduction. | Sample weights are updated after each iteration to emphasize misclassified samples. | Uses weighted samples and supports subsampling of rows and columns (not detailed here). |

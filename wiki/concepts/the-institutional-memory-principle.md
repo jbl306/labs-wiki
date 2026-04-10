@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "1a63a2c55a4cb9725f715d148e3ee71297cad06f65870fef29a77de550825598"
 sources:
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - the-institutional-memory-principle
 related:

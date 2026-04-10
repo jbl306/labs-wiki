@@ -6,13 +6,11 @@ last_verified: 2026-04-08
 source_hash: "27cec2b0cffbc21273436407fb7f0d8419b0d567f35c1607c8074be77d4bcd74"
 sources:
   - raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - k-nearest-neighbor-algorithm
 related:
   - "[[Decision Tree Algorithm]]"
-  - "[[Cross Validation in Machine Learning]]"
-  - "[[Feature Engineering]]"
   - "[[K-Nearest Neighbor(KNN) Algorithm - GeeksforGeeks]]"
 tier: hot
 tags: [machine-learning, classification, regression, distance-metrics, non-parametric]
@@ -108,8 +106,8 @@ The article includes a diagram showing two categories (green and red points) and
 ## Relationship to Other Concepts
 
 - **[[Decision Tree Algorithm]]** — Both are used for classification and regression, but KNN is instance-based while Decision Tree is model-based.
-- **[[Cross Validation in Machine Learning]]** — Cross-validation is used to select the optimal value of 'k' in KNN.
-- **[[Feature Engineering]]** — Feature scaling and selection are critical for KNN's performance due to its reliance on distance metrics.
+- **Cross Validation in Machine Learning** — Cross-validation is used to select the optimal value of 'k' in KNN.
+- **Feature Engineering** — Feature scaling and selection are critical for KNN's performance due to its reliance on distance metrics.
 
 ## Practical Applications
 

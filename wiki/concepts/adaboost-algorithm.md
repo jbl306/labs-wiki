@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "6c584bba472989226a839abaa3978d16f7b2d888ff04dd06286631c41f4ff426"
 sources:
   - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
-quality_score: 0
+quality_score: 100
 concepts:
   - adaboost-algorithm
 related:
   - "[[Decision Tree Algorithm]]"
-  - "[[Ensemble Learning]]"
   - "[[Implementing the AdaBoost Algorithm From Scratch - GeeksforGeeks]]"
 tier: hot
 tags: [machine-learning, ensemble-learning, boosting, classification, python]
@@ -83,7 +82,7 @@ A screenshot displays model performance metrics: Accuracy (84.0%), Precision (0.
 ## Relationship to Other Concepts
 
 - **[[Decision Tree Algorithm]]** — AdaBoost uses decision trees (often stumps) as its weak learners.
-- **[[Ensemble Learning]]** — AdaBoost is a specific ensemble learning method that combines weak classifiers.
+- **Ensemble Learning** — AdaBoost is a specific ensemble learning method that combines weak classifiers.
 
 ## Practical Applications
 

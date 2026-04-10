@@ -8,14 +8,12 @@ sources:
   - raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md
   - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - context-hygiene-principle
   - disposable-blueprint-principle
 related:
-  - "[[Disposable Blueprint Principle]]"
   - "[[The Disposable Blueprint Principle | 10 Claude Code Principles]]"
-  - "[[Context Hygiene Principle]]"
   - "[[The Context Hygiene Principle]]"
   - "[[The Disposable Blueprint Principle]]"
 tier: hot
@@ -34,7 +32,7 @@ Structured plan artifacts (Disposable Blueprint Principle) and context managemen
 
 ## Comparison
 
-| Dimension | [[Disposable Blueprint Principle]] | [[Context Hygiene Principle]] |
+| Dimension | Disposable Blueprint Principle | Context Hygiene Principle |
 |-----------|---------------------||---------------------|
 | Mechanism for Preserving Intent | Intent is preserved via structured, versioned plan artifacts (e.g., YAML files) archived outside the agent's session. | Intent is preserved by careful placement and freshness of instructions within the prompt context window. |
 | Error Reduction | Reduces implementation errors by ~40% compared to free-form dialogue, through externalized, auditable plans. | Reduces hallucinations and missed requirements by >30% when critical information is placed at context window edges. |

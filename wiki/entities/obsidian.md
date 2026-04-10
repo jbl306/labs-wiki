@@ -7,7 +7,7 @@ source_hash: "dc3efe98ae62f23dd08acad13aba2e95287beb20b6bec2f4af0423557fe37401"
 sources:
   - raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
   - raw/2026-04-07-llm-wiki.md
-quality_score: 0
+quality_score: 100
 concepts:
   - obsidian
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "18f594aecc8362f94d0524318935eafd211fe61216043d007325069329fa2e62"
 sources:
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
-quality_score: 0
+quality_score: 100
 concepts:
   - hope
 related:

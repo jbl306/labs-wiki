@@ -6,11 +6,10 @@ last_verified: 2026-04-08
 source_hash: "4283d5051205b4b685c0610b6b50ef642f6ff15e703f606bbbbbed91a7f5b021"
 sources:
   - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - gradient-based-one-side-sampling-goss
 related:
-  - "[[Gradient Boosting]]"
   - "[[AdaBoost Algorithm]]"
   - "[[LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks]]"
 tier: hot
@@ -53,7 +52,7 @@ No explicit diagram in source, but a GOSS illustration would show a histogram of
 
 ## Relationship to Other Concepts
 
-- **[[Gradient Boosting]]** — GOSS is a sampling innovation within gradient boosting.
+- **Gradient Boosting** — GOSS is a sampling innovation within gradient boosting.
 - **[[AdaBoost Algorithm]]** — Both focus on difficult-to-predict instances, but GOSS uses gradient information.
 
 ## Practical Applications

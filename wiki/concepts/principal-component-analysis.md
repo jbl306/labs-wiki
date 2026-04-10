@@ -6,13 +6,12 @@ last_verified: 2026-04-08
 source_hash: "50ae0a25a9509f94ffb1846a82d1f7e75e047e8b67587ac7f4cf9ff980b5a63b"
 sources:
   - raw/2026-04-08-principal-component-analysis-pca-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - principal-component-analysis
 related:
   - "[[Linear Regression]]"
   - "[[Logistic Regression]]"
-  - "[[Standardization]]"
   - "[[Principal Component Analysis (PCA) - GeeksforGeeks]]"
 tier: hot
 tags: [dimensionality-reduction, data-analysis, machine-learning, linear-algebra, feature-extraction]
@@ -103,7 +102,7 @@ Several images illustrate PCA: (1) A diagram showing how PCA reduces multiple co
 
 - **[[Linear Regression]]** — Both rely on linear algebra and are sensitive to feature scaling.
 - **[[Logistic Regression]]** — PCA is often used as a preprocessing step before logistic regression for dimensionality reduction.
-- **[[Standardization]]** — Standardization is a prerequisite for PCA to ensure fair comparison of features.
+- **Standardization** — Standardization is a prerequisite for PCA to ensure fair comparison of features.
 
 ## Practical Applications
 

@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "5380388bec62eebb61d0e40915eb60f05cf82459ab6250e8951020d927eefc0d"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - kernel-functions-in-svm
 related:
   - "[[Support Vector Machine Algorithm]]"
-  - "[[Dual Problem]]"
   - "[[Support Vector Machine (SVM) Algorithm - GeeksforGeeks]]"
 tier: hot
 tags: [kernel-methods, machine-learning, non-linear-classification]
@@ -68,7 +67,7 @@ A diagram shows a 1D dataset where points are not separable by a straight line. 
 ## Relationship to Other Concepts
 
 - **[[Support Vector Machine Algorithm]]** — Kernels are integral to SVM's ability to handle non-linear classification.
-- **[[Dual Problem]]** — Kernel functions are applied in the dual optimization problem.
+- **Dual Problem** — Kernel functions are applied in the dual optimization problem.
 
 ## Practical Applications
 

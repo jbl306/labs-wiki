@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "8198d9aadc30c60df6456d83ba4231bd753980c7e1788975924e28655780b91d"
 sources:
   - raw/2026-04-08-apriori-algorithm-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - association-rule-mining
 related:
   - "[[Apriori Algorithm]]"
-  - "[[Frequent Pattern Growth Algorithm]]"
   - "[[Apriori Algorithm - GeeksforGeeks]]"
 tier: hot
 tags: [association-rule-mining, data-mining, market-basket-analysis, machine-learning]
@@ -69,7 +68,7 @@ Tables in the article show how support and confidence are calculated for item pa
 ## Relationship to Other Concepts
 
 - **[[Apriori Algorithm]]** — Apriori is a foundational algorithm for generating frequent itemsets and association rules.
-- **[[Frequent Pattern Growth Algorithm]]** — FP-Growth is an alternative method for frequent itemset mining and rule generation.
+- **Frequent Pattern Growth Algorithm** — FP-Growth is an alternative method for frequent itemset mining and rule generation.
 
 ## Practical Applications
 

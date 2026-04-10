@@ -6,13 +6,11 @@ last_verified: 2026-04-08
 source_hash: "f15329dffe4f35b2509a04e3f7c3e97f8a038943740f52a8d082de1b4c3bd472"
 sources:
   - raw/2026-04-07-custom-agents-in-vs-code.md
-quality_score: 0
+quality_score: 75
 concepts:
   - custom-agents-in-vs-code
 related:
-  - "[[Prompt Files]]"
-  - "[[Agent Skills]]"
-  - "[[Custom Agents in VS Code]]"
+  []
 tier: hot
 tags: [ai, vs-code, agent, workflow, security, customization]
 ---
@@ -111,8 +109,8 @@ The first image shows the VS Code documentation header for custom agents. The se
 
 ## Relationship to Other Concepts
 
-- **[[Prompt Files]]** — Prompt files provide one-off instructions and tool lists, but lack persistent personas and workflow orchestration.
-- **[[Agent Skills]]** — Agent skills are portable, reusable capabilities (scripts/resources) that can be used by custom agents.
+- **Prompt Files** — Prompt files provide one-off instructions and tool lists, but lack persistent personas and workflow orchestration.
+- **Agent Skills** — Agent skills are portable, reusable capabilities (scripts/resources) that can be used by custom agents.
 
 ## Practical Applications
 
@@ -120,4 +118,4 @@ Custom agents are used for specialized development workflows such as security re
 
 ## Sources
 
-- [[Custom Agents in VS Code]] — primary source for this concept
+- Custom Agents in VS Code — primary source for this concept

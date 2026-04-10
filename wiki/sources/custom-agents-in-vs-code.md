@@ -6,13 +6,12 @@ last_verified: 2026-04-08
 source_hash: "f15329dffe4f35b2509a04e3f7c3e97f8a038943740f52a8d082de1b4c3bd472"
 sources:
   - raw/2026-04-07-custom-agents-in-vs-code.md
-quality_score: 0
+quality_score: 100
 concepts:
   - custom-agents-in-vs-code
   - agent-handoffs-in-vs-code
   - custom-agent-file-structure
 related:
-  - "[[Custom Agents in VS Code]]"
   - "[[Agent Handoffs in VS Code]]"
   - "[[Custom Agent File Structure]]"
   - "[[Visual Studio Code]]"
@@ -35,7 +34,7 @@ This guide details how to create, configure, and manage custom AI agents in Visu
 
 ## Concepts Extracted
 
-- **[[Custom Agents in VS Code]]** — Custom agents in Visual Studio Code are configurable AI personas tailored to specific development roles and tasks. They allow users to define distinct behaviors, tool access, and instructions for each agent, enabling consistent and specialized AI responses for workflows such as planning, implementation, and code review.
+- **Custom Agents in VS Code** — Custom agents in Visual Studio Code are configurable AI personas tailored to specific development roles and tasks. They allow users to define distinct behaviors, tool access, and instructions for each agent, enabling consistent and specialized AI responses for workflows such as planning, implementation, and code review.
 - **[[Agent Handoffs in VS Code]]** — Agent handoffs in VS Code enable guided, sequential workflows by transitioning users between specialized custom agents. Each handoff passes relevant context and prompts, supporting multi-step processes such as planning, implementation, and review.
 - **[[Custom Agent File Structure]]** — Custom agent files in VS Code are Markdown documents (.agent.md) with a YAML frontmatter header and a Markdown body. The frontmatter defines agent configuration, while the body provides instructions and guidelines for the agent's behavior.
 

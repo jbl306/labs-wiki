@@ -7,14 +7,12 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - naive-bayes
   - decision-tree
 related:
   - "[[Naive Bayes Classifiers - GeeksforGeeks]]"
-  - "[[Naive Bayes]]"
-  - "[[Decision Tree]]"
   - "[[Naive Bayes Classifier]]"
   - "[[Decision Tree Algorithm]]"
 tier: hot
@@ -33,7 +31,7 @@ Naive Bayes and Decision Tree algorithms differ fundamentally in their assumptio
 
 ## Comparison
 
-| Dimension | [[Naive Bayes]] | [[Decision Tree]] |
+| Dimension | Naive Bayes | Decision Tree |
 |-----------|---------------------||---------------------|
 | Feature Independence Assumption | Assumes all features are independent given the class label (the 'naive' assumption), simplifying probability calculations. | Makes no independence assumptions; splits data based on feature values and their interactions. |
 | Model Interpretability | Probabilistic output is interpretable, but the model's logic is less transparent; relies on conditional probability tables. | Highly interpretable; decisions can be traced from root to leaf, visually mapping the decision process. |

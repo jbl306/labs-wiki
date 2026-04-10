@@ -6,11 +6,10 @@ last_verified: 2026-04-08
 source_hash: "292be7cacf85d0ed3967fe086d8e3892b9233f4e484623cb0d03e96eeb3033f1"
 sources:
   - raw/2026-04-08-httpsarxivorgpdf250504769.md
-quality_score: 0
+quality_score: 100
 concepts:
   - multimodal-integration-in-vla-models
 related:
-  - "[[Vision-Language Models (VLMs)]]"
   - "[[Multi-Head Attention]]"
   - "[[Vision-Language-Action (VLA) Models: Concepts, Progress, Applications and Challenges]]"
 tier: hot
@@ -55,7 +54,7 @@ Figure 1 and Figure 5 show diagrams of vision, language, and action models proce
 
 ## Relationship to Other Concepts
 
-- **[[Vision-Language Models (VLMs)]]** — Multimodal integration builds upon VLMs by adding action generation.
+- **Vision-Language Models (VLMs)** — Multimodal integration builds upon VLMs by adding action generation.
 - **[[Multi-Head Attention]]** — Used for cross-modal fusion and alignment.
 
 ## Practical Applications

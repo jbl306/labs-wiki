@@ -6,14 +6,12 @@ last_verified: 2026-04-08
 source_hash: "7f88957808ce58eefae33d9edfda055fb6c6a809b340111b3d89f3c73a7e3b49"
 sources:
   - raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - naive-bayes-classifier
 related:
   - "[[Bayes' Theorem]]"
   - "[[Gaussian Naive Bayes]]"
-  - "[[Multinomial Naive Bayes]]"
-  - "[[Bernoulli Naive Bayes]]"
   - "[[Naive Bayes Classifiers - GeeksforGeeks]]"
 tier: hot
 tags: [machine-learning, classification, probabilistic-model, bayesian]
@@ -144,8 +142,8 @@ This table is used to compute the likelihoods for each class.
 
 - **[[Bayes' Theorem]]** — Naive Bayes is built directly on Bayes' Theorem for probabilistic classification.
 - **[[Gaussian Naive Bayes]]** — A variant for continuous features using Gaussian distributions.
-- **[[Multinomial Naive Bayes]]** — A variant for discrete features, especially term frequencies.
-- **[[Bernoulli Naive Bayes]]** — A variant for binary features.
+- **Multinomial Naive Bayes** — A variant for discrete features, especially term frequencies.
+- **Bernoulli Naive Bayes** — A variant for binary features.
 
 ## Practical Applications
 

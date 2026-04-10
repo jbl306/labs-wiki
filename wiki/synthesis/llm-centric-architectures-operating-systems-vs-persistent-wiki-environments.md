@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-07-test-tweet.md
   - raw/2026-04-07-llm-wiki.md
-quality_score: 0
+quality_score: 100
 concepts:
   - llm-operating-system-architecture
   - llm-wiki-architecture

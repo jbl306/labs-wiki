@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "c416ac4343f4c0527a11dd49091844dea872ec108e2a44ceafe3b1b39425d0e3"
 sources:
   - raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - randomforestregressor
 related:
   - "[[Random Forest Regression]]"
-  - "[[Bagging]]"
   - "[[Random Forest Regression in Python - GeeksforGeeks]]"
 tier: hot
 tags: [scikit-learn, regression, ensemble-learning]
@@ -40,7 +39,7 @@ RandomForestRegressor is widely used in machine learning for regression tasks, o
 ## Associated Concepts
 
 - **[[Random Forest Regression]]** — Implements the Random Forest Regression algorithm
-- **[[Bagging]]** — Uses bagging to train multiple decision trees
+- **Bagging** — Uses bagging to train multiple decision trees
 
 ## Related Entities
 

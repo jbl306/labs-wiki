@@ -7,7 +7,7 @@ source_hash: "e07e5051691c4755e2f30694f3fc063b4f6c821a142667606bf4f3c54ed9a4a1"
 sources:
   - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - prism-persona-science
 related:

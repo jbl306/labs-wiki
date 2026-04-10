@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "a5ed6720a8e499fec504f09a5c3ce60d6067385dc5b5038864e2b0f8372284f3"
 sources:
   - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
-quality_score: 0
+quality_score: 100
 concepts:
   - the-hardening-principle
   - the-context-hygiene-principle

@@ -8,15 +8,13 @@ sources:
   - raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
   - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - context-hygiene-principle
   - token-economy-principle
 related:
   - "[[The Token Economy Principle]]"
   - "[[The Token Economy Principle | 10 Claude Code Principles]]"
-  - "[[Token Economy Principle]]"
-  - "[[Context Hygiene Principle]]"
   - "[[The Context Hygiene Principle]]"
 tier: hot
 tags: [multi-agent systems, prompt engineering, cost optimization, context management, workflow design, scalability]
@@ -34,7 +32,7 @@ The Token Economy Principle and Context Hygiene Principle both treat scarce reso
 
 ## Comparison
 
-| Dimension | [[Token Economy Principle]] | [[Context Hygiene Principle]] |
+| Dimension | Token Economy Principle | Context Hygiene Principle |
 |-----------|---------------------||---------------------|
 | Cost Optimization | Explicitly minimizes token usage and agent count, preventing runaway costs by scaling only when justified by empirical performance. | Indirectly optimizes cost by reducing wasted tokens on irrelevant or poorly structured context, improving output per token spent. |
 | Context Management | Emphasizes prompt quality over agent quantity; context management is implicit in designing efficient prompts for fewer agents. | Directly manages context window space, prioritizing placement and freshness of critical information, and pruning irrelevant content. |

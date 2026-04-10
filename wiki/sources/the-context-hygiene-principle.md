@@ -6,11 +6,10 @@ last_verified: 2026-04-08
 source_hash: "4e0be7f4370f91ef752fb421adafe9e295a097a9f83ca034d9e875ec44e0bba9"
 sources:
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - the-context-hygiene-principle
 related:
-  - "[[The Context Hygiene Principle]]"
   - "[[Claude]]"
   - "[[jig]]"
 tier: hot
@@ -31,7 +30,7 @@ This article, part of the '10 Claude Code Principles,' introduces the Context Hy
 
 ## Concepts Extracted
 
-- **[[The Context Hygiene Principle]]** — The Context Hygiene Principle is a disciplined approach to managing context in large language model (LLM) interactions. It asserts that context is a finite, highly competitive resource, and that maintaining focused, relevant, and minimal context is essential for optimal model performance. The principle is rooted in the transformer architecture's self-attention mechanism, which causes every token to compete with every other token, leading to quadratic scaling of attention relationships and potential performance degradation as context grows.
+- **The Context Hygiene Principle** — The Context Hygiene Principle is a disciplined approach to managing context in large language model (LLM) interactions. It asserts that context is a finite, highly competitive resource, and that maintaining focused, relevant, and minimal context is essential for optimal model performance. The principle is rooted in the transformer architecture's self-attention mechanism, which causes every token to compete with every other token, leading to quadratic scaling of attention relationships and potential performance degradation as context grows.
 
 ## Entities Mentioned
 

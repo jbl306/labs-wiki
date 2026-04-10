@@ -6,14 +6,10 @@ last_verified: 2026-04-08
 source_hash: "64f3d7794fd5e8567333444aa2dcf2ae76e118f9bf78cb15eb014a7029e90e95"
 sources:
   - raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - linear-regression
 related:
-  - "[[Gradient Descent]]"
-  - "[[Lasso Regression]]"
-  - "[[Ridge Regression]]"
-  - "[[Elastic Net Regression]]"
   - "[[Linear Regression in Machine Learning - GeeksforGeeks]]"
 tier: hot
 tags: [machine-learning, regression, supervised-learning, statistics, python]
@@ -113,10 +109,10 @@ The first diagram illustrates the linear regression line (y = θ₁ + θ₂x) fi
 
 ## Relationship to Other Concepts
 
-- **[[Gradient Descent]]** — Used to optimize linear regression parameters by minimizing the cost function.
-- **[[Lasso Regression]]** — Regularization technique to prevent overfitting in linear models.
-- **[[Ridge Regression]]** — Regularization method for handling multicollinearity in linear regression.
-- **[[Elastic Net Regression]]** — Combines L1 and L2 regularization for linear regression.
+- **Gradient Descent** — Used to optimize linear regression parameters by minimizing the cost function.
+- **Lasso Regression** — Regularization technique to prevent overfitting in linear models.
+- **Ridge Regression** — Regularization method for handling multicollinearity in linear regression.
+- **Elastic Net Regression** — Combines L1 and L2 regularization for linear regression.
 
 ## Practical Applications
 

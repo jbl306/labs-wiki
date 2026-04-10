@@ -6,12 +6,10 @@ last_verified: 2026-04-08
 source_hash: "dc3efe98ae62f23dd08acad13aba2e95287beb20b6bec2f4af0423557fe37401"
 sources:
   - raw/2026-04-07-llm-wiki.md
-quality_score: 0
+quality_score: 100
 concepts:
   - llm-maintained-persistent-wiki-pattern
 related:
-  - "[[Retrieval-Augmented Generation (RAG)]]"
-  - "[[Memex]]"
   - "[[LLM Wiki]]"
 tier: hot
 tags: [llm, wiki, knowledge-base, automation, personal-knowledge-management]
@@ -67,8 +65,8 @@ The source mentions Obsidian's graph view as a visualization tool, showing the c
 
 ## Relationship to Other Concepts
 
-- **[[Retrieval-Augmented Generation (RAG)]]** — Contrasts with RAG by emphasizing persistent knowledge accumulation and maintenance rather than rediscovery at query time.
-- **[[Memex]]** — Inspired by Memex's vision of a curated knowledge store with associative trails, but solves the maintenance challenge with LLM automation.
+- **Retrieval-Augmented Generation (RAG)** — Contrasts with RAG by emphasizing persistent knowledge accumulation and maintenance rather than rediscovery at query time.
+- **Memex** — Inspired by Memex's vision of a curated knowledge store with associative trails, but solves the maintenance challenge with LLM automation.
 
 ## Practical Applications
 

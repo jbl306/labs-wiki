@@ -6,12 +6,10 @@ last_verified: 2026-04-08
 source_hash: "f15329dffe4f35b2509a04e3f7c3e97f8a038943740f52a8d082de1b4c3bd472"
 sources:
   - raw/2026-04-07-custom-agents-in-vs-code.md
-quality_score: 0
+quality_score: 100
 concepts:
   - agent-handoffs-in-vs-code
 related:
-  - "[[Custom Agents in VS Code]]"
-  - "[[Subagents]]"
   - "[[Custom Agents in VS Code]]"
 tier: hot
 tags: [workflow, ai, vs-code, handoff, automation]
@@ -88,7 +86,7 @@ No specific diagram for handoffs, but the second image shows the Chat Customizat
 ## Relationship to Other Concepts
 
 - **[[Custom Agents in VS Code]]** — Handoffs are a feature within custom agents, enabling workflow orchestration.
-- **[[Subagents]]** — Subagents can be invoked as part of handoff workflows for specialized tasks.
+- **Subagents** — Subagents can be invoked as part of handoff workflows for specialized tasks.
 
 ## Practical Applications
 

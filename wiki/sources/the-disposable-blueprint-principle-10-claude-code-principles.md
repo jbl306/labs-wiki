@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "b2088d113a854b9ba5e94f0d25b563bf94c9d70ad52bbaf1afd6e06cd348b76d"
 sources:
   - raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - the-disposable-blueprint-principle
 related:

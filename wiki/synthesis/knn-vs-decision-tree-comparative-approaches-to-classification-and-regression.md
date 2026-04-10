@@ -7,13 +7,11 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - knn
   - decision-tree
 related:
-  - "[[KNN]]"
-  - "[[Decision Tree]]"
   - "[[K-Nearest Neighbor(KNN) Algorithm - GeeksforGeeks]]"
   - "[[K-Nearest Neighbor Algorithm]]"
   - "[[Decision Tree Algorithm]]"
@@ -33,7 +31,7 @@ KNN and Decision Tree algorithms differ fundamentally in their learning paradigm
 
 ## Comparison
 
-| Dimension | [[KNN]] | [[Decision Tree]] |
+| Dimension | KNN | Decision Tree |
 |-----------|---------------------||---------------------|
 | Model Type | Instance-based (lazy learning); stores entire dataset and computes predictions at query time. | Model-based; builds explicit tree structure during training, representing decision paths. |
 | Training and Prediction Complexity | Minimal training (just storing data); prediction is O(n) per query due to distance calculations. | Training is computationally intensive (tree construction and pruning); prediction is fast (tree traversal). |

@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "526c9c18bb793ad371844f633b6ee7b5a9c81a887586b409bfcc05845b0dc1bb"
 sources:
   - raw/2026-04-07-transformer-architecture-note.md
-quality_score: 0
+quality_score: 100
 concepts:
   - self-attention-mechanism
 related:

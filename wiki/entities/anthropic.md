@@ -7,7 +7,7 @@ source_hash: "37dca25e4ed5998ae5f1377fbae32da1d785a06990c5f9e00b16c9ac74c66bd1"
 sources:
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
   - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
-quality_score: 0
+quality_score: 100
 concepts:
   - anthropic
 related:

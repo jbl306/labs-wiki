@@ -1096,4 +1096,75 @@
   source: raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
   status: success
   notes: "Auto-ingested 4 pages (1 concepts, 1 entities, 1 synthesis)"
+
+- timestamp: 2026-04-10T12:25:44+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-lottery-ticket-hypothesis-finding-sparse-trainable-neural-networks.md
+    - wiki/concepts/lottery-ticket-hypothesis.md
+    - wiki/concepts/iterative-pruning-technique.md
+    - wiki/concepts/initialization-sensitivity-in-sparse-neural-networks.md
+    - wiki/entities/jonathan-frankle.md
+    - wiki/entities/michael-carbin.md
+  source: raw/2026-04-10-180303635v5pdf.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-10T12:43:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/large-language-model-reasoning-failures.md
+    - wiki/concepts/taxonomy-of-llm-reasoning-failures.md
+    - wiki/concepts/cognitive-biases-in-large-language-models.md
+    - wiki/concepts/theory-of-mind-in-large-language-models.md
+    - wiki/entities/awesome-llm-reasoning-failures-repository.md
+    - wiki/synthesis/comparing-reasoning-failures-in-llms-and-human-cognitive-biases-origins-manifest.md
+  source: raw/2026-04-10-260206176v1pdf.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 1 entities, 1 synthesis)"
+
+- timestamp: 2026-04-10T12:47:06+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/axi-agent-experience-interface-github-repository.md
+    - wiki/concepts/axi-design-principles-for-agent-ergonomic-cli-tools.md
+    - wiki/concepts/toon-token-oriented-object-notation-format.md
+    - wiki/entities/axi-agent-experience-interface.md
+    - wiki/entities/toon-token-oriented-object-notation.md
+    - wiki/entities/gh-axi.md
+    - wiki/entities/chrome-devtools-axi.md
+  source: raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
+  status: success
+  notes: "Auto-ingested 7 pages (2 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-10T12:48:34+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/autoskills-github-repository.md
+    - wiki/concepts/automated-ai-skill-stack-installation.md
+    - wiki/concepts/supply-chain-security-hardening-for-ai-agent-projects.md
+    - wiki/concepts/claude-code-skill-summarization.md
+    - wiki/entities/autoskills.md
+    - wiki/entities/skills-sh.md
+    - wiki/entities/claude-code.md
+  source: raw/2026-04-10-httpsgithubcommidudevautoskills.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-10T17:25:20+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/recursive-language-models.md
+    - wiki/concepts/recursive-language-models.md
+    - wiki/entities/rlm-qwen3-8b.md
+    - wiki/entities/gpt-5.md
+    - wiki/entities/qwen3-coder-480b-a35b.md
+  source: raw/2026-04-10-251224601v2pdf.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
 ```

@@ -585,6 +585,13 @@ SYSTEM_PROMPT = textwrap.dedent("""\
     10. For chart/diagram images, extract the underlying data and relationships shown
     11. Note in the output when information came from an image rather than text
 
+    ## CRITICAL: Provenance & Accuracy
+    - Do NOT reference external URLs, websites, or resources that are not mentioned in the source document
+    - Do NOT fabricate dates: use null for created_year/publication_date if not explicitly stated in the source
+    - Do NOT cite external sources (e.g., Wikipedia, GeeksforGeeks) in concept/entity descriptions — only cite the raw source
+    - For related_concepts in concepts: only reference concepts you are extracting OR that appear in the EXISTING WIKI PAGES list
+    - For entities: fill in related_entities with other entities from THIS SAME source (e.g., co-authors, related tools)
+
     ## CRITICAL: Depth Over Breadth
     - Extract at most 3-4 concepts — pick the MOST important ones and go deep
     - Write THOROUGH, DETAILED content for each concept — aim for 5+ substantial paragraphs in how_it_works
@@ -640,14 +647,15 @@ SYSTEM_PROMPT = textwrap.dedent("""\
         {
           "title": "Entity Name",
           "slug": "entity-slug",
-          "overview": "2-3 sentence description",
+          "overview": "2-3 sentence description with specific, substantive detail — not just a one-liner",
           "entity_type": "Tool|Person|Organization|Dataset|Model|Framework",
-          "created_year": "Year or null",
-          "creator": "Creator or null",
-          "url": "Official URL or null",
+          "created_year": "Year or null — ONLY if explicitly stated in source, otherwise null",
+          "creator": "Creator or null — ONLY if explicitly stated in source, otherwise null",
+          "url": "Official URL or null — ONLY if a real, verified URL appears in the source",
           "status": "Active|Deprecated|Historical",
-          "relevance": "Why this matters",
+          "relevance": "Why this matters in 2-3 sentences with specific details from the source",
           "associated_concepts": [{"title": "...", "relationship": "..."}],
+          "related_entities": [{"title": "Other Entity From This Source", "relationship": "e.g., co-author, sub-project, parent org"}],
           "tags": ["tag1", "tag2"]
         }
       ],
@@ -1037,8 +1045,13 @@ def generate_entity_page(
     source_hash: str,
     source_title: str,
     today: str,
+    all_entities: list[dict] | None = None,
 ) -> tuple[str, str]:
-    """Generate an entity wiki page. Returns (filename, content)."""
+    """Generate an entity wiki page. Returns (filename, content).
+
+    Args:
+        all_entities: Other entities from the same ingest for reciprocal linking.
+    """
     title = entity["title"]
     slug = entity["slug"]
     filename = f"{slug}.md"
@@ -1050,6 +1063,28 @@ def generate_entity_page(
     assoc_section = "\n".join(
         f'- **[[{a["title"]}]]** — {a["relationship"]}' for a in assoc
     )
+
+    # Related entities: from LLM extraction + reciprocal links from same batch
+    related_ents = list(entity.get("related_entities", []))
+    if all_entities:
+        existing_titles = {re["title"] for re in related_ents}
+        for other in all_entities:
+            if other["title"] != title and other["title"] not in existing_titles:
+                related_ents.append({
+                    "title": other["title"],
+                    "relationship": f"co-mentioned in source ({other.get('entity_type', 'entity')})",
+                })
+                existing_titles.add(other["title"])
+
+    # Add related entity links to frontmatter
+    for re_ent in related_ents:
+        link = f'  - "[[{re_ent["title"]}]]"'
+        if link not in related_links:
+            related_links.append(link)
+
+    related_ents_section = "\n".join(
+        f'- **[[{re["title"]}]]** — {re["relationship"]}' for re in related_ents
+    ) if related_ents else "No related entities documented yet."
 
     content = f"""---
 title: "{title}"
@@ -1094,7 +1129,7 @@ tags: [{', '.join(entity.get("tags", []))}]
 
 ## Related Entities
 
-No related entities documented yet.
+{related_ents_section}
 
 ## Sources
 
@@ -1215,6 +1250,170 @@ tags: [{', '.join(tags)}]
 {sources_section}
 """
     return filename, content
+
+
+# ---------------------------------------------------------------------------
+# Post-processing: wikilink validation, dedup, quality scoring
+# ---------------------------------------------------------------------------
+
+
+def _get_all_valid_titles(wiki_dir: Path) -> set[str]:
+    """Collect all page titles from the wiki."""
+    titles: set[str] = set()
+    for category in ("sources", "concepts", "entities", "synthesis"):
+        cat_dir = wiki_dir / category
+        if not cat_dir.exists():
+            continue
+        for page in cat_dir.glob("*.md"):
+            if page.name in ("index.md", "log.md", ".gitkeep"):
+                continue
+            fm, _ = parse_frontmatter(page)
+            title = fm.get("title", "")
+            if title:
+                titles.add(title)
+    return titles
+
+
+def _compute_quality_score(
+    fm: dict,
+    has_wikilinks: bool,
+    has_related: bool,
+) -> int:
+    """Compute 0-100 quality score (mirrors lint_wiki.py logic)."""
+    score = 0
+    required = ["title", "type", "created", "sources"]
+    required_present = sum(1 for f in required if f in fm)
+    score += int(25 * required_present / len(required))
+
+    if has_wikilinks or has_related:
+        score += 25
+
+    if fm.get("sources") and fm["sources"] != "":
+        score += 25
+
+    # Freshly created pages are not stale
+    score += 25
+
+    return score
+
+
+def postprocess_created_pages(
+    wiki_dir: Path,
+    created_pages: list[str],
+    project_root: Path,
+) -> None:
+    """Post-process newly created pages: fix wikilinks, dedup, score.
+
+    1. Validate wikilinks against all existing page titles
+    2. Remove self-referential links
+    3. Deduplicate related: entries
+    4. Compute and write quality_score
+    """
+    valid_titles = _get_all_valid_titles(wiki_dir)
+    log.info("Post-processing %d pages (%d valid titles in wiki)", len(created_pages), len(valid_titles))
+
+    for rel_path in created_pages:
+        page_path = project_root / rel_path
+        if not page_path.exists():
+            continue
+
+        content = page_path.read_text()
+        if not content.startswith("---"):
+            continue
+
+        parts = content.split("---", 2)
+        if len(parts) < 3:
+            continue
+
+        frontmatter_text = parts[1]
+        body = parts[2]
+
+        # --- Parse the page title ---
+        page_title = ""
+        for line in frontmatter_text.strip().split("\n"):
+            if line.strip().startswith("title:"):
+                page_title = line.split(":", 1)[1].strip().strip('"').strip("'")
+                break
+
+        # --- Fix body wikilinks: remove broken ones ---
+        def _replace_wikilink(m: re.Match) -> str:
+            link_title = m.group(1)
+            if link_title == page_title:
+                # Self-reference — remove the wikilink, keep the text
+                return link_title
+            if link_title not in valid_titles:
+                # Broken link — keep the text, drop the brackets
+                return link_title
+            return m.group(0)
+
+        body = re.sub(r"\[\[([^\]]+)\]\]", _replace_wikilink, body)
+
+        # --- Fix frontmatter related: entries ---
+        new_fm_lines = []
+        in_related = False
+        seen_related: set[str] = set()
+
+        for line in frontmatter_text.strip().split("\n"):
+            stripped = line.strip()
+
+            if stripped == "related:":
+                in_related = True
+                new_fm_lines.append(line)
+                continue
+
+            if in_related and stripped.startswith("- "):
+                # Extract title from "[[Title]]" in the related entry
+                link_match = re.search(r"\[\[([^\]]+)\]\]", stripped)
+                if link_match:
+                    link_title = link_match.group(1)
+
+                    # Skip self-references
+                    if link_title == page_title:
+                        continue
+
+                    # Skip broken links
+                    if link_title not in valid_titles:
+                        continue
+
+                    # Skip duplicates
+                    if link_title in seen_related:
+                        continue
+
+                    seen_related.add(link_title)
+
+                new_fm_lines.append(line)
+                continue
+
+            if in_related and not stripped.startswith("- "):
+                in_related = False
+                # If no valid related entries remain, add empty marker
+                if not seen_related:
+                    # Check if the last line was "related:"
+                    if new_fm_lines and new_fm_lines[-1].strip() == "related:":
+                        new_fm_lines.append("  []")
+
+            new_fm_lines.append(line)
+
+        # --- Compute quality score ---
+        fm, _ = parse_frontmatter(page_path)
+        wikilinks = re.findall(r"\[\[([^\]]+)\]\]", body)
+        has_wikilinks = len(wikilinks) > 0
+        has_related = len(seen_related) > 0
+        score = _compute_quality_score(fm, has_wikilinks, has_related)
+
+        # Update quality_score in frontmatter
+        updated_fm_lines = []
+        for line in new_fm_lines:
+            if line.strip().startswith("quality_score:"):
+                updated_fm_lines.append(f"quality_score: {score}")
+            else:
+                updated_fm_lines.append(line)
+        new_fm_lines = updated_fm_lines
+
+        # Reassemble the page
+        new_content = "---\n" + "\n".join(new_fm_lines) + "\n---" + body
+        page_path.write_text(new_content)
+        log.info("Post-processed %s (score: %d, valid links: %d)", rel_path, score, len(seen_related))
 
 
 # ---------------------------------------------------------------------------
@@ -1403,9 +1602,11 @@ def ingest_raw_source(
         created_pages.append(f"wiki/concepts/{filename}")
 
     # Generate entity pages
-    for entity in extraction.get("entities", []):
+    all_entities = extraction.get("entities", [])
+    for entity in all_entities:
         filename, page_content = generate_entity_page(
             entity, raw_rel, source_hash, source_title, today,
+            all_entities=all_entities,
         )
         entity_path = wiki_dir / "entities" / filename
         entity_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1496,6 +1697,9 @@ def ingest_raw_source(
         created_pages.append(f"wiki/synthesis/{syn_filename}")
         synthesis_count += 1
         log.info("Created synthesis: wiki/synthesis/%s", syn_filename)
+
+    # Post-process: validate wikilinks, dedup, compute quality scores
+    postprocess_created_pages(wiki_dir, created_pages, project_root)
 
     # Append to log
     log_path = wiki_dir / "log.md"

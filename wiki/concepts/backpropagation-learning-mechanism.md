@@ -6,12 +6,10 @@ last_verified: 2026-04-08
 source_hash: "a546b121d7a032f9ebb620e52bd2c2a1427df51957e793d404c2ea7f2ad8dcb4"
 sources:
   - raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
-quality_score: 0
+quality_score: 100
 concepts:
   - backpropagation-learning-mechanism
 related:
-  - "[[Gradient Descent]]"
-  - "[[Activation Function]]"
   - "[[Artificial Neural Networks and its Applications - GeeksforGeeks]]"
 tier: hot
 tags: [backpropagation, learning, optimization, deep-learning]
@@ -57,8 +55,8 @@ A diagram compares biological neurons (dendrites, cell body, axon) with artifici
 
 ## Relationship to Other Concepts
 
-- **[[Gradient Descent]]** — Optimization algorithm used in backpropagation to update weights.
-- **[[Activation Function]]** — Determines neuron output during forward and backward propagation.
+- **Gradient Descent** — Optimization algorithm used in backpropagation to update weights.
+- **Activation Function** — Determines neuron output during forward and backward propagation.
 
 ## Practical Applications
 

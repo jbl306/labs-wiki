@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "c3258d4b58fc127e9b93c345dd7bf71fe44e155d345d83545927308ce1668584"
 sources:
   - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - the-strategic-human-gate-principle
 related:

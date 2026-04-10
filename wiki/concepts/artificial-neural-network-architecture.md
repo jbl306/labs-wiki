@@ -6,12 +6,10 @@ last_verified: 2026-04-08
 source_hash: "a546b121d7a032f9ebb620e52bd2c2a1427df51957e793d404c2ea7f2ad8dcb4"
 sources:
   - raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
-quality_score: 0
+quality_score: 100
 concepts:
   - artificial-neural-network-architecture
 related:
-  - "[[Feedforward Neural Network]]"
-  - "[[Convolutional Neural Network]]"
   - "[[Artificial Neural Networks and its Applications - GeeksforGeeks]]"
 tier: hot
 tags: [neural-network, architecture, deep-learning]
@@ -53,8 +51,8 @@ A diagram shows a network with three types of layers: input, hidden, and output.
 
 ## Relationship to Other Concepts
 
-- **[[Feedforward Neural Network]]** — A specific ANN architecture with unidirectional data flow.
-- **[[Convolutional Neural Network]]** — A specialized architecture for processing grid-like data, such as images.
+- **Feedforward Neural Network** — A specific ANN architecture with unidirectional data flow.
+- **Convolutional Neural Network** — A specialized architecture for processing grid-like data, such as images.
 
 ## Practical Applications
 

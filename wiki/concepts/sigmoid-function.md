@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "cc9f0a06fdc1e5b2ca1a3d132d3204277ea1fcf5c85d34f4c17c99e0570d79e5"
 sources:
   - raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - sigmoid-function
 related:
   - "[[Activation Functions in Neural Networks]]"
-  - "[[Softmax Function]]"
   - "[[Logistic Regression in Machine Learning - GeeksforGeeks]]"
 tier: hot
 tags: [activation-function, probability, machine-learning, logistic-regression]
@@ -71,7 +70,7 @@ A chart showing the sigmoid curve: the function starts near 0 for t=-8, rises sh
 ## Relationship to Other Concepts
 
 - **[[Activation Functions in Neural Networks]]** — Sigmoid is a classic activation function used in neural networks for binary outputs.
-- **[[Softmax Function]]** — Softmax generalizes sigmoid for multiclass classification.
+- **Softmax Function** — Softmax generalizes sigmoid for multiclass classification.
 
 ## Practical Applications
 

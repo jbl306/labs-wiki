@@ -7,16 +7,14 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
   - raw/2026-04-07-transformer-architecture-note.md
-quality_score: 0
+quality_score: 100
 concepts:
   - traditional-transformer-interpretability
   - circuit-tracing
 related:
   - "[[Circuit Tracing in Language Models]]"
   - "[[Transformer Architecture]]"
-  - "[[Circuit Tracing]]"
   - "[[Tracing the Thoughts of a Large Language Model]]"
-  - "[[Traditional Transformer Interpretability]]"
 tier: hot
 tags: [transformer, interpretability, circuit tracing, causal analysis, reliability]
 ---
@@ -33,7 +31,7 @@ Traditional transformer interpretability methods generally offer broad, statisti
 
 ## Comparison
 
-| Dimension | [[Traditional Transformer Interpretability]] | [[Circuit Tracing]] |
+| Dimension | Traditional Transformer Interpretability | Circuit Tracing |
 |-----------|---------------------||---------------------|
 | Granularity of Insight | Provides high-level, often statistical or aggregate insights into attention patterns and layer activations; typically identifies broad trends or correlations. | Identifies specific, interpretable features and links them into computational circuits, revealing step-by-step reasoning and compositional logic. |
 | Causal Intervention Ability | Rarely allows direct manipulation of internal states; mostly observes correlations without testing causal impact. | Enables researchers to intervene in internal features (e.g., suppressing or injecting concepts) and observe causal effects on output. |

@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "db7bbe28e5c6cd6654d03bbd74fe141b54ef9afb68018a4e7d641d5c7c9ab59e"
 sources:
   - raw/2026-04-08-the-toolkit-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - selective-tool-loading-and-context-hygiene
 related:

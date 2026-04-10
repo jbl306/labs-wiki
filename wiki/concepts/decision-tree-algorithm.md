@@ -7,12 +7,10 @@ source_hash: "8068cff7cb6d79c87388b9b9408f59c8234c6cee6ef3847d205df8a8b7b53210"
 sources:
   - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - decision-tree-algorithm
 related:
-  - "[[Random Forest Algorithm]]"
-  - "[[Support Vector Machine (SVM) Algorithm]]"
   - "[[Apriori Algorithm]]"
   - "[[Decision Tree - GeeksforGeeks]]"
 tier: hot
@@ -86,8 +84,8 @@ Two diagrams illustrate the concept. The first shows a generic tree structure: a
 
 ## Relationship to Other Concepts
 
-- **[[Random Forest Algorithm]]** — Random Forests are ensembles of Decision Trees, reducing overfitting and instability.
-- **[[Support Vector Machine (SVM) Algorithm]]** — Both are used for classification, but SVMs use hyperplanes while Decision Trees use hierarchical splits.
+- **Random Forest Algorithm** — Random Forests are ensembles of Decision Trees, reducing overfitting and instability.
+- **Support Vector Machine (SVM) Algorithm** — Both are used for classification, but SVMs use hyperplanes while Decision Trees use hierarchical splits.
 - **[[Apriori Algorithm]]** — Both are used in data mining, but Apriori focuses on association rules while Decision Trees focus on prediction.
 
 ## Practical Applications

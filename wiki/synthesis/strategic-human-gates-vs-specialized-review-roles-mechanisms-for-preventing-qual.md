@@ -7,14 +7,12 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - specialized-review-principle
   - strategic-human-gate-principle
 related:
-  - "[[Strategic Human Gate Principle]]"
   - "[[The Strategic Human Gate Principle | 10 Claude Code Principles]]"
-  - "[[Specialized Review Principle]]"
   - "[[The Strategic Human Gate Principle]]"
   - "[[The Specialized Review Principle]]"
 tier: hot
@@ -33,7 +31,7 @@ Strategic human gates and specialized review roles address distinct structural w
 
 ## Comparison
 
-| Dimension | [[Strategic Human Gate Principle]] | [[Specialized Review Principle]] |
+| Dimension | Strategic Human Gate Principle | Specialized Review Principle |
 |-----------|---------------------||---------------------|
 | Scope of Intervention | Intervenes at 2-3 critical, irreversible, or high-blast-radius decision points; focuses on explicit human approval at key boundaries. | Applies domain-specific review throughout the pipeline; specialist agents independently analyze code or artifacts for their domain. |
 | Effectiveness Against Rubber-Stamp Approval | Directly addresses rubber-stamp failures by requiring evidence-based human approval and monitoring rejection rates (healthy: 5-20%). | Reduces rubber-stamp reviews by requiring each specialist to cite evidence or identify issues; avoids empty 'LGTM' approvals. |

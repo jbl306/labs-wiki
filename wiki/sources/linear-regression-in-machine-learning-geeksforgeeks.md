@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "64f3d7794fd5e8567333444aa2dcf2ae76e118f9bf78cb15eb014a7029e90e95"
 sources:
   - raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - linear-regression
   - gradient-descent-in-linear-regression

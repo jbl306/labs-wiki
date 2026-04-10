@@ -7,14 +7,12 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - adaboost
   - decision-tree
 related:
-  - "[[Decision Tree]]"
   - "[[AdaBoost Algorithm]]"
-  - "[[AdaBoost]]"
   - "[[Decision Tree Algorithm]]"
   - "[[Implementing the AdaBoost Algorithm From Scratch - GeeksforGeeks]]"
 tier: hot
@@ -33,7 +31,7 @@ AdaBoost enhances the accuracy and robustness of decision trees by sequentially 
 
 ## Comparison
 
-| Dimension | [[AdaBoost]] | [[Decision Tree]] |
+| Dimension | AdaBoost | Decision Tree |
 |-----------|---------------------||---------------------|
 | Accuracy | Combines multiple weak learners to achieve high accuracy (e.g., 84% in example), especially effective for binary classification. | Accuracy depends on tree depth and pruning; prone to overfitting, which can reduce generalization accuracy. |
 | Robustness to Overfitting | Less prone to overfitting when using simple weak learners (e.g., stumps); focuses on difficult cases, improving generalization. | Highly prone to overfitting, especially with deep trees; requires pruning to improve generalization. |

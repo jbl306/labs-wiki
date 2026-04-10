@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "07173adf0a23d99d4e19b0760bfd78b6d34d9e6d29a64415b4303d0245e32fa4"
 sources:
   - raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - ffmpeg
 related:

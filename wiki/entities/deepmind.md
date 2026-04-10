@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "f6933d2a95acf0b4917f8621a07e5686d09e25f2c5e930389f1d70533135e80c"
 sources:
   - raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - deepmind
 related:
   - "[[The Token Economy Principle]]"
-  - "[[Multi-Agent Scaling]]"
   - "[[The Token Economy Principle | 10 Claude Code Principles]]"
 tier: hot
 tags: [ai-research, multi-agent]
@@ -40,7 +39,7 @@ DeepMind's research provides the scientific foundation for the Token Economy Pri
 ## Associated Concepts
 
 - **[[The Token Economy Principle]]** — Empirical foundation
-- **[[Multi-Agent Scaling]]** — Primary research area
+- **Multi-Agent Scaling** — Primary research area
 
 ## Related Entities
 

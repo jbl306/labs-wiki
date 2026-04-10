@@ -6,11 +6,10 @@ last_verified: 2026-04-08
 source_hash: "18f594aecc8362f94d0524318935eafd211fe61216043d007325069329fa2e62"
 sources:
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
-quality_score: 0
+quality_score: 100
 concepts:
   - hope-architecture
 related:
-  - "[[Titans Architecture]]"
   - "[[Nested Learning Paradigm]]"
   - "[[Introducing Nested Learning: A New ML Paradigm for Continual Learning]]"
 tier: hot
@@ -55,7 +54,7 @@ Bar charts illustrate Hope's superior performance in language modeling (lower pe
 
 ## Relationship to Other Concepts
 
-- **[[Titans Architecture]]** — Hope extends Titans by introducing unbounded levels of in-context learning and CMS blocks.
+- **Titans Architecture** — Hope extends Titans by introducing unbounded levels of in-context learning and CMS blocks.
 - **[[Nested Learning Paradigm]]** — Hope is a proof-of-concept implementation of Nested Learning principles.
 
 ## Practical Applications

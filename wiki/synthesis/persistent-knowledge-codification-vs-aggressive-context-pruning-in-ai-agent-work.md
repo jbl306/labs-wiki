@@ -8,16 +8,14 @@ sources:
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
   - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
-quality_score: 0
+quality_score: 100
 concepts:
   - context-hygiene-principle
   - institutional-memory-principle
 related:
   - "[[The Context Hygiene Principle]]"
-  - "[[Context Hygiene Principle]]"
   - "[[The Institutional Memory Principle | 10 Claude Code Principles]]"
   - "[[The Institutional Memory Principle]]"
-  - "[[Institutional Memory Principle]]"
 tier: hot
 tags: [AI agent workflows, knowledge management, prompt engineering, context hygiene, institutional memory]
 ---
@@ -34,7 +32,7 @@ Persistent codification (Institutional Memory Principle) and aggressive context 
 
 ## Comparison
 
-| Dimension | [[Institutional Memory Principle]] | [[Context Hygiene Principle]] |
+| Dimension | Institutional Memory Principle | Context Hygiene Principle |
 |-----------|---------------------||---------------------|
 | Knowledge Persistence | Mandates codification of project-specific rules, patterns, and mistakes in a persistent, version-controlled handbook accessible to all agents and developers. | Treats context window space as scarce; advocates for aggressive pruning of irrelevant or outdated information to maximize model accuracy. |
 | Context Size and Relevance | Handbook grows as rules accumulate; regular pruning is required to prevent context bloat and maintain relevance. | Minimizes context size by removing stale or redundant information; prioritizes placement of critical instructions at the start or end of prompt. |

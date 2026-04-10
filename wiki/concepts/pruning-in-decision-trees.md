@@ -6,12 +6,10 @@ last_verified: 2026-04-08
 source_hash: "8068cff7cb6d79c87388b9b9408f59c8234c6cee6ef3847d205df8a8b7b53210"
 sources:
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - pruning-in-decision-trees
 related:
-  - "[[Underfitting and Overfitting in ML]]"
-  - "[[Cross Validation in Machine Learning]]"
   - "[[Decision Tree - GeeksforGeeks]]"
 tier: hot
 tags: [pruning, overfitting, model-simplification, tree-based-models]
@@ -59,8 +57,8 @@ No specific pruning diagram in the source, but the generic tree diagram illustra
 
 ## Relationship to Other Concepts
 
-- **[[Underfitting and Overfitting in ML]]** — Pruning is a technique to manage the balance between overfitting and underfitting.
-- **[[Cross Validation in Machine Learning]]** — Cross-validation is used to validate pruning effectiveness and tune parameters.
+- **Underfitting and Overfitting in ML** — Pruning is a technique to manage the balance between overfitting and underfitting.
+- **Cross Validation in Machine Learning** — Cross-validation is used to validate pruning effectiveness and tune parameters.
 
 ## Practical Applications
 

@@ -7,15 +7,13 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - support-vector-machine
   - decision-tree
 related:
   - "[[Support Vector Machine Algorithm]]"
   - "[[Support Vector Machine (SVM) Algorithm - GeeksforGeeks]]"
-  - "[[Support Vector Machine]]"
-  - "[[Decision Tree]]"
   - "[[Decision Tree Algorithm]]"
 tier: hot
 tags: [machine learning, classification, SVM, decision tree, interpretability, robustness]
@@ -33,7 +31,7 @@ SVM and Decision Tree algorithms offer contrasting approaches to classification:
 
 ## Comparison
 
-| Dimension | [[Support Vector Machine]] | [[Decision Tree]] |
+| Dimension | Support Vector Machine | Decision Tree |
 |-----------|---------------------||---------------------|
 | Decision Boundary Flexibility | Uses hyperplanes; can handle both linear and non-linear boundaries via kernel functions (e.g., RBF, polynomial). | Creates axis-aligned splits; boundaries are piecewise and can model non-linear relationships but are limited to hierarchical splits. |
 | Robustness to Outliers | Robust due to margin maximization; only support vectors (closest points) affect the boundary. | Sensitive to outliers; deep trees can overfit to noise unless pruned. |

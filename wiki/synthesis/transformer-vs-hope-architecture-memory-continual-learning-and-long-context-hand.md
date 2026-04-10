@@ -7,14 +7,13 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
   - raw/2026-04-07-transformer-architecture-note.md
-quality_score: 0
+quality_score: 100
 concepts:
   - transformer
   - hope
 related:
   - "[[Transformer Architecture]]"
   - "[[Hope Architecture]]"
-  - "[[Transformer]]"
   - "[[Hope]]"
   - "[[Introducing Nested Learning: A New ML Paradigm for Continual Learning]]"
 tier: hot
@@ -33,7 +32,7 @@ Transformer and Hope architectures diverge sharply in their approaches to memory
 
 ## Comparison
 
-| Dimension | [[Transformer]] | [[Hope]] |
+| Dimension | Transformer | [[Hope]] |
 |-----------|---------------------||---------------------|
 | Memory Management | Uses self-attention to capture dependencies; memory is implicit in attention weights and limited by quadratic scaling with sequence length. | Employs continuum memory system (CMS) blocks with multi-frequency updates, enabling explicit, scalable memory management and prioritization of information. |
 | Continual Learning Capability | Lacks built-in continual learning; parameters are fixed after training, and adaptation requires retraining or fine-tuning. | Supports infinite, looped in-context learning levels; self-modifying recurrent structure allows dynamic adaptation and continual learning. |

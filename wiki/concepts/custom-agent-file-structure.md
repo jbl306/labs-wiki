@@ -6,12 +6,10 @@ last_verified: 2026-04-08
 source_hash: "f15329dffe4f35b2509a04e3f7c3e97f8a038943740f52a8d082de1b4c3bd472"
 sources:
   - raw/2026-04-07-custom-agents-in-vs-code.md
-quality_score: 0
+quality_score: 100
 concepts:
   - custom-agent-file-structure
 related:
-  - "[[Custom Agents in VS Code]]"
-  - "[[Agent Skills]]"
   - "[[Custom Agents in VS Code]]"
 tier: hot
 tags: [agent, vs-code, file-format, yaml, markdown]
@@ -117,7 +115,7 @@ No specific diagram, but the second image shows the Chat Customizations editor w
 ## Relationship to Other Concepts
 
 - **[[Custom Agents in VS Code]]** — The file structure is the foundation for defining custom agents.
-- **[[Agent Skills]]** — Skills can be referenced or used within custom agent instructions.
+- **Agent Skills** — Skills can be referenced or used within custom agent instructions.
 
 ## Practical Applications
 

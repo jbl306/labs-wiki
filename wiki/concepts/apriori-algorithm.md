@@ -6,12 +6,10 @@ last_verified: 2026-04-08
 source_hash: "8198d9aadc30c60df6456d83ba4231bd753980c7e1788975924e28655780b91d"
 sources:
   - raw/2026-04-08-apriori-algorithm-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - apriori-algorithm
 related:
-  - "[[Frequent Pattern Growth Algorithm]]"
-  - "[[ECLAT Algorithm]]"
   - "[[Apriori Algorithm - GeeksforGeeks]]"
 tier: hot
 tags: [machine-learning, association-rule-mining, apriori, market-basket-analysis, data-mining]
@@ -98,8 +96,8 @@ Several tables illustrate the algorithm's steps: (1) a transaction table showing
 
 ## Relationship to Other Concepts
 
-- **[[Frequent Pattern Growth Algorithm]]** — FP-Growth is a more efficient alternative for mining frequent itemsets without candidate generation.
-- **[[ECLAT Algorithm]]** — ECLAT uses a vertical data format and intersection for itemset mining, contrasting with Apriori's horizontal format.
+- **Frequent Pattern Growth Algorithm** — FP-Growth is a more efficient alternative for mining frequent itemsets without candidate generation.
+- **ECLAT Algorithm** — ECLAT uses a vertical data format and intersection for itemset mining, contrasting with Apriori's horizontal format.
 
 ## Practical Applications
 

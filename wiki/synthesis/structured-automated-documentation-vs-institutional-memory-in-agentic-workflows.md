@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - living-documentation-principle
   - institutional-memory-principle
@@ -15,8 +15,6 @@ related:
   - "[[The Living Documentation Principle]]"
   - "[[The Living Documentation Principle | 10 Claude Code Principles]]"
   - "[[The Institutional Memory Principle]]"
-  - "[[Living Documentation Principle]]"
-  - "[[Institutional Memory Principle]]"
 tier: hot
 tags: [documentation, agentic workflows, automation, organizational knowledge, AI agents]
 ---
@@ -33,7 +31,7 @@ Structured, automated documentation (Living Documentation Principle) focuses on 
 
 ## Comparison
 
-| Dimension | [[Living Documentation Principle]] | [[Institutional Memory Principle]] |
+| Dimension | Living Documentation Principle | Institutional Memory Principle |
 |-----------|---------------------||---------------------|
 | Automation vs. Manual Curation | Relies on automated CI jobs to check documentation freshness, structured formats for machine-readability, and versioning alongside code changes. | Depends on manual codification of mistakes, regular handbook pruning, and team discipline in updating and maintaining rules with rationales. |
 | Scope | Targets operational conventions, coding standards, and architectural decisions—primarily for agent consumption and operational reliability. | Encompasses broader organizational knowledge, including anti-patterns, past mistakes, and rationale for rules—benefiting both agents and humans. |

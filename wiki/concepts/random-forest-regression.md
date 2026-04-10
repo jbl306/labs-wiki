@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "c416ac4343f4c0527a11dd49091844dea872ec108e2a44ceafe3b1b39425d0e3"
 sources:
   - raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - random-forest-regression
 related:
   - "[[Decision Tree Algorithm]]"
-  - "[[Bagging]]"
   - "[[AdaBoost Algorithm]]"
   - "[[Random Forest Regression in Python - GeeksforGeeks]]"
 tier: hot
@@ -105,7 +104,7 @@ One diagram compares a single decision tree (single path prediction) to a random
 ## Relationship to Other Concepts
 
 - **[[Decision Tree Algorithm]]** — Random Forest builds on decision trees by aggregating many trees for improved performance.
-- **[[Bagging]]** — Bagging is the core technique used to create diverse trees in Random Forest.
+- **Bagging** — Bagging is the core technique used to create diverse trees in Random Forest.
 - **[[AdaBoost Algorithm]]** — Both are ensemble methods, but AdaBoost uses boosting while Random Forest uses bagging.
 
 ## Practical Applications

@@ -6,13 +6,10 @@ last_verified: 2026-04-08
 source_hash: "5380388bec62eebb61d0e40915eb60f05cf82459ab6250e8951020d927eefc0d"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - support-vector-machine-algorithm
 related:
-  - "[[Kernel]]"
-  - "[[Hinge Loss]]"
-  - "[[Dual Problem]]"
   - "[[Support Vector Machine (SVM) Algorithm - GeeksforGeeks]]"
 tier: hot
 tags: [machine-learning, classification, regression, kernel-methods, optimization]
@@ -105,9 +102,9 @@ Several diagrams illustrate SVM concepts:
 
 ## Relationship to Other Concepts
 
-- **[[Kernel]]** — Kernel functions are used in SVM to enable non-linear classification.
-- **[[Hinge Loss]]** — Hinge loss is the penalty function used in SVM optimization.
-- **[[Dual Problem]]** — The dual formulation is central to SVM's efficient computation and kernel trick.
+- **Kernel** — Kernel functions are used in SVM to enable non-linear classification.
+- **Hinge Loss** — Hinge loss is the penalty function used in SVM optimization.
+- **Dual Problem** — The dual formulation is central to SVM's efficient computation and kernel trick.
 
 ## Practical Applications
 

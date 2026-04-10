@@ -8,16 +8,14 @@ sources:
   - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
   - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
   - raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - adaboost
   - random-forests
 related:
-  - "[[Random Forests]]"
   - "[[Top 15 Machine Learning Algorithms Every Data Scientist Should Know in 2025]]"
   - "[[Random Forest Regression]]"
   - "[[AdaBoost Algorithm]]"
-  - "[[AdaBoost]]"
 tier: hot
 tags: [ensemble learning, AdaBoost, Random Forests, accuracy, robustness, interpretability, machine learning]
 ---
@@ -34,7 +32,7 @@ AdaBoost and Random Forests represent two distinct ensemble learning paradigms: 
 
 ## Comparison
 
-| Dimension | [[AdaBoost]] | [[Random Forests]] |
+| Dimension | AdaBoost | Random Forests |
 |-----------|---------------------||---------------------|
 | Ensemble Mechanism | Sequential boosting; each weak learner is trained to correct errors from previous learners, with sample weights updated after each iteration. | Parallel bagging; multiple decision trees are trained independently on bootstrap samples and random feature subsets, predictions are averaged. |
 | Handling of Misclassified Instances | Explicitly upweights misclassified samples, forcing subsequent learners to focus on hard cases. | No explicit focus; each tree is trained on random subsets, so misclassified instances are not specifically targeted. |

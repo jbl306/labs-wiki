@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "5f635969f0ddd587b6295138d202654a9ab042a49563b6eeaa3f303248112b44"
 sources:
   - raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
-quality_score: 0
+quality_score: 100
 concepts:
   - the-living-documentation-principle
 related:

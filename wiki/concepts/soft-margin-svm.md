@@ -6,12 +6,11 @@ last_verified: 2026-04-08
 source_hash: "5380388bec62eebb61d0e40915eb60f05cf82459ab6250e8951020d927eefc0d"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
-quality_score: 0
+quality_score: 100
 concepts:
   - soft-margin-svm
 related:
   - "[[Support Vector Machine Algorithm]]"
-  - "[[Hinge Loss]]"
   - "[[Support Vector Machine (SVM) Algorithm - GeeksforGeeks]]"
 tier: hot
 tags: [machine-learning, classification, robustness, regularization]
@@ -66,7 +65,7 @@ A diagram shows a blue outlier within the boundary of red points. The SVM hyperp
 ## Relationship to Other Concepts
 
 - **[[Support Vector Machine Algorithm]]** — Soft margin is an extension of the standard SVM for non-separable data.
-- **[[Hinge Loss]]** — Hinge loss is used to penalize margin violations in soft margin SVM.
+- **Hinge Loss** — Hinge loss is used to penalize margin violations in soft margin SVM.
 
 ## Practical Applications
 

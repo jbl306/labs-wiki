@@ -2,7 +2,7 @@
 
 Post-deployment roadmap extracted from [mempalace-evaluation.md](mempalace-evaluation.md) Phases 2-4.
 
-**Status:** Phase 1 (Deploy & Mine) is complete. Phase 2 (Migrate & Retire) is complete.
+**Status:** Phase 1-4 complete. All actionable items implemented (2026-04-11). See [implementation report](mempalace-implementation-report.md).
 
 ---
 
@@ -18,44 +18,36 @@ Post-deployment roadmap extracted from [mempalace-evaluation.md](mempalace-evalu
 - [x] Create bridge script (mempalace-bridge.sh)
 - [x] Create docs/12-mempalace-setup.md
 - [x] Validate compose config, search, MCP server
+- [x] **Mine 50 Copilot CLI sessions** — 3,776 drawers in `copilot_sessions` wing (2026-04-11)
+- [x] **Wiki → MemPalace injection** — 158 wiki pages (85 concepts, 52 entities, 21 synthesis) in `labs_wiki_knowledge` wing (2026-04-11)
+- [x] **Bootstrap agent wings** — 4 wings (copilot_cli, opencode, code_reviewer, ops) with 12 rooms (2026-04-11)
+- [x] **Grafana cleanup** — Removed stale AI & Memory row with qdrant/openmemory panels (2026-04-11)
+- [x] **Re-mine cron job** — Weekly Sunday 3am cron via `mempalace-remine.sh` (2026-04-11)
+- [x] **Wiki injection script** — `scripts/wiki_to_mempalace.py` for repeatable injection (2026-04-11)
 
 ---
 
-## Phase 3: Deepen Integration
+## Phase 3: Deepen Integration ✅
 
-### 3.1 Mine Conversation History
+### 3.1 Mine Conversation History ✅
 
-Export and mine existing AI conversation sessions for long-term memory.
-
-```bash
-# Mine Copilot CLI session artifacts:
-mempalace mine ~/.copilot/session-state --mode convos
-
-# Mine OpenCode session history (if exported):
-mempalace mine ~/.opencode/sessions --mode convos
-```
-
-**Priority:** Medium — conversations contain decisions, debugging patterns, and architecture choices not captured in code.
-
-> **Note:** Copilot CLI stores session state at `~/.copilot/session-state/` with plan.md and checkpoint files. OpenCode stores sessions in its own format. Both are valuable mining targets.
-
-### 3.2 Wiki Context Injection (L2 Layer)
-
-Add labs-wiki content to MemPalace's L2 on-demand layer so conversations can pull from compiled wiki knowledge.
-
-**Approach:** Write a script that exports key wiki concepts as MemPalace drawers in a `labs_wiki_knowledge` wing. Run periodically after wiki updates.
+**Completed 2026-04-11.** Mined all 50 Copilot CLI sessions (200 files → 3,776 drawers) into `copilot_sessions` wing.
 
 ```bash
-# Concept: wiki pages → mempalace drawers
-for page in wiki/concepts/*.md wiki/synthesis/*.md; do
-    content=$(cat "$page")
-    wing="labs_wiki_knowledge"
-    room=$(basename "$page" .md)
-    mempalace add-drawer --wing "$wing" --room "$room" --content "$content"
-done
+# Re-mine (handled by weekly cron):
+mempalace mine ~/.copilot/session-state --mode convos --wing copilot_sessions
 ```
 
-**Priority:** High — this closes the labs-wiki → MemPalace direction of the bridge.
+> **Note:** OpenCode sessions (`~/.opencode/`) don't contain conversation exports yet — only package metadata. Will be mined when session data accumulates.
+
+### 3.2 Wiki Context Injection (L2 Layer) ✅
+
+**Completed 2026-04-11.** Created `scripts/wiki_to_mempalace.py` — injects 158 wiki pages (concepts + synthesis + entities) into `labs_wiki_knowledge` wing. Included in weekly re-mine cron.
+
+```bash
+# Manual run:
+/home/jbl/.local/share/pipx/venvs/mempalace/bin/python scripts/wiki_to_mempalace.py
+```
 
 ### 3.3 Unified Entity Namespace
 
@@ -70,34 +62,22 @@ Ensure entities in labs-wiki and MemPalace KG don't diverge:
 
 ## Phase 4: Advanced Features
 
-### 4.1 Auto-Save Hooks
+### 4.1 Auto-Save Hooks ✅ (via cron)
 
-Configure hooks for Copilot CLI and OpenCode sessions to auto-save context:
+**Completed 2026-04-11.** Weekly re-mine cron job replaces per-session hooks:
 
 ```bash
-mempalace hook --setup  # if supported in v3.1.0
+# Cron entry (Sunday 3am):
+0 3 * * 0 /home/jbl/projects/homelab/scripts/mempalace-remine.sh
 ```
 
-**Copilot CLI integration:**
-- Copilot CLI uses `~/.copilot/mcp-config.json` for MCP (already configured)
-- Session checkpoints at `~/.copilot/session-state/` can be mined periodically
-- Custom instructions in repos (`.github/copilot-instructions.md`) can prompt MemPalace writes
+Mines: homelab, labs-wiki, Copilot CLI sessions, and wiki pages.
 
-**OpenCode integration:**
-- OpenCode uses `config/opencode/opencode.json` for MCP config (already configured)
-- OpenCode sessions contain rich multi-turn context ideal for mining
-- The `mempalace_diary_write` MCP tool can be invoked by either client
+> **Note:** `mempalace hook run` only supports `--harness claude-code` and `--harness codex` — no Copilot CLI or OpenCode harness. Cron-based re-mining is the practical alternative until upstream adds support.
 
-**Hook types:**
-- **Stop hook:** Every 15 human exchanges → save key topics/decisions
-- **PreCompact hook:** Before context compaction → comprehensive save
-- **Session-start:** Initialize state tracking
+### 4.2 Agent-Specific Wings ✅
 
-**Priority:** High — this is the main mechanism for MemPalace to capture conversational memory without manual intervention.
-
-### 4.2 Agent-Specific Wings
-
-Create dedicated wings for different AI agent roles and clients:
+**Completed 2026-04-11.** Bootstrapped 4 wings with 12 rooms:
 
 | Wing | Purpose |
 |------|---------|
@@ -108,9 +88,7 @@ Create dedicated wings for different AI agent roles and clients:
 
 Both Copilot CLI and OpenCode connect via MemPalace MCP — diary entries and drawer writes from either client land in the shared palace. Wing names distinguish the source.
 
-**Priority:** Medium — useful once conversation mining is active.
-
-### 4.3 Palace Graph Exploration
+### 4.3 Palace Graph Exploration — Deferred
 
 The palace graph connects rooms across wings via shared entities ("tunnels"). Use this for:
 - Cross-project knowledge discovery
@@ -143,13 +121,11 @@ MemPalace has no web UI (unlike OpenMemory's `openmemory-ui`). Options:
 
 ## Cleanup Tasks
 
-### Remove Stale Grafana Panels
-`config/grafana/dashboards/docker-services.json` still references `qdrant`, `openmemory-mcp`, `openmemory-ui` containers. These panels will show empty data. Either:
-- Remove the memory section from the dashboard
-- Replace with MemPalace stats (palace size, drawer count) if exposable
+### Remove Stale Grafana Panels ✅
+**Completed 2026-04-11.** Removed entire "🧠 AI & Memory" row from `config/grafana/dashboards/docker-services.json`. The row targeted `qdrant|openmemory-mcp|openmemory-ui` containers that no longer exist.
 
 ### Delete OpenMemory Data (After 30-Day Hold)
-After verifying MemPalace works reliably:
+After verifying MemPalace works reliably (hold until 2026-05-10):
 ```bash
 # On the server (not dev machine)
 rm -rf /opt/homelab/data/qdrant/
@@ -157,14 +133,8 @@ rm -rf /opt/homelab/data/openmemory/
 rm -rf /opt/homelab/config/openmemory/
 ```
 
-### Re-mine After Major Changes
-Set a cadence to re-mine projects after significant changes:
-```bash
-mempalace mine ~/projects/homelab
-mempalace mine ~/projects/labs-wiki
-```
-
-Consider a cron job or post-commit hook for automated re-mining.
+### Re-mine After Major Changes ✅
+**Completed 2026-04-11.** Weekly cron job (`mempalace-remine.sh`) re-mines homelab, labs-wiki, Copilot sessions, and wiki pages every Sunday at 3am.
 
 ---
 

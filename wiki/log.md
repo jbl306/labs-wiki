@@ -1167,4 +1167,21 @@
   source: raw/2026-04-10-251224601v2pdf.md
   status: success
   notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-11T02:53:59+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/mempalace-github-repository.md
+    - wiki/concepts/palace-memory-architecture.md
+    - wiki/concepts/aaak-compression-dialect.md
+    - wiki/concepts/contradiction-detection-utility.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/aaak-compression-dialect.md
+    - wiki/entities/chromadb.md
+    - wiki/entities/mcp-mempalace-control-protocol.md
+    - wiki/synthesis/spatially-organized-memory-vs-llm-maintained-persistent-wiki-long-term-ai-recall.md
+  source: raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
+  status: success
+  notes: "Auto-ingested 9 pages (3 concepts, 4 entities, 1 synthesis)"
 ```

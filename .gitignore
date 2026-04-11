@@ -29,3 +29,5 @@ build/
 # OpenCode symlinks are tracked (they point to .github/skills/)
 # but don't track OpenCode DB or state
 .opencode/state/
+mempalace.yaml
+entities.json

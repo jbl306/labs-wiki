@@ -94,7 +94,7 @@ Lossy compression format: entities → 3-letter codes, key quotes preserved, emo
 
 ### Auto-Save Hooks
 
-Hooks into Claude Code / Codex sessions:
+Hooks into AI coding sessions (Copilot CLI, OpenCode, Claude Code, Codex):
 - **Stop hook:** Every 15 human exchanges, blocks AI to save key topics/decisions
 - **PreCompact hook:** Before context compaction, comprehensive save (urgent)
 - **Session-start:** Initialize state tracking
@@ -257,7 +257,7 @@ These serve fundamentally different purposes:
 - 4-layer memory stack is elegant token budget management
 - Agent diaries enable specialized agent memory (reviewer, architect, ops)
 - Temporal KG provides "when was this true?" queries
-- Mining existing Claude Code sessions retroactively recovers lost context
+- Mining existing Copilot CLI/OpenCode sessions retroactively recovers lost context
 - Palace graph discovers unexpected cross-domain connections
 
 **Cons:**
@@ -282,7 +282,7 @@ These serve fundamentally different purposes:
 - OpenMemory's simplicity (4 tools) was easy to use — MemPalace has 19 tools (steeper learning curve)
 - Qdrant is more battle-tested at scale than ChromaDB
 
-**Mitigation for web UI loss:** MemPalace data is in ChromaDB + SQLite — a simple Flask/FastAPI viewer could be built if needed. Or browse via MCP tools in Claude Code.
+**Mitigation for web UI loss:** MemPalace data is in ChromaDB + SQLite — a simple Flask/FastAPI viewer could be built if needed. Or browse via MCP tools in Copilot CLI / OpenCode.
 
 ---
 
@@ -319,7 +319,7 @@ These serve fundamentally different purposes:
 
 ### Implementation Priority
 
-1. **Phase 1:** Deploy MemPalace standalone, mine existing Claude Code sessions
+1. **Phase 1:** Deploy MemPalace standalone, mine existing Copilot CLI / OpenCode sessions
 2. **Phase 2:** Build bridge script for MemPalace → labs-wiki flow
 3. **Phase 3:** Add wiki context injection to MemPalace L2 layer
 
@@ -354,20 +354,32 @@ Key projects: labs-wiki, homelab, trading systems.
 EOF
 ```
 
-**MCP Configuration (Claude Code):**
+**MCP Configuration (Copilot CLI — `~/.copilot/mcp-config.json`):**
 ```json
 {
     "mcpServers": {
         "mempalace": {
-            "command": "mempalace",
-            "args": ["mcp"],
-            "env": {
-                "MEMPAL_PALACE_PATH": "/home/jbl/.mempalace/palace"
-            }
+            "type": "stdio",
+            "command": "/home/jbl/.local/share/pipx/venvs/mempalace/bin/python",
+            "args": ["-m", "mempalace.mcp_server"]
         }
     }
 }
 ```
+
+**MCP Configuration (OpenCode — `config/opencode/opencode.json`):**
+```json
+{
+    "mcp": {
+        "mempalace": {
+            "command": "/home/jbl/.local/share/pipx/venvs/mempalace/bin/python",
+            "args": ["-m", "mempalace.mcp_server"]
+        }
+    }
+}
+```
+
+> **Note:** The MCP server is invoked via `python -m mempalace.mcp_server` (not `mempalace mcp` — that subcommand doesn't exist). Use the pipx venv Python binary directly.
 
 ### Option B: Docker Container
 
@@ -406,17 +418,23 @@ mempalace mine ~/projects/labs-wiki --wing labs-wiki
 # Mine homelab project
 mempalace mine ~/projects/homelab --wing homelab
 
-# Mine existing Claude Code conversations (if exported)
-mempalace mine-convo ~/.claude/conversations --wing claude-sessions
+# Mine existing Copilot CLI session artifacts (if available)
+mempalace mine ~/.copilot/session-state --mode convos --wing copilot-sessions
+
+# Mine OpenCode session history (if exported)
+mempalace mine ~/.opencode/sessions --mode convos --wing opencode-sessions
 ```
 
-#### Step 3: Configure Claude Code MCP
-Add MemPalace MCP server to `~/.claude/settings.json` or project `.mcp.json`.
+#### Step 3: Configure MCP for Copilot CLI and OpenCode
+- **Copilot CLI:** Add MemPalace to `~/.copilot/mcp-config.json` (stdio transport)
+- **OpenCode:** Add MemPalace to `config/opencode/opencode.json` MCP section
 
 #### Step 4: Configure Auto-Save Hooks
 ```bash
-# Claude Code hooks (auto-save every 15 exchanges)
-cp -r mempalace/.claude-plugin/* ~/.claude/
+# MemPalace hooks work with any MCP-connected client
+# Both Copilot CLI and OpenCode can invoke mempalace_diary_write
+# and mempalace_add_drawer via MCP during sessions
+mempalace hook --setup  # if supported
 ```
 
 #### Step 5: Verify Operation
@@ -428,7 +446,7 @@ mempalace status
 mempalace search "Docker deployment" --wing homelab
 
 # Verify MCP tools respond
-# (test via Claude Code: "What's in your memory palace?")
+# (test via Copilot CLI or OpenCode: "What's in your memory palace?")
 ```
 
 #### Step 6: Retire OpenMemory
@@ -474,10 +492,10 @@ docker compose -f compose.memory.yml down
 ## 8. Timeline
 
 ### Phase 1: Deploy & Mine (immediate)
-- Install MemPalace via pip
+- Install MemPalace via pipx
 - Initialize palace with identity
 - Mine labs-wiki and homelab projects
-- Configure MCP server for Claude Code
+- Configure MCP server for Copilot CLI and OpenCode
 - Set up auto-save hooks
 - Verify basic search and recall
 
@@ -495,8 +513,8 @@ docker compose -f compose.memory.yml down
 - Test cross-system queries
 
 ### Phase 4: Advanced Features (ongoing)
-- Mine retroactive Claude Code sessions
-- Set up agent-specific wings (reviewer, architect, ops)
+- Mine retroactive Copilot CLI / OpenCode sessions
+- Set up agent-specific wings (copilot_cli, opencode, reviewer, ops)
 - Configure palace graph for cross-domain discovery
 - Evaluate AAAK dialect (likely skip — raw mode is better)
 - Consider building simple web viewer for palace browsing

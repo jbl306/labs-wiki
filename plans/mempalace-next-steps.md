@@ -28,11 +28,16 @@ Post-deployment roadmap extracted from [mempalace-evaluation.md](mempalace-evalu
 Export and mine existing AI conversation sessions for long-term memory.
 
 ```bash
-# If Claude Code conversations are exported to a directory:
-mempalace mine ~/conversations --mode convos
+# Mine Copilot CLI session artifacts:
+mempalace mine ~/.copilot/session-state --mode convos
+
+# Mine OpenCode session history (if exported):
+mempalace mine ~/.opencode/sessions --mode convos
 ```
 
 **Priority:** Medium — conversations contain decisions, debugging patterns, and architecture choices not captured in code.
+
+> **Note:** Copilot CLI stores session state at `~/.copilot/session-state/` with plan.md and checkpoint files. OpenCode stores sessions in its own format. Both are valuable mining targets.
 
 ### 3.2 Wiki Context Injection (L2 Layer)
 
@@ -67,13 +72,23 @@ Ensure entities in labs-wiki and MemPalace KG don't diverge:
 
 ### 4.1 Auto-Save Hooks
 
-Configure hooks for Claude Code sessions to auto-save context:
+Configure hooks for Copilot CLI and OpenCode sessions to auto-save context:
 
 ```bash
 mempalace hook --setup  # if supported in v3.1.0
 ```
 
-Hooks:
+**Copilot CLI integration:**
+- Copilot CLI uses `~/.copilot/mcp-config.json` for MCP (already configured)
+- Session checkpoints at `~/.copilot/session-state/` can be mined periodically
+- Custom instructions in repos (`.github/copilot-instructions.md`) can prompt MemPalace writes
+
+**OpenCode integration:**
+- OpenCode uses `config/opencode/opencode.json` for MCP config (already configured)
+- OpenCode sessions contain rich multi-turn context ideal for mining
+- The `mempalace_diary_write` MCP tool can be invoked by either client
+
+**Hook types:**
 - **Stop hook:** Every 15 human exchanges → save key topics/decisions
 - **PreCompact hook:** Before context compaction → comprehensive save
 - **Session-start:** Initialize state tracking
@@ -82,16 +97,16 @@ Hooks:
 
 ### 4.2 Agent-Specific Wings
 
-Create dedicated wings for different AI agent roles:
+Create dedicated wings for different AI agent roles and clients:
 
 | Wing | Purpose |
 |------|---------|
+| `copilot_cli` | Copilot CLI session decisions, task patterns |
+| `opencode` | OpenCode session context, multi-turn debugging |
 | `code_reviewer` | Code review patterns, recurring issues |
-| `architect` | Architecture decisions, tradeoffs |
 | `ops` | Infrastructure incidents, runbooks |
-| `debugger` | Debugging sessions, root causes |
 
-Mine role-specific conversations into the appropriate wing.
+Both Copilot CLI and OpenCode connect via MemPalace MCP — diary entries and drawer writes from either client land in the shared palace. Wing names distinguish the source.
 
 **Priority:** Medium — useful once conversation mining is active.
 

@@ -289,6 +289,7 @@ Four agent personas are defined in `agents/`. Each has:
 | Researcher | `agents/researcher.md` | Source evaluation, concept extraction, fact verification |
 | Compiler | `agents/compiler.md` | Raw → wiki page generation, cross-referencing |
 | Curator | `agents/curator.md` | Gap analysis, consolidation, synthesis creation |
+| Knowledge Curator | `agents/knowledge-curator.md` | Maintenance, MemPalace bridge, tier promotion, gap filling |
 | Auditor | `agents/auditor.md` | Quality scoring, staleness detection, link repair |
 
 ---

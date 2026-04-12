@@ -359,6 +359,258 @@ Incorporate AutoAgent patterns into existing infrastructure:
 
 ---
 
+## Creating Custom Agents for Homelab & Projects
+
+AutoAgent's agent editor lets you define agents entirely through natural language, but the **more practical approach** for your stack is to build agents using the tools you already have — Copilot CLI custom agents (AGENTS.md), OpenCode agents, and MCP skills. Here's how to create and improve agents tailored to your homelab and projects.
+
+### Agent Opportunities by Domain
+
+#### 1. Homelab Infrastructure Agent
+
+**Purpose**: Monitor, diagnose, and fix homelab service issues autonomously.
+
+**What it would do:**
+- Check container health across all compose stacks (proxy, monitoring, media, cloud, photos, wiki, nba-ml, stremio, riven)
+- Diagnose failing services using `docker logs`, Prometheus metrics, and Grafana alerts
+- Restart crashed containers, trigger `scripts/ops/deploy.sh` for redeployment
+- Run `scripts/monitoring/runtime-smoke-test.sh` and interpret results
+- Sync DNS rewrites, check Uptime Kuma, rotate backups
+- Notify via ntfy on issues found/resolved
+
+**Implementation (Copilot CLI custom agent):**
+```markdown
+# agents/homelab-ops.md
+Identity: Homelab Infrastructure Agent
+Activation: @homelab-ops or when user asks about service health, containers, deployment
+Tools: bash (docker compose, curl, scripts/ops/*, scripts/monitoring/*)
+Priority: availability > correctness > speed > verbosity
+
+Rules:
+1. Always check `docker ps --format '{{.Names}} {{.Status}}'` first
+2. For failing services, read last 50 log lines before acting
+3. Never restart database containers without checking active connections
+4. Use compose profiles: `docker compose -f compose/<stack>.yml ...`
+5. Post ntfy notification for any restart or fix action
+6. Check Grafana dashboard panels via Prometheus API before declaring healthy
+```
+
+**Key compose stacks to cover:**
+| Stack | File | Critical Services |
+|-------|------|-------------------|
+| Proxy | `compose.proxy.yml` | caddy |
+| Monitoring | `compose.monitoring.yml` | prometheus, grafana, cadvisor |
+| Media | `compose.media.yml` | plex, jellyfin, seerr |
+| Cloud | `compose.cloud.yml` | nextcloud, nextcloud-db |
+| Wiki | `compose.wiki.yml` | wiki-ingest-api, wiki-auto-ingest |
+| NBA-ML | `compose.nba-ml.yml` | nba-ml-db, nba-ml-api, nba-ml-scheduler |
+| Photos | `compose.photos.yml` | immich-server, immich-machine-learning |
+| Riven | `compose.riven.yml` | riven, riven-frontend, riven-db |
+
+#### 2. NBA-ML Engine Agent
+
+**Purpose**: Operate, debug, and improve the nba-ml-engine ML pipeline.
+
+**What it would do:**
+- Run daily pipeline: `python main.py ingest --daily && python main.py predict`
+- Diagnose pipeline failures (UniqueViolation on prop_line_snapshot, API rate limits, stale data)
+- Monitor model health: ECE calibration, hit rates, PSI drift scores
+- Trigger retraining when drift exceeds threshold: `python main.py train`
+- Run backtests and compare against production: `python main.py backtest`
+- Analyze feature importance via SHAP and suggest feature engineering improvements
+- Query TimescaleDB (nba-ml-db on port 5433) for ad-hoc analysis
+- Check MLflow experiment tracking (port 5000) for model registry status
+
+**Implementation (Copilot CLI custom agent):**
+```markdown
+# agents/nba-ml.md
+Identity: NBA-ML Pipeline Agent
+Activation: @nba-ml or when user asks about predictions, model health, props, training
+Tools: bash (python main.py, psql, curl), MCP (labs-wiki for knowledge lookup)
+Priority: data integrity > prediction accuracy > pipeline reliability > speed
+
+Rules:
+1. Always check nba-ml-db health first: `pg_isready -h localhost -p 5433`
+2. For pipeline failures, check scheduler logs: `docker logs nba-ml-scheduler --tail 100`
+3. Never run `python main.py train` during game hours (6PM-1AM ET)
+4. After any model change, run `python main.py evaluate` to validate
+5. Compare predictions against actual results using backtest data
+6. Post weekly performance report to ntfy
+7. Check prop line freshness — stale lines (>6hrs) should trigger re-fetch
+```
+
+**Pipeline commands reference:**
+```bash
+python main.py init           # Initialize DB tables
+python main.py ingest --daily # Daily incremental data fetch
+python main.py ingest --props # Fetch prop lines only
+python main.py ingest --injuries # Fetch injury report
+python main.py train          # Train all models
+python main.py predict        # Generate predictions
+python main.py backtest       # Run prediction backtesting
+python main.py evaluate       # Evaluate on holdout set
+python main.py serve          # Start FastAPI API server
+```
+
+#### 3. Knowledge Curator Agent
+
+**Purpose**: Continuously improve labs-wiki quality and coverage.
+
+**What it would do:**
+- Run weekly lint: `python3 scripts/lint_wiki.py`
+- Identify stale pages (`last_verified` > 90 days) and refresh them
+- Detect gap topics from MemPalace conversations that lack wiki pages
+- Generate synthesis pages from clusters of related concepts
+- Cross-reference new sources against existing wiki content
+- Promote pages through tiers: hot → established → core
+
+**Implementation**: Already partially exists via `@wiki-lint`, `@wiki-orchestrate`, `@wiki-curator` skills. Enhance by:
+- Adding a `scripts/weekly_curator.sh` cron job (pair with `mempalace-remine.sh`)
+- Using MemPalace search to find frequently-discussed topics not yet in wiki
+- Auto-generating synthesis pages for clusters of 3+ related concepts
+
+#### 4. DevOps/Deploy Agent
+
+**Purpose**: Handle deployments, updates, and infrastructure changes.
+
+**What it would do:**
+- Run `scripts/ops/deploy.sh` for service updates
+- Execute `scripts/ops/backup.sh` before risky changes
+- Handle Docker image updates via DIUN notifications
+- Run `scripts/monitoring/runtime-smoke-test.sh` after deployments
+- Manage Cloudflare tunnel config (`compose.tunnel.yml`)
+- Update AdGuard DNS rewrites via `scripts/ops/sync-dns-rewrites.sh`
+
+### How to Build These Agents
+
+#### Method 1: Copilot CLI Custom Agents (Recommended)
+
+Create agent files in your project's `agents/` directory or reference in `AGENTS.md`:
+
+```bash
+# In any project repo
+mkdir -p agents/
+cat > agents/my-agent.md << 'EOF'
+# Agent Name
+Identity: Short description
+Activation: trigger keywords
+Tools: allowed tools
+Priority: p1 > p2 > p3
+
+## Operating Rules
+1. Rule one
+2. Rule two
+
+## Knowledge
+- Context-specific facts the agent needs
+EOF
+```
+
+**Copilot CLI** loads agents from `AGENTS.md` and `agents/` automatically. Invoke with `@agent-name` in chat or let the triage system route to them.
+
+#### Method 2: OpenCode Agents
+
+Define in `opencode.json` (already exists in labs-wiki):
+
+```json
+{
+  "agents": {
+    "homelab-ops": {
+      "description": "Homelab infrastructure operations",
+      "instructions": "agents/homelab-ops.md"
+    },
+    "nba-ml": {
+      "description": "NBA-ML pipeline operations",
+      "instructions": "agents/nba-ml.md"
+    }
+  }
+}
+```
+
+#### Method 3: AutoAgent's Agent Editor (If Deployed)
+
+If you deploy AutoAgent (Option B), you can create agents interactively:
+
+```bash
+auto main  # Select "agent editor" mode
+
+# Then describe in natural language:
+# "Create an agent that monitors Docker containers, reads
+#  prometheus metrics, and restarts unhealthy services.
+#  It should check health every 5 minutes and notify via
+#  ntfy.sh when it takes action."
+```
+
+AutoAgent will generate the tool code, agent definition, and register it automatically. The generated artifacts can then be ported back to Copilot CLI agent definitions.
+
+#### Method 4: MCP Skills (For labs-wiki Integration)
+
+Create skills in `.github/skills/` that wrap complex operations:
+
+```bash
+# .github/skills/nba-ml-health/SKILL.md
+# Checks NBA-ML pipeline health: DB connectivity,
+# model freshness, prediction accuracy, prop line staleness
+```
+
+Skills are invoked via `/skill-name` in Copilot CLI and can be chained in orchestration workflows.
+
+### Improving Agents Over Time
+
+#### Feedback Loop
+
+```
+Agent executes task
+    │
+    ├── Success → Log to MemPalace (copilot_sessions wing)
+    │             Weekly re-mine captures patterns
+    │
+    └── Failure/Correction → Update tasks/lessons.md
+                             Add prevention rule to agent definition
+                             Re-mine updated agent files
+```
+
+#### Metrics to Track
+
+| Metric | How to Measure | Target |
+|--------|---------------|--------|
+| Task success rate | Count corrections in lessons.md | > 90% |
+| Pipeline reliability | ntfy failure notifications | < 1/week |
+| Knowledge freshness | Wiki lint stale page count | < 10% stale |
+| Agent coverage | Manual audit of common tasks | All routine ops |
+| Response quality | User satisfaction / re-prompts needed | < 2 prompts/task |
+
+#### Iteration Cycle
+
+1. **Use the agent** for real tasks (don't just define it)
+2. **Log failures** in `tasks/lessons.md` with root cause
+3. **Update rules** in agent definition to prevent recurrence
+4. **Re-mine** agent files into MemPalace for context
+5. **Quarterly review**: prune unused agents, consolidate overlapping ones
+
+### Cross-Agent Integration Map
+
+```
+┌─────────────────────────────────────────────────────┐
+│                  MemPalace (ChromaDB)                 │
+│  copilot_sessions │ labs_wiki │ nba_ml │ homelab     │
+└────────┬──────────┴─────┬────┴───┬────┴──────┬──────┘
+         │                │        │            │
+    ┌────▼────┐    ┌──────▼──┐ ┌──▼────┐  ┌───▼──────┐
+    │Copilot  │    │labs-wiki │ │NBA-ML │  │Homelab   │
+    │CLI      │◄──►│auto-     │ │Agent  │  │Ops Agent │
+    │Sessions │    │ingest    │ │       │  │          │
+    └────┬────┘    └──────┬──┘ └──┬────┘  └───┬──────┘
+         │                │       │            │
+         └───────┬────────┘       │            │
+                 ▼                ▼            ▼
+          labs-wiki/wiki    nba-ml-engine  homelab/compose
+          (knowledge)       (predictions)  (infrastructure)
+```
+
+Each agent reads from and writes to MemPalace. The weekly re-mine cron (`mempalace-remine.sh`) keeps all project context synchronized. Labs-wiki auto-ingest captures research into the knowledge base. Agents get smarter as the palace grows.
+
+---
+
 ## Next Steps (If Proceeding)
 
 - [ ] Clone AutoAgent repo to homelab projects
@@ -369,3 +621,7 @@ Incorporate AutoAgent patterns into existing infrastructure:
 - [ ] If quality justifies: create `scripts/autoagent-research.sh` bridge
 - [ ] Cherry-pick: add REST API endpoints to wiki-ingest-api for query/lint
 - [ ] Cherry-pick: add parallel execution to wiki-orchestrate skill
+- [ ] Create `agents/homelab-ops.md` in homelab repo
+- [ ] Create `agents/nba-ml.md` in nba-ml-engine repo
+- [ ] Add agent definitions to `opencode.json` in each project
+- [ ] Set up quarterly agent review in tasks calendar

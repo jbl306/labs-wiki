@@ -278,19 +278,17 @@ Structured audit log. Every operation appends an entry:
 
 ## Agent Personas
 
-Four agent personas are defined in `agents/`. Each has:
-- **Identity** — role and focus area
-- **Priority Hierarchy** — ordered priorities (accuracy > completeness > attribution > brevity)
-- **Activation** — which skills/workflows trigger this persona
-- **Allowed Tools** — what the agent can use
+Seven agent specs are defined in `.github/agents/`. These are Copilot-format agent definitions with YAML frontmatter (name, description, tools, model).
 
-| Persona | File | Primary Role |
-|---------|------|-------------|
-| Researcher | `agents/researcher.md` | Source evaluation, concept extraction, fact verification |
-| Compiler | `agents/compiler.md` | Raw → wiki page generation, cross-referencing |
-| Curator | `agents/curator.md` | Gap analysis, consolidation, synthesis creation |
-| Knowledge Curator | `agents/knowledge-curator.md` | Maintenance, MemPalace bridge, tier promotion, gap filling |
-| Auditor | `agents/auditor.md` | Quality scoring, staleness detection, link repair |
+| Agent | File | Primary Role |
+|-------|------|-------------|
+| wiki-capture | `.github/agents/wiki-capture.agent.md` | Quick-capture URLs/text into `raw/` |
+| wiki-ingest | `.github/agents/wiki-ingest.agent.md` | Manual two-phase pipeline fallback |
+| wiki-query | `.github/agents/wiki-query.agent.md` | Search and synthesize answers |
+| wiki-lint | `.github/agents/wiki-lint.agent.md` | Quality audit, broken links, staleness |
+| wiki-update | `.github/agents/wiki-update.agent.md` | Revise pages, preserve provenance |
+| wiki-curator | `.github/agents/wiki-curator.agent.md` | Gap analysis, synthesis, consolidation |
+| wiki-orchestrate | `.github/agents/wiki-orchestrate.agent.md` | Multi-step maintenance workflows |
 
 ---
 

@@ -46,7 +46,6 @@ labs-wiki/
 │   ├── synthesis/          # Cross-cutting analysis
 │   ├── index.md            # Auto-generated topic-clustered catalog
 │   └── log.md              # Structured audit log
-├── agents/                 # Agent persona definitions
 ├── templates/              # Page templates with frontmatter
 ├── scripts/                # Python utilities (scaffold, lint, index, auto-ingest)
 ├── wiki-ingest-api/        # FastAPI capture service

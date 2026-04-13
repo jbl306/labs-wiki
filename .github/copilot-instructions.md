@@ -9,7 +9,7 @@ Personal LLM-powered knowledge wiki: `raw/` sources → `wiki/` compiled pages �
 ```
 raw/                  → Immutable source documents (never edit)
 wiki/                 → Compiled knowledge (sources/, concepts/, entities/, synthesis/)
-agents/               → Agent persona definitions (researcher, compiler, curator, auditor)
+.github/agents/       → Copilot agent definitions (wiki-capture, wiki-ingest, wiki-query, etc.)
 templates/            → Page templates for each wiki page type
 scripts/              → Python utilities (auto_ingest.py, watch_raw.py, lint_wiki.py, compile_index.py)
 wiki-ingest-api/      → FastAPI capture service (Docker)
@@ -47,7 +47,6 @@ Sources are processed **automatically** by the `wiki-auto-ingest` Docker sidecar
 | `scripts/**/*.py` | Python conventions, CLI patterns |
 | `templates/**/*.md` | Template variable conventions |
 | `wiki-ingest-api/**` | FastAPI endpoint patterns |
-| `agents/**/*.md` | Persona structure format |
 
 ### Prompt Files (invoke from chat prompt picker)
 

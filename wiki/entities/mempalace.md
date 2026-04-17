@@ -5,6 +5,7 @@ created: 2026-04-11
 last_verified: 2026-04-11
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
+  - raw/2026-04-17-watcher-e2e-validation.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
 quality_score: 100
 concepts:
@@ -55,3 +56,4 @@ MemPalace addresses the problem of ephemeral AI conversations by preserving ever
 ## Sources
 
 - [[MemPalace GitHub Repository]] — where this entity was mentioned
+- [[Watcher E2E Validation]] — additional source

@@ -11,6 +11,78 @@ else
     ROOT_DIR="$(cd "$SCRIPT_DIR/.." && pwd)"
 fi
 
+# ----------------------------------------------------------------------------
+# Subcommand: inject the canonical AGENTS.md snippet into every sibling project.
+# Idempotent. Edits existing AGENTS.md between the LABS-WIKI-SNIPPET markers, or
+# appends the snippet if no markers are present.
+# ----------------------------------------------------------------------------
+inject_snippet() {
+    local snippet_file="$ROOT_DIR/docs/agents-snippet.md"
+    if [ ! -f "$snippet_file" ]; then
+        echo "❌ $snippet_file not found"
+        return 1
+    fi
+
+    # Extract just the content between START/END markers
+    local tmp
+    tmp=$(mktemp)
+    awk '
+        /<!-- LABS-WIKI-SNIPPET-START -->/ {flag=1}
+        flag {print}
+        /<!-- LABS-WIKI-SNIPPET-END -->/   {flag=0}
+    ' "$snippet_file" > "$tmp"
+
+    if [ ! -s "$tmp" ]; then
+        echo "❌ snippet markers not found in $snippet_file"
+        rm -f "$tmp"
+        return 1
+    fi
+
+    local projects_root
+    projects_root="$(cd "$ROOT_DIR/.." && pwd)"
+    local count=0
+    for proj_agents in "$projects_root"/*/AGENTS.md; do
+        [ -f "$proj_agents" ] || continue
+        # Skip labs-wiki itself
+        case "$proj_agents" in *"labs-wiki/AGENTS.md") continue ;; esac
+
+        if grep -q '<!-- LABS-WIKI-SNIPPET-START -->' "$proj_agents"; then
+            # Replace existing block
+            python3 - "$proj_agents" "$tmp" <<'PY'
+import sys, re, pathlib
+target = pathlib.Path(sys.argv[1])
+snippet = pathlib.Path(sys.argv[2]).read_text()
+content = target.read_text()
+pattern = re.compile(
+    r"<!-- LABS-WIKI-SNIPPET-START -->.*?<!-- LABS-WIKI-SNIPPET-END -->",
+    re.DOTALL,
+)
+new = pattern.sub(snippet.strip(), content, count=1)
+if new != content:
+    target.write_text(new)
+PY
+            echo "  ♻️  updated $proj_agents"
+        else
+            {
+                echo ""
+                cat "$tmp"
+                echo ""
+            } >> "$proj_agents"
+            echo "  ➕ appended to $proj_agents"
+        fi
+        count=$((count + 1))
+    done
+    rm -f "$tmp"
+    echo "=== snippet injected into $count project(s) ==="
+}
+
+case "${1:-}" in
+    --inject-snippet)
+        inject_snippet
+        exit $?
+        ;;
+esac
+
 echo "=== labs-wiki setup ==="
 echo "Root: $ROOT_DIR"
 echo ""

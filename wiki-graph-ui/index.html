@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>labs-wiki graph</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<aside id="sidebar">
+  <header>
+    <h1>labs-wiki graph</h1>
+    <div id="stats" class="muted">loading…</div>
+  </header>
+
+  <section>
+    <label for="search">Search</label>
+    <input id="search" type="search" placeholder="Filter nodes by title or tag" autocomplete="off" />
+  </section>
+
+  <section>
+    <label for="type-filter">Type</label>
+    <select id="type-filter">
+      <option value="">(any)</option>
+    </select>
+  </section>
+
+  <section>
+    <label for="tier-filter">Tier</label>
+    <select id="tier-filter">
+      <option value="">(any)</option>
+      <option value="hot">hot</option>
+      <option value="established">established</option>
+      <option value="core">core</option>
+      <option value="workflow">workflow</option>
+    </select>
+  </section>
+
+  <section>
+    <label><input type="checkbox" id="surprises-toggle" /> Highlight cross-community edges</label>
+  </section>
+
+  <section id="node-panel" class="hidden">
+    <h2 id="node-title"></h2>
+    <div class="muted" id="node-meta"></div>
+    <p id="node-summary"></p>
+    <h3>Neighbors</h3>
+    <ul id="node-neighbors"></ul>
+  </section>
+
+  <footer>
+    <button id="rebuild-btn" class="secondary">Reload graph</button>
+    <div class="muted" id="connection-state">connecting…</div>
+  </footer>
+</aside>
+
+<main id="canvas-host">
+  <canvas id="graph"></canvas>
+  <div id="legend" class="legend muted"></div>
+</main>
+
+<script src="config.js"></script>
+<script src="app.js" type="module"></script>
+</body>
+</html>

@@ -166,6 +166,48 @@ def lint_wiki(wiki_dir: str = ".") -> tuple[list[str], list[str], dict[str, int]
     return errors, warnings, scores
 
 
+# ---------------------------------------------------------------------------
+# Contradiction detection (claude-obsidian pattern, Phase B P1)
+# ---------------------------------------------------------------------------
+
+# Obsidian-style callout block: `> [!contradiction] optional title`
+_CONTRADICTION_CALLOUT = re.compile(
+    r"^>\s*\[!contradiction\](.*?)$", re.IGNORECASE | re.MULTILINE
+)
+
+
+def find_contradictions(wiki_dir: str = ".") -> list[tuple[str, int, str]]:
+    """Return [(relpath, line_number, callout_title), ...] for every
+    `> [!contradiction]` callout found in the wiki.
+
+    These are authored by `auto_ingest.py` (and can be added by hand) when
+    a newly-ingested source conflicts with an existing page. The lint
+    surfaces them so the user can adjudicate and clean up the wiki.
+    """
+    root = Path(wiki_dir)
+    wiki_path = root / "wiki"
+    results: list[tuple[str, int, str]] = []
+    if not wiki_path.exists():
+        return results
+
+    for page in wiki_path.rglob("*.md"):
+        if page.name in {"hot.md"}:
+            continue
+        try:
+            text = page.read_text(errors="ignore")
+        except OSError:
+            continue
+        if "[!contradiction]" not in text.lower():
+            continue
+        for lineno, line in enumerate(text.splitlines(), start=1):
+            m = _CONTRADICTION_CALLOUT.match(line)
+            if m:
+                title = m.group(1).strip() or "(untitled)"
+                rel = str(page.relative_to(root))
+                results.append((rel, lineno, title))
+    return results
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Lint labs-wiki pages")
     parser.add_argument(
@@ -173,15 +215,29 @@ def main() -> None:
         default=".",
         help="Root directory of the wiki (default: current directory)",
     )
+    parser.add_argument(
+        "--contradictions-only",
+        action="store_true",
+        help="Only scan for [!contradiction] callouts and print them",
+    )
     args = parser.parse_args()
 
+    if args.contradictions_only:
+        hits = find_contradictions(args.wiki_dir)
+        print(f"=== Contradictions ({len(hits)}) ===")
+        for rel, lineno, title in hits:
+            print(f"  🔻 {rel}:{lineno} — {title}")
+        sys.exit(0 if not hits else 2)
+
     errors, warnings, scores = lint_wiki(args.wiki_dir)
+    contradictions = find_contradictions(args.wiki_dir)
 
     print("=== Wiki Lint Report ===")
     page_count = len(scores) + (1 if any("no valid frontmatter" in e for e in errors) else 0)
     print(f"Pages scanned: {max(page_count, len(scores))}")
     print(f"Errors: {len(errors)}")
     print(f"Warnings: {len(warnings)}")
+    print(f"Contradictions: {len(contradictions)}")
 
     if errors:
         print("\nERRORS:")
@@ -192,6 +248,11 @@ def main() -> None:
         print("\nWARNINGS:")
         for w in warnings:
             print(f"  ⚠️  {w}")
+
+    if contradictions:
+        print("\nCONTRADICTIONS:")
+        for rel, lineno, title in contradictions:
+            print(f"  🔻 {rel}:{lineno} — {title}")
 
     if scores:
         print("\nSCORES:")

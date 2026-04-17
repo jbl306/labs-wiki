@@ -1,0 +1,15 @@
+# wiki-graph-ui — static SPA served by nginx. Zero-build, zero-dependency.
+FROM nginx:1.27-alpine
+
+# The static assets.
+COPY wiki-graph-ui/index.html wiki-graph-ui/styles.css wiki-graph-ui/app.js wiki-graph-ui/config.js /usr/share/nginx/html/
+COPY wiki-graph-ui/nginx.conf /etc/nginx/conf.d/default.conf
+COPY wiki-graph-ui/entrypoint.sh /docker-entrypoint.d/99-rewrite-config.sh
+
+# Ensure executable (COPY preserves mode on most filesystems, but be explicit).
+RUN chmod +x /docker-entrypoint.d/99-rewrite-config.sh
+
+EXPOSE 3000
+
+HEALTHCHECK --interval=30s --timeout=3s --retries=3 \
+    CMD wget -qO- http://127.0.0.1:3000/health > /dev/null || exit 1

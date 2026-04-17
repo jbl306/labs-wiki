@@ -307,6 +307,23 @@ Six skills are available in `.github/skills/wiki-*/SKILL.md`:
 
 ---
 
+## MemPalace — MANDATORY Session Protocol
+
+Agents operating in this repo must query MemPalace before answering. Relevant wings: `labs_wiki` (~2200 drawers, ingest & pipeline content) and `labs_wiki_knowledge` (~150 drawers, curated knowledge).
+
+**Session start:**
+1. `mempalace_status`
+2. `mempalace_search(query=<topic>, wing="labs_wiki")`
+3. `mempalace_search(query=<topic>, wing="labs_wiki_knowledge")`
+4. `mempalace_search(query=<topic>, wing="copilot_sessions")`
+5. `mempalace_kg_query(entity=<name>)` for named things
+
+**During work:** `mempalace_add_drawer(wing="labs_wiki", room=<domain>, content=<verbatim>)` for significant findings. Use `mempalace_kg_add` / `mempalace_kg_invalidate` when facts change.
+
+**End of session:** `mempalace_diary_write(agent_name="<agent>", entry=<AAAK summary>)`.
+
+Never store secrets or credentials.
+
 ## Validation Rules
 
 Before committing any changes:

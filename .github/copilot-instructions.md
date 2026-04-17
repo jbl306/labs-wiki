@@ -57,6 +57,23 @@ Sources are processed **automatically** by the `wiki-auto-ingest` Docker sidecar
 | `find-gaps` | Coverage analysis and missing concepts |
 | `daily-maintenance` | Audit + lint + stale review cycle |
 
+### MemPalace — MANDATORY Session Protocol
+
+MemPalace is the persistent memory MCP. Two relevant wings:
+- `labs_wiki` (~2200 drawers) — mined wiki content and ingest pipeline details
+- `labs_wiki_knowledge` (~150 drawers) — curated knowledge synthesis
+
+**On session start, before answering:**
+1. `mempalace_status` (once)
+2. `mempalace_search(query=<topic>, wing="labs_wiki")` — primary recall
+3. `mempalace_search(query=<topic>, wing="labs_wiki_knowledge")` — curated knowledge
+4. `mempalace_search(query=<topic>, wing="copilot_sessions")` — prior sessions
+5. Named entity? `mempalace_kg_query(entity=...)`
+
+**After significant wiki decisions** (schema changes, new agent, auto-ingest tweaks): `mempalace_add_drawer(wing="labs_wiki", room="documentation"|"architecture", content=<verbatim>)`.
+
+**End of session:** `mempalace_diary_write(agent_name="copilot-cli", entry=<AAAK>)`.
+
 ### Core Rules
 
 - Every wiki fact must trace to a `sources:` entry (provenance)

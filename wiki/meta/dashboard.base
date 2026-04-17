@@ -1,0 +1,74 @@
+filters:
+  and:
+    - file.ext == "md"
+    - file.path.startsWith("wiki/")
+    - "!file.name.in(['hot.md', 'index.md', 'log.md', 'hot-snapshot.md'])"
+formulas:
+  days_old: 'if(file.frontmatter.last_verified, date(now()) - date(file.frontmatter.last_verified), "—")'
+  is_stale: 'if(file.frontmatter.last_verified, (date(now()) - date(file.frontmatter.last_verified)) > 90, false)'
+properties:
+  file.name:
+    displayName: Page
+  file.frontmatter.type:
+    displayName: Type
+  file.frontmatter.tier:
+    displayName: Tier
+  file.frontmatter.quality_score:
+    displayName: Quality
+  file.frontmatter.last_verified:
+    displayName: Verified
+  formula.days_old:
+    displayName: Days old
+  formula.is_stale:
+    displayName: Stale
+views:
+  - type: table
+    name: All Pages
+    order:
+      - file.name
+      - file.frontmatter.type
+      - file.frontmatter.tier
+      - file.frontmatter.quality_score
+      - formula.days_old
+      - formula.is_stale
+    sort:
+      - property: file.frontmatter.quality_score
+        direction: DESC
+  - type: table
+    name: Hot Tier
+    filters:
+      and:
+        - file.frontmatter.tier == "hot"
+    order:
+      - file.name
+      - file.frontmatter.type
+      - file.frontmatter.quality_score
+      - formula.days_old
+    sort:
+      - property: file.frontmatter.quality_score
+        direction: DESC
+  - type: table
+    name: Stale (> 90 days)
+    filters:
+      and:
+        - formula.is_stale == true
+    order:
+      - file.name
+      - file.frontmatter.type
+      - formula.days_old
+      - file.frontmatter.last_verified
+    sort:
+      - property: formula.days_old
+        direction: DESC
+  - type: table
+    name: Low Quality (< 50)
+    filters:
+      and:
+        - file.frontmatter.quality_score < 50
+    order:
+      - file.name
+      - file.frontmatter.type
+      - file.frontmatter.quality_score
+    sort:
+      - property: file.frontmatter.quality_score
+        direction: ASC

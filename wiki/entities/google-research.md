@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "18f594aecc8362f94d0524318935eafd211fe61216043d007325069329fa2e62"
 sources:
+  - raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
 quality_score: 100
 concepts:
@@ -49,3 +50,4 @@ No related entities documented yet.
 ## Sources
 
 - [[Introducing Nested Learning: A New ML Paradigm for Continual Learning]] — where this entity was mentioned
+- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — additional source

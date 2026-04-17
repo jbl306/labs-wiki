@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "18f594aecc8362f94d0524318935eafd211fe61216043d007325069329fa2e62"
 sources:
+  - raw/2026-04-13-260406231v1pdf.md
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
 quality_score: 100
 concepts:
@@ -64,3 +65,4 @@ Hope is ideal for tasks requiring continual learning, adaptive memory management
 ## Sources
 
 - [[Introducing Nested Learning: A New ML Paradigm for Continual Learning]] — primary source for this concept
+- [[Hope: A Memory Architecture for Continual Learning with Long Contexts]] — additional source

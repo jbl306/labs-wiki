@@ -1184,4 +1184,138 @@
   source: raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
   status: success
   notes: "Auto-ingested 9 pages (3 concepts, 4 entities, 1 synthesis)"
+
+- timestamp: 2026-04-12T00:44:42+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/autoagent-fully-automated-and-zero-code-llm-agent-framework-hkudsautoagent-githu.md
+    - wiki/concepts/natural-language-driven-agent-building.md
+    - wiki/concepts/self-managing-workflow-generation.md
+    - wiki/concepts/intelligent-resource-orchestration.md
+    - wiki/entities/autoagent.md
+    - wiki/entities/metachain.md
+    - wiki/synthesis/democratizing-agent-customization-automated-skill-stack-installation-vs-natural-.md
+  source: raw/2026-04-12-httpsgithubcomhkudsautoagent.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 2 entities, 1 synthesis)"
+
+- timestamp: 2026-04-12T00:44:59+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/autoagent-fully-automated-and-zero-code-llm-agent-framework-github-repository.md
+    - wiki/concepts/natural-language-driven-agent-creation.md
+    - wiki/concepts/self-managing-workflow-generation.md
+    - wiki/concepts/intelligent-resource-orchestration-for-llm-agents.md
+    - wiki/entities/autoagent.md
+    - wiki/entities/hkuds.md
+    - wiki/synthesis/comparing-axis-cli-ergonomics-with-autoagents-natural-language-driven-agent-crea.md
+  source: raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 2 entities, 1 synthesis)"
+
+- timestamp: 2026-04-13T13:32:01+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/chrome-devtools-mcp-github-repository.md
+    - wiki/concepts/model-context-protocol-mcp-server-for-chrome-devtools.md
+    - wiki/concepts/agent-ergonomic-tool-design-principles.md
+    - wiki/concepts/chrome-devtools-mcp-cli-interface.md
+    - wiki/entities/chrome-devtools-mcp.md
+    - wiki/entities/puppeteer.md
+    - wiki/entities/chrome-devtools.md
+    - wiki/synthesis/comparing-chrome-devtools-mcp-and-axi-for-agentic-tool-integration-protocol-vs-e.md
+  source: raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 3 entities, 1 synthesis)"
+
+- timestamp: 2026-04-13T16:35:11+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/amitshekhariitbhullm-internals-learn-llm-internals-step-by-step.md
+    - wiki/concepts/byte-pair-encoding-bpe-in-large-language-models.md
+    - wiki/concepts/attention-mechanism-in-large-language-models.md
+    - wiki/concepts/kv-cache-and-paged-attention-in-large-language-models.md
+    - wiki/concepts/flash-attention-in-large-language-models.md
+    - wiki/entities/amit-shekhar.md
+    - wiki/entities/outcome-school.md
+    - wiki/entities/llm-internals.md
+    - wiki/synthesis/standard-attention-vs-flash-attention-in-llms-efficiency-scalability-and-deploym.md
+  source: raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 3 entities, 1 synthesis)"
+
+- timestamp: 2026-04-13T17:25:49+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/timesfm-time-series-foundation-model-google-researchtimesfm.md
+    - wiki/concepts/time-series-foundation-model-architecture.md
+    - wiki/concepts/agent-skill-integration-for-time-series-forecasting.md
+    - wiki/concepts/continuous-quantile-forecasting-in-time-series-models.md
+    - wiki/entities/timesfm.md
+    - wiki/entities/google-research.md
+  source: raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-13T17:58:02+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/nousresearchautoreason-autoresearch-for-subjective-domains.md
+    - wiki/concepts/autoreason-iterative-self-refinement-framework.md
+    - wiki/entities/autoreason.md
+    - wiki/entities/shl0ms.md
+    - wiki/entities/hermes-agent.md
+    - wiki/synthesis/autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-.md
+  source: raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
+  status: success
+  notes: "Auto-ingested 6 pages (1 concepts, 3 entities, 1 synthesis)"
+
+- timestamp: 2026-04-13T18:01:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/hope-a-memory-architecture-for-continual-learning-with-long-contexts.md
+    - wiki/concepts/hope-architecture.md
+  source: raw/2026-04-13-260406231v1pdf.md
+  status: success
+  notes: "Auto-ingested 2 pages (1 concepts, 0 entities, 0 synthesis)"
+
+- timestamp: 2026-04-14T00:23:07+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/legal-rag-hallucinations.md
+    - wiki/concepts/hallucinations-in-legal-retrieval-augmented-generation-rag-systems.md
+  source: raw/2026-04-14-legal_rag_hallucinationspdf.md
+  status: success
+  notes: "Auto-ingested 2 pages (1 concepts, 0 entities, 0 synthesis)"
+
+- timestamp: 2026-04-16T19:27:53+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/entities/ace-agentic-context-engineering.md
+  source: raw/2026-04-16-251004618v3pdf.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-17T15:37:23+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/watcher-e2e-validation.md
+    - wiki/concepts/end-to-end-validation-in-live-memory-loops.md
+    - wiki/entities/mempalace-watcher.md
+    - wiki/entities/mempalace.md
+  source: raw/2026-04-17-watcher-e2e-validation.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
 ```

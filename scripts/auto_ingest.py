@@ -18,6 +18,7 @@ import re
 import subprocess
 import sys
 import textwrap
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urljoin
@@ -46,6 +47,103 @@ MAX_RETRIES = 3
 URL_FETCH_TIMEOUT = 30
 MAX_IMAGES = 5  # Max images to process per source for vision
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB max per image download
+
+
+def _env_str(*names: str, default: str = "") -> str:
+    """Return the first non-empty environment variable value."""
+    for name in names:
+        value = os.environ.get(name, "").strip()
+        if value:
+            return value
+    return default
+
+
+MODEL_DEFAULT = _env_str("GITHUB_MODELS_MODEL_DEFAULT", "GITHUB_MODELS_MODEL", default=DEFAULT_MODEL)
+MODEL_LIGHT = _env_str("GITHUB_MODELS_MODEL_LIGHT", default=MODEL_DEFAULT)
+MODEL_VISION = _env_str("GITHUB_MODELS_MODEL_VISION", default=MODEL_DEFAULT)
+MAX_SOURCE_CHARS_DEFAULT = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_DEFAULT", "30000"))
+MAX_SOURCE_CHARS_LIGHT = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_LIGHT", "18000"))
+MAX_SOURCE_CHARS_VISION = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_VISION", "24000"))
+
+
+@dataclass(frozen=True)
+class IngestRoute:
+    lane: str
+    model: str
+    priority: int
+    max_source_chars: int
+    source_class: str
+
+
+def classify_ingest_route(
+    fm: dict,
+    *,
+    has_images: bool = False,
+    model_override: str | None = None,
+) -> IngestRoute:
+    """Classify a raw source into a model lane + queue priority.
+
+    Priority is ascending: lower numbers are processed first. Interactive/user-
+    supplied sources should win ahead of backlog-style promotions from sessions.
+    """
+    source = str(fm.get("source", "")).strip().lower()
+    source_type = str(fm.get("type", "text")).strip().lower()
+    source_url = str(fm.get("url", "")).strip().lower()
+    tags = fm.get("tags", []) if isinstance(fm.get("tags"), list) else []
+    tags_lower = {str(tag).strip().lower() for tag in tags}
+
+    if model_override:
+        return IngestRoute(
+            lane="override",
+            model=model_override,
+            priority=0,
+            max_source_chars=MAX_SOURCE_CHARS_DEFAULT,
+            source_class="manual-override",
+        )
+
+    if has_images:
+        return IngestRoute(
+            lane="vision",
+            model=MODEL_VISION,
+            priority=0,
+            max_source_chars=MAX_SOURCE_CHARS_VISION,
+            source_class="vision-source",
+        )
+
+    if source == "copilot-session-curator" or "copilot-session" in tags_lower:
+        return IngestRoute(
+            lane="light",
+            model=MODEL_LIGHT,
+            priority=30,
+            max_source_chars=MAX_SOURCE_CHARS_LIGHT,
+            source_class="copilot-session-checkpoint",
+        )
+
+    if source == "mempalace-bridge" or "mempalace" in tags_lower:
+        return IngestRoute(
+            lane="light",
+            model=MODEL_LIGHT,
+            priority=20,
+            max_source_chars=MAX_SOURCE_CHARS_LIGHT,
+            source_class="mempalace-export",
+        )
+
+    if source_type == "url" or source_url:
+        return IngestRoute(
+            lane="default",
+            model=MODEL_DEFAULT,
+            priority=0,
+            max_source_chars=MAX_SOURCE_CHARS_DEFAULT,
+            source_class="url-source",
+        )
+
+    return IngestRoute(
+        lane="default",
+        model=MODEL_DEFAULT,
+        priority=10,
+        max_source_chars=MAX_SOURCE_CHARS_DEFAULT,
+        source_class="text-source",
+    )
 
 # ---------------------------------------------------------------------------
 # Frontmatter helpers
@@ -727,6 +825,8 @@ def call_llm(
     existing_pages: dict[str, str],
     token: str,
     model: str,
+    *,
+    max_source_chars: int = MAX_SOURCE_CHARS_DEFAULT,
     images: list[str] | None = None,
 ) -> dict:
     """Call GitHub Models API to extract knowledge from source content."""
@@ -746,7 +846,7 @@ Title: {source_title}
 {existing_list}
 
 ## Content
-{content[:30_000]}"""
+{content[:max_source_chars]}"""
 
     # Build user message: multimodal if images present, plain text otherwise
     if images:
@@ -1547,7 +1647,7 @@ def ingest_raw_source(
     raw_path: Path,
     project_root: Path,
     token: str,
-    model: str = DEFAULT_MODEL,
+    model: str | None = None,
 ) -> bool:
     """Process a single raw source file. Returns True on success."""
     log.info("Processing: %s", raw_path)
@@ -1567,6 +1667,7 @@ def ingest_raw_source(
     source_type = fm.get("type", "text")
     source_url = fm.get("url")
     raw_tags = fm.get("tags", []) if isinstance(fm.get("tags"), list) else []
+    route = classify_ingest_route(fm, model_override=model)
 
     # For URL sources, fetch the actual content
     content = body
@@ -1585,6 +1686,15 @@ def ingest_raw_source(
         log.info("Downloading %d images for vision analysis...", len(image_urls))
         images_b64 = download_images_as_base64(image_urls)
         log.info("Successfully encoded %d images", len(images_b64))
+    route = classify_ingest_route(fm, has_images=bool(images_b64), model_override=model)
+    log.info(
+        "Ingest route: class=%s lane=%s model=%s priority=%d images=%s",
+        route.source_class,
+        route.lane,
+        route.model,
+        route.priority,
+        bool(images_b64),
+    )
 
     if not content or len(content.strip()) < 10:
         log.warning("Source content too short for meaningful extraction")
@@ -1603,7 +1713,16 @@ def ingest_raw_source(
 
     # LLM extraction
     log.info("Calling LLM for extraction...")
-    extraction = call_llm(content, title, source_url, existing_pages, token, model, images=images_b64)
+    extraction = call_llm(
+        content,
+        title,
+        source_url,
+        existing_pages,
+        token,
+        route.model,
+        max_source_chars=route.max_source_chars,
+        images=images_b64,
+    )
 
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     raw_rel = str(raw_path.relative_to(project_root))
@@ -1800,24 +1919,29 @@ def ingest_raw_source(
     return True
 
 
-def process_all_pending(project_root: Path, token: str, model: str) -> int:
+def process_all_pending(project_root: Path, token: str, model: str | None = None) -> int:
     """Process all pending raw sources. Returns count of processed files."""
     raw_dir = project_root / "raw"
     count = 0
-    for raw_file in sorted(raw_dir.glob("*.md")):
+    pending_files: list[tuple[int, str, Path]] = []
+    for raw_file in raw_dir.glob("*.md"):
         fm, _ = parse_frontmatter(raw_file)
         if fm.get("status") == "pending":
-            try:
-                if ingest_raw_source(raw_file, project_root, token, model):
-                    count += 1
-            except Exception:
-                log.exception("Failed to process %s", raw_file.name)
-                update_raw_status(raw_file, "failed")
-                send_ntfy(
-                    f"❌ Wiki ingest failed: {raw_file.name}",
-                    f"Error processing {raw_file.name}. Check logs.",
-                    tags="warning",
-                )
+            route = classify_ingest_route(fm, model_override=model)
+            pending_files.append((route.priority, raw_file.name, raw_file))
+
+    for _, _, raw_file in sorted(pending_files):
+        try:
+            if ingest_raw_source(raw_file, project_root, token, model):
+                count += 1
+        except Exception:
+            log.exception("Failed to process %s", raw_file.name)
+            update_raw_status(raw_file, "failed")
+            send_ntfy(
+                f"❌ Wiki ingest failed: {raw_file.name}",
+                f"Error processing {raw_file.name}. Check logs.",
+                tags="warning",
+            )
     return count
 
 
@@ -1835,8 +1959,8 @@ def main() -> None:
     )
     parser.add_argument(
         "--model",
-        default=os.environ.get("GITHUB_MODELS_MODEL", DEFAULT_MODEL),
-        help="GitHub Models model ID",
+        default=None,
+        help="Optional explicit model override (otherwise source-based routing decides)",
     )
     parser.add_argument(
         "--token",

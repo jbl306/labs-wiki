@@ -18,7 +18,12 @@ from pathlib import Path
 from watchdog.events import FileCreatedEvent, FileModifiedEvent, FileSystemEventHandler
 from watchdog.observers import Observer
 
-from auto_ingest import ingest_raw_source, parse_frontmatter, process_all_pending
+from auto_ingest import (
+    classify_ingest_route,
+    ingest_raw_source,
+    parse_frontmatter,
+    process_all_pending,
+)
 
 log = logging.getLogger("watch-raw")
 
@@ -29,12 +34,13 @@ POLL_INTERVAL = float(os.environ.get("POLL_INTERVAL", "1"))
 class RawFileHandler(FileSystemEventHandler):
     """Handle new .md files in the raw/ directory."""
 
-    def __init__(self, project_root: Path, token: str, model: str) -> None:
+    def __init__(self, project_root: Path, token: str, model_override: str | None) -> None:
         super().__init__()
         self.project_root = project_root
         self.token = token
-        self.model = model
+        self.model_override = model_override
         self._pending: dict[str, float] = {}
+        self._inflight: set[str] = set()
         self._lock = threading.Lock()
         self._timer: threading.Timer | None = None
 
@@ -58,6 +64,9 @@ class RawFileHandler(FileSystemEventHandler):
             return
 
         with self._lock:
+            if path in self._inflight:
+                log.debug("Skipping schedule for %s (already in flight)", os.path.basename(path))
+                return
             self._pending[path] = time.time()
             if self._timer is not None:
                 self._timer.cancel()
@@ -70,21 +79,41 @@ class RawFileHandler(FileSystemEventHandler):
             to_process = dict(self._pending)
             self._pending.clear()
 
-        for path_str in sorted(to_process):
+        prioritized: list[tuple[int, str, Path]] = []
+        for path_str in to_process:
             raw_path = Path(path_str)
             if not raw_path.exists():
                 continue
-
             try:
                 fm, _ = parse_frontmatter(raw_path)
+            except Exception:
+                log.exception("Failed to parse %s", raw_path.name)
+                continue
+            if fm.get("status") != "pending":
+                log.debug("Skipping %s (status: %s)", raw_path.name, fm.get("status"))
+                continue
+            route = classify_ingest_route(fm, model_override=self.model_override)
+            prioritized.append((route.priority, raw_path.name, raw_path))
+
+        for _, _, raw_path in sorted(prioritized):
+            try:
+                with self._lock:
+                    if str(raw_path) in self._inflight:
+                        log.debug("Skipping %s (already in flight)", raw_path.name)
+                        continue
+                    self._inflight.add(str(raw_path))
+
+                fm, _ = parse_frontmatter(raw_path)
                 if fm.get("status") != "pending":
-                    log.debug("Skipping %s (status: %s)", raw_path.name, fm.get("status"))
                     continue
 
                 log.info("New pending source detected: %s", raw_path.name)
-                ingest_raw_source(raw_path, self.project_root, self.token, self.model)
+                ingest_raw_source(raw_path, self.project_root, self.token, self.model_override)
             except Exception:
                 log.exception("Failed to process %s", raw_path.name)
+            finally:
+                with self._lock:
+                    self._inflight.discard(str(raw_path))
 
 
 def main() -> None:
@@ -96,7 +125,7 @@ def main() -> None:
 
     project_root = Path(os.environ.get("PROJECT_ROOT", ".")).resolve()
     token = os.environ.get("GITHUB_MODELS_TOKEN", os.environ.get("GITHUB_TOKEN", ""))
-    model = os.environ.get("GITHUB_MODELS_MODEL", "gpt-4o")
+    model_override = os.environ.get("GITHUB_MODELS_MODEL_OVERRIDE", "").strip() or None
 
     if not token:
         log.error("No API token. Set GITHUB_MODELS_TOKEN env var.")
@@ -109,12 +138,12 @@ def main() -> None:
 
     # Process any existing pending sources on startup
     log.info("Checking for existing pending sources...")
-    count = process_all_pending(project_root, token, model)
+    count = process_all_pending(project_root, token, model_override)
     if count:
         log.info("Processed %d existing pending source(s)", count)
 
     # Start watching
-    handler = RawFileHandler(project_root, token, model)
+    handler = RawFileHandler(project_root, token, model_override)
     observer = Observer()
     observer.schedule(handler, str(raw_dir), recursive=False)
     observer.start()

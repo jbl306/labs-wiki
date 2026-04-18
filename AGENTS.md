@@ -141,15 +141,15 @@ The `wiki-auto-ingest` Docker service handles source processing automatically:
    - **GitHub gists** → raw content fetch
    - **HTML pages** → fetch + tag stripping + og:image/img extraction
 3. **Vision processing** — downloads images (tweet photos, og:image), base64-encodes them, sends as multimodal content to GPT-4.1
-4. **LLM extraction** (GPT-4.1 via GitHub Models API) → structured JSON: concepts, entities, source summary
+4. **LLM extraction** (GitHub Models, source-aware lanes) → structured JSON: concepts, entities, source summary
 5. **Page generation** from templates → source page + concept pages + entity pages
 6. **Cross-referencing** — bidirectional `[[wikilinks]]` between related pages
 7. **Index + log** — rebuilds `wiki/index.md`, appends to `wiki/log.md`
 8. **Status update** — marks raw source `status: ingested`
 9. **Notification** — sends ntfy alert on success/failure
 
-**Model:** GPT-4.1 (149 req/min, 148K tok/min, vision-capable)
-**Config:** `GITHUB_MODELS_TOKEN`, `GITHUB_MODELS_MODEL`, `DEBOUNCE_SECONDS` env vars
+**Model routing:** session checkpoints / MemPalace exports → light text lane; standard sources → default lane; image-bearing sources → vision lane
+**Config:** `GITHUB_MODELS_TOKEN`, `GITHUB_MODELS_MODEL_DEFAULT`, `GITHUB_MODELS_MODEL_LIGHT`, `GITHUB_MODELS_MODEL_VISION`, `GITHUB_MODELS_MODEL_OVERRIDE`, `DEBOUNCE_SECONDS`
 
 ### Manual Ingest (`/wiki-ingest`)
 

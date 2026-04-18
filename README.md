@@ -99,7 +99,7 @@ Add sources from anywhere — they're automatically processed into wiki pages:
 | 🐦 Twitter/X | Share tweet URL → fxtwitter API extracts text + images | ⚡ Auto |
 | 🐙 GitHub Repo | Share repo URL → REST API fetches README + metadata | ⚡ Auto |
 
-The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GPT-4.1 (GitHub Models API) within seconds. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed via GPT-4.1 vision.
+The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GitHub Models within seconds. It now uses **source-aware model routing**: lightweight text-only sources such as Copilot session checkpoint exports can run on a cheaper text model, standard URLs/repos use the default model, and image-bearing sources are routed to the vision-capable lane. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed only when present.
 
 See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 
@@ -119,7 +119,7 @@ See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 | Service | Purpose |
 |---------|---------|
 | `wiki-ingest-api` | FastAPI — receives sources from all capture channels |
-| `wiki-auto-ingest` | File watcher — auto-processes pending sources via GPT-4.1 |
+| `wiki-auto-ingest` | File watcher — auto-processes pending sources via GitHub Models source-aware lanes |
 
 ## Toolchain
 

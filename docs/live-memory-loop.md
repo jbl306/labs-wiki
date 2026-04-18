@@ -133,7 +133,7 @@ bash /home/jbl/projects/labs-wiki/setup.sh --inject-snippet
 
 ## Why this works without an LLM key
 
-`mempalace mine` is pure local indexing: SHA hashing, markdown parsing, drawer generation, and embedding via local sentence-transformers into ChromaDB. No OpenAI/Anthropic calls. The only model-calling component — `auto_ingest.py`'s compile step — runs inside the `wiki-auto-ingest` Docker sidecar using the GitHub Models API (already covered by Copilot Pro+), not inside the watcher.
+`mempalace mine` is pure local indexing: SHA hashing, markdown parsing, drawer generation, and embedding via local sentence-transformers into ChromaDB. No OpenAI/Anthropic calls. The only model-calling component — `auto_ingest.py`'s compile step — runs inside the `wiki-auto-ingest` Docker sidecar using GitHub Models (already covered by Copilot Pro+), with source-aware routing so session checkpoints can use a lighter text lane and image-bearing sources use the vision lane only when needed.
 
 ## Success criteria
 

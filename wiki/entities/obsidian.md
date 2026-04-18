@@ -12,7 +12,6 @@ concepts:
   - obsidian
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
 tags: [knowledge-management, markdown, tool, wiki]

@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "1544a9390c8a215aeb38b788d3103fd5a18163dc8ce9182c4c6fc36fbb638e43"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-critical-ml-fixes-sprint-28-9cff218d.md
-quality_score: 0
+quality_score: 100
 concepts:
   - dashboard-duplicate-predictions-fix-in-ml-systems
 related:
-  - "[[Data Pipeline Debugging]]"
   - "[[Copilot Session Checkpoint: Implementing Critical ML Fixes Sprint 28]]"
 tier: hot
 tags: [dashboard, data deduplication, frontend, sql]
@@ -69,7 +68,7 @@ const deduped = predictions.filter(p => {
 
 ## Relationship to Other Concepts
 
-- **[[Data Pipeline Debugging]]** — Fixing duplicates involves debugging data joins and frontend rendering.
+- **Data Pipeline Debugging** — Fixing duplicates involves debugging data joins and frontend rendering.
 
 ## Practical Applications
 

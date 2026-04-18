@@ -19,6 +19,14 @@ STALENESS_DAYS = 90
 QUALITY_THRESHOLD = 50
 
 
+def slugify_wikilink(text: str) -> str:
+    """Normalize a wikilink target similarly to the graph builder."""
+    text = text.lower().strip()
+    text = re.sub(r"[^\w\s-]", "", text)
+    text = re.sub(r"[\s_-]+", "-", text)
+    return text.strip("-")
+
+
 def parse_frontmatter(path: Path) -> dict | None:
     """Extract YAML frontmatter from a markdown file."""
     try:
@@ -46,6 +54,26 @@ def parse_frontmatter(path: Path) -> dict | None:
                 fm["sources"] = "present"
 
     return fm
+
+
+def build_wikilink_lookup(pages: list[Path]) -> tuple[set[str], set[str]]:
+    """Build exact-title and slug lookups for valid wiki page targets."""
+    page_titles: set[str] = set()
+    page_slugs: set[str] = set()
+    for p in pages:
+        fm = parse_frontmatter(p)
+        title = p.stem.replace("-", " ").title()
+        if fm and "title" in fm:
+            title = str(fm["title"])
+        page_titles.add(title)
+        page_slugs.add(slugify_wikilink(title))
+        page_slugs.add(slugify_wikilink(p.stem))
+    return page_titles, page_slugs
+
+
+def wikilink_exists(link: str, page_titles: set[str], page_slugs: set[str]) -> bool:
+    """Return True if the link resolves by exact title or filename slug."""
+    return link in page_titles or slugify_wikilink(link) in page_slugs
 
 
 def find_wikilinks(path: Path) -> list[str]:
@@ -95,16 +123,16 @@ def lint_wiki(wiki_dir: str = ".") -> tuple[list[str], list[str], dict[str, int]
         return errors, warnings, scores
 
     pages = list(wiki_path.rglob("*.md"))
-    pages = [p for p in pages if p.name not in ("index.md", "log.md")]
+    pages = [
+        p for p in pages
+        if p.name not in ("index.md", "log.md", "hot.md", "hot-snapshot.md")
+        and "/meta/" not in str(p).replace("\\", "/")
+    ]
 
     if not pages:
         return errors, warnings, scores
 
-    page_titles: set[str] = set()
-    for p in pages:
-        fm = parse_frontmatter(p)
-        if fm and "title" in fm:
-            page_titles.add(fm["title"])
+    page_titles, page_slugs = build_wikilink_lookup(pages)
 
     index_path = wiki_path / "index.md"
     index_content = index_path.read_text() if index_path.exists() else ""
@@ -134,7 +162,7 @@ def lint_wiki(wiki_dir: str = ".") -> tuple[list[str], list[str], dict[str, int]
 
         wikilinks = find_wikilinks(page)
         for link in wikilinks:
-            if link not in page_titles:
+            if not wikilink_exists(link, page_titles, page_slugs):
                 errors.append(f"{rel}: broken wikilink [[{link}]]")
 
         title = fm.get("title", "")

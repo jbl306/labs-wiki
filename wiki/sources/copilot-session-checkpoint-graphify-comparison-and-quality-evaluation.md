@@ -16,10 +16,6 @@ related:
   - "[[Graphify Features for Knowledge Graph Integration]]"
   - "[[Quality Evaluation of Auto-Ingested Wiki Content]]"
   - "[[Labs-Wiki]]"
-  - "[[Graphify]]"
-  - "[[Lottery Ticket Hypothesis Paper]]"
-  - "[[LLM Reasoning Failures Survey]]"
-  - "[[Agent eXperience Interface (AXI)]]"
   - "[[AutoSkills]]"
 tier: hot
 tags: [graphify, labs-wiki, agents, auto-ingest, fileback, quality-evaluation, checkpoint, copilot-session, graph, homelab, durable-knowledge, knowledge-graph]
@@ -48,10 +44,10 @@ This session checkpoint documents a user's work comparing the labs-wiki personal
 ## Entities Mentioned
 
 - **[[Labs-Wiki]]** — Labs-wiki is a personal knowledge wiki system that leverages large language models to auto-ingest, process, and compile knowledge from diverse sources such as academic papers, GitHub repositories, and URLs. It supports structured wiki pages for concepts, entities, sources, and synthesis, enabling rich interlinking and AI agent integration.
-- **[[Graphify]]** — Graphify is an open-source knowledge graph project that provides advanced graph construction, community detection, confidence labeling, and interactive visualization features. It is implemented in Python using NetworkX and related libraries, designed to analyze and represent knowledge as a graph structure.
-- **[[Lottery Ticket Hypothesis Paper]]** — A seminal academic paper by Jonathan Frankle and Michael Carbin presented at ICLR 2019, proposing the Lottery Ticket Hypothesis which suggests that dense, randomly-initialized neural networks contain sparse subnetworks that can be trained in isolation to achieve comparable performance.
-- **[[LLM Reasoning Failures Survey]]** — A 2026 survey paper by Song et al. published in Transactions on Machine Learning Research (TMLR) that reviews common reasoning failures in large language models, categorizing types of errors and discussing mitigation strategies.
-- **[[Agent eXperience Interface (AXI)]]** — AXI is a CLI tool designed to provide an ergonomic interface for AI agents, facilitating interaction and integration with various tools and workflows. Its GitHub repository was ingested and analyzed within labs-wiki for content extraction and quality evaluation.
+- **Graphify** — Graphify is an open-source knowledge graph project that provides advanced graph construction, community detection, confidence labeling, and interactive visualization features. It is implemented in Python using NetworkX and related libraries, designed to analyze and represent knowledge as a graph structure.
+- **Lottery Ticket Hypothesis Paper** — A seminal academic paper by Jonathan Frankle and Michael Carbin presented at ICLR 2019, proposing the Lottery Ticket Hypothesis which suggests that dense, randomly-initialized neural networks contain sparse subnetworks that can be trained in isolation to achieve comparable performance.
+- **LLM Reasoning Failures Survey** — A 2026 survey paper by Song et al. published in Transactions on Machine Learning Research (TMLR) that reviews common reasoning failures in large language models, categorizing types of errors and discussing mitigation strategies.
+- **Agent eXperience Interface (AXI)** — AXI is a CLI tool designed to provide an ergonomic interface for AI agents, facilitating interaction and integration with various tools and workflows. Its GitHub repository was ingested and analyzed within labs-wiki for content extraction and quality evaluation.
 - **[[AutoSkills]]** — AutoSkills is an automated AI skill stack installer designed for Claude Code, facilitating the installation and management of AI agent capabilities. Its GitHub repository was ingested and analyzed in labs-wiki for content extraction and quality evaluation.
 
 ## Notable Quotes

@@ -6,12 +6,10 @@ last_verified: 2026-04-18
 source_hash: "62a3c4ffbf12d604468b3d8046bc22088aed94feabac8006f2b13c5583c1d345"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md
-quality_score: 0
+quality_score: 100
 concepts:
   - knightcrawler-gating-fix-for-stremio-streams
 related:
-  - "[[Caddy handle_path Directive]]"
-  - "[[Docker Compose Environment Variable Management]]"
   - "[[Copilot Session Checkpoint: KnightCrawler Gating Fix, Opencode Bash Config]]"
 tier: hot
 tags: [knightcrawler, stremio, caddy, reverse-proxy, docker-compose, url-patching]
@@ -69,8 +67,8 @@ services:
 
 ## Relationship to Other Concepts
 
-- **[[Caddy handle_path Directive]]** — Explains the proxy path prefix stripping behavior that causes the gating issue.
-- **[[Docker Compose Environment Variable Management]]** — Describes how environment variables are propagated into containers.
+- **Caddy handle_path Directive** — Explains the proxy path prefix stripping behavior that causes the gating issue.
+- **Docker Compose Environment Variable Management** — Describes how environment variables are propagated into containers.
 
 ## Practical Applications
 

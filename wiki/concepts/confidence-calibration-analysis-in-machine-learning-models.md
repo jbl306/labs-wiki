@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "09d0f25cf67625d2215d0a83135693fea032d2bab65425e15c21d99f6b87103a"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
-quality_score: 0
+quality_score: 100
 concepts:
   - confidence-calibration-analysis-in-machine-learning-models
 related:
-  - "[[Backtester Metrics]]"
   - "[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]"
 tier: hot
 tags: [model evaluation, calibration, probabilistic prediction, machine learning]
@@ -70,7 +69,7 @@ This yields the overall calibration error metric.
 
 ## Relationship to Other Concepts
 
-- **[[Backtester Metrics]]** — Calibration analysis uses backtest results to compute reliability statistics.
+- **Backtester Metrics** — Calibration analysis uses backtest results to compute reliability statistics.
 
 ## Practical Applications
 

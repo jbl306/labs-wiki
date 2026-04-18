@@ -11,7 +11,6 @@ concepts:
   - marp
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
 tags: [markdown, slides, tool, obsidian]

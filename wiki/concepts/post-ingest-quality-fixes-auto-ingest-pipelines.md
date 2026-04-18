@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "b63d1672165b80d7c8439cbcccceb1221f2692ca78875b666163fda03d13e59a"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md
-quality_score: 0
+quality_score: 100
 concepts:
   - post-ingest-quality-fixes-auto-ingest-pipelines
 related:

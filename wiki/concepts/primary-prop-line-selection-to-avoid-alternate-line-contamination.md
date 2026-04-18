@@ -6,12 +6,10 @@ last_verified: 2026-04-18
 source_hash: "d12567d0a0a05fa3d657bf2e2ec6bb6e9fa482a9676eee6bf73ec13f8bbf53c0"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-alt-line-accuracy-fixes-466ff308.md
-quality_score: 0
+quality_score: 100
 concepts:
   - primary-prop-line-selection-to-avoid-alternate-line-contamination
 related:
-  - "[[Kelly Bankroll Simulator]]"
-  - "[[One-Sided Prop Line Filtering]]"
   - "[[Copilot Session Checkpoint: Dashboard Alt-Line Accuracy Fixes]]"
 tier: hot
 tags: [sports-betting, data-cleaning, sql, dashboard-accuracy]
@@ -62,8 +60,8 @@ SELECT * FROM primary_props;
 
 ## Relationship to Other Concepts
 
-- **[[Kelly Bankroll Simulator]]** — Uses corrected confidence and P&L data from primary prop line selection.
-- **[[One-Sided Prop Line Filtering]]** — Complementary data cleaning to remove invalid prop lines.
+- **Kelly Bankroll Simulator** — Uses corrected confidence and P&L data from primary prop line selection.
+- **One-Sided Prop Line Filtering** — Complementary data cleaning to remove invalid prop lines.
 
 ## Practical Applications
 

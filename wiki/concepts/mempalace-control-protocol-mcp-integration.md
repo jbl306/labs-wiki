@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "b467128355ad46633de12b9a2a90526c0641bff2b8a228c3bbd2cb733e3ad37b"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-installing-mempalace-beginning-migration-f4a540d2.md
-quality_score: 0
+quality_score: 100
 concepts:
   - mempalace-control-protocol-mcp-integration
 related:

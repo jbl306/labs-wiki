@@ -6,12 +6,11 @@ last_verified: 2026-04-18
 source_hash: "3a38e39284cc0602ec33af8d22ef0dfb3c2a3a21b23b03f06716e3221ca8b49e"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
-quality_score: 0
+quality_score: 100
 concepts:
   - custom-copilot-cli-agents
 related:
   - "[[Agent-Ergonomic Tool Design Principles]]"
-  - "[[Feedback Loop Mechanisms in Agent Workflows]]"
   - "[[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]]"
 tier: hot
 tags: [copilot-cli, custom-agents, automation, feedback-loop]
@@ -82,7 +81,7 @@ No diagrams or images provided in the source document illustrating agent archite
 ## Relationship to Other Concepts
 
 - **[[Agent-Ergonomic Tool Design Principles]]** — Custom agents follow ergonomic principles to enhance CLI usability.
-- **[[Feedback Loop Mechanisms in Agent Workflows]]** — Agents incorporate feedback loops for continuous improvement.
+- **Feedback Loop Mechanisms in Agent Workflows** — Agents incorporate feedback loops for continuous improvement.
 
 ## Practical Applications
 

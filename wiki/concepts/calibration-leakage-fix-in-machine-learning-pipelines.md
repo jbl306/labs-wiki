@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "1544a9390c8a215aeb38b788d3103fd5a18163dc8ce9182c4c6fc36fbb638e43"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-critical-ml-fixes-sprint-28-9cff218d.md
-quality_score: 0
+quality_score: 100
 concepts:
   - calibration-leakage-fix-in-machine-learning-pipelines
 related:
-  - "[[Model Calibration]]"
   - "[[Copilot Session Checkpoint: Implementing Critical ML Fixes Sprint 28]]"
 tier: hot
 tags: [machine learning, model calibration, data leakage, model evaluation]
@@ -64,7 +63,7 @@ calibrator.fit(X_train, y_train)
 
 ## Relationship to Other Concepts
 
-- **[[Model Calibration]]** — Calibration leakage is a failure mode in model calibration processes.
+- **Model Calibration** — Calibration leakage is a failure mode in model calibration processes.
 
 ## Practical Applications
 

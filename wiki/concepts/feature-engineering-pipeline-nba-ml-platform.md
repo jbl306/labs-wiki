@@ -6,12 +6,11 @@ last_verified: 2026-04-18
 source_hash: "9f90b86f2aab32a86e7ca650c6477398444e04958726c5b3ca2ccd9f465e7581"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-data-source-expansion-exploration-b12f747f.md
-quality_score: 0
+quality_score: 100
 concepts:
   - feature-engineering-pipeline-nba-ml-platform
 related:
   - "[[Data Source Expansion for NBA ML Prediction Platform]]"
-  - "[[Model Retraining and Evaluation]]"
   - "[[Copilot Session Checkpoint: Data Source Expansion Exploration]]"
 tier: hot
 tags: [feature engineering, rolling statistics, sports analytics, nba, machine learning]
@@ -79,7 +78,7 @@ This function computes starter-related features using rolling averages grouped b
 ## Relationship to Other Concepts
 
 - **[[Data Source Expansion for NBA ML Prediction Platform]]** — Feature engineering depends on newly ingested data sources to create predictive features.
-- **[[Model Retraining and Evaluation]]** — Engineered features are inputs for retraining models and evaluating performance gains.
+- **Model Retraining and Evaluation** — Engineered features are inputs for retraining models and evaluating performance gains.
 
 ## Practical Applications
 

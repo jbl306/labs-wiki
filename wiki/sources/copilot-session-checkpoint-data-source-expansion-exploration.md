@@ -16,7 +16,6 @@ related:
   - "[[Homelab Server Deployment Architecture for NBA ML Platform]]"
   - "[[Feature Engineering Pipeline for NBA ML Platform]]"
   - "[[NBA ML Engine]]"
-  - "[[Homelab Server (beelink-gti13)]]"
   - "[[EnsembleModel]]"
 tier: hot
 tags: [deployment, nba-ml-engine, fileback, dashboard, data ingestion, checkpoint, copilot-session, nba, homelab, feature engineering, durable-knowledge, machine learning, ensemble learning]
@@ -46,7 +45,7 @@ This document captures a multi-sprint development campaign focused on expanding 
 ## Entities Mentioned
 
 - **[[NBA ML Engine]]** — The NBA ML Engine is a machine learning platform designed for predicting NBA player and game statistics. It integrates multiple data sources including NBA APIs, CDN data, and Basketball Reference metrics, and employs an ensemble model combining XGBoost, LightGBM, RandomForest, and Ridge regression. The platform is deployed on a homelab server using Docker containers and supports scheduled data ingestion, model training, and dashboard visualization.
-- **[[Homelab Server (beelink-gti13)]]** — The homelab server named beelink-gti13 hosts the NBA ML Engine and its associated services in a local Docker containerized environment. It runs TimescaleDB for data storage, MLflow for model tracking, FastAPI for API services, Streamlit for dashboards, and Ofelia for cron scheduling. This server enables development, deployment, and scheduled execution of the entire NBA ML prediction stack without external cloud dependencies.
+- **Homelab Server (beelink-gti13)** — The homelab server named beelink-gti13 hosts the NBA ML Engine and its associated services in a local Docker containerized environment. It runs TimescaleDB for data storage, MLflow for model tracking, FastAPI for API services, Streamlit for dashboards, and Ofelia for cron scheduling. This server enables development, deployment, and scheduled execution of the entire NBA ML prediction stack without external cloud dependencies.
 - **[[EnsembleModel]]** — EnsembleModel is a stacking meta-learner used in the NBA ML Engine that combines predictions from multiple base learners including XGBoost, LightGBM, RandomForest, and Ridge regression models. It achieved the best performance in 8 out of 9 statistical categories during model retraining and evaluation.
 
 ## Notable Quotes

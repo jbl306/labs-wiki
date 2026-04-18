@@ -17,7 +17,6 @@ related:
   - "[[Universal Agent Schema and Tool Integration]]"
   - "[[Claude]]"
   - "[[Labs-Wiki]]"
-  - "[[rohitg00/agentmemory]]"
   - "[[GitHub Copilot]]"
   - "[[OpenCode]]"
 tier: hot
@@ -50,7 +49,7 @@ This document details a Copilot CLI session focused on creating two public GitHu
 
 - **[[Claude]]** — Claude is an AI assistant developed by Anthropic, with multiple model versions such as Opus 4.6, Sonnet 4.6, and Haiku 4.5. It supports API access, Model-Context-Protocol (MCP), tokens, skills, hooks, agents, and security features. The 'claude' GitHub repository created in this session serves as a comprehensive, non-technical documentation guide to Claude and its ecosystem.
 - **[[Labs-Wiki]]** — Labs-Wiki is a GitHub repository implementing Karpathy's LLM Wiki pattern, designed to serve as a scalable, maintainable knowledge base for LLM agents. It incorporates best-of-breed features from the top 10 GitHub LLM wiki projects and is optimized for integration with VS Code, Copilot CLI, and OpenCode tools using a universal agent schema.
-- **[[rohitg00/agentmemory]]** — Agentmemory is a TypeScript-based persistent memory system for AI coding agents, featuring a SQLite backend with no external DB dependencies. It implements a hybrid retrieval system combining BM25, vector similarity, and knowledge graph methods, a 4-tier memory pipeline, cascading staleness management, provenance tracking, and multi-agent support via MCP.
+- **rohitg00/agentmemory** — Agentmemory is a TypeScript-based persistent memory system for AI coding agents, featuring a SQLite backend with no external DB dependencies. It implements a hybrid retrieval system combining BM25, vector similarity, and knowledge graph methods, a 4-tier memory pipeline, cascading staleness management, provenance tracking, and multi-agent support via MCP.
 - **[[GitHub Copilot]]** — GitHub Copilot is an AI-powered code completion tool integrated into VS Code and other IDEs. It supports custom agent configurations via `.github/copilot-instructions.md`, `.github/skills/`, and `.github/hooks/` directories, enabling enhanced developer workflows with AI assistance.
 - **[[OpenCode]]** — OpenCode is a tool for managing AI agents and skills with configuration files like `AGENTS.md`, `.opencode/skills/`, and `opencode.json` for multi-agent model configuration. It supports symlinked skill directories for portability and integration with other tools.
 

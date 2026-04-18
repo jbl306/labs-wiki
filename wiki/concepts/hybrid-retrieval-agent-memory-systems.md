@@ -6,12 +6,10 @@ last_verified: 2026-04-18
 source_hash: "26f254b5e6c65170bfc0d1bbf80f2de1aafe3266407d54a0e3243b0e1600d156"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-creating-claude-and-labs-wiki-repos-cccb14d5.md
-quality_score: 0
+quality_score: 100
 concepts:
   - hybrid-retrieval-agent-memory-systems
 related:
-  - "[[Memory Pipeline in Agent Systems]]"
-  - "[[Provenance Tracking]]"
   - "[[Copilot Session Checkpoint: Creating Claude and Labs-Wiki Repos]]"
 tier: hot
 tags: [hybrid-retrieval, agent-memory, information-retrieval, multi-agent]
@@ -56,8 +54,8 @@ In the rohitg00/agentmemory system, a query triggers retrieval via BM25 keyword 
 
 ## Relationship to Other Concepts
 
-- **[[Memory Pipeline in Agent Systems]]** — Hybrid retrieval is a key component of the multi-tier memory pipeline managing observation, compression, storage, and retrieval.
-- **[[Provenance Tracking]]** — Provenance ensures that hybrid retrieval results can be traced back to original sources.
+- **Memory Pipeline in Agent Systems** — Hybrid retrieval is a key component of the multi-tier memory pipeline managing observation, compression, storage, and retrieval.
+- **Provenance Tracking** — Provenance ensures that hybrid retrieval results can be traced back to original sources.
 
 ## Practical Applications
 

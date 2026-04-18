@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "ffde63a096f69c53f35e3e18b31bf69c28aa146571d441566ec26bba004c63d9"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
-quality_score: 0
+quality_score: 100
 concepts:
   - real-debrid-instantavailability-api-playback-issues
 related:
-  - "[[Knightcrawler Addon Patches]]"
   - "[[Copilot Session Checkpoint: Fixing Knightcrawler Populate Cron and RD Playback]]"
 tier: hot
 tags: [real-debrid, streaming, torrent, api, patch]
@@ -62,7 +61,7 @@ Manual fix:
 
 ## Relationship to Other Concepts
 
-- **[[Knightcrawler Addon Patches]]** — Contain fixes for RD API disablement and file selection bugs
+- **Knightcrawler Addon Patches** — Contain fixes for RD API disablement and file selection bugs
 
 ## Practical Applications
 

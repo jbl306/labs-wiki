@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "09d0f25cf67625d2215d0a83135693fea032d2bab65425e15c21d99f6b87103a"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
-quality_score: 0
+quality_score: 100
 concepts:
   - walk-forward-cross-validation-for-model-selection
 related:
-  - "[[Optuna Hyperparameter Tuning]]"
   - "[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]"
 tier: hot
 tags: [machine learning, cross-validation, time-series, model selection]
@@ -66,7 +65,7 @@ Model registration occurs after all folds complete, selecting the model with the
 
 ## Relationship to Other Concepts
 
-- **[[Optuna Hyperparameter Tuning]]** — Walk-forward CV folds are passed to Optuna tuner for robust hyperparameter optimization.
+- **Optuna Hyperparameter Tuning** — Walk-forward CV folds are passed to Optuna tuner for robust hyperparameter optimization.
 
 ## Practical Applications
 

@@ -2074,4 +2074,19 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: plans/checkpoint-curation-phase5-report.md
   status: success
   notes: "Backfill synthesis pages for checkpoint merge clusters"
+
+- timestamp: 2026-04-18T12:23:17+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems.md
+    - wiki/concepts/layered-agentic-architecture-claude-code.md
+    - wiki/concepts/design-principles-agentic-coding-tools.md
+    - wiki/concepts/comparative-agent-system-architecture-claude-code-vs-openclaw.md
+    - wiki/entities/claude-code.md
+    - wiki/entities/openclaw.md
+    - wiki/entities/anthropic.md
+  source: raw/2026-04-18-260414228v1pdf.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
 ```

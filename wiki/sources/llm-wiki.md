@@ -12,7 +12,6 @@ concepts:
   - llm-wiki-architecture
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM Wiki Architecture]]"
   - "[[Obsidian]]"
   - "[[qmd]]"
   - "[[Obsidian Web Clipper]]"

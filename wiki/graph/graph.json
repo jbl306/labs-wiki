@@ -1,11 +1,11 @@
 {
-  "generated_at": 1776514543,
-  "node_count": 502,
-  "edge_count": 1272,
-  "community_count": 24,
+  "generated_at": 1776515025,
+  "node_count": 507,
+  "edge_count": 1285,
+  "community_count": 23,
   "extraction_stats": {
-    "cache_hits": 495,
-    "cache_misses": 7
+    "cache_hits": 431,
+    "cache_misses": 76
   },
   "nodes": [
     {
@@ -40,7 +40,7 @@
       "path": "concepts/activation-functions-in-neural-networks.md",
       "summary": "Activation functions introduce non-linearity into neural networks, allowing them to learn complex patterns. They determine whether a neuron should 'fire' based on its input, shaping the network's ability to model intricate relationships.",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 8
     },
     {
@@ -58,7 +58,7 @@
       "path": "concepts/adaboost-adaptive-boosting.md",
       "summary": "AdaBoost is a powerful ensemble learning algorithm that combines multiple weak classifiers to form a strong classifier. It iteratively adjusts the weights of misclassified instances, focusing learning on challenging data points to improv...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -77,7 +77,7 @@
       "path": "concepts/adaboost-algorithm.md",
       "summary": "AdaBoost (Adaptive Boosting) is a powerful ensemble learning method that combines multiple weak classifiers to create a strong classifier. It iteratively trains weak learners, adjusts sample weights to focus on misclassified instances, a...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 7
     },
     {
@@ -96,7 +96,7 @@
       "path": "concepts/adguard-memory-oom-diagnosis-and-fix.md",
       "summary": "Diagnosis and remediation of an out-of-memory (OOM) crash in the AdGuard container running on a homelab server. The issue was caused by filter update spikes exceeding the container's memory limit, leading to process termination by the ke...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 4
     },
     {
@@ -135,15 +135,15 @@
       "path": "concepts/agent-ergonomic-tool-design-principles.md",
       "summary": "Agent-ergonomic tool design principles are guidelines for building tools that are easily usable by coding agents and humans. They emphasize interoperability, composability, token efficiency, actionable errors, and progressive complexity,...",
       "last_verified": "2026-04-13",
-      "community": 9,
-      "degree": 11
+      "community": 2,
+      "degree": 12
     },
     {
       "id": "concepts/agent-feedback-loop-mechanism",
       "title": "Agent Feedback Loop Mechanism",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "feedback-loop",
         "agent-improvement",
@@ -153,7 +153,7 @@
       "path": "concepts/agent-feedback-loop-mechanism.md",
       "summary": "The agent feedback loop mechanism is a structured process to capture, document, and incorporate lessons learned from agent operations to continuously improve agent behavior, reliability, and effectiveness.",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 7
     },
     {
@@ -172,7 +172,7 @@
       "path": "concepts/agent-handoffs-in-vs-code.md",
       "summary": "Agent handoffs in VS Code enable guided, sequential workflows by transitioning users between specialized custom agents. Each handoff passes relevant context and prompts, supporting multi-step processes such as planning, implementation, a...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 3
     },
     {
@@ -191,7 +191,7 @@
       "path": "concepts/agent-skill-integration-for-time-series-forecasting.md",
       "summary": "TimesFM provides a first-party Agent Skill, enabling its forecasting capabilities to be integrated into agentic workflows via the Agent Skills standard. This allows automated agents to discover and use TimesFM for time-series tasks witho...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 8
     },
     {
@@ -211,8 +211,8 @@
       "path": "concepts/agentic-context-engineering-ace.md",
       "summary": "Agentic Context Engineering (ACE) is a framework for scalable and efficient context adaptation in large language model (LLM) applications. ACE treats contexts as evolving playbooks, incrementally accumulating, refining, and organizing st...",
       "last_verified": "2026-04-16",
-      "community": 11,
-      "degree": 6
+      "community": 2,
+      "degree": 8
     },
     {
       "id": "concepts/agentic-wiki-optimization-karpathy-compile-once-principles",
@@ -269,7 +269,7 @@
       "path": "concepts/apriori-algorithm.md",
       "summary": "The Apriori Algorithm is a classic method in data mining for identifying frequent itemsets and generating association rules from transactional datasets. It is especially valuable for market basket analysis, helping businesses discover pa...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 4
     },
     {
@@ -305,7 +305,7 @@
       "path": "concepts/artificial-neural-network-architecture.md",
       "summary": "Artificial Neural Network (ANN) architecture refers to the structural organization of artificial neurons into layers\u2014input, hidden, and output\u2014connected by weighted links. This architecture is foundational for enabling ANNs to process co...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 4
     },
     {
@@ -323,7 +323,7 @@
       "path": "concepts/association-rule-mining.md",
       "summary": "Association Rule Mining is a data mining technique for discovering interesting relationships between variables in large datasets. It is commonly used to identify patterns such as products frequently bought together or behaviors that co-o...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -397,7 +397,7 @@
       "path": "concepts/attention-mechanism-in-large-language-models.md",
       "summary": "The attention mechanism is a core component of modern LLMs, enabling models to dynamically focus on relevant parts of input sequences. It operates using Query (Q), Key (K), and Value (V) matrices, computing weighted representations that ...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 12
     },
     {
@@ -453,7 +453,7 @@
       "path": "concepts/auto-type-detection-in-api-ingest-requests.md",
       "summary": "Auto-type-detection is a server-side heuristic that infers the content type of an ingest request when the explicit `type` field is omitted. It improves usability by reducing required client parameters and handling ambiguous inputs gracef...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 13,
       "degree": 3
     },
     {
@@ -461,7 +461,7 @@
       "title": "AutoAgent Framework Research and Integration Planning",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "autoagent",
         "agent-framework",
@@ -510,7 +510,7 @@
       "path": "concepts/automated-ai-skill-stack-installation.md",
       "summary": "Automated AI Skill Stack Installation is a process where a tool scans a project's configuration and tech stack, then installs the most relevant AI agent skills without manual intervention. This approach streamlines the integration of AI ...",
       "last_verified": "2026-04-10",
-      "community": 7,
+      "community": 2,
       "degree": 13
     },
     {
@@ -530,7 +530,7 @@
       "path": "concepts/autoreason-iterative-self-refinement-framework.md",
       "summary": "Autoreason is a structured methodology for iterative self-refinement in subjective domains, such as writing and competitive programming. It addresses fundamental flaws in traditional critique-and-revise cycles by introducing explicit res...",
       "last_verified": "2026-04-13",
-      "community": 10,
+      "community": 9,
       "degree": 8
     },
     {
@@ -551,15 +551,15 @@
       "path": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools.md",
       "summary": "The AXI (Agent eXperience Interface) framework establishes 10 ergonomic principles for building CLI tools optimized for AI agent interaction. These principles address token efficiency, schema minimalism, error handling, and context manag...",
       "last_verified": "2026-04-10",
-      "community": 9,
-      "degree": 15
+      "community": 2,
+      "degree": 16
     },
     {
       "id": "concepts/backend-for-frontend-integration-with-materialized-views",
       "title": "Backend-For-Frontend (BFF) Integration with Materialized Views",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "backend-for-frontend",
         "bff",
@@ -570,7 +570,7 @@
       "path": "concepts/backend-for-frontend-integration-with-materialized-views.md",
       "summary": "The Backend-For-Frontend (BFF) pattern provides a tailored backend service for frontend applications, optimizing data delivery and aggregation. Integrating materialized views into the BFF layer reduces query complexity and latency by ser...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 2
     },
     {
@@ -606,7 +606,7 @@
       "path": "concepts/backpropagation-learning-mechanism.md",
       "summary": "Backpropagation is the core learning algorithm for training ANNs, enabling them to adjust weights based on prediction errors. It systematically propagates errors backward through the network to optimize performance.",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 6
     },
     {
@@ -625,7 +625,7 @@
       "path": "concepts/backpropagation-through-time-bptt.md",
       "summary": "Backpropagation Through Time (BPTT) is the specialized training algorithm for RNNs, enabling gradient-based learning across sequential data. It extends standard backpropagation by propagating gradients through each time step in the unfol...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 4
     },
     {
@@ -659,7 +659,7 @@
       "path": "concepts/bayes-theorem.md",
       "summary": "Bayes' Theorem is a foundational principle in probability theory that allows the computation of the probability of a hypothesis given observed evidence. It is central to the Naive Bayes classifier and many other probabilistic models.",
       "last_verified": "2026-04-08",
-      "community": 18,
+      "community": 17,
       "degree": 2
     },
     {
@@ -695,7 +695,7 @@
       "path": "concepts/book-then-retry-booking-flow-optimization.md",
       "summary": "Book-Then-Retry is a booking flow strategy designed to optimize the process of reserving limited resources, such as golf tee times, by immediately booking available options before retrying for any missing ones. This approach improves eff...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 4
     },
     {
@@ -713,7 +713,7 @@
       "path": "concepts/byte-pair-encoding-bpe-in-large-language-models.md",
       "summary": "Byte Pair Encoding (BPE) is a tokenization algorithm widely used in modern Large Language Models (LLMs) to efficiently break down text into manageable tokens. BPE addresses the challenge of representing diverse vocabulary and rare words ...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -732,7 +732,7 @@
       "path": "concepts/caddy-handle-path-directive-and-its-impact-on-upstream-url-construction.md",
       "summary": "This concept explains the behavior of Caddy's `handle_path` directive, which strips the matched path prefix before proxying requests upstream. This behavior affects applications that build absolute URLs based on the incoming request path...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 5
     },
     {
@@ -751,7 +751,7 @@
       "path": "concepts/caddy-handle-path-directive-and-url-token-injection.md",
       "summary": "The Caddy web server's `handle_path` directive strips matched path prefixes before proxying requests to upstream services. This behavior can cause issues when backend applications build absolute URLs expecting the prefix to be present, s...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 4
     },
     {
@@ -768,7 +768,7 @@
       "path": "concepts/calibration-analysis-for-regression-models.md",
       "summary": "Calibration analysis assesses how well the predicted confidence intervals or quantiles of regression models correspond to the actual distribution of errors. Proper calibration means the predicted uncertainty accurately reflects real-worl...",
       "last_verified": "2026-04-18",
-      "community": 14,
+      "community": 12,
       "degree": 3
     },
     {
@@ -776,7 +776,7 @@
       "title": "Calibration Leakage Fix in Machine Learning Pipelines",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "machine learning",
         "model calibration",
@@ -786,7 +786,7 @@
       "path": "concepts/calibration-leakage-fix-in-machine-learning-pipelines.md",
       "summary": "Calibration leakage occurs when calibration methods use data from both training and validation sets improperly, causing overly optimistic performance estimates and biased predictions. Fixing calibration leakage is essential for reliable ...",
       "last_verified": "2026-04-18",
-      "community": 16,
+      "community": 15,
       "degree": 1
     },
     {
@@ -822,7 +822,7 @@
       "path": "concepts/cascading-pipeline-failure-diagnosis-and-resilience.md",
       "summary": "Cascading pipeline failure diagnosis involves identifying multiple interrelated failures in a data processing or ML pipeline that cause downstream issues such as stale data or incorrect metrics. Resilience techniques are implemented to p...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 3
     },
     {
@@ -842,7 +842,7 @@
       "path": "concepts/chrome-devtools-mcp-cli-interface.md",
       "summary": "The Chrome DevTools MCP CLI is an experimental command-line interface that allows direct interaction with the Chrome browser via the MCP server. It enables automation, debugging, and inspection tasks from the terminal, supporting both hu...",
       "last_verified": "2026-04-13",
-      "community": 9,
+      "community": 2,
       "degree": 3
     },
     {
@@ -879,7 +879,7 @@
       "path": "concepts/claude-code-skill-summarization.md",
       "summary": "Claude Code Skill Summarization is a process where AutoSkills generates a summary file (CLAUDE.md) listing the installed AI agent skills relevant to Claude Code workflows. This summary provides a quick reference for both human developers...",
       "last_verified": "2026-04-10",
-      "community": 7,
+      "community": 2,
       "degree": 5
     },
     {
@@ -898,8 +898,27 @@
       "path": "concepts/cognitive-biases-in-large-language-models.md",
       "summary": "Cognitive biases are systematic deviations from rational judgment observed in both humans and Large Language Models (LLMs). These biases arise from mental shortcuts, limited cognitive resources, or contextual influences, and can signific...",
       "last_verified": "2026-04-10",
-      "community": 10,
+      "community": 9,
       "degree": 5
+    },
+    {
+      "id": "concepts/comparative-agent-system-architecture-claude-code-vs-openclaw",
+      "title": "Comparative Agent System Architecture: Claude Code vs. OpenClaw",
+      "page_type": "concept",
+      "tier": "hot",
+      "quality_score": 100.0,
+      "tags": [
+        "agent-comparison",
+        "architecture",
+        "safety",
+        "extensibility",
+        "context-management"
+      ],
+      "path": "concepts/comparative-agent-system-architecture-claude-code-vs-openclaw.md",
+      "summary": "The paper contrasts Claude Code\u2019s architecture with OpenClaw, an open-source multi-channel personal assistant gateway, across six design dimensions. This comparison reveals how deployment context, product goals, and safety requirements s...",
+      "last_verified": "2026-04-18",
+      "community": 2,
+      "degree": 3
     },
     {
       "id": "concepts/comparison-mempalace-labs-wiki-openmemory",
@@ -924,7 +943,7 @@
       "title": "Comprehensive Grafana Monitoring for Docker Homelab Services",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "grafana",
         "prometheus",
@@ -935,7 +954,7 @@
       "path": "concepts/comprehensive-grafana-monitoring-for-docker-homelab-services.md",
       "summary": "Monitoring a complex homelab infrastructure with dozens of Docker containers requires detailed dashboards that aggregate metrics across services. Grafana, combined with Prometheus and exporters like cAdvisor and node-exporter, provides a...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -961,7 +980,7 @@
       "title": "Concurrent Refresh of PostgreSQL Materialized Views",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "postgresql",
         "materialized-views",
@@ -971,7 +990,7 @@
       "path": "concepts/concurrent-refresh-postgresql-materialized-views.md",
       "summary": "Concurrent refresh allows a PostgreSQL materialized view to be refreshed without locking out reads, enabling continuous availability of data during refresh operations. This is crucial for production systems requiring high uptime and mini...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -979,7 +998,7 @@
       "title": "Confidence Calibration Analysis in Machine Learning Models",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "model evaluation",
         "calibration",
@@ -989,7 +1008,7 @@
       "path": "concepts/confidence-calibration-analysis-in-machine-learning-models.md",
       "summary": "Confidence calibration assesses how well predicted probabilities of a model align with actual outcome frequencies. Proper calibration is crucial for reliable probabilistic predictions, especially in decision-making systems. This concept ...",
       "last_verified": "2026-04-18",
-      "community": 17,
+      "community": 16,
       "degree": 1
     },
     {
@@ -1008,7 +1027,7 @@
       "path": "concepts/container-resource-tuning-and-performance-remediation.md",
       "summary": "Container resource tuning and performance remediation involves analyzing the resource usage of running containers, diagnosing bottlenecks, and adjusting configuration parameters to optimize performance and prevent failures. This is criti...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 7
     },
     {
@@ -1044,7 +1063,7 @@
       "path": "concepts/continuous-quantile-forecasting-in-time-series-models.md",
       "summary": "TimesFM introduces an optional continuous quantile forecasting head, enabling probabilistic predictions across multiple quantiles for future time points. This feature is critical for risk assessment, uncertainty quantification, and robus...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 3
     },
     {
@@ -1062,7 +1081,7 @@
       "path": "concepts/continuum-memory-system.md",
       "summary": "The Continuum Memory System (CMS) is a memory architecture introduced within the Nested Learning paradigm, modeling memory as a spectrum of modules with distinct update frequencies. CMS enables richer, more effective memory management fo...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -1119,7 +1138,7 @@
       "path": "concepts/custom-agent-file-structure.md",
       "summary": "Custom agent files in VS Code are Markdown documents (.agent.md) with a YAML frontmatter header and a Markdown body. The frontmatter defines agent configuration, while the body provides instructions and guidelines for the agent's behavior.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 3
     },
     {
@@ -1139,7 +1158,7 @@
       "path": "concepts/custom-agents-in-vs-code.md",
       "summary": "Custom agents in Visual Studio Code are configurable AI personas tailored to specific development roles and tasks. They allow users to define distinct behaviors, tool access, and instructions for each agent, enabling consistent and speci...",
       "last_verified": "2026-04-08",
-      "community": 22,
+      "community": 21,
       "degree": 0
     },
     {
@@ -1147,7 +1166,7 @@
       "title": "Custom Copilot CLI Agents",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "copilot-cli",
         "custom-agents",
@@ -1183,7 +1202,7 @@
       "title": "Dashboard Duplicate Predictions Fix in ML Systems",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "dashboard",
         "data deduplication",
@@ -1193,7 +1212,7 @@
       "path": "concepts/dashboard-duplicate-predictions-fix-in-ml-systems.md",
       "summary": "Duplicate predictions in dashboards can confuse users and degrade trust in ML system outputs. Fixing duplication involves addressing root causes in data queries, API responses, and frontend rendering logic.",
       "last_verified": "2026-04-18",
-      "community": 16,
+      "community": 15,
       "degree": 1
     },
     {
@@ -1229,7 +1248,7 @@
       "path": "concepts/dashboard-metrics-consistency-and-hit-rate-discrepancy-analysis.md",
       "summary": "Dashboard metrics consistency ensures that different views or endpoints reporting related statistics (such as hit rates) produce aligned and trustworthy results. Discrepancies can arise from differences in data sources, filtering criteri...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 4
     },
     {
@@ -1237,7 +1256,7 @@
       "title": "Data Source Expansion for NBA ML Prediction Platform",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "data ingestion",
         "feature engineering",
@@ -1267,7 +1286,7 @@
       "path": "concepts/database-indexing-for-performance-optimization.md",
       "summary": "Database indexing for performance optimization is the practice of creating targeted indexes on database tables to accelerate query execution, reduce CPU load, and eliminate bottlenecks caused by sequential scans. This is especially cruci...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 5
     },
     {
@@ -1304,8 +1323,27 @@
       "path": "concepts/decision-tree-algorithm.md",
       "summary": "A Decision Tree is a supervised learning algorithm used for both classification and regression tasks. It models decisions and their possible consequences in a tree-like structure, making it easy to interpret and visualize. Decision Trees...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 14
+    },
+    {
+      "id": "concepts/design-principles-agentic-coding-tools",
+      "title": "Design Principles for Agentic Coding Tools",
+      "page_type": "concept",
+      "tier": "hot",
+      "quality_score": 100.0,
+      "tags": [
+        "design-principles",
+        "agentic-tools",
+        "safety",
+        "extensibility",
+        "context-management"
+      ],
+      "path": "concepts/design-principles-agentic-coding-tools.md",
+      "summary": "Thirteen design principles operationalize five core human values in Claude Code, guiding architectural decisions for safety, adaptability, reliability, capability, and authority. These principles address recurring design questions in age...",
+      "last_verified": "2026-04-18",
+      "community": 2,
+      "degree": 2
     },
     {
       "id": "concepts/docker-container-resource-auditing-and-optimization",
@@ -1322,7 +1360,7 @@
       "path": "concepts/docker-container-resource-auditing-and-optimization.md",
       "summary": "Docker containers running multiple services can consume excessive CPU and memory resources if not properly configured. Auditing container resource limits and adjusting CPU and memory allocations reduces overall system load, improves stab...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 5
     },
     {
@@ -1368,7 +1406,7 @@
       "title": "Early Stopping in Gradient Boosting Models",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "machine learning",
         "gradient boosting",
@@ -1378,7 +1416,7 @@
       "path": "concepts/early-stopping-in-gradient-boosting-models.md",
       "summary": "Early stopping is a regularization technique used in gradient boosting models such as XGBoost, LightGBM, and CatBoost to prevent overfitting by halting training when the model's performance on a validation set stops improving. Proper imp...",
       "last_verified": "2026-04-18",
-      "community": 16,
+      "community": 15,
       "degree": 1
     },
     {
@@ -1504,7 +1542,7 @@
       "path": "concepts/feature-alignment-for-feature-selection-models.md",
       "summary": "Feature alignment is a critical process ensuring that the feature matrix used during model evaluation matches the exact subset of features each model was trained on. This is especially important for models trained with feature selection,...",
       "last_verified": "2026-04-18",
-      "community": 14,
+      "community": 12,
       "degree": 2
     },
     {
@@ -1547,7 +1585,7 @@
       "title": "Feature Engineering Pipeline for NBA ML Platform",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "feature engineering",
         "rolling statistics",
@@ -1593,7 +1631,7 @@
       "path": "concepts/flash-attention-in-large-language-models.md",
       "summary": "Flash Attention is an algorithmic and hardware optimization for the attention mechanism in LLMs, designed to accelerate computation and reduce memory usage by leveraging GPU memory architecture and efficient tiling strategies.",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -1611,7 +1649,7 @@
       "path": "concepts/gaussian-naive-bayes.md",
       "summary": "Gaussian Naive Bayes is a variant of the Naive Bayes classifier designed for continuous features, assuming each feature is normally distributed within each class. It is commonly used in scenarios where numerical data is prevalent.",
       "last_verified": "2026-04-08",
-      "community": 18,
+      "community": 17,
       "degree": 2
     },
     {
@@ -1619,7 +1657,7 @@
       "title": "GitHub Repository Deep Crawling for Wiki Ingestion",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "github",
         "wiki-ingestion",
@@ -1665,7 +1703,7 @@
       "path": "concepts/gradient-descent-in-linear-regression.md",
       "summary": "Gradient descent is an iterative optimization algorithm used to minimize the cost function in linear regression, enabling the model to find the best-fit line for the data. It systematically adjusts model parameters to reduce prediction e...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -1673,7 +1711,7 @@
       "title": "Graphify Features for Knowledge Graph Integration",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "knowledge-graph",
         "networkx",
@@ -1703,7 +1741,7 @@
       "path": "concepts/hallucinations-in-legal-retrieval-augmented-generation-rag-systems.md",
       "summary": "Hallucinations in legal RAG systems refer to the generation of inaccurate, fabricated, or misleading content by AI models when answering legal queries, even when retrieval mechanisms are used to ground responses in external documents. Th...",
       "last_verified": "2026-04-14",
-      "community": 10,
+      "community": 9,
       "degree": 3
     },
     {
@@ -1757,7 +1795,7 @@
       "path": "concepts/holdout-evaluator-module.md",
       "summary": "The holdout evaluator module is a comprehensive evaluation framework developed to assess model performance on holdout test data. It supports multiple evaluation modes including traditional regression metrics, calibration analysis, and fe...",
       "last_verified": "2026-04-18",
-      "community": 14,
+      "community": 12,
       "degree": 4
     },
     {
@@ -1815,7 +1853,7 @@
       "path": "concepts/homelab-service-inventory-and-dashboard-synchronization.md",
       "summary": "Homelab service inventory and dashboard synchronization is the process of systematically auditing all running containers, services, and scheduled jobs in a homelab environment, then updating the homepage dashboard to accurately reflect t...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 6
     },
     {
@@ -1833,7 +1871,7 @@
       "path": "concepts/hope-architecture.md",
       "summary": "Hope is a self-modifying recurrent architecture designed as a proof-of-concept for the Nested Learning paradigm. It features unbounded levels of in-context learning and continuum memory system blocks, enabling superior performance in lan...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -1855,7 +1893,7 @@
       "path": "concepts/html-over-the-wire-with-htmx.md",
       "summary": "HTML Over The Wire is a web development paradigm enabled by htmx, where dynamic interactions and server communication are managed directly through HTML attributes rather than imperative JavaScript. This approach brings the power of AJAX,...",
       "last_verified": "2026-04-08",
-      "community": 20,
+      "community": 19,
       "degree": 3
     },
     {
@@ -1876,7 +1914,7 @@
       "path": "concepts/htmx-attribute-api.md",
       "summary": "The htmx Attribute API is a set of custom HTML attributes (prefixed with `hx-`) that declaratively define client-server interactions, event triggers, and DOM update strategies. This API is the primary interface for developers to add dyna...",
       "last_verified": "2026-04-08",
-      "community": 20,
+      "community": 19,
       "degree": 3
     },
     {
@@ -1894,7 +1932,7 @@
       "path": "concepts/http-shortcuts-android-app-scripting-api-quirks.md",
       "summary": "The HTTP Shortcuts Android app provides scripting capabilities to automate HTTP requests, but its scripting API exhibits a known quirk where the `sendHttpRequest()` function sends empty request bodies for both JSON and form-encoded data....",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 13,
       "degree": 3
     },
     {
@@ -1902,7 +1940,7 @@
       "title": "Hybrid Retrieval in Agent Memory Systems",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "hybrid-retrieval",
         "agent-memory",
@@ -1912,7 +1950,7 @@
       "path": "concepts/hybrid-retrieval-agent-memory-systems.md",
       "summary": "Hybrid retrieval combines multiple retrieval methods such as BM25, vector similarity, and knowledge graphs to improve memory recall and relevance in AI agent systems. It balances precision and recall by leveraging complementary retrieval...",
       "last_verified": "2026-04-18",
-      "community": 7,
+      "community": 2,
       "degree": 1
     },
     {
@@ -1920,7 +1958,7 @@
       "title": "Image Filtering for Vision-Based LLM Extraction",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "image-filtering",
         "vision-api",
@@ -1948,7 +1986,7 @@
       "path": "concepts/initialization-sensitivity-in-sparse-neural-networks.md",
       "summary": "Initialization sensitivity refers to the critical dependence of sparse neural networks (winning tickets) on their original weight initialization. The Lottery Ticket Hypothesis demonstrates that only subnetworks retaining their original i...",
       "last_verified": "2026-04-10",
-      "community": 15,
+      "community": 14,
       "degree": 2
     },
     {
@@ -1966,7 +2004,7 @@
       "path": "concepts/intelligent-resource-orchestration-for-llm-agents.md",
       "summary": "Intelligent Resource Orchestration is the automated management of code generation, tool creation, agent instantiation, and workflow optimization in LLM agent frameworks. It ensures efficient, robust, and adaptive operation of agent syste...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 2
     },
     {
@@ -1985,7 +2023,7 @@
       "path": "concepts/intelligent-resource-orchestration.md",
       "summary": "Intelligent Resource Orchestration is the automated management and allocation of agents, tools, and workflows, enabling iterative self-improvement and controlled code generation. It ensures that resources are optimally deployed for both ...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 5
     },
     {
@@ -2003,7 +2041,7 @@
       "path": "concepts/iterative-pruning-technique.md",
       "summary": "Iterative pruning is a method for identifying winning tickets in neural networks by repeatedly training, pruning, and resetting the network over multiple rounds. This approach uncovers smaller, highly trainable subnetworks compared to on...",
       "last_verified": "2026-04-10",
-      "community": 15,
+      "community": 14,
       "degree": 2
     },
     {
@@ -2021,7 +2059,7 @@
       "path": "concepts/k-means-clustering-algorithm.md",
       "summary": "K-Means Clustering is a popular unsupervised learning algorithm used to partition data into k distinct clusters based on feature similarity. It is widely used for pattern discovery, segmentation, and anomaly detection in large datasets.",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -2040,7 +2078,7 @@
       "path": "concepts/k-nearest-neighbor-algorithm.md",
       "summary": "The K-Nearest Neighbor (KNN) algorithm is a fundamental machine learning technique used for both classification and regression. It operates by identifying the 'k' closest data points to a given input and making predictions based on their...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -2048,7 +2086,7 @@
       "title": "Karpathy LLM Wiki Pattern",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "llm-wiki",
         "knowledge-management",
@@ -2058,7 +2096,7 @@
       "path": "concepts/karpathy-llm-wiki-pattern.md",
       "summary": "The Karpathy LLM Wiki pattern is a structured approach to organizing and managing knowledge for large language models, emphasizing layered content management and efficient context usage. It is foundational for building scalable LLM wikis...",
       "last_verified": "2026-04-18",
-      "community": 7,
+      "community": 2,
       "degree": 4
     },
     {
@@ -2066,7 +2104,7 @@
       "title": "Kelly Bankroll Simulator with Quarter-Kelly Sizing and Daily Exposure Cap",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "kelly-criterion",
         "bankroll-management",
@@ -2076,7 +2114,7 @@
       "path": "concepts/kelly-bankroll-simulator-quarter-kelly-sizing-daily-exposure-cap.md",
       "summary": "The Kelly criterion is a formula used to size bets optimally to maximize logarithmic growth of bankroll. However, applying full Kelly sizing across many daily bets can lead to unrealistic bankroll growth estimates. This concept describes...",
       "last_verified": "2026-04-18",
-      "community": 19,
+      "community": 18,
       "degree": 2
     },
     {
@@ -2084,7 +2122,7 @@
       "title": "Kelly Bet Sizing Bug Fix in Sequential Betting Simulations",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "betting",
         "kelly criterion",
@@ -2094,7 +2132,7 @@
       "path": "concepts/kelly-bet-sizing-bug-fix-in-sequential-betting-simulations.md",
       "summary": "The Kelly criterion is a formula used to determine the optimal size of a series of bets to maximize logarithmic growth of bankroll. Correct implementation in sequential simulations is critical to accurately model bankroll evolution and b...",
       "last_verified": "2026-04-18",
-      "community": 16,
+      "community": 15,
       "degree": 1
     },
     {
@@ -2111,7 +2149,7 @@
       "path": "concepts/kernel-functions-in-svm.md",
       "summary": "Kernel functions are mathematical tools used in SVM to map data into higher-dimensional spaces, enabling the algorithm to handle non-linearly separable data. They allow SVM to find linear decision boundaries in transformed spaces without...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -2119,7 +2157,7 @@
       "title": "KnightCrawler Gating Fix for Stremio Streams",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "knightcrawler",
         "stremio",
@@ -2131,7 +2169,7 @@
       "path": "concepts/knightcrawler-gating-fix-for-stremio-streams.md",
       "summary": "This concept covers the root cause and resolution of 404 errors encountered in KnightCrawler streams on Stremio when domain gating is enabled via Caddy's handle_path directive. The fix involves injecting an access token prefix into URLs ...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 2
     },
     {
@@ -2139,7 +2177,7 @@
       "title": "Knightcrawler Metadata Service and IMDB Data Refresh",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "knightcrawler",
         "metadata",
@@ -2150,7 +2188,7 @@
       "path": "concepts/knightcrawler-metadata-service-imdb-data-refresh.md",
       "summary": "The Knightcrawler metadata service is a one-shot process that downloads IMDB TSV data dumps and imports episode metadata into the Knightcrawler database. It truncates existing metadata tables and fully refreshes them, providing up-to-dat...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -2158,7 +2196,7 @@
       "title": "KnightCrawler Permission Issue and Cron Job Management",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "cron",
         "permissions",
@@ -2169,7 +2207,7 @@
       "path": "concepts/knightcrawler-permission-issue-and-cron-job-management.md",
       "summary": "KnightCrawler is a media ingestion pipeline that scrapes and populates IMDB titles into a database. Proper execution permissions on its cron-triggered scripts are critical for timely data updates. This concept covers diagnosing permissio...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -2177,7 +2215,7 @@
       "title": "Knightcrawler Populate Files Cron Job",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "knightcrawler",
         "cron-job",
@@ -2188,7 +2226,7 @@
       "path": "concepts/knightcrawler-populate-files-cron-job.md",
       "summary": "The Knightcrawler populate files cron job is a scheduled task that runs every 15 minutes to populate the files table in the Knightcrawler database with metadata about torrent files. It maps ingested torrents to their corresponding video ...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -2206,7 +2244,7 @@
       "path": "concepts/kv-cache-and-paged-attention-in-large-language-models.md",
       "summary": "KV Cache and Paged Attention are inference optimization techniques used in LLMs to accelerate text generation and improve memory efficiency. KV Cache stores Key and Value matrices from previous steps, while Paged Attention manages memory...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 6
     },
     {
@@ -2214,7 +2252,7 @@
       "title": "Labs-Wiki Architecture and Implementation",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "LLM Wiki",
         "Knowledge Management",
@@ -2225,7 +2263,7 @@
       "path": "concepts/labs-wiki-architecture-and-implementation.md",
       "summary": "Labs-Wiki is a personal knowledge wiki powered by large language models (LLMs), designed following Karpathy's LLM Wiki pattern. It is optimized for integration with VS Code Copilot, Copilot CLI, and OpenCode, enabling seamless knowledge ...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 2,
       "degree": 3
     },
     {
@@ -2233,7 +2271,7 @@
       "title": "Labs-Wiki Architecture",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "knowledge-wiki",
         "LLM-integration",
@@ -2245,6 +2283,25 @@
       "last_verified": "2026-04-18",
       "community": 1,
       "degree": 4
+    },
+    {
+      "id": "concepts/layered-agentic-architecture-claude-code",
+      "title": "Layered Agentic Architecture in Claude Code",
+      "page_type": "concept",
+      "tier": "hot",
+      "quality_score": 100.0,
+      "tags": [
+        "agentic-architecture",
+        "safety",
+        "context-management",
+        "extensibility",
+        "session-persistence"
+      ],
+      "path": "concepts/layered-agentic-architecture-claude-code.md",
+      "summary": "Claude Code employs a layered agentic architecture that decomposes the system into distinct functional subsystems, each addressing recurring design questions in agentic coding tools. This structure enables robust safety, extensibility, c...",
+      "last_verified": "2026-04-18",
+      "community": 2,
+      "degree": 3
     },
     {
       "id": "concepts/lightgbm-feature-importance-and-shap-values",
@@ -2300,7 +2357,7 @@
       "path": "concepts/linear-regression.md",
       "summary": "Linear regression is a supervised learning algorithm that models the relationship between a dependent variable and one or more independent variables by fitting a straight line to observed data. It is widely used for predicting continuous...",
       "last_verified": "2026-04-17",
-      "community": 4,
+      "community": 5,
       "degree": 8
     },
     {
@@ -2320,7 +2377,7 @@
       "path": "concepts/llm-operating-system-architecture.md",
       "summary": "LLM Operating System Architecture is a conceptual framework that treats a large language model (LLM) as the central processing unit (CPU) of a computing environment. This architecture integrates the LLM with classical software tools, fil...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 6
     },
     {
@@ -2341,7 +2398,7 @@
       "path": "concepts/llm-wiki-architecture.md",
       "summary": "The LLM Wiki Architecture defines the structural layers and operational workflow for building and maintaining a persistent knowledge base using LLMs. It delineates the roles of raw sources, the wiki, and the schema, ensuring clarity, mod...",
       "last_verified": "2026-04-17",
-      "community": 6,
+      "community": 7,
       "degree": 15
     },
     {
@@ -2360,7 +2417,7 @@
       "path": "concepts/logistic-regression.md",
       "summary": "Logistic regression is a supervised learning algorithm designed for classification tasks, particularly binary classification. It models the probability that a given input belongs to a specific class by applying a sigmoid function to a li...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 5
     },
     {
@@ -2378,7 +2435,7 @@
       "path": "concepts/long-short-term-memory-lstm.md",
       "summary": "Long Short-Term Memory (LSTM) is a specialized type of recurrent neural network architecture designed to address the challenge of learning long-term dependencies in sequential data. Unlike traditional RNNs, LSTMs use memory cells and gat...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 6
     },
     {
@@ -2397,7 +2454,7 @@
       "path": "concepts/lottery-ticket-hypothesis.md",
       "summary": "The Lottery Ticket Hypothesis asserts that within a dense, randomly-initialized neural network, there exist smaller subnetworks\u2014called 'winning tickets'\u2014that, when trained from their original initialization, can achieve comparable perfor...",
       "last_verified": "2026-04-10",
-      "community": 15,
+      "community": 14,
       "degree": 5
     },
     {
@@ -2415,7 +2472,7 @@
       "path": "concepts/lstm-gating-mechanism-nba-ml-engine.md",
       "summary": "The LSTM gating mechanism is a configuration-based control introduced in Sprint 11 to enable or disable the use of LSTM models within the NBA ML Engine. This allows flexible experimentation and deployment by toggling LSTM inclusion witho...",
       "last_verified": "2026-04-18",
-      "community": 14,
+      "community": 12,
       "degree": 1
     },
     {
@@ -2452,7 +2509,7 @@
       "path": "concepts/maximum-likelihood-estimation-in-logistic-regression.md",
       "summary": "Maximum likelihood estimation (MLE) is the method used to fit the parameters of logistic regression. It seeks to find the weights and bias that maximize the probability of observing the given data, ensuring the model's predictions align ...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -2480,7 +2537,7 @@
       "title": "MemPalace Control Protocol (MCP) Integration",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "mcp",
         "mempalace",
@@ -2560,7 +2617,7 @@
       "title": "Migration from OpenMemory to MemPalace",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "migration",
         "openmemory",
@@ -2607,7 +2664,7 @@
       "path": "concepts/mlflow-resilience-and-fallback-mechanisms-in-model-training.md",
       "summary": "MLflow is a popular open-source platform for managing the ML lifecycle, including experiment tracking. Resilience mechanisms in MLflow integration ensure that transient failures in connectivity or service availability do not halt model t...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 3
     },
     {
@@ -2626,7 +2683,7 @@
       "path": "concepts/mobile-first-graph-ui-design-for-wiki-systems.md",
       "summary": "Mobile-first graph UI design adapts complex, node-based visualizations for touch devices, ensuring usability and accessibility. This approach is crucial for knowledge graph interfaces, which often rely on dense, interactive layouts that ...",
       "last_verified": "2026-04-18",
-      "community": 9,
+      "community": 2,
       "degree": 2
     },
     {
@@ -2649,7 +2706,7 @@
       "path": "concepts/model-context-protocol-mcp-server-for-chrome-devtools.md",
       "summary": "The Model-Context-Protocol (MCP) server for Chrome DevTools is a middleware that allows coding agents to remotely control, inspect, and automate a Chrome browser instance. It exposes Chrome DevTools functionality via a standardized proto...",
       "last_verified": "2026-04-13",
-      "community": 9,
+      "community": 2,
       "degree": 6
     },
     {
@@ -2657,7 +2714,7 @@
       "title": "Multi-Device Ingestion API for Labs-Wiki",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "Ingestion API",
         "FastAPI",
@@ -2668,7 +2725,7 @@
       "path": "concepts/multi-device-ingestion-api-for-labs-wiki.md",
       "summary": "The multi-device ingestion API is a FastAPI-based service designed to centralize and secure knowledge capture from diverse sources including iOS, Android, browsers, CLI tools, and GitHub issues. It supports JSON and multipart file upload...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 2,
       "degree": 3
     },
     {
@@ -2687,7 +2744,7 @@
       "path": "concepts/multi-device-source-ingestion-architecture.md",
       "summary": "A system design enabling ingestion of knowledge content from multiple device platforms and input methods into a unified knowledge base. This architecture supports diverse capture channels funneling into a centralized API hub for consiste...",
       "last_verified": "2026-04-18",
-      "community": 6,
+      "community": 7,
       "degree": 1
     },
     {
@@ -2704,7 +2761,7 @@
       "path": "concepts/multi-head-attention.md",
       "summary": "Multi-head attention is an extension of the self-attention mechanism that allows the model to attend to information from multiple representation subspaces simultaneously. It enhances the model's ability to capture diverse relationships w...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -2723,7 +2780,7 @@
       "path": "concepts/multimodal-integration-in-vla-models.md",
       "summary": "Multimodal integration is the process by which VLA models fuse vision, language, and action modalities into a unified computational space. This enables context-aware reasoning and adaptive control, overcoming the limitations of tradition...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -2741,7 +2798,7 @@
       "path": "concepts/naive-bayes-classifier.md",
       "summary": "The Naive Bayes classifier is a simple yet powerful probabilistic algorithm used for classification tasks in machine learning. It operates by applying Bayes' Theorem with the 'naive' assumption that all features in the dataset are indepe...",
       "last_verified": "2026-04-08",
-      "community": 18,
+      "community": 17,
       "degree": 4
     },
     {
@@ -2760,7 +2817,7 @@
       "path": "concepts/natural-language-driven-agent-building.md",
       "summary": "Natural Language-Driven Agent Building is a paradigm where users create, customize, and orchestrate LLM agents and workflows solely through conversational or textual input, without writing code. This approach democratizes AI agent develo...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 5
     },
     {
@@ -2778,7 +2835,7 @@
       "path": "concepts/natural-language-driven-agent-creation.md",
       "summary": "Natural Language-Driven Agent Creation is a paradigm where users build, customize, and deploy LLM agents and workflows using conversational natural language inputs, without writing code. This approach lowers the barrier to entry for AI a...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 7
     },
     {
@@ -2817,7 +2874,7 @@
       "path": "concepts/nba-ml-specialized-prediction-agents.md",
       "summary": "A set of four specialized AI agents developed to enhance the NBA-ML engine's prediction accuracy and operational robustness. These agents focus on model calibration, feature engineering, data quality validation, and backtesting performan...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -2836,7 +2893,7 @@
       "path": "concepts/nested-learning-paradigm.md",
       "summary": "Nested Learning is a new machine learning paradigm that conceptualizes models as a hierarchy of nested optimization problems, each with its own context flow and update rate. This approach aims to mitigate catastrophic forgetting in conti...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -2873,7 +2930,7 @@
       "path": "concepts/ntfy-push-notifications-for-service-monitoring.md",
       "summary": "Ntfy is a lightweight, open-source push notification service used here to provide real-time alerts for service monitoring and cron job outcomes. Integrating ntfy with monitoring tools like Uptime Kuma and Docker event watchers enables pr...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 6
     },
     {
@@ -2891,7 +2948,7 @@
       "path": "concepts/odds-api-quota-optimization.md",
       "summary": "Odds API quota optimization is the process of reducing the number of external API calls made to a sports betting odds provider to stay within a limited monthly quota. This is critical to prevent service disruptions due to quota exhaustio...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 5
     },
     {
@@ -2899,7 +2956,7 @@
       "title": "One-Sided Prop Line Filtering in Sports Betting Data",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "data-cleaning",
         "sports-betting",
@@ -2908,7 +2965,7 @@
       "path": "concepts/one-sided-prop-line-filtering-in-sports-betting-data.md",
       "summary": "One-sided prop lines in sports betting data are those where either the over or under odds are missing (NULL), often representing non-standard bets like 'will the player get 3+ blocks?'. These lines can distort analytics and must be filte...",
       "last_verified": "2026-04-18",
-      "community": 19,
+      "community": 18,
       "degree": 2
     },
     {
@@ -2945,7 +3002,7 @@
       "path": "concepts/opencode-bash-shell-configuration-posix-spawn-enoent-fix.md",
       "summary": "OpenCode containers experienced errors running bash shell commands due to misconfigured shell paths and working directory mismatches. This concept covers the mechanism of shell resolution in OpenCode, the cause of posix_spawn ENOENT erro...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -2953,7 +3010,7 @@
       "title": "Opencode Docker Container Bash Shell Configuration",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "opencode",
         "docker",
@@ -2964,7 +3021,7 @@
       "path": "concepts/opencode-docker-container-bash-shell-configuration.md",
       "summary": "This concept describes the configuration of opencode and giniecode Docker containers to use the explicit bash shell path `/usr/bin/bash` by setting environment variables and updating Dockerfiles. It also covers the discovery that opencod...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 1
     },
     {
@@ -2972,7 +3029,7 @@
       "title": "OpenMemory MCP Integration with Copilot CLI",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "openmemory",
         "mcp",
@@ -2983,7 +3040,7 @@
       "path": "concepts/openmemory-mcp-integration-with-copilot-cli.md",
       "summary": "OpenMemory MCP is a memory service providing persistent memory storage and retrieval capabilities via a Model Context Protocol (MCP) server. Integrating OpenMemory MCP with the Copilot CLI enables automated memory management for session ...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 4
     },
     {
@@ -3109,7 +3166,7 @@
       "path": "concepts/phased-implementation-planning-progress-tracking-llm-wikis.md",
       "summary": "A structured approach to implementing complex LLM-powered wiki projects through phased planning, task decomposition, validation gates, and progress tracking. This methodology ensures systematic development, quality assurance, and iterati...",
       "last_verified": "2026-04-18",
-      "community": 6,
+      "community": 7,
       "degree": 4
     },
     {
@@ -3127,7 +3184,7 @@
       "path": "concepts/pipeline-resilience-in-machine-learning-systems.md",
       "summary": "Pipeline resilience refers to the design and implementation of mechanisms that allow machine learning systems to continue operating correctly despite failures in components such as model artifacts, external services, or infrastructure. I...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 7
     },
     {
@@ -3144,7 +3201,7 @@
       "path": "concepts/positional-encoding.md",
       "summary": "Positional encoding is a technique used in Transformer models to inject information about the order of sequence elements, compensating for the lack of recurrence or convolution. It enables the model to distinguish between different posit...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -3152,7 +3209,7 @@
       "title": "Post-Ingest Quality Fixes in Auto-Ingest Pipelines",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "auto-ingest",
         "quality-fixes",
@@ -3171,7 +3228,7 @@
       "title": "PostgreSQL Materialized Views for Dashboard Optimization",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "postgresql",
         "materialized-views",
@@ -3181,7 +3238,7 @@
       "path": "concepts/postgresql-materialized-views-for-dashboard-optimization.md",
       "summary": "Materialized views in PostgreSQL are database objects that store the results of a query physically, allowing expensive computations to be precomputed and queried efficiently. This concept is critical for optimizing dashboard performance ...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 7
     },
     {
@@ -3189,7 +3246,7 @@
       "title": "Primary Prop Line Selection to Avoid Alternate Line Contamination",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "sports-betting",
         "data-cleaning",
@@ -3199,7 +3256,7 @@
       "path": "concepts/primary-prop-line-selection-to-avoid-alternate-line-contamination.md",
       "summary": "In sports betting data, alternate or game-prop lines can distort model confidence scores and profit-and-loss (P&L) calculations if not properly filtered. This concept addresses the problem of selecting the correct primary prop line from ...",
       "last_verified": "2026-04-18",
-      "community": 19,
+      "community": 18,
       "degree": 3
     },
     {
@@ -3218,7 +3275,7 @@
       "path": "concepts/principal-component-analysis.md",
       "summary": "Principal Component Analysis (PCA) is a statistical technique used to reduce the dimensionality of datasets while preserving as much variance as possible. It transforms correlated features into a smaller set of uncorrelated principal com...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 4
     },
     {
@@ -3236,7 +3293,7 @@
       "path": "concepts/pruning-in-decision-trees.md",
       "summary": "Pruning is a technique used to reduce the complexity of Decision Trees and prevent overfitting. By removing branches that have little predictive power, pruning helps the model generalize better to unseen data and improves performance.",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 1
     },
     {
@@ -3244,7 +3301,7 @@
       "title": "Quality Evaluation of Auto-Ingested Wiki Content",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "quality-assurance",
         "auto-ingest",
@@ -3329,7 +3386,7 @@
       "path": "concepts/random-forest-regression.md",
       "summary": "Random Forest Regression is an ensemble learning technique that aggregates predictions from multiple decision trees to produce robust and accurate continuous value outputs. It leverages bagging and random feature selection to reduce over...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 8
     },
     {
@@ -3356,7 +3413,7 @@
       "title": "Real-Debrid InstantAvailability API and Playback Issues",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "real-debrid",
         "streaming",
@@ -3367,7 +3424,7 @@
       "path": "concepts/real-debrid-instantavailability-api-playback-issues.md",
       "summary": "Real-Debrid (RD) provides a torrent caching service to speed up streaming. The instantAvailability API endpoint indicates whether a torrent is cached and ready for immediate playback. Its permanent disablement breaks cache checks, causin...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 1
     },
     {
@@ -3386,7 +3443,7 @@
       "path": "concepts/recurrent-neural-network-architecture.md",
       "summary": "Recurrent Neural Networks (RNNs) are a class of neural networks specialized for processing sequential data by maintaining a memory of previous inputs. Their architecture enables the modeling of temporal dependencies, making them suitable...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 9
     },
     {
@@ -3406,7 +3463,7 @@
       "path": "concepts/recursive-language-models.md",
       "summary": "Recursive Language Models (RLMs) are an inference-time scaffold for large language models (LLMs) that enable them to process arbitrarily long prompts by treating the prompt as an external environment. This paradigm allows the LLM to prog...",
       "last_verified": "2026-04-10",
-      "community": 23,
+      "community": 22,
       "degree": 0
     },
     {
@@ -3463,7 +3520,7 @@
       "path": "concepts/regularization-techniques-in-linear-regression.md",
       "summary": "Regularization techniques like Lasso, Ridge, and Elastic Net are used in linear regression to prevent overfitting by penalizing large coefficients. They improve model generalization, especially when dealing with multicollinearity or irre...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -3508,7 +3565,7 @@
       "title": "Richer Concept Extraction Prompt for LLM Wiki Pages",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "llm-prompt-engineering",
         "concept-extraction",
@@ -3591,7 +3648,7 @@
       "path": "concepts/self-attention-mechanism.md",
       "summary": "Self-attention is a mechanism that allows each element of a sequence to attend to all other elements, enabling the model to capture dependencies regardless of their distance. It is the foundational building block of the Transformer archi...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -3610,7 +3667,7 @@
       "path": "concepts/self-managing-workflow-generation.md",
       "summary": "Self-Managing Workflow Generation refers to the automated creation, optimization, and adaptation of agent workflows based on high-level task descriptions. The system dynamically builds and refines workflows, even when users cannot fully ...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 6
     },
     {
@@ -3676,7 +3733,7 @@
       "title": "SHAP-Based Feature Selection with Gradient Boosting Fallback",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "feature selection",
         "explainability",
@@ -3686,7 +3743,7 @@
       "path": "concepts/shap-based-feature-selection-with-gradient-boosting-fallback.md",
       "summary": "SHAP (SHapley Additive exPlanations) is a method to explain model predictions by assigning each feature an importance value. Using SHAP for feature selection helps identify the most influential features for low-R\u00b2 statistics, improving m...",
       "last_verified": "2026-04-18",
-      "community": 17,
+      "community": 16,
       "degree": 1
     },
     {
@@ -3723,7 +3780,7 @@
       "path": "concepts/sigmoid-function.md",
       "summary": "The sigmoid function is a mathematical function that maps any real-valued input into the range (0, 1). It is central to logistic regression, where it converts the linear predictor into a probability, enabling binary classification.",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -3742,7 +3799,7 @@
       "path": "concepts/skill-design-framework-for-ai-agents.md",
       "summary": "The Skill Design Framework is a comprehensive, research-backed methodology for constructing high-quality, reusable AI agent skills. It emphasizes expert vocabulary, dual-register descriptions, anti-pattern detection, structured instructi...",
       "last_verified": "2026-04-08",
-      "community": 7,
+      "community": 3,
       "degree": 7
     },
     {
@@ -3779,7 +3836,7 @@
       "path": "concepts/soft-margin-svm.md",
       "summary": "Soft margin SVM extends the standard SVM to handle datasets that are not perfectly separable by allowing some misclassification. It introduces slack variables and a regularization parameter to balance margin maximization and classificati...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -3818,7 +3875,7 @@
       "path": "concepts/sportsgameodds-sgo-api-data-extraction-challenges.md",
       "summary": "The SportsGameOdds (SGO) API provides rich bookmaker odds data for sports games, including player props. However, extracting complete and accurate data from the API can be challenging due to quota restrictions, data structure changes, an...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 4
     },
     {
@@ -3855,7 +3912,7 @@
       "path": "concepts/sprint-workflow-integration-for-ai-agents.md",
       "summary": "A structured 10-step sprint execution workflow designed to incorporate multiple AI agents into the software development lifecycle for machine learning projects. This integration aims to automate quality assurance, testing, deployment, an...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 3
     },
     {
@@ -3863,7 +3920,7 @@
       "title": "Stale Model Detection in Production ML Systems",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "model monitoring",
         "production ml",
@@ -3873,7 +3930,7 @@
       "path": "concepts/stale-model-detection-in-production-ml-systems.md",
       "summary": "Stale model detection identifies machine learning models that have become outdated due to age or data drift, signaling the need for retraining or replacement. It helps maintain model accuracy and reliability in production environments by...",
       "last_verified": "2026-04-18",
-      "community": 17,
+      "community": 16,
       "degree": 1
     },
     {
@@ -3929,7 +3986,7 @@
       "path": "concepts/supply-chain-security-hardening-for-ai-agent-projects.md",
       "summary": "Supply Chain Security Hardening is a set of practices and rules designed to protect AI agent projects from supply chain attacks and dependency vulnerabilities. It ensures that dependencies are managed securely, builds are deterministic, ...",
       "last_verified": "2026-04-10",
-      "community": 7,
+      "community": 2,
       "degree": 3
     },
     {
@@ -3948,7 +4005,7 @@
       "path": "concepts/support-vector-machine-algorithm.md",
       "summary": "Support Vector Machine (SVM) is a supervised learning algorithm used for classification and regression tasks. It seeks to find the optimal hyperplane that separates classes in the feature space, maximizing the margin between them. SVM is...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 4
     },
     {
@@ -4004,7 +4061,7 @@
       "path": "concepts/taxonomy-of-llm-reasoning-failures.md",
       "summary": "A structured framework for categorizing reasoning failures in Large Language Models (LLMs), distinguishing between embodied and non-embodied reasoning, and classifying failures as fundamental, application-specific, or robustness-related....",
       "last_verified": "2026-04-10",
-      "community": 10,
+      "community": 9,
       "degree": 7
     },
     {
@@ -4022,7 +4079,7 @@
       "path": "concepts/the-context-hygiene-principle.md",
       "summary": "The Context Hygiene Principle emphasizes that context window space in LLMs is a scarce and valuable resource. Proper management of prompt context\u2014especially the placement and freshness of critical information\u2014directly impacts model accur...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 1
     },
     {
@@ -4058,7 +4115,7 @@
       "path": "concepts/the-hardening-principle.md",
       "summary": "The Hardening Principle asserts that every non-deterministic LLM step in a workflow that must behave identically each time should eventually be replaced by a deterministic tool. LLMs excel at prototyping and handling ambiguity, but their...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 3,
       "degree": 11
     },
     {
@@ -4212,7 +4269,7 @@
       "path": "concepts/theory-of-mind-in-large-language-models.md",
       "summary": "Theory of Mind (ToM) is the cognitive ability to attribute mental states to oneself and others, enabling interpretation of behaviors and prediction of actions. In LLMs, ToM reasoning is evaluated through tasks that require understanding ...",
       "last_verified": "2026-04-10",
-      "community": 10,
+      "community": 9,
       "degree": 3
     },
     {
@@ -4231,7 +4288,7 @@
       "path": "concepts/time-series-foundation-model-architecture.md",
       "summary": "The Time Series Foundation Model (TimesFM) is a decoder-only neural architecture designed for flexible, high-performance time-series forecasting. It leverages transformer-based layers, normalization strategies, and specialized forecastin...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -4250,7 +4307,7 @@
       "path": "concepts/tokenization-and-representation-in-vla-models.md",
       "summary": "Tokenization and representation are foundational to VLA models, enabling unified reasoning across vision, language, and action. By encoding all modalities as discrete tokens, VLAs support compositional, context-aware control and facilita...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -4268,7 +4325,7 @@
       "path": "concepts/toon-token-oriented-object-notation-format.md",
       "summary": "TOON is a compact, tabular output format designed for agent consumption, offering significant token savings over JSON while maintaining readability and structure. It is central to AXI's token-efficient output principle, enabling agents t...",
       "last_verified": "2026-04-10",
-      "community": 9,
+      "community": 2,
       "degree": 5
     },
     {
@@ -4304,7 +4361,7 @@
       "path": "concepts/transformer-architecture.md",
       "summary": "The Transformer architecture is a deep learning model introduced to handle sequence transduction tasks without relying on recurrence. Its main innovation is the self-attention mechanism, which enables parallel processing of sequence elem...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 14
     },
     {
@@ -4324,7 +4381,7 @@
       "path": "concepts/types-of-artificial-neural-networks.md",
       "summary": "Artificial Neural Networks come in several types, each suited to specific data structures and tasks. The main types include Feedforward Neural Networks, Convolutional Neural Networks, Radial Basis Function Networks, and Recurrent Neural ...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 2
     },
     {
@@ -4332,7 +4389,7 @@
       "title": "Universal Agent Schema (AGENTS.md) for AI Tool Integration",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "Agent Schema",
         "Workflow",
@@ -4343,7 +4400,7 @@
       "path": "concepts/universal-agent-schema-agents-md-for-ai-tool-integration.md",
       "summary": "AGENTS.md is a universal schema file designed to be the authoritative configuration and knowledge constitution for the labs-wiki system. It standardizes conventions, workflows, frontmatter standards, lint rules, quality scoring, and agen...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 2,
       "degree": 3
     },
     {
@@ -4351,7 +4408,7 @@
       "title": "Universal Agent Schema and Tool Integration",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "agent-schema",
         "tool-integration",
@@ -4362,7 +4419,7 @@
       "path": "concepts/universal-agent-schema-tool-integration.md",
       "summary": "A universal agent schema defines a common configuration format (e.g., AGENTS.md) to enable seamless integration of AI agents and skills across multiple tools and platforms such as VS Code, Copilot CLI, and OpenCode. This promotes portabi...",
       "last_verified": "2026-04-18",
-      "community": 7,
+      "community": 2,
       "degree": 3
     },
     {
@@ -4380,7 +4437,7 @@
       "path": "concepts/universal-ingest-endpoint-for-flexible-api-request-parsing.md",
       "summary": "A universal ingest endpoint is designed to robustly handle multiple request body formats for an API that ingests shared content. This approach addresses client-side inconsistencies and limitations by sequentially attempting to parse quer...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 13,
       "degree": 5
     },
     {
@@ -4398,7 +4455,7 @@
       "path": "concepts/uptime-kuma-monitor-authentication-and-notification-integration.md",
       "summary": "Uptime Kuma is a self-hosted monitoring tool that supports various notification providers and authentication methods for monitored services. Proper configuration of authentication enums and notification payloads is critical to ensure acc...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 4
     },
     {
@@ -4417,7 +4474,7 @@
       "path": "concepts/variants-of-recurrent-neural-networks.md",
       "summary": "RNNs have several variants designed to address specific challenges and optimize performance for different tasks. Notable variants include Vanilla RNN, Bidirectional RNN, Long Short-Term Memory (LSTM), and Gated Recurrent Unit (GRU).",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 3
     },
     {
@@ -4437,7 +4494,7 @@
       "path": "concepts/vision-language-action-vla-models.md",
       "summary": "Vision-Language-Action (VLA) models are a class of intelligent systems that jointly process visual inputs, interpret natural language instructions, and generate executable action representations for physical agents. They mark a significa...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -4464,7 +4521,7 @@
       "title": "Walk-Forward Cross-Validation for Model Selection",
       "page_type": "concept",
       "tier": "hot",
-      "quality_score": 0.0,
+      "quality_score": 100.0,
       "tags": [
         "machine learning",
         "cross-validation",
@@ -4474,7 +4531,7 @@
       "path": "concepts/walk-forward-cross-validation-for-model-selection.md",
       "summary": "Walk-forward cross-validation (CV) is a time-series aware validation technique used to evaluate and select machine learning models by simulating how models perform on sequential data splits. It is critical for time-dependent data to avoi...",
       "last_verified": "2026-04-18",
-      "community": 17,
+      "community": 16,
       "degree": 1
     },
     {
@@ -4583,7 +4640,7 @@
       "path": "entities/ace-agentic-context-engineering.md",
       "summary": "ACE is a framework for evolving and optimizing contexts in large language model (LLM) applications. It treats contexts as comprehensive, structured playbooks, incrementally updated and refined through modular workflows. ACE addresses the...",
       "last_verified": "2026-04-16",
-      "community": 11,
+      "community": 2,
       "degree": 2
     },
     {
@@ -4601,7 +4658,7 @@
       "path": "entities/ada002.md",
       "summary": "Ada002 is an OpenAI embedding model used for generating semantic vector representations of text. In the LLM OS architecture, it powers the filesystem's embedding capabilities, enabling efficient document retrieval and memory augmentation.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 2
     },
     {
@@ -4619,7 +4676,7 @@
       "path": "entities/adguard.md",
       "summary": "A network-level ad and tracker blocking service running as a Docker container in the homelab environment. It manages large filter lists to block unwanted content and DNS queries, configured with resource limits and restart policies to ma...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 4
     },
     {
@@ -4638,7 +4695,7 @@
       "path": "entities/amit-shekhar.md",
       "summary": "Amit Shekhar is the founder of Outcome School and the creator of the 'llm-internals' repository. He curates educational content focused on the internal mechanisms of Large Language Models (LLMs), providing step-by-step explanations and p...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -4675,7 +4732,7 @@
       "summary": "Anthropic is an AI research and development company focused on building reliable, interpretable, and aligned large language models. It is known for its work on the Claude family of models and pioneering research in AI safety and interpre...",
       "last_verified": "2026-04-08",
       "community": 3,
-      "degree": 5
+      "degree": 7
     },
     {
       "id": "entities/architecture-decision-record-adr",
@@ -4728,7 +4785,7 @@
       "path": "entities/autoreason.md",
       "summary": "Autoreason is a research framework and repository for iterative self-refinement in subjective domains, such as writing and code generation. It implements a structured tournament process with blind agent panels and explicit restraint, ena...",
       "last_verified": "2026-04-13",
-      "community": 10,
+      "community": 9,
       "degree": 5
     },
     {
@@ -4746,7 +4803,7 @@
       "path": "entities/autoskills.md",
       "summary": "AutoSkills is a CLI tool that scans a project's tech stack and installs the best matching AI agent skills automatically. It is designed for zero-config operation and supports a wide range of modern technologies, streamlining agent integr...",
       "last_verified": "2026-04-10",
-      "community": 7,
+      "community": 2,
       "degree": 5
     },
     {
@@ -4765,7 +4822,7 @@
       "path": "entities/awesome-llm-reasoning-failures-repository.md",
       "summary": "A curated GitHub repository collecting research works on reasoning failures in Large Language Models (LLMs), providing an easy entry point for researchers and practitioners interested in this area.",
       "last_verified": "2026-04-10",
-      "community": 10,
+      "community": 9,
       "degree": 4
     },
     {
@@ -4784,7 +4841,7 @@
       "path": "entities/axi-agent-experience-interface.md",
       "summary": "AXI is a framework and set of ergonomic standards for building CLI tools optimized for AI agent interaction. It defines 10 principles that prioritize token efficiency, usability, and structured output, validated by benchmark studies and ...",
       "last_verified": "2026-04-10",
-      "community": 9,
+      "community": 2,
       "degree": 3
     },
     {
@@ -4801,7 +4858,7 @@
       "path": "entities/caddy.md",
       "summary": "Caddy is a modern, general-purpose web server known for automatic HTTPS, easy configuration, and powerful routing capabilities. The `handle_path` directive allows matching and stripping URL path prefixes before proxying requests upstream...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 9
     },
     {
@@ -4854,7 +4911,7 @@
       "path": "entities/chrome-devtools-axi.md",
       "summary": "chrome-devtools-axi is a reference AXI implementation for browser automation, providing agent-native CLI functionality with token-efficient output and ergonomic design.",
       "last_verified": "2026-04-10",
-      "community": 9,
+      "community": 2,
       "degree": 3
     },
     {
@@ -4875,7 +4932,7 @@
       "path": "entities/chrome-devtools-mcp.md",
       "summary": "Chrome DevTools MCP is a server and plugin that enables coding agents to control and inspect a live Chrome browser using the Model-Context-Protocol (MCP). It exposes Chrome DevTools functionality for automation, debugging, and performanc...",
       "last_verified": "2026-04-13",
-      "community": 9,
+      "community": 2,
       "degree": 7
     },
     {
@@ -4894,7 +4951,7 @@
       "path": "entities/chrome-devtools.md",
       "summary": "Chrome DevTools is a suite of developer tools built into the Chrome browser for debugging, inspecting, and analyzing web applications. Chrome DevTools MCP exposes its API to coding agents via the MCP protocol, enabling deep inspection an...",
       "last_verified": "2026-04-13",
-      "community": 9,
+      "community": 2,
       "degree": 4
     },
     {
@@ -4911,8 +4968,8 @@
       "path": "entities/claude-code.md",
       "summary": "Claude Code is an agentic coding workflow supported by AutoSkills, which generates summaries of installed skills for use by both human developers and AI agents. It emphasizes best practices and skill discoverability.",
       "last_verified": "2026-04-10",
-      "community": 7,
-      "degree": 2
+      "community": 2,
+      "degree": 4
     },
     {
       "id": "entities/claude",
@@ -4947,7 +5004,7 @@
       "path": "entities/cliport.md",
       "summary": "CLIPort is an early VLA model that combines CLIP embeddings with task-conditioned policies for robotic manipulation. It enables semantic grounding and end-to-end language-conditioned control.",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 3
     },
     {
@@ -4982,7 +5039,7 @@
       "path": "entities/dataview.md",
       "summary": "Dataview is an Obsidian plugin that runs queries over page frontmatter, generating dynamic tables and lists based on metadata.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 2
     },
     {
@@ -5033,7 +5090,7 @@
       "path": "entities/durable-copilot-session-checkpoint.md",
       "summary": "Durable Copilot Session Checkpoints are saved states of Copilot CLI sessions that capture intermediate work, fixes, and refactors. They serve as durable artifacts for knowledge retention and can be promoted into persistent wiki systems f...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 8
     },
     {
@@ -5118,7 +5175,7 @@
       "path": "entities/ezlinks-api.md",
       "summary": "EZLinks API is the backend service used by Galloping-Bot to search and book golf tee times. It provides a single search endpoint that returns available tee times for multiple courses in one response, enabling efficient filtering and book...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 4
     },
     {
@@ -5153,7 +5210,7 @@
       "path": "entities/ffmpeg.md",
       "summary": "ffmpeg is a deterministic command-line tool for audio and video processing, used for tasks such as converting audio recordings to different formats.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 3,
       "degree": 2
     },
     {
@@ -5204,7 +5261,7 @@
       "path": "entities/galloping-bot.md",
       "summary": "Galloping-Bot is a cron-invoked containerized script that snipes golf tee time bookings. It runs once per week and logs booking confirmations. The bot's output is captured and parsed to send ntfy notifications with booking results and er...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 9
     },
     {
@@ -5221,7 +5278,7 @@
       "path": "entities/geeksforgeeks.md",
       "summary": "GeeksforGeeks is a popular online platform offering tutorials, courses, and articles on programming, data science, and machine learning. It is widely used by students and professionals for interview preparation and skill development.",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 17
     },
     {
@@ -5240,7 +5297,7 @@
       "path": "entities/gh-axi.md",
       "summary": "gh-axi is a reference AXI implementation for GitHub operations, providing agent-native CLI functionality with token-efficient output and ergonomic design.",
       "last_verified": "2026-04-10",
-      "community": 9,
+      "community": 2,
       "degree": 3
     },
     {
@@ -5257,7 +5314,7 @@
       "path": "entities/github-copilot.md",
       "summary": "GitHub Copilot is an AI-powered code completion tool developed by GitHub and OpenAI. It integrates with VS Code to provide intelligent code suggestions, and supports custom agents for specialized workflows.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 3
     },
     {
@@ -5292,7 +5349,7 @@
       "path": "entities/google-research.md",
       "summary": "Google Research is the research division of Google, responsible for advancing computer science through fundamental and applied research. It publishes work in machine learning, algorithms, and AI, among other fields.",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -5326,7 +5383,7 @@
       "path": "entities/gpt-5.md",
       "summary": "GPT-5 is a frontier large language model used as a base model and as a recursive sub-call agent in the evaluation of RLMs. It serves as a benchmark for comparing RLM performance and context scaling.",
       "last_verified": "2026-04-10",
-      "community": 21,
+      "community": 20,
       "degree": 1
     },
     {
@@ -5361,7 +5418,7 @@
       "path": "entities/hermes-agent.md",
       "summary": "Hermes Agent is a co-author and agentic collaborator in the Autoreason project, involved in the design and experimentation of iterative self-refinement processes for subjective domains. Hermes Agent's role includes both conceptual and te...",
       "last_verified": "2026-04-13",
-      "community": 10,
+      "community": 9,
       "degree": 4
     },
     {
@@ -5378,7 +5435,7 @@
       "path": "entities/hkuds.md",
       "summary": "HKUDS is the organization responsible for developing AutoAgent, an open-source LLM agent framework. HKUDS focuses on advancing agentic AI technologies, supporting community-driven development, and integrating cutting-edge research into p...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 4
     },
     {
@@ -5395,7 +5452,7 @@
       "path": "entities/holdout-evaluator-cli-command.md",
       "summary": "A command-line interface (CLI) command added to the NBA ML Engine's main script to facilitate running the holdout evaluator module. The command `python main.py evaluate` supports options to specify the statistic to evaluate, toggle calib...",
       "last_verified": "2026-04-18",
-      "community": 14,
+      "community": 12,
       "degree": 4
     },
     {
@@ -5431,7 +5488,7 @@
       "path": "entities/hope.md",
       "summary": "Hope is a self-modifying recurrent architecture designed as a proof-of-concept for the Nested Learning paradigm. It features unbounded levels of in-context learning and continuum memory system blocks, enabling superior performance in lan...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 4
     },
     {
@@ -5451,7 +5508,7 @@
       "path": "entities/htmx.md",
       "summary": "htmx is an open-source JavaScript library that enables dynamic, interactive web applications by allowing HTML elements to issue HTTP requests and update the DOM declaratively via custom attributes. It is designed to extend the capabiliti...",
       "last_verified": "2026-04-08",
-      "community": 20,
+      "community": 19,
       "degree": 3
     },
     {
@@ -5468,7 +5525,7 @@
       "path": "entities/http-shortcuts.md",
       "summary": "HTTP Shortcuts is an Android app that allows users to create customizable shortcuts to execute HTTP requests with scripting capabilities. It supports both regular shortcuts and scripting shortcuts, enabling automation of HTTP interaction...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 13,
       "degree": 3
     },
     {
@@ -5502,7 +5559,7 @@
       "path": "entities/jonathan-frankle.md",
       "summary": "Jonathan Frankle is a researcher at MIT CSAIL and co-author of the Lottery Ticket Hypothesis paper. His work focuses on neural network pruning, sparse architectures, and theoretical understanding of deep learning.",
       "last_verified": "2026-04-10",
-      "community": 15,
+      "community": 14,
       "degree": 2
     },
     {
@@ -5538,7 +5595,7 @@
       "path": "entities/knightcrawler.md",
       "summary": "KnightCrawler is a media automation stack in the homelab, comprising a Postgres database, automation bots, and scheduled jobs. It experienced performance issues due to missing indexes, which were resolved by targeted index creation and r...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 16
     },
     {
@@ -5555,7 +5612,7 @@
       "path": "entities/labelencoder.md",
       "summary": "LabelEncoder is a preprocessing tool in scikit-learn used to convert categorical features into numeric values, enabling machine learning models to process them effectively.",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -5572,7 +5629,7 @@
       "path": "entities/labs-wiki-ingest-api.md",
       "summary": "The labs-wiki ingest API is a server-side service that accepts shared content from various clients, including Android apps, for automatic wiki page creation. It originally expected JSON Pydantic model bodies but was enhanced with a unive...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 13,
       "degree": 4
     },
     {
@@ -5643,7 +5700,7 @@
       "path": "entities/llm-internals.md",
       "summary": "The 'llm-internals' repository is a curated collection of blogs and educational resources that explain the inner workings of Large Language Models. It covers topics from tokenization and attention mechanisms to inference optimization, pr...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -5660,7 +5717,7 @@
       "path": "entities/lstm-model.md",
       "summary": "The LSTM (Long Short-Term Memory) model is a recurrent neural network architecture included optionally in the NBA ML Engine. It is gated via a configuration flag `USE_LSTM` which defaults to false in Sprint 11, reflecting its disabled st...",
       "last_verified": "2026-04-18",
-      "community": 14,
+      "community": 12,
       "degree": 3
     },
     {
@@ -5678,7 +5735,7 @@
       "path": "entities/marp.md",
       "summary": "Marp is a markdown-based slide deck format, with an Obsidian plugin for generating presentations directly from wiki content.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 2
     },
     {
@@ -5783,7 +5840,7 @@
       "path": "entities/metachain.md",
       "summary": "MetaChain is the former name of the AutoAgent project, representing its earlier framework for agentic orchestration and workflow management. It has since been renamed and expanded as AutoAgent to better reflect its capabilities and vision.",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 3
     },
     {
@@ -5818,7 +5875,7 @@
       "path": "entities/michael-carbin.md",
       "summary": "Michael Carbin is a faculty member at MIT CSAIL and co-author of the Lottery Ticket Hypothesis paper. His research spans programming languages, systems, and machine learning.",
       "last_verified": "2026-04-10",
-      "community": 15,
+      "community": 14,
       "degree": 2
     },
     {
@@ -5959,7 +6016,7 @@
       "path": "entities/nba-ml-prediction-pipeline.md",
       "summary": "An NBA machine learning prediction system that generates player stat predictions and prop lines for sports betting. It includes components for model training, inference, dashboard visualization, and data ingestion from external APIs such...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 7
     },
     {
@@ -5993,7 +6050,7 @@
       "path": "entities/ntfy.md",
       "summary": "Ntfy is an open-source push notification service that allows sending and receiving notifications via simple HTTP requests. It supports topics to organize messages and can be self-hosted or used via public cloud instances such as ntfy.sh....",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 6
     },
     {
@@ -6011,7 +6068,7 @@
       "path": "entities/obra-superpowers-skills.md",
       "summary": "A set of workflow automation skills used by the user to enhance planning, brainstorming, execution, and verification processes in agentic workflows. These skills support iterative development and validation in complex projects like labs-...",
       "last_verified": "2026-04-18",
-      "community": 6,
+      "community": 7,
       "degree": 2
     },
     {
@@ -6029,7 +6086,7 @@
       "path": "entities/obsidian-web-clipper.md",
       "summary": "Obsidian Web Clipper is a browser extension that converts web articles to markdown, facilitating rapid source ingestion into the knowledge base.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 2
     },
     {
@@ -6047,7 +6104,7 @@
       "path": "entities/obsidian.md",
       "summary": "Obsidian is a markdown-based knowledge management tool that enables users to organize, link, and visualize notes and documents. It supports plugins for enhanced functionality, including graph view, slide deck generation, and dynamic quer...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 4
     },
     {
@@ -6064,7 +6121,7 @@
       "path": "entities/odds-api.md",
       "summary": "The Odds API is a third-party sports betting odds provider API used to fetch player prop lines and game odds. It enforces a monthly quota limit of 500 calls per API key, with quota resetting monthly at midnight UTC. The API supports fetc...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 5
     },
     {
@@ -6082,8 +6139,26 @@
       "path": "entities/openai-gpt-4-turbo.md",
       "summary": "OpenAI GPT-4 Turbo is a high-performance variant of the GPT-4 language model, optimized for speed and cost. It supports large batch sizes and extended context windows, making it suitable for demanding applications such as LLM OS.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 2
+    },
+    {
+      "id": "entities/openclaw",
+      "title": "OpenClaw",
+      "page_type": "entity",
+      "tier": "hot",
+      "quality_score": 100.0,
+      "tags": [
+        "agentic-system",
+        "open-source",
+        "gateway",
+        "multi-agent-orchestration"
+      ],
+      "path": "entities/openclaw.md",
+      "summary": "OpenClaw is an independent open-source AI agent system designed as a multi-channel personal assistant gateway. It answers many of the same design questions as Claude Code but from a different deployment context, emphasizing perimeter-lev...",
+      "last_verified": "2026-04-18",
+      "community": 2,
+      "degree": 4
     },
     {
       "id": "entities/opencode",
@@ -6100,7 +6175,7 @@
       "path": "entities/opencode.md",
       "summary": "OpenCode is a code execution and tooling containerized environment used in the homelab for running shell commands and code snippets. It requires precise shell configuration to function correctly, specifically setting the shell path to /u...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 7
     },
     {
@@ -6154,7 +6229,7 @@
       "path": "entities/outcome-school.md",
       "summary": "Outcome School is an educational organization founded by Amit Shekhar, dedicated to providing accessible learning resources on AI, machine learning, and Large Language Models. It hosts blogs and guides that break down complex technical c...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -6243,7 +6318,7 @@
       "path": "entities/puppeteer.md",
       "summary": "Puppeteer is a Node.js library that provides a high-level API to control Chrome or Chromium over the DevTools Protocol. It is used by Chrome DevTools MCP for reliable browser automation, enabling actions such as navigation, input simulat...",
       "last_verified": "2026-04-13",
-      "community": 9,
+      "community": 2,
       "degree": 4
     },
     {
@@ -6296,7 +6371,7 @@
       "path": "entities/qmd.md",
       "summary": "qmd is a local search engine for markdown files, supporting hybrid BM25/vector search and LLM re-ranking. It operates on-device and offers both CLI and MCP server interfaces.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 2
     },
     {
@@ -6313,7 +6388,7 @@
       "path": "entities/qwen3-coder-480b-a35b.md",
       "summary": "Qwen3-Coder-480B-A35B is a frontier open language model evaluated as both a base model and within the RLM scaffold. It is used in experiments on long-context tasks and information-dense benchmarks.",
       "last_verified": "2026-04-10",
-      "community": 21,
+      "community": 20,
       "degree": 1
     },
     {
@@ -6330,7 +6405,7 @@
       "path": "entities/randomforestregressor.md",
       "summary": "RandomForestRegressor is a regression model in scikit-learn that implements the Random Forest algorithm for predicting continuous values. It aggregates predictions from multiple decision trees to improve accuracy and robustness.",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -6365,7 +6440,7 @@
       "path": "entities/rlm-qwen3-8b.md",
       "summary": "RLM-Qwen3-8B is the first natively recursive language model, created by fine-tuning Qwen3-8B to operate as a Recursive Language Model (RLM) with recursive sub-calls. It demonstrates substantial performance improvements on long-context ta...",
       "last_verified": "2026-04-10",
-      "community": 21,
+      "community": 20,
       "degree": 1
     },
     {
@@ -6383,7 +6458,7 @@
       "path": "entities/rt-2-robotic-transformer-2.md",
       "summary": "RT-2 is a pioneering VLA model developed by Google DeepMind, unifying vision, language, and action modalities for robotic control. It leverages transformer-based architectures and internet-scale datasets to achieve zero-shot generalizati...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 3
     },
     {
@@ -6418,7 +6493,7 @@
       "path": "entities/shl0ms.md",
       "summary": "SHL0MS is a researcher and co-author of the Autoreason framework, contributing to the design, implementation, and evaluation of iterative self-refinement methodologies for subjective domains. SHL0MS's work focuses on agentic workflows, b...",
       "last_verified": "2026-04-13",
-      "community": 10,
+      "community": 9,
       "degree": 4
     },
     {
@@ -6435,7 +6510,7 @@
       "path": "entities/skills-sh.md",
       "summary": "skills.sh is a registry of AI agent skills used by AutoSkills to match and install relevant capabilities based on a project's tech stack. It provides a curated set of skills for agentic workflows.",
       "last_verified": "2026-04-10",
-      "community": 7,
+      "community": 2,
       "degree": 2
     },
     {
@@ -6452,7 +6527,7 @@
       "path": "entities/sportsgameodds-sgo-api.md",
       "summary": "The SportsGameOdds (SGO) API is a sports odds data provider API that returns detailed bookmaker odds including player props for all stats. It provides a rich data set with hundreds of odds entries per game. However, free tier API keys li...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 5
     },
     {
@@ -6541,7 +6616,7 @@
       "path": "entities/timesfm.md",
       "summary": "TimesFM is a pretrained foundation model for time-series forecasting, developed by Google Research. It is designed for flexible, high-performance forecasting tasks, supporting both point and quantile predictions, and is available as open...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -6558,7 +6633,7 @@
       "path": "entities/titans.md",
       "summary": "Titans is a long-term memory module architecture that prioritizes memories based on their 'surprise' value. It serves as a precursor to the Hope architecture, featuring two levels of parameter updates for first-order in-context learning.",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 2
     },
     {
@@ -6576,7 +6651,7 @@
       "path": "entities/toon-token-oriented-object-notation.md",
       "summary": "TOON is a compact, tabular output format designed for agent consumption, offering significant token savings over JSON. It is central to AXI's token-efficient output principle.",
       "last_verified": "2026-04-10",
-      "community": 9,
+      "community": 2,
       "degree": 2
     },
     {
@@ -6593,7 +6668,7 @@
       "path": "entities/uptime-kuma.md",
       "summary": "Uptime Kuma is a self-hosted monitoring tool that supports HTTP(s), TCP, and other protocols to check service availability. It provides notification integrations with various providers and supports authentication methods for protected en...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 6
     },
     {
@@ -6611,7 +6686,7 @@
       "path": "entities/vima.md",
       "summary": "VIMA is a VLA model employing transformer encoders to jointly process object-centric visual tokens and instruction tokens. It supports spatial reasoning and few-shot generalization in manipulation tasks.",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 3
     },
     {
@@ -6629,7 +6704,7 @@
       "path": "entities/visual-studio-code.md",
       "summary": "Visual Studio Code (VS Code) is a free, open-source code editor developed by Microsoft. It supports a wide range of programming languages, extensions, and AI-powered features, including custom agents for tailored development workflows.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 1
     },
     {
@@ -6664,7 +6739,7 @@
       "path": "entities/whisper.md",
       "summary": "Whisper is an automatic speech recognition (ASR) system, used to transcribe audio recordings into text.",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 3,
       "degree": 2
     },
     {
@@ -6722,7 +6797,7 @@
       "path": "sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md",
       "summary": "This paper introduces ACE (Agentic Context Engineering), a framework for evolving and optimizing contexts in large language model (LLM) applications. ACE addresses the limitations of brevity bias and context collapse in prior context ada...",
       "last_verified": "2026-04-16",
-      "community": 11,
+      "community": 2,
       "degree": 2
     },
     {
@@ -6742,7 +6817,7 @@
       "path": "sources/amitshekhariitbhullm-internals-learn-llm-internals-step-by-step.md",
       "summary": "This GitHub repository, curated by Amit Shekhar, provides a series of educational blogs that explain the internal mechanisms of Large Language Models (LLMs), covering topics from tokenization and attention to inference optimization. Each...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 8
     },
     {
@@ -6761,7 +6836,7 @@
       "path": "sources/apriori-algorithm-geeksforgeeks.md",
       "summary": "This article provides a comprehensive overview of the Apriori Algorithm, a fundamental technique for discovering frequent itemsets and association rules in transactional datasets. It explains the step-by-step process, key metrics, and pr...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -6780,7 +6855,7 @@
       "path": "sources/artificial-neural-networks-and-its-applications-geeksforgeeks.md",
       "summary": "This article provides a comprehensive introduction to Artificial Neural Networks (ANNs), covering their structure, learning mechanisms, types, activation functions, optimization algorithms, applications, and challenges. It explains how A...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 5
     },
     {
@@ -6799,7 +6874,7 @@
       "path": "sources/autoagent-fully-automated-and-zero-code-llm-agent-framework-github-repository.md",
       "summary": "AutoAgent is an open-source framework for creating and deploying LLM agents using natural language, requiring no manual coding. It supports dynamic workflow generation, intelligent resource orchestration, and self-play agent customizatio...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 6
     },
     {
@@ -6819,7 +6894,7 @@
       "path": "sources/autoagent-fully-automated-and-zero-code-llm-agent-framework-hkudsautoagent-githu.md",
       "summary": "AutoAgent is an open-source framework for building, customizing, and deploying LLM agents and workflows entirely through natural language, without writing code. It offers a fully-automated, self-developing agent system, supports multi-ag...",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 6
     },
     {
@@ -6839,7 +6914,7 @@
       "path": "sources/autoskills-github-repository.md",
       "summary": "AutoSkills is a CLI tool that scans a project's tech stack and automatically installs relevant AI agent skills, streamlining agent integration and skill management. It supports a wide range of modern technologies and offers zero-config o...",
       "last_verified": "2026-04-10",
-      "community": 7,
+      "community": 2,
       "degree": 6
     },
     {
@@ -6860,7 +6935,7 @@
       "path": "sources/axi-agent-experience-interface-github-repository.md",
       "summary": "AXI introduces a new paradigm for agent-native CLI tools, grounded in 10 ergonomic design principles that optimize token efficiency, usability, and agent interaction. The repository includes benchmark harnesses for browser and GitHub aut...",
       "last_verified": "2026-04-10",
-      "community": 9,
+      "community": 2,
       "degree": 6
     },
     {
@@ -6883,7 +6958,7 @@
       "path": "sources/chrome-devtools-mcp-github-repository.md",
       "summary": "Chrome DevTools MCP is a server and plugin that enables coding agents (such as Gemini, Claude, Cursor, Copilot) to control and inspect a live Chrome browser via the Model-Context-Protocol (MCP). It provides deep integration with Chrome D...",
       "last_verified": "2026-04-13",
-      "community": 9,
+      "community": 2,
       "degree": 7
     },
     {
@@ -6969,7 +7044,7 @@
       "path": "sources/copilot-session-checkpoint-creating-claude-and-labs-wiki-repos.md",
       "summary": "This document details a Copilot CLI session focused on creating two public GitHub repositories: 'claude', a comprehensive documentation guide for Claude AI aimed at non-technical users, and 'labs-wiki', an implementation of Karpathy's LL...",
       "last_verified": "2026-04-18",
-      "community": 7,
+      "community": 2,
       "degree": 7
     },
     {
@@ -6995,7 +7070,7 @@
       "path": "sources/copilot-session-checkpoint-dashboard-alt-line-accuracy-fixes.md",
       "summary": "This session checkpoint documents the iterative development and deployment of fixes for the NBA ML Engine dashboard, focusing on correcting data accuracy issues caused by SportsGameOdds DraftKings alternate/game-prop lines. The fixes inc...",
       "last_verified": "2026-04-18",
-      "community": 19,
+      "community": 18,
       "degree": 5
     },
     {
@@ -7022,7 +7097,7 @@
       "path": "sources/copilot-session-checkpoint-dashboard-matviews-implementation-in-progress.md",
       "summary": "This document details the progress of Sprint 51 for the NBA ML Engine project, focusing on implementing PostgreSQL materialized views (matviews) to optimize dashboard data aggregation. It covers the design, integration, and migration ste...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 5
     },
     {
@@ -7075,7 +7150,7 @@
       "path": "sources/copilot-session-checkpoint-fixing-android-share-ingest-api.md",
       "summary": "This session checkpoint documents the debugging and resolution process for a 422 Unprocessable Entity error encountered when sharing URLs from the Android HTTP Shortcuts app to the labs-wiki ingest API. The investigation revealed quirks ...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 13,
       "degree": 5
     },
     {
@@ -7101,7 +7176,7 @@
       "path": "sources/copilot-session-checkpoint-fixing-knightcrawler-populate-cron-and-rd-playback.md",
       "summary": "This document details a troubleshooting and enhancement session for the Knightcrawler homelab setup, focusing on fixing playback issues with Real-Debrid (RD) streams and improving the cron job that populates torrent file metadata. The se...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 5
     },
     {
@@ -7157,7 +7232,7 @@
       "path": "sources/copilot-session-checkpoint-full-labs-wiki-implementation-complete.md",
       "summary": "This document details the comprehensive development and completion of the labs-wiki project, an LLM-powered personal knowledge wiki inspired by Karpathy's LLM Wiki pattern. The project was executed in six phases, covering planning, imple...",
       "last_verified": "2026-04-18",
-      "community": 11,
+      "community": 2,
       "degree": 5
     },
     {
@@ -7239,7 +7314,7 @@
       "path": "sources/copilot-session-checkpoint-homelab-monitoring-and-knightcrawler-fixes.md",
       "summary": "This session checkpoint documents a comprehensive operational and diagnostic workflow for a homelab environment running multiple Docker containers, focusing on fixing a KnightCrawler permission issue, updating documentation, configuring ...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 5
     },
     {
@@ -7267,7 +7342,7 @@
       "path": "sources/copilot-session-checkpoint-homepage-overhaul-and-resource-tuning.md",
       "summary": "This checkpoint documents a systematic overhaul of a homelab homepage dashboard and extensive container resource tuning. The session involved auditing all running services, updating dashboard configs, resolving performance bottlenecks, r...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 7
     },
     {
@@ -7295,7 +7370,7 @@
       "path": "sources/copilot-session-checkpoint-implementing-critical-ml-fixes-sprint-28.md",
       "summary": "This document details the implementation of critical machine learning fixes as part of Sprint 28 for the NBA ML Engine project. It covers six key fixes addressing early stopping in gradient boosting models, calibration leakage, Kelly bet...",
       "last_verified": "2026-04-18",
-      "community": 16,
+      "community": 15,
       "degree": 5
     },
     {
@@ -7347,7 +7422,7 @@
       "path": "sources/copilot-session-checkpoint-implementing-sprint-29-ml-improvements.md",
       "summary": "This document details the implementation progress and technical improvements made during Sprint 29 of the NBA ML Engine project on a homelab server. It covers enhancements in model training, evaluation, inference, and deployment, includi...",
       "last_verified": "2026-04-18",
-      "community": 17,
+      "community": 16,
       "degree": 7
     },
     {
@@ -7401,7 +7476,7 @@
       "path": "sources/copilot-session-checkpoint-knightcrawler-gating-fix-opencode-bash-config.md",
       "summary": "This session checkpoint documents the resolution of a 404 error in KnightCrawler streams caused by Caddy's path handling and the configuration of opencode Docker containers with proper bash shell paths and recommended defaults. It includ...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 7
     },
     {
@@ -7491,7 +7566,7 @@
       "path": "sources/copilot-session-checkpoint-nba-ml-agents-and-homelab-fixes.md",
       "summary": "This session checkpoint documents a multi-repo project involving the development of specialized AI agents for the NBA-ML prediction engine, integration of these agents into sprint workflows, and operational fixes on a homelab server incl...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 8
     },
     {
@@ -7545,7 +7620,7 @@
       "path": "sources/copilot-session-checkpoint-ntfy-notifications-galloping-bot-alerts-monitor-fixes.md",
       "summary": "This session checkpoint documents a comprehensive set of maintenance and feature improvements performed on a Docker Compose homelab server. Key activities include fixing URL token gating issues for KnightCrawler/Stremio, configuring Dock...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 11
     },
     {
@@ -7572,7 +7647,7 @@
       "path": "sources/copilot-session-checkpoint-odds-api-quota-optimization-sgo-investigation.md",
       "summary": "This session checkpoint documents the diagnosis and remediation of multiple cascading failures in a sports betting ML pipeline, including stale data due to missing ensemble models, MLflow service DNS failure, and Odds API quota exhaustio...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 7
     },
     {
@@ -7596,7 +7671,7 @@
       "path": "sources/copilot-session-checkpoint-optimizing-snipe-book-then-retry-flow.md",
       "summary": "This session checkpoint documents the diagnosis and optimization of a golf tee-time sniping bot's booking flow. The user identified a bug causing missed bookings for a specific golf course and redesigned the booking retry logic from a re...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 5
     },
     {
@@ -7677,7 +7752,7 @@
       "path": "sources/copilot-session-checkpoint-pipeline-resilience-fixes-dashboard-metrics-investiga.md",
       "summary": "This session checkpoint documents the diagnosis and remediation of cascading failures in an NBA ML prediction pipeline, including missing ensemble models, MLflow DNS resolution failures, and Odds API authorization issues. It details the ...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 7
     },
     {
@@ -7705,7 +7780,7 @@
       "path": "sources/copilot-session-checkpoint-planning-and-progress-tracking-complete.md",
       "summary": "This document records a detailed checkpoint from a Copilot CLI session focused on planning and progress tracking for building an LLM-powered personal knowledge wiki called labs-wiki. It summarizes the user's research, planning, and prepa...",
       "last_verified": "2026-04-18",
-      "community": 6,
+      "community": 7,
       "degree": 6
     },
     {
@@ -7841,7 +7916,7 @@
       "path": "sources/copilot-session-checkpoint-resource-optimization-opencode-bash-fix.md",
       "summary": "This session checkpoint documents a comprehensive resource optimization and bug fixing process for a Docker Compose homelab environment running on an i9-13900HK Ubuntu server. Key activities included fixing URL token gating issues in Kni...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 7
     },
     {
@@ -7951,7 +8026,7 @@
       "path": "sources/copilot-session-checkpoint-sgo-data-extraction-fix-and-quality-audit.md",
       "summary": "This session checkpoint documents a detailed investigation and iterative fixes applied to the SportsGameOdds (SGO) API data extraction process within an NBA ML prediction platform. The main issues addressed include sparse data due to fil...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 4
     },
     {
@@ -8054,7 +8129,7 @@
       "path": "sources/copilot-session-checkpoint-sprint-11-evaluation-and-report.md",
       "summary": "This document details the full Sprint 11 cycle for the NBA ML Engine project, focusing on evaluation infrastructure implementation, deployment, comprehensive backtesting, and reporting. Key activities included adding LSTM gating, creatin...",
       "last_verified": "2026-04-18",
-      "community": 14,
+      "community": 12,
       "degree": 9
     },
     {
@@ -8313,7 +8388,7 @@
       "path": "sources/custom-agents-in-vs-code.md",
       "summary": "This guide details how to create, configure, and manage custom AI agents in Visual Studio Code, enabling tailored personas for specific development roles and tasks. It covers agent file structure, tool restrictions, handoffs for workflow...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 5
     },
     {
@@ -8333,8 +8408,29 @@
       "path": "sources/decision-tree-geeksforgeeks.md",
       "summary": "This article introduces Decision Trees, explaining their structure, types, working mechanism, splitting criteria, pruning, advantages, disadvantages, and practical applications. It provides a clear overview of how Decision Trees are used...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
+    },
+    {
+      "id": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
+      "title": "Dive Into Claude Code: The Design Space of Today\u2019s and Future AI Agent Systems",
+      "page_type": "source",
+      "tier": "hot",
+      "quality_score": 100.0,
+      "tags": [
+        "agentic-architecture",
+        "session-persistence",
+        "context-management",
+        "agent-comparison",
+        "extensibility",
+        "design-principles",
+        "safety"
+      ],
+      "path": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems.md",
+      "summary": "This paper presents a comprehensive architectural analysis of Claude Code, an agentic coding tool by Anthropic, focusing on its design philosophies, subsystem decomposition, and operational mechanisms. It traces five core human values th...",
+      "last_verified": "2026-04-18",
+      "community": 2,
+      "degree": 6
     },
     {
       "id": "sources/hope-a-memory-architecture-for-continual-learning-with-long-contexts",
@@ -8352,7 +8448,7 @@
       "path": "sources/hope-a-memory-architecture-for-continual-learning-with-long-contexts.md",
       "summary": "This paper introduces HOPE, a novel memory architecture designed to enable continual learning and efficient handling of long-context dependencies in neural networks. HOPE addresses the limitations of traditional Transformer architectures...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 1
     },
     {
@@ -8374,7 +8470,7 @@
       "path": "sources/htmx-html-over-the-wire.md",
       "summary": "htmx is a lightweight, dependency-free JavaScript library that enables dynamic web application features\u2014such as AJAX, CSS transitions, WebSockets, and Server Sent Events\u2014directly from HTML using custom attributes. It aims to extend the c...",
       "last_verified": "2026-04-08",
-      "community": 20,
+      "community": 19,
       "degree": 3
     },
     {
@@ -8393,7 +8489,7 @@
       "path": "sources/implementing-the-adaboost-algorithm-from-scratch-geeksforgeeks.md",
       "summary": "This article provides a step-by-step guide to implementing the AdaBoost algorithm from scratch in Python, using decision trees as weak learners. It explains the AdaBoost workflow, including initialization, training, weight updates, and p...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -8413,7 +8509,7 @@
       "path": "sources/introducing-nested-learning-a-new-ml-paradigm-for-continual-learning.md",
       "summary": "This Google Research blog post introduces Nested Learning, a novel machine learning paradigm that treats models as a system of nested optimization problems, aiming to address catastrophic forgetting in continual learning. The approach un...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 7
     },
     {
@@ -8434,7 +8530,7 @@
       "path": "sources/introduction-to-recurrent-neural-networks-geeksforgeeks.md",
       "summary": "This article provides a comprehensive introduction to Recurrent Neural Networks (RNNs), focusing on their architecture, operation, variants, and applications. It explains key concepts such as recurrent units, RNN unfolding, backpropagati...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 5
     },
     {
@@ -8453,7 +8549,7 @@
       "path": "sources/k-nearest-neighborknn-algorithm-geeksforgeeks.md",
       "summary": "This article provides a comprehensive overview of the K-Nearest Neighbor (KNN) algorithm, covering its principles, distance metrics, parameter selection, implementation, and practical applications. It explains how KNN operates as a non-p...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -8474,7 +8570,7 @@
       "path": "sources/karpathy-llm-os-tweet.md",
       "summary": "Andrej Karpathy sketches a conceptual architecture for an 'LLM OS,' positioning a large language model as the central processor in a computing environment. The tweet outlines hardware-like specs for the LLM and presents a diagram showing...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 4
     },
     {
@@ -8495,7 +8591,7 @@
       "path": "sources/large-language-model-reasoning-failures.md",
       "summary": "This paper presents the first comprehensive survey of reasoning failures in Large Language Models (LLMs), introducing a novel taxonomy that distinguishes reasoning types and failure categories. It analyzes fundamental, application-specif...",
       "last_verified": "2026-04-10",
-      "community": 10,
+      "community": 9,
       "degree": 5
     },
     {
@@ -8514,7 +8610,7 @@
       "path": "sources/legal-rag-hallucinations.md",
       "summary": "The document 'Legal RAG Hallucinations' appears to address the issue of hallucinations in Retrieval-Augmented Generation (RAG) systems, specifically within legal contexts. Although the content could not be extracted, the title suggests a...",
       "last_verified": "2026-04-14",
-      "community": 10,
+      "community": 9,
       "degree": 1
     },
     {
@@ -8554,7 +8650,7 @@
       "path": "sources/linear-regression-in-machine-learning-geeksforgeeks.md",
       "summary": "This article provides a comprehensive overview of linear regression, a foundational supervised learning algorithm for modeling relationships between dependent and independent variables. It covers the mathematical formulation, assumptions...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 5
     },
     {
@@ -8574,7 +8670,7 @@
       "path": "sources/llm-wiki.md",
       "summary": "This gist outlines a pattern for building personal knowledge bases using LLMs, where the LLM incrementally maintains a persistent, interlinked wiki from raw sources. The approach contrasts with traditional RAG systems by emphasizing know...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 6
     },
     {
@@ -8595,7 +8691,7 @@
       "path": "sources/logistic-regression-in-machine-learning-geeksforgeeks.md",
       "summary": "This article provides a comprehensive overview of logistic regression, a supervised machine learning algorithm used for classification tasks. It covers the mathematical foundations, types, assumptions, implementation details, evaluation ...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 5
     },
     {
@@ -8635,7 +8731,7 @@
       "path": "sources/naive-bayes-classifiers-geeksforgeeks.md",
       "summary": "This article provides a comprehensive overview of Naive Bayes classifiers, detailing their probabilistic foundations, assumptions, algorithmic steps, and practical applications. It covers the mathematical basis in Bayes' Theorem, explain...",
       "last_verified": "2026-04-08",
-      "community": 18,
+      "community": 17,
       "degree": 5
     },
     {
@@ -8654,7 +8750,7 @@
       "path": "sources/nousresearchautoreason-autoresearch-for-subjective-domains.md",
       "summary": "Autoreason is a research framework and methodology designed to address iterative self-refinement failures in subjective tasks, such as writing and competitive programming, by introducing structured competition and restraint in revision c...",
       "last_verified": "2026-04-13",
-      "community": 10,
+      "community": 9,
       "degree": 5
     },
     {
@@ -8673,7 +8769,7 @@
       "path": "sources/principal-component-analysis-pca-geeksforgeeks.md",
       "summary": "This article provides a comprehensive tutorial on Principal Component Analysis (PCA), a key dimensionality reduction technique in data analysis and machine learning. It explains the mathematical foundations, step-by-step algorithm, pract...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 2
     },
     {
@@ -8693,7 +8789,7 @@
       "path": "sources/random-forest-regression-in-python-geeksforgeeks.md",
       "summary": "This article provides a comprehensive guide to implementing Random Forest Regression in Python, covering its theoretical basis, practical steps, and evaluation metrics. It explains the ensemble approach of Random Forests, demonstrates da...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 5
     },
     {
@@ -8713,7 +8809,7 @@
       "path": "sources/recursive-language-models.md",
       "summary": "This paper introduces Recursive Language Models (RLMs), a novel inference-time paradigm for scaling large language models (LLMs) to process arbitrarily long prompts. RLMs treat the prompt as an external environment, enabling programmatic...",
       "last_verified": "2026-04-10",
-      "community": 21,
+      "community": 20,
       "degree": 3
     },
     {
@@ -8733,7 +8829,7 @@
       "path": "sources/support-vector-machine-svm-algorithm-geeksforgeeks.md",
       "summary": "This article provides a comprehensive overview of the Support Vector Machine (SVM) algorithm, covering its mathematical foundations, key concepts, types, practical implementation, advantages, and disadvantages. It explains how SVM works ...",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 5
     },
     {
@@ -8792,7 +8888,7 @@
       "path": "sources/the-hardening-principle-10-claude-code-principles.md",
       "summary": "This article introduces the Hardening Principle, a foundational engineering discipline for building reliable AI-powered workflows. It argues that any step in an LLM-powered pipeline that must behave identically every time should be repla...",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 3,
       "degree": 5
     },
     {
@@ -8849,7 +8945,7 @@
       "path": "sources/the-lottery-ticket-hypothesis-finding-sparse-trainable-neural-networks.md",
       "summary": "This paper introduces the Lottery Ticket Hypothesis, which posits that dense, randomly-initialized neural networks contain smaller subnetworks ('winning tickets') that, when trained in isolation from their original initialization, can ma...",
       "last_verified": "2026-04-10",
-      "community": 15,
+      "community": 14,
       "degree": 5
     },
     {
@@ -8967,7 +9063,7 @@
       "path": "sources/timesfm-time-series-foundation-model-google-researchtimesfm.md",
       "summary": "TimesFM is a pretrained foundation model for time-series forecasting developed by Google Research. The repository provides the latest model version (2.5), installation instructions, agent skill integration, and code examples for inferenc...",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 5
     },
     {
@@ -8987,7 +9083,7 @@
       "path": "sources/top-15-machine-learning-algorithms-every-data-scientist-should-know-in-2025.md",
       "summary": "This article from GeeksforGeeks provides a comprehensive overview of the top 15 machine learning algorithms essential for data scientists in 2025, covering supervised, unsupervised, semi-supervised, and reinforcement learning techniques....",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 6
     },
     {
@@ -9028,7 +9124,7 @@
       "path": "sources/transformer-architecture-note.md",
       "summary": "This note summarizes the core innovations of the Transformer architecture as introduced in 'Attention Is All You Need.' It highlights the replacement of recurrence with self-attention, the use of multi-head attention for richer represent...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 4
     },
     {
@@ -9048,7 +9144,7 @@
       "path": "sources/vision-language-action-vla-models-concepts-progress-applications-and-challenges.md",
       "summary": "This review paper provides a comprehensive synthesis of Vision-Language-Action (VLA) models, which unify visual perception, natural language understanding, and embodied action within a single computational framework. It traces the evolut...",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 6
     },
     {
@@ -9086,7 +9182,7 @@
       "path": "sources/what-is-lstm-long-short-term-memory-geeksforgeeks.md",
       "summary": "The article introduces Long Short-Term Memory (LSTM) networks as an advanced variant of Recurrent Neural Networks (RNNs) designed to overcome the limitations of learning long-term dependencies in sequential data. It explains the architec...",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 3
     },
     {
@@ -9107,7 +9203,7 @@
       "path": "synthesis/adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs.md",
       "summary": "How do AdaBoost and Random Forests differ in their approach to ensemble learning, and what are the practical trade-offs in accuracy, robustness, and interpretability?",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -9127,7 +9223,7 @@
       "path": "synthesis/adaboost-vs-standalone-decision-trees-performance-and-limitations.md",
       "summary": "How does AdaBoost improve upon the performance and limitations of standalone decision trees?",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -9147,7 +9243,7 @@
       "path": "synthesis/autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-.md",
       "summary": "How do Autoreason and critique-and-revise approaches differ in addressing prompt bias, scope creep, and lack of restraint in iterative agentic workflows?",
       "last_verified": "2026-04-13",
-      "community": 10,
+      "community": 9,
       "degree": 4
     },
     {
@@ -9167,7 +9263,7 @@
       "path": "synthesis/comparing-axis-cli-ergonomics-with-autoagents-natural-language-driven-agent-crea.md",
       "summary": "How do AXI's CLI-focused agent ergonomics compare with AutoAgent's natural language-driven, zero-code paradigm for agent creation and workflow management?",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 4
     },
     {
@@ -9208,7 +9304,7 @@
       "path": "synthesis/comparing-chrome-devtools-mcp-and-axi-for-agentic-tool-integration-protocol-vs-e.md",
       "summary": "How do Chrome DevTools MCP and AXI differ in their approach to agentic tool integration, and what are the trade-offs between protocol-based and ergonomic design patterns?",
       "last_verified": "2026-04-13",
-      "community": 9,
+      "community": 2,
       "degree": 4
     },
     {
@@ -9227,7 +9323,7 @@
       "path": "synthesis/comparing-reasoning-failures-in-llms-and-human-cognitive-biases-origins-manifest.md",
       "summary": "How do reasoning failures in LLMs compare to well-documented cognitive biases in humans, and what can this reveal about improving AI reasoning?",
       "last_verified": "2026-04-10",
-      "community": 10,
+      "community": 9,
       "degree": 3
     },
     {
@@ -9267,7 +9363,7 @@
       "path": "synthesis/democratizing-agent-customization-automated-skill-stack-installation-vs-natural-.md",
       "summary": "How do automated skill stack installation and natural language-driven agent building compare in democratizing agent customization and deployment?",
       "last_verified": "2026-04-12",
-      "community": 7,
+      "community": 2,
       "degree": 3
     },
     {
@@ -9287,7 +9383,7 @@
       "path": "synthesis/knn-vs-decision-tree-comparative-approaches-to-classification-and-regression.md",
       "summary": "How do KNN and Decision Tree algorithms differ in their approach to classification and regression, and what are their respective strengths and weaknesses?",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -9306,7 +9402,7 @@
       "path": "synthesis/linear-regression-vs-decision-tree-algorithms-for-regression-tasks-interpretabil.md",
       "summary": "How do linear regression and decision tree algorithms compare for regression tasks in terms of interpretability, robustness, and handling non-linear relationships?",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -9326,7 +9422,7 @@
       "path": "synthesis/linear-regression-vs-logistic-regression-mathematical-formulation-assumptions-an.md",
       "summary": "How do linear regression and logistic regression differ in their mathematical formulation, assumptions, and real-world applications?",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -9346,7 +9442,7 @@
       "path": "synthesis/llm-centric-architectures-operating-systems-vs-persistent-wiki-environments.md",
       "summary": "How do LLM-centric system architectures differ when used as operating systems versus persistent wiki environments?",
       "last_verified": "2026-04-08",
-      "community": 6,
+      "community": 7,
       "degree": 3
     },
     {
@@ -9366,7 +9462,7 @@
       "path": "synthesis/lstms-vs-traditional-rnns-memory-retention-and-gradient-stability.md",
       "summary": "How do LSTMs improve upon traditional RNNs for learning long-term dependencies and handling gradient stability?",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 3
     },
     {
@@ -9386,7 +9482,7 @@
       "path": "synthesis/naive-bayes-vs-decision-tree-assumptions-interpretability-and-performance-in-cla.md",
       "summary": "How do Naive Bayes and Decision Tree algorithms differ in their assumptions, interpretability, and performance across classification tasks?",
       "last_verified": "2026-04-08",
-      "community": 18,
+      "community": 17,
       "degree": 3
     },
     {
@@ -9426,7 +9522,7 @@
       "path": "synthesis/random-forest-regression-vs-decision-tree-algorithm-a-comparative-synthesis.md",
       "summary": "How do Random Forest Regression and standalone Decision Tree algorithms compare in terms of prediction accuracy, robustness, interpretability, and computational requirements?",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -9472,7 +9568,7 @@
       "path": "synthesis/recurring-checkpoint-patterns-caddy-handle-path-directive-and-its-impact-on-upst.md",
       "summary": "What recurring decisions, fixes, and durable patterns appear across the 9 session checkpoints in this cluster, especially around Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing ...",
       "last_verified": "2026-04-18",
-      "community": 2,
+      "community": 4,
       "degree": 13
     },
     {
@@ -9541,7 +9637,7 @@
       "path": "synthesis/recurring-checkpoint-patterns-odds-api-quota-optimization-cascading-pipeline-fai.md",
       "summary": "What recurring decisions, fixes, and durable patterns appear across the 3 session checkpoints in this cluster, especially around Odds API Quota Optimization, Cascading Pipeline Failure Diagnosis and Resilience, SportsGameOdds (SGO) API D...",
       "last_verified": "2026-04-18",
-      "community": 12,
+      "community": 10,
       "degree": 6
     },
     {
@@ -9584,7 +9680,7 @@
       "path": "synthesis/rnns-vs-transformers-handling-sequential-data-memory-and-long-term-dependencies.md",
       "summary": "How do RNNs and Transformers differ in handling sequential data, memory, and long-term dependencies?",
       "last_verified": "2026-04-08",
-      "community": 13,
+      "community": 11,
       "degree": 3
     },
     {
@@ -9665,7 +9761,7 @@
       "path": "synthesis/standard-attention-vs-flash-attention-in-llms-efficiency-scalability-and-deploym.md",
       "summary": "How do standard attention and Flash Attention differ in terms of computational efficiency, scalability, and practical deployment in LLMs?",
       "last_verified": "2026-04-13",
-      "community": 5,
+      "community": 6,
       "degree": 3
     },
     {
@@ -9743,7 +9839,7 @@
       "path": "synthesis/svm-vs-decision-tree-approaches-to-classification-robustness-interpretability-an.md",
       "summary": "How do SVM and Decision Tree algorithms differ in their approach to classification, robustness, interpretability, and performance?",
       "last_verified": "2026-04-08",
-      "community": 4,
+      "community": 5,
       "degree": 3
     },
     {
@@ -9802,7 +9898,7 @@
       "path": "synthesis/transformer-vs-hope-architecture-memory-continual-learning-and-long-context-hand.md",
       "summary": "How do Transformer and Hope architectures differ in memory management, continual learning, and handling long-context tasks?",
       "last_verified": "2026-04-08",
-      "community": 5,
+      "community": 6,
       "degree": 4
     }
   ],
@@ -10097,6 +10193,14 @@
     },
     {
       "source": "concepts/agent-ergonomic-tool-design-principles",
+      "target": "concepts/layered-agentic-architecture-claude-code",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "concepts/agent-ergonomic-tool-design-principles",
       "target": "concepts/opencode-bash-shell-configuration-posix-spawn-enoent-fix",
       "weight": 1.0,
       "confidence": "EXTRACTED",
@@ -10109,7 +10213,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/agent-ergonomic-tool-design-principles",
@@ -10117,7 +10221,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/agent-ergonomic-tool-design-principles",
@@ -10273,15 +10377,31 @@
     },
     {
       "source": "concepts/agentic-context-engineering-ace",
+      "target": "concepts/comparative-agent-system-architecture-claude-code-vs-openclaw",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "concepts/agentic-context-engineering-ace",
       "target": "concepts/karpathy-llm-wiki-pattern",
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/agentic-context-engineering-ace",
       "target": "concepts/labs-wiki-architecture-and-implementation",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "concepts/agentic-context-engineering-ace",
+      "target": "concepts/layered-agentic-architecture-claude-code",
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
@@ -10901,7 +11021,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": false
+      "cross_community": true
     },
     {
       "source": "concepts/automated-ai-skill-stack-installation",
@@ -11073,11 +11193,19 @@
     },
     {
       "source": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools",
+      "target": "concepts/design-principles-agentic-coding-tools",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools",
       "target": "concepts/intelligent-resource-orchestration",
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools",
@@ -11101,7 +11229,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools",
@@ -11149,7 +11277,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools",
@@ -11629,7 +11757,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": false
+      "cross_community": true
     },
     {
       "source": "concepts/claude-code-skill-summarization",
@@ -11690,6 +11818,22 @@
     {
       "source": "concepts/cognitive-biases-in-large-language-models",
       "target": "synthesis/comparing-reasoning-failures-in-llms-and-human-cognitive-biases-origins-manifest",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "concepts/comparative-agent-system-architecture-claude-code-vs-openclaw",
+      "target": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
+      "weight": 2.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "concepts/comparative-agent-system-architecture-claude-code-vs-openclaw",
+      "target": "entities/openclaw",
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
@@ -12259,6 +12403,14 @@
       "source": "concepts/decision-tree-algorithm",
       "target": "synthesis/svm-vs-decision-tree-approaches-to-classification-robustness-interpretability-an",
       "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "concepts/design-principles-agentic-coding-tools",
+      "target": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
+      "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
       "cross_community": false
@@ -13376,6 +13528,14 @@
       "cross_community": false
     },
     {
+      "source": "concepts/layered-agentic-architecture-claude-code",
+      "target": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
+      "weight": 2.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
       "source": "concepts/lightgbm-feature-importance-and-shap-values",
       "target": "sources/lightgbm-light-gradient-boosting-machine-geeksforgeeks",
       "weight": 2.0,
@@ -13517,7 +13677,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": false
+      "cross_community": true
     },
     {
       "source": "concepts/llm-operating-system-architecture",
@@ -14013,7 +14173,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": false
+      "cross_community": true
     },
     {
       "source": "concepts/multi-device-ingestion-api-for-labs-wiki",
@@ -15109,7 +15269,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/skill-design-framework-for-ai-agents",
@@ -15117,7 +15277,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/skill-design-framework-for-ai-agents",
@@ -15125,7 +15285,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/skill-design-framework-for-ai-agents",
@@ -15133,7 +15293,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/skill-design-framework-for-ai-agents",
@@ -15141,7 +15301,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/smart-url-handlers-twitter-x-github-repositories",
@@ -15461,7 +15621,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/the-hardening-principle",
@@ -15469,7 +15629,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/the-hardening-principle",
@@ -15477,7 +15637,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/the-hardening-principle",
@@ -15493,7 +15653,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/the-hardening-principle",
@@ -15501,7 +15661,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": false
+      "cross_community": true
     },
     {
       "source": "concepts/the-hardening-principle",
@@ -15517,7 +15677,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "concepts/the-hardening-principle",
@@ -16369,6 +16529,22 @@
     },
     {
       "source": "entities/anthropic",
+      "target": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
+      "weight": 2.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": true
+    },
+    {
+      "source": "entities/anthropic",
+      "target": "entities/openclaw",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": true
+    },
+    {
+      "source": "entities/anthropic",
       "target": "sources/the-institutional-memory-principle-10-claude-code-principles",
       "weight": 1.0,
       "confidence": "EXTRACTED",
@@ -16760,6 +16936,22 @@
       "cross_community": false
     },
     {
+      "source": "entities/claude-code",
+      "target": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
+      "weight": 2.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "entities/claude-code",
+      "target": "entities/openclaw",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
       "source": "entities/claude",
       "target": "sources/tracing-the-thoughts-of-a-large-language-model",
       "weight": 2.0,
@@ -16797,7 +16989,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": true
+      "cross_community": false
     },
     {
       "source": "entities/claude",
@@ -18925,7 +19117,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
-      "cross_community": false
+      "cross_community": true
     },
     {
       "source": "entities/odds-api",
@@ -18954,6 +19146,14 @@
     {
       "source": "entities/openai-gpt-4-turbo",
       "target": "sources/karpathy-llm-os-tweet",
+      "weight": 2.0,
+      "confidence": "EXTRACTED",
+      "source_kind": "wikilink",
+      "cross_community": false
+    },
+    {
+      "source": "entities/openclaw",
+      "target": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_kind": "wikilink",
@@ -20019,7 +20219,7 @@
       "node_id": "entities/geeksforgeeks",
       "title": "GeeksforGeeks",
       "degree": 17,
-      "community": 4
+      "community": 5
     },
     {
       "node_id": "synthesis/recurring-checkpoint-patterns-durable-copilot-session-checkpoint-promotion-auto-",
@@ -20028,22 +20228,22 @@
       "community": 1
     },
     {
-      "node_id": "entities/knightcrawler",
-      "title": "KnightCrawler",
+      "node_id": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools",
+      "title": "AXI Design Principles for Agent-Ergonomic CLI Tools",
       "degree": 16,
       "community": 2
     },
     {
-      "node_id": "concepts/axi-design-principles-for-agent-ergonomic-cli-tools",
-      "title": "AXI Design Principles for Agent-Ergonomic CLI Tools",
-      "degree": 15,
-      "community": 9
+      "node_id": "entities/knightcrawler",
+      "title": "KnightCrawler",
+      "degree": 16,
+      "community": 4
     },
     {
       "node_id": "concepts/llm-wiki-architecture",
       "title": "LLM Wiki Architecture",
       "degree": 15,
-      "community": 6
+      "community": 7
     },
     {
       "node_id": "synthesis/recurring-checkpoint-patterns-parallel-agent-coordination-in-ml-sprint-implement",
@@ -20055,13 +20255,13 @@
       "node_id": "concepts/decision-tree-algorithm",
       "title": "Decision Tree Algorithm",
       "degree": 14,
-      "community": 4
+      "community": 5
     },
     {
       "node_id": "concepts/transformer-architecture",
       "title": "Transformer Architecture",
       "degree": 14,
-      "community": 5
+      "community": 6
     },
     {
       "node_id": "entities/docker",
@@ -20084,7 +20284,7 @@
       "target_title": "Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents",
       "weight": 2.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
+      "source_community": 4,
       "target_community": 1
     },
     {
@@ -20094,7 +20294,7 @@
       "target_title": "Copilot Session Checkpoint: NBA ML OOM Fix And Docs Cleanup",
       "weight": 2.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
+      "source_community": 4,
       "target_community": 1
     },
     {
@@ -20104,8 +20304,18 @@
       "target_title": "Palace Memory Architecture",
       "weight": 2.0,
       "confidence": "EXTRACTED",
-      "source_community": 6,
+      "source_community": 7,
       "target_community": 1
+    },
+    {
+      "source": "entities/anthropic",
+      "target": "sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems",
+      "source_title": "Anthropic",
+      "target_title": "Dive Into Claude Code: The Design Space of Today\u2019s and Future AI Agent Systems",
+      "weight": 2.0,
+      "confidence": "EXTRACTED",
+      "source_community": 3,
+      "target_community": 2
     },
     {
       "source": "entities/autoagent",
@@ -20115,7 +20325,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 7
+      "target_community": 2
     },
     {
       "source": "entities/autoagent",
@@ -20125,7 +20335,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 7
+      "target_community": 2
     },
     {
       "source": "entities/autoagent",
@@ -20135,7 +20345,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 7
+      "target_community": 2
     },
     {
       "source": "entities/claude",
@@ -20145,7 +20355,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 3,
-      "target_community": 7
+      "target_community": 2
     },
     {
       "source": "entities/copilot-cli",
@@ -20155,7 +20365,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 2
+      "target_community": 4
     },
     {
       "source": "entities/docker",
@@ -20174,8 +20384,8 @@
       "target_title": "Copilot Session Checkpoint: SGO Data Extraction Fix and Quality Audit",
       "weight": 2.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
-      "target_community": 12
+      "source_community": 4,
+      "target_community": 10
     },
     {
       "source": "entities/durable-copilot-session-checkpoint",
@@ -20184,8 +20394,8 @@
       "target_title": "Copilot Session Checkpoint: Sprint 11 Evaluation and Report",
       "weight": 2.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
-      "target_community": 14
+      "source_community": 4,
+      "target_community": 12
     },
     {
       "source": "entities/homelab",
@@ -20195,7 +20405,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 14
+      "target_community": 12
     },
     {
       "source": "entities/knightcrawler",
@@ -20204,7 +20414,7 @@
       "target_title": "Qdrant",
       "weight": 2.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
+      "source_community": 4,
       "target_community": 0
     },
     {
@@ -20225,7 +20435,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 2
+      "target_community": 4
     },
     {
       "source": "entities/nba-ml-engine",
@@ -20265,7 +20475,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 0,
-      "target_community": 14
+      "target_community": 12
     },
     {
       "source": "entities/nba-ml-model-registry",
@@ -20284,7 +20494,7 @@
       "target_title": "Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode",
       "weight": 2.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
+      "source_community": 4,
       "target_community": 1
     },
     {
@@ -20295,7 +20505,7 @@
       "weight": 2.0,
       "confidence": "EXTRACTED",
       "source_community": 0,
-      "target_community": 2
+      "target_community": 4
     },
     {
       "source": "concepts/activation-functions-in-neural-networks",
@@ -20304,7 +20514,7 @@
       "target_title": "Circuit Tracing in Language Models",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 13,
+      "source_community": 11,
       "target_community": 3
     },
     {
@@ -20314,8 +20524,8 @@
       "target_title": "Logistic Regression",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 13,
-      "target_community": 4
+      "source_community": 11,
+      "target_community": 5
     },
     {
       "source": "concepts/activation-functions-in-neural-networks",
@@ -20324,8 +20534,8 @@
       "target_title": "Sigmoid Function",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 13,
-      "target_community": 4
+      "source_community": 11,
+      "target_community": 5
     },
     {
       "source": "concepts/activation-functions-in-neural-networks",
@@ -20334,8 +20544,8 @@
       "target_title": "Comparing Reasoning Failures in LLMs and Human Cognitive Biases: Origins, Manifestations, and Mitigation",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 13,
-      "target_community": 10
+      "source_community": 11,
+      "target_community": 9
     },
     {
       "source": "concepts/adaboost-algorithm",
@@ -20344,7 +20554,7 @@
       "target_title": "Gradient-Based One-Side Sampling (GOSS)",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 4,
+      "source_community": 5,
       "target_community": 0
     },
     {
@@ -20354,7 +20564,7 @@
       "target_title": "Comparing Boosting Strategies: LightGBM Leaf-Wise, AdaBoost, and XGBoost",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 4,
+      "source_community": 5,
       "target_community": 0
     },
     {
@@ -20365,7 +20575,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 9
+      "target_community": 2
     },
     {
       "source": "concepts/agent-documentation-hygiene-and-migration",
@@ -20384,8 +20594,8 @@
       "target_title": "Agent Skill Integration for Time-Series Forecasting",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 9,
-      "target_community": 5
+      "source_community": 2,
+      "target_community": 6
     },
     {
       "source": "concepts/agent-ergonomic-tool-design-principles",
@@ -20394,7 +20604,7 @@
       "target_title": "Custom Copilot CLI Agents",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 9,
+      "source_community": 2,
       "target_community": 1
     },
     {
@@ -20404,8 +20614,8 @@
       "target_title": "Homelab Service Inventory And Dashboard Synchronization",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 9,
-      "target_community": 2
+      "source_community": 2,
+      "target_community": 4
     },
     {
       "source": "concepts/agent-ergonomic-tool-design-principles",
@@ -20414,28 +20624,8 @@
       "target_title": "OpenCode Bash Shell Configuration and posix_spawn ENOENT Fix",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 9,
-      "target_community": 2
-    },
-    {
-      "source": "concepts/agent-ergonomic-tool-design-principles",
-      "target": "concepts/universal-agent-schema-agents-md-for-ai-tool-integration",
-      "source_title": "Agent-Ergonomic Tool Design Principles",
-      "target_title": "Universal Agent Schema (AGENTS.md) for AI Tool Integration",
-      "weight": 1.0,
-      "confidence": "EXTRACTED",
-      "source_community": 9,
-      "target_community": 11
-    },
-    {
-      "source": "concepts/agent-ergonomic-tool-design-principles",
-      "target": "concepts/universal-agent-schema-tool-integration",
-      "source_title": "Agent-Ergonomic Tool Design Principles",
-      "target_title": "Universal Agent Schema and Tool Integration",
-      "weight": 1.0,
-      "confidence": "EXTRACTED",
-      "source_community": 9,
-      "target_community": 7
+      "source_community": 2,
+      "target_community": 4
     },
     {
       "source": "concepts/agent-feedback-loop-mechanism",
@@ -20444,7 +20634,7 @@
       "target_title": "Custom Copilot CLI Agents",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
+      "source_community": 4,
       "target_community": 1
     },
     {
@@ -20454,8 +20644,8 @@
       "target_title": "Agent Skill Integration for Time-Series Forecasting",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 2,
-      "target_community": 5
+      "source_community": 4,
+      "target_community": 6
     },
     {
       "source": "concepts/agent-handoffs-in-vs-code",
@@ -20464,8 +20654,8 @@
       "target_title": "AXI Design Principles for Agent-Ergonomic CLI Tools",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 6,
-      "target_community": 9
+      "source_community": 7,
+      "target_community": 2
     },
     {
       "source": "concepts/agent-handoffs-in-vs-code",
@@ -20474,7 +20664,7 @@
       "target_title": "The Token Economy Principle",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 6,
+      "source_community": 7,
       "target_community": 3
     },
     {
@@ -20484,8 +20674,8 @@
       "target_title": "Autoreason Iterative Self-Refinement Framework",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 5,
-      "target_community": 10
+      "source_community": 6,
+      "target_community": 9
     },
     {
       "source": "concepts/agent-skill-integration-for-time-series-forecasting",
@@ -20494,7 +20684,7 @@
       "target_title": "Copilot CLI and OpenCode Integration with MemPalace",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 5,
+      "source_community": 6,
       "target_community": 1
     },
     {
@@ -20504,8 +20694,8 @@
       "target_title": "NBA-ML Specialized Prediction Agents",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 5,
-      "target_community": 2
+      "source_community": 6,
+      "target_community": 4
     },
     {
       "source": "concepts/agent-skill-integration-for-time-series-forecasting",
@@ -20514,7 +20704,7 @@
       "target_title": "Sprint 12 NBA ML Engine Code Cleanup and Feature Tuning",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 5,
+      "source_community": 6,
       "target_community": 0
     },
     {
@@ -20524,18 +20714,8 @@
       "target_title": "Agentic Wiki Optimization per Karpathy Compile-Once Principles",
       "weight": 1.0,
       "confidence": "EXTRACTED",
-      "source_community": 11,
+      "source_community": 2,
       "target_community": 1
-    },
-    {
-      "source": "concepts/agentic-context-engineering-ace",
-      "target": "concepts/karpathy-llm-wiki-pattern",
-      "source_title": "Agentic Context Engineering (ACE)",
-      "target_title": "Karpathy LLM Wiki Pattern",
-      "weight": 1.0,
-      "confidence": "EXTRACTED",
-      "source_community": 11,
-      "target_community": 7
     },
     {
       "source": "concepts/agentic-workflow-optimization-for-llm-wikis",
@@ -20545,7 +20725,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 6
+      "target_community": 7
     },
     {
       "source": "concepts/agentic-workflow-optimization-for-llm-wikis",
@@ -20555,7 +20735,7 @@
       "weight": 1.0,
       "confidence": "EXTRACTED",
       "source_community": 1,
-      "target_community": 6
+      "target_community": 7
     },
     {
       "source": "concepts/artifact-registry-validation-in-ml-pipelines",
@@ -20576,6 +20756,26 @@
       "confidence": "EXTRACTED",
       "source_community": 0,
       "target_community": 3
+    },
+    {
+      "source": "concepts/artificial-neural-network-architecture",
+      "target": "concepts/circuit-tracing-in-language-models",
+      "source_title": "Artificial Neural Network Architecture",
+      "target_title": "Circuit Tracing in Language Models",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_community": 11,
+      "target_community": 3
+    },
+    {
+      "source": "concepts/atomic-model-artifact-saving-in-ml-training-loops",
+      "target": "concepts/end-to-end-validation-in-live-memory-loops",
+      "source_title": "Atomic Model Artifact Saving in ML Training Loops",
+      "target_title": "End-To-End Validation In Live Memory Loops",
+      "weight": 1.0,
+      "confidence": "EXTRACTED",
+      "source_community": 0,
+      "target_community": 1
     }
   ],
   "communities": [
@@ -20589,27 +20789,27 @@
     },
     {
       "community": 2,
-      "size": 44
+      "size": 50
     },
     {
       "community": 3,
-      "size": 43
+      "size": 48
     },
     {
       "community": 4,
-      "size": 39
+      "size": 44
     },
     {
       "community": 5,
-      "size": 36
+      "size": 39
     },
     {
       "community": 6,
-      "size": 25
+      "size": 36
     },
     {
       "community": 7,
-      "size": 23
+      "size": 21
     },
     {
       "community": 8,
@@ -20617,11 +20817,11 @@
     },
     {
       "community": 9,
-      "size": 16
+      "size": 14
     },
     {
       "community": 10,
-      "size": 14
+      "size": 13
     },
     {
       "community": 11,
@@ -20629,19 +20829,19 @@
     },
     {
       "community": 12,
-      "size": 13
-    },
-    {
-      "community": 13,
-      "size": 13
-    },
-    {
-      "community": 14,
       "size": 7
     },
     {
-      "community": 15,
+      "community": 13,
       "size": 6
+    },
+    {
+      "community": 14,
+      "size": 6
+    },
+    {
+      "community": 15,
+      "size": 5
     },
     {
       "community": 16,
@@ -20653,7 +20853,7 @@
     },
     {
       "community": 18,
-      "size": 5
+      "size": 4
     },
     {
       "community": 19,
@@ -20665,14 +20865,10 @@
     },
     {
       "community": 21,
-      "size": 4
-    },
-    {
-      "community": 22,
       "size": 1
     },
     {
-      "community": 23,
+      "community": 22,
       "size": 1
     }
   ],
@@ -20705,7 +20901,7 @@
         ]
       },
       {
-        "community": 2,
+        "community": 4,
         "checkpoints": [
           "sources/copilot-session-checkpoint-dashboard-matviews-implementation-in-progress",
           "sources/copilot-session-checkpoint-fixing-knightcrawler-populate-cron-and-rd-playback",
@@ -20739,7 +20935,7 @@
         ]
       },
       {
-        "community": 12,
+        "community": 10,
         "checkpoints": [
           "sources/copilot-session-checkpoint-odds-api-quota-optimization-sgo-investigation",
           "sources/copilot-session-checkpoint-pipeline-resilience-fixes-dashboard-metrics-investiga",
@@ -20789,7 +20985,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 4,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -20897,7 +21093,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 4,
         "source_neighbors": 0,
-        "community": 14,
+        "community": 12,
         "recommendation": "merge"
       },
       {
@@ -20957,7 +21153,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -20993,7 +21189,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 7,
+        "community": 2,
         "recommendation": "merge"
       },
       {
@@ -21017,7 +21213,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -21029,7 +21225,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 4,
         "source_neighbors": 0,
-        "community": 17,
+        "community": 16,
         "recommendation": "merge"
       },
       {
@@ -21041,7 +21237,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -21053,7 +21249,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 12,
+        "community": 10,
         "recommendation": "keep"
       },
       {
@@ -21065,7 +21261,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 12,
+        "community": 10,
         "recommendation": "keep"
       },
       {
@@ -21089,7 +21285,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -21185,7 +21381,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 6,
+        "community": 7,
         "recommendation": "merge"
       },
       {
@@ -21233,7 +21429,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 19,
+        "community": 18,
         "recommendation": "merge"
       },
       {
@@ -21245,7 +21441,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -21257,7 +21453,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 11,
+        "community": 13,
         "recommendation": "merge"
       },
       {
@@ -21269,7 +21465,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -21281,7 +21477,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 11,
+        "community": 2,
         "recommendation": "merge"
       },
       {
@@ -21305,7 +21501,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 3,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -21317,7 +21513,7 @@
         "synthesis_neighbors": 0,
         "concept_neighbors": 4,
         "source_neighbors": 0,
-        "community": 16,
+        "community": 15,
         "recommendation": "merge"
       },
       {
@@ -21329,7 +21525,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 1,
         "source_neighbors": 0,
-        "community": 2,
+        "community": 4,
         "recommendation": "keep"
       },
       {
@@ -21365,7 +21561,7 @@
         "synthesis_neighbors": 1,
         "concept_neighbors": 1,
         "source_neighbors": 0,
-        "community": 12,
+        "community": 10,
         "recommendation": "keep"
       },
       {
@@ -21382,5 +21578,5 @@
       }
     ]
   },
-  "build_seconds": 0.093
+  "build_seconds": 0.101
 }

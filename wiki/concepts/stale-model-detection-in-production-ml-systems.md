@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "09d0f25cf67625d2215d0a83135693fea032d2bab65425e15c21d99f6b87103a"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
-quality_score: 0
+quality_score: 100
 concepts:
   - stale-model-detection-in-production-ml-systems
 related:
-  - "[[Model Registry]]"
   - "[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]"
 tier: hot
 tags: [model monitoring, production ml, model lifecycle, reliability]
@@ -64,7 +63,7 @@ This function returns True if the model is considered stale.
 
 ## Relationship to Other Concepts
 
-- **[[Model Registry]]** — Stale detection integrates with model metadata management in the registry.
+- **Model Registry** — Stale detection integrates with model metadata management in the registry.
 
 ## Practical Applications
 

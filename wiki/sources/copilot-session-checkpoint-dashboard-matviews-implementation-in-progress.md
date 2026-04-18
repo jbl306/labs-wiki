@@ -16,8 +16,6 @@ related:
   - "[[Concurrent Refresh of PostgreSQL Materialized Views]]"
   - "[[Backend-For-Frontend (BFF) Integration with Materialized Views]]"
   - "[[NBA ML Engine]]"
-  - "[[Dashboard Agent]]"
-  - "[[Alembic Migration]]"
 tier: archive
 tags: [agents, nba-ml-engine, fileback, dashboard, checkpoint, postgresql, copilot-session, mempalace, bff, homelab, database-optimization, materialized-views, durable-knowledge]
 checkpoint_class: project-progress
@@ -46,8 +44,8 @@ This document details the progress of Sprint 51 for the NBA ML Engine project, f
 ## Entities Mentioned
 
 - **[[NBA ML Engine]]** — NBA ML Engine is a machine learning project focused on basketball analytics, involving data pipelines, model training, and dashboard visualization. The project uses PostgreSQL, FastAPI, Express.js BFF, and React UI to deliver analytics and predictions such as player rankings, backtests, and customer lifetime value.
-- **[[Dashboard Agent]]** — The Dashboard Agent is a newly created software agent responsible for owning the dashboard UI, Backend-For-Frontend (BFF) server, and materialized views related to the NBA ML Engine project. It manages the integration and maintenance of dashboard-related components including React UI, matview definitions, and API endpoints.
-- **[[Alembic Migration]]** — Alembic is a database migration tool for SQLAlchemy used to manage schema changes in a version-controlled manner. The migration file `a1b2c3d4e5f6_add_dashboard_matviews.py` creates the five new materialized views and their unique indexes with idempotent guards to ensure safe repeated runs.
+- **Dashboard Agent** — The Dashboard Agent is a newly created software agent responsible for owning the dashboard UI, Backend-For-Frontend (BFF) server, and materialized views related to the NBA ML Engine project. It manages the integration and maintenance of dashboard-related components including React UI, matview definitions, and API endpoints.
+- **Alembic Migration** — Alembic is a database migration tool for SQLAlchemy used to manage schema changes in a version-controlled manner. The migration file `a1b2c3d4e5f6_add_dashboard_matviews.py` creates the five new materialized views and their unique indexes with idempotent guards to ensure safe repeated runs.
 
 ## Notable Quotes
 

@@ -14,7 +14,7 @@ related:
   - "[[labs-wiki]]"
   - "[[auto_ingest.py]]"
   - "[[Graphify]]"
-tier: hot
+tier: archive
 tags: [agents, auto-ingest, fileback, checkpoint, LLM, copilot-session, graph, post-processing, labs-wiki, durable-knowledge, quality-fixes]
 checkpoint_class: durable-architecture
 retention_mode: retain

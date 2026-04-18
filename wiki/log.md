@@ -2060,4 +2060,18 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
   status: success
   notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T12:14:02+00:00
+  operation: checkpoint-cluster-synthesis
+  agent: auto-ingest
+  targets:
+    - wiki/synthesis/recurring-checkpoint-patterns-durable-copilot-session-checkpoint-promotion-auto-.md
+    - wiki/synthesis/recurring-checkpoint-patterns-caddy-handle-path-directive-and-its-impact-on-upst.md
+    - wiki/synthesis/recurring-checkpoint-patterns-parallel-agent-coordination-in-ml-sprint-implement.md
+    - wiki/synthesis/recurring-checkpoint-patterns-odds-api-quota-optimization-cascading-pipeline-fai.md
+    - wiki/synthesis/recurring-checkpoint-patterns-backend-for-frontend-bff-pattern-in-modern-dashboa.md
+    - wiki/synthesis/recurring-checkpoint-patterns-feature-engineering-for-nba-ml-engine-sprint-10-wa.md
+  source: plans/checkpoint-curation-phase5-report.md
+  status: success
+  notes: "Backfill synthesis pages for checkpoint merge clusters"
 ```

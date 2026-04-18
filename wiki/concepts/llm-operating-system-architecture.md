@@ -11,7 +11,6 @@ concepts:
   - llm-operating-system-architecture
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM Wiki Architecture]]"
   - "[[Karpathy LLM OS Tweet]]"
 tier: hot
 tags: [llm, architecture, os, agent, multimodal, embeddings]

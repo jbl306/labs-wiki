@@ -6,12 +6,11 @@ last_verified: 2026-04-18
 source_hash: "8569d239f29d3a3edd5d15d9e9f3fcf1f4cd252be8b9dbbc7c751bf7b2fced19"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-graphify-comparison-and-quality-evaluation-6949c984.md
-quality_score: 0
+quality_score: 100
 concepts:
   - labs-wiki-architecture
 related:
   - "[[Durable Copilot Session Checkpoint Promotion]]"
-  - "[[Agent eXperience Interface (AXI)]]"
   - "[[Copilot Session Checkpoint: Graphify Comparison and Quality Evaluation]]"
 tier: hot
 tags: [knowledge-wiki, LLM-integration, auto-ingest, personal-knowledge-management]
@@ -56,7 +55,7 @@ When a new raw source file is placed in the `raw/` directory (e.g., a shared arX
 ## Relationship to Other Concepts
 
 - **[[Durable Copilot Session Checkpoint Promotion]]** — Labs-wiki uses durable checkpoints to promote session states into persistent wiki content.
-- **[[Agent eXperience Interface (AXI)]]** — AXI is a CLI tool whose repo was ingested and analyzed within labs-wiki.
+- **Agent eXperience Interface (AXI)** — AXI is a CLI tool whose repo was ingested and analyzed within labs-wiki.
 
 ## Practical Applications
 

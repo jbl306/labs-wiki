@@ -6,12 +6,11 @@ last_verified: 2026-04-18
 source_hash: "775f812f7b3878f9c18195d90e9cda4785608659d21041c4a0edfdd122da8024"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md
-quality_score: 0
+quality_score: 100
 concepts:
   - backend-for-frontend-integration-with-materialized-views
 related:
   - "[[PostgreSQL Materialized Views for Dashboard Optimization]]"
-  - "[[LRU Cache]]"
   - "[[Copilot Session Checkpoint: Dashboard Matviews Implementation In Progress]]"
 tier: hot
 tags: [backend-for-frontend, bff, materialized-views, dashboard, caching]
@@ -77,7 +76,7 @@ return freshData;
 ## Relationship to Other Concepts
 
 - **[[PostgreSQL Materialized Views for Dashboard Optimization]]** — Matviews provide the precomputed data that the BFF queries.
-- **[[LRU Cache]]** — Caching layer in BFF to optimize repeated queries.
+- **LRU Cache** — Caching layer in BFF to optimize repeated queries.
 
 ## Practical Applications
 

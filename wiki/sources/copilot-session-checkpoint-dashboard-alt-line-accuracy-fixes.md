@@ -16,7 +16,6 @@ related:
   - "[[One-Sided Prop Line Filtering in Sports Betting Data]]"
   - "[[Kelly Bankroll Simulator with Quarter-Kelly Sizing and Daily Exposure Cap]]"
   - "[[NBA ML Engine]]"
-  - "[[SportsGameOdds (SGO) DraftKings Data]]"
   - "[[Docker]]"
 tier: archive
 tags: [sports-betting, nba-ml-engine, fileback, dashboard, checkpoint, data-accuracy, copilot-session, machine-learning, kelly-criterion, homelab, durable-knowledge, data-cleaning]
@@ -47,7 +46,7 @@ This session checkpoint documents the iterative development and deployment of fi
 ## Entities Mentioned
 
 - **[[NBA ML Engine]]** — An ML-driven sports betting analytics system focused on NBA games, deployed on a homelab server. It includes prediction generation, model health snapshotting, and a dashboard for confidence and P&L tracking. The system integrates data ingestion from SportsGameOdds, prediction modeling, and dashboard visualization.
-- **[[SportsGameOdds (SGO) DraftKings Data]]** — A sports betting data source providing player prop lines including primary and alternate lines for NBA games. The data includes over/under odds for various player statistics but contains alternate lines that can distort analytics if not filtered properly. It also includes one-sided prop lines with missing odds on one side.
+- **SportsGameOdds (SGO) DraftKings Data** — A sports betting data source providing player prop lines including primary and alternate lines for NBA games. The data includes over/under odds for various player statistics but contains alternate lines that can distort analytics if not filtered properly. It also includes one-sided prop lines with missing odds on one side.
 - **[[Docker]]** — A containerization platform used to deploy and manage the NBA ML Engine services (nba-ml-api, nba-ml-dashboard, nba-ml-db) on a homelab server. Docker Compose is used to build and run containers with environment variables and service dependencies.
 
 ## Notable Quotes

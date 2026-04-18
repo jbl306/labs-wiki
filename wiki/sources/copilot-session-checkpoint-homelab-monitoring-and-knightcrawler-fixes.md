@@ -16,8 +16,6 @@ related:
   - "[[OpenMemory MCP Integration with Copilot CLI]]"
   - "[[Comprehensive Grafana Monitoring for Docker Homelab Services]]"
   - "[[KnightCrawler]]"
-  - "[[OpenMemory MCP]]"
-  - "[[Grafana]]"
 tier: hot
 tags: [docker, agents, fileback, dashboard, openmemory, checkpoint, cron, copilot-session, homelab, monitoring, grafana, durable-knowledge, copilot-cli, permissions]
 checkpoint_class: durable-architecture
@@ -47,8 +45,8 @@ This session checkpoint documents a comprehensive operational and diagnostic wor
 ## Entities Mentioned
 
 - **[[KnightCrawler]]** — KnightCrawler is a media ingestion and metadata pipeline running in multiple Docker containers. It scrapes IMDB titles and populates a database with torrent and file metadata to support media addons like Stremio. The pipeline uses cron jobs for regular scraping and file population, relying on upstream sources such as DMM hashlists and Torrentio. Proper script permissions and cron job health are critical for its operation.
-- **[[OpenMemory MCP]]** — OpenMemory MCP is a Model Context Protocol server that provides persistent memory storage and retrieval capabilities for AI agents and CLI tools. It supports real-time memory operations via an SSE endpoint and enables clients like Copilot CLI to add, search, list, and delete memory entries. This facilitates durable knowledge retention and context-aware assistance.
-- **[[Grafana]]** — Grafana is an open-source analytics and monitoring platform used to visualize metrics collected by data sources such as Prometheus. It supports dashboard provisioning via JSON files and provides rich visualization panels for time-series data. In this homelab setup, Grafana monitors Docker container metrics, grouped by service categories, enabling detailed observability.
+- **OpenMemory MCP** — OpenMemory MCP is a Model Context Protocol server that provides persistent memory storage and retrieval capabilities for AI agents and CLI tools. It supports real-time memory operations via an SSE endpoint and enables clients like Copilot CLI to add, search, list, and delete memory entries. This facilitates durable knowledge retention and context-aware assistance.
+- **Grafana** — Grafana is an open-source analytics and monitoring platform used to visualize metrics collected by data sources such as Prometheus. It supports dashboard provisioning via JSON files and provides rich visualization panels for time-series data. In this homelab setup, Grafana monitors Docker container metrics, grouped by service categories, enabling detailed observability.
 
 ## Notable Quotes
 

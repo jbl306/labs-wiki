@@ -11,7 +11,6 @@ concepts:
   - dataview
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
 tags: [obsidian, dataview, plugin, tool]

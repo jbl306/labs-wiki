@@ -25,6 +25,7 @@ Thumbs.db
 dist/
 build/
 *.egg-info/
+.worktrees/
 
 # OpenCode symlinks are tracked (they point to .github/skills/)
 # but don't track OpenCode DB or state

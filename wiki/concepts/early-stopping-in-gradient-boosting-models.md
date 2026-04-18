@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "1544a9390c8a215aeb38b788d3103fd5a18163dc8ce9182c4c6fc36fbb638e43"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-critical-ml-fixes-sprint-28-9cff218d.md
-quality_score: 0
+quality_score: 100
 concepts:
   - early-stopping-in-gradient-boosting-models
 related:
-  - "[[Gradient Boosting]]"
   - "[[Copilot Session Checkpoint: Implementing Critical ML Fixes Sprint 28]]"
 tier: hot
 tags: [machine learning, gradient boosting, model training, regularization]
@@ -68,7 +67,7 @@ model.fit(X_train, y_train, early_stopping_rounds=50, eval_set=(X_val, y_val))
 
 ## Relationship to Other Concepts
 
-- **[[Gradient Boosting]]** — Early stopping is a regularization technique used in gradient boosting models.
+- **Gradient Boosting** — Early stopping is a regularization technique used in gradient boosting models.
 
 ## Practical Applications
 

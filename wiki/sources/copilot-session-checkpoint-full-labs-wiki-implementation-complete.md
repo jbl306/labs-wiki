@@ -17,7 +17,6 @@ related:
   - "[[Multi-Device Ingestion API for Labs-Wiki]]"
   - "[[Labs-Wiki]]"
   - "[[FastAPI]]"
-  - "[[ntfy.sh]]"
 tier: hot
 tags: [labs-wiki, agent-schema, agents, fastapi, fileback, checkpoint, llm-wiki, copilot-session, homelab, knowledge-management, durable-knowledge, multi-device-ingestion]
 checkpoint_class: durable-architecture
@@ -47,7 +46,7 @@ This document details the comprehensive development and completion of the labs-w
 
 - **[[Labs-Wiki]]** — Labs-Wiki is a personal knowledge wiki project powered by large language models, designed to implement Karpathy's LLM Wiki pattern. It integrates with VS Code Copilot, Copilot CLI, and OpenCode, providing a universal schema and multi-device ingestion capabilities. The project was developed in six phases, including planning, implementation, validation, and documentation, and is hosted publicly on GitHub under the user jbl306.
 - **[[FastAPI]]** — FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints. It is used in the labs-wiki project to implement the multi-device ingestion API, providing asynchronous request handling, easy authentication integration, and efficient file upload processing.
-- **[[ntfy.sh]]** — ntfy.sh is a simple HTTP-based notification service that allows sending push notifications to devices. In the labs-wiki project, ntfy.sh is integrated into the ingestion API to send non-blocking notifications upon successful knowledge capture events, enhancing observability and user awareness.
+- **ntfy.sh** — ntfy.sh is a simple HTTP-based notification service that allows sending push notifications to devices. In the labs-wiki project, ntfy.sh is integrated into the ingestion API to send non-blocking notifications upon successful knowledge capture events, enhancing observability and user awareness.
 
 ## Notable Quotes
 

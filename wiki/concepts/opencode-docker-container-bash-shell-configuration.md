@@ -6,12 +6,10 @@ last_verified: 2026-04-18
 source_hash: "62a3c4ffbf12d604468b3d8046bc22088aed94feabac8006f2b13c5583c1d345"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md
-quality_score: 0
+quality_score: 100
 concepts:
   - opencode-docker-container-bash-shell-configuration
 related:
-  - "[[Docker Compose Environment Variable Management]]"
-  - "[[Container Network Binding and Port Exposure]]"
   - "[[Copilot Session Checkpoint: KnightCrawler Gating Fix, Opencode Bash Config]]"
 tier: hot
 tags: [opencode, docker, bash, container-configuration, network-binding]
@@ -73,8 +71,8 @@ services:
 
 ## Relationship to Other Concepts
 
-- **[[Docker Compose Environment Variable Management]]** — Demonstrates environment variable injection into containers.
-- **[[Container Network Binding and Port Exposure]]** — Explains how CLI flags affect container network accessibility.
+- **Docker Compose Environment Variable Management** — Demonstrates environment variable injection into containers.
+- **Container Network Binding and Port Exposure** — Explains how CLI flags affect container network accessibility.
 
 ## Practical Applications
 

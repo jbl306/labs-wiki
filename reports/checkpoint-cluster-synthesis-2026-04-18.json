@@ -1,0 +1,277 @@
+{
+  "cluster_count": 6,
+  "clusters": [
+    {
+      "checkpoint_count": 14,
+      "checkpoint_paths": [
+        "wiki/sources/copilot-session-checkpoint-auto-ingest-pipeline-built-and-docs-updated.md",
+        "wiki/sources/copilot-session-checkpoint-building-4-copilot-cli-custom-agents.md",
+        "wiki/sources/copilot-session-checkpoint-fixing-mempalace-timeouts.md",
+        "wiki/sources/copilot-session-checkpoint-github-crawling-and-richer-extraction.md",
+        "wiki/sources/copilot-session-checkpoint-graphify-comparison-and-quality-evaluation.md",
+        "wiki/sources/copilot-session-checkpoint-implementing-post-ingest-quality-fixes.md",
+        "wiki/sources/copilot-session-checkpoint-installing-mempalace-beginning-migration.md",
+        "wiki/sources/copilot-session-checkpoint-mempalace-phase-3-4-and-autoagent-research.md",
+        "wiki/sources/copilot-session-checkpoint-mobile-graph-ui-wiki-dedup.md",
+        "wiki/sources/copilot-session-checkpoint-nba-ml-oom-fix-and-docs-cleanup.md",
+        "wiki/sources/copilot-session-checkpoint-pipeline-enhancements-and-vision-support-deployed.md",
+        "wiki/sources/copilot-session-checkpoint-researching-mempalace-for-comparison-doc.md",
+        "wiki/sources/copilot-session-checkpoint-reworking-docs-for-copilotopencode.md",
+        "wiki/sources/copilot-session-checkpoint-session-wiki-promotion.md"
+      ],
+      "community": 1,
+      "compare_pages": [
+        "Durable Copilot Session Checkpoint Promotion",
+        "Auto-Ingest Pipeline for Wiki Markdown Processing",
+        "Custom Copilot CLI Agents",
+        "AutoAgent Framework Research and Integration Planning"
+      ],
+      "mode": "run",
+      "output": "wiki/synthesis/recurring-checkpoint-patterns-durable-copilot-session-checkpoint-promotion-auto-.md",
+      "raw_paths": [
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md",
+        "raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-github-crawling-and-richer-extraction-a4ef6de5.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-graphify-comparison-and-quality-evaluation-6949c984.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-installing-mempalace-beginning-migration-f4a540d2.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md",
+        "raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md",
+        "raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md",
+        "raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md"
+      ],
+      "source_titles": [
+        "Copilot Session Checkpoint: Auto-ingest Pipeline Built and Docs Updated",
+        "Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents",
+        "Copilot Session Checkpoint: Fixing MemPalace Timeouts",
+        "Copilot Session Checkpoint: GitHub Crawling and Richer Extraction",
+        "Copilot Session Checkpoint: Graphify Comparison and Quality Evaluation",
+        "Copilot Session Checkpoint: Implementing Post-Ingest Quality Fixes",
+        "Copilot Session Checkpoint: Installing MemPalace, Beginning Migration",
+        "Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research",
+        "Copilot Session Checkpoint: Mobile Graph UI + Wiki Dedup",
+        "Copilot Session Checkpoint: NBA ML OOM Fix And Docs Cleanup",
+        "Copilot Session Checkpoint: Pipeline Enhancements and Vision Support Deployed",
+        "Copilot Session Checkpoint: Researching MemPalace for Comparison Doc",
+        "Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode",
+        "Copilot Session Checkpoint: Session Wiki Promotion"
+      ],
+      "status": "created",
+      "title": "Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion, Auto-Ingest Pipeline for Wiki Markdown Processing, Custom Copilot CLI Agents"
+    },
+    {
+      "checkpoint_count": 9,
+      "checkpoint_paths": [
+        "wiki/sources/copilot-session-checkpoint-dashboard-matviews-implementation-in-progress.md",
+        "wiki/sources/copilot-session-checkpoint-fixing-knightcrawler-populate-cron-and-rd-playback.md",
+        "wiki/sources/copilot-session-checkpoint-homelab-monitoring-and-knightcrawler-fixes.md",
+        "wiki/sources/copilot-session-checkpoint-homepage-overhaul-and-resource-tuning.md",
+        "wiki/sources/copilot-session-checkpoint-knightcrawler-gating-fix-opencode-bash-config.md",
+        "wiki/sources/copilot-session-checkpoint-nba-ml-agents-and-homelab-fixes.md",
+        "wiki/sources/copilot-session-checkpoint-ntfy-notifications-galloping-bot-alerts-monitor-fixes.md",
+        "wiki/sources/copilot-session-checkpoint-optimizing-snipe-book-then-retry-flow.md",
+        "wiki/sources/copilot-session-checkpoint-resource-optimization-opencode-bash-fix.md"
+      ],
+      "community": 3,
+      "compare_pages": [
+        "Caddy handle_path Directive and Its Impact on Upstream URL Construction",
+        "Docker Container Resource Auditing and Optimization",
+        "PostgreSQL Materialized Views for Dashboard Optimization",
+        "Concurrent Refresh of PostgreSQL Materialized Views"
+      ],
+      "mode": "run",
+      "output": "wiki/synthesis/recurring-checkpoint-patterns-caddy-handle-path-directive-and-its-impact-on-upst.md",
+      "raw_paths": [
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-homelab-monitoring-and-knightcrawler-fixes-a62133b0.md",
+        "raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-optimizing-snipe-book-then-retry-flow-a86837aa.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md"
+      ],
+      "source_titles": [
+        "Copilot Session Checkpoint: Dashboard Matviews Implementation In Progress",
+        "Copilot Session Checkpoint: Fixing Knightcrawler Populate Cron and RD Playback",
+        "Copilot Session Checkpoint: Homelab Monitoring and KnightCrawler Fixes",
+        "Copilot Session Checkpoint: Homepage Overhaul And Resource Tuning",
+        "Copilot Session Checkpoint: KnightCrawler Gating Fix, Opencode Bash Config",
+        "Copilot Session Checkpoint: NBA-ML Agents and Homelab Fixes",
+        "Copilot Session Checkpoint: ntfy Notifications, Galloping-Bot Alerts, Monitor Fixes",
+        "Copilot Session Checkpoint: Optimizing Snipe Book-Then-Retry Flow",
+        "Copilot Session Checkpoint: Resource Optimization, Opencode Bash Fix"
+      ],
+      "status": "created",
+      "title": "Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing and Optimization, PostgreSQL Materialized Views for Dashboard Optimization"
+    },
+    {
+      "checkpoint_count": 12,
+      "checkpoint_paths": [
+        "wiki/sources/copilot-session-checkpoint-data-source-expansion-exploration.md",
+        "wiki/sources/copilot-session-checkpoint-phases-1-4-implementation-and-deployment.md",
+        "wiki/sources/copilot-session-checkpoint-retrained-models-deploying-improvements.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-12-complete-and-skills-installed.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-13-model-improvements-code.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-55-implementation-and-deployment.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-55-planning-and-exploration.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-56-no-retrain-fixes-planning.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-57-ensemble-save-diagnosis.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-58-shap-bug-planning.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-59-shap-coverage-implementation.md",
+        "wiki/sources/copilot-session-checkpoint-training-status-tracker-and-oom-fix.md"
+      ],
+      "community": 0,
+      "compare_pages": [
+        "Parallel Agent Coordination in ML Sprint Implementation",
+        "Calibration Leakage Mitigation in ML Model Training",
+        "Data Source Expansion for NBA ML Prediction Platform",
+        "Homelab Server Deployment Architecture for NBA ML Platform"
+      ],
+      "mode": "run",
+      "output": "wiki/synthesis/recurring-checkpoint-patterns-parallel-agent-coordination-in-ml-sprint-implement.md",
+      "raw_paths": [
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-data-source-expansion-exploration-b12f747f.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-phases-1-4-implementation-and-deployment-16041f82.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-retrained-models-deploying-improvements-59ba9a6c.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-12-complete-and-skills-installed-48a02b58.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md",
+        "raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md",
+        "raw/2026-04-18-copilot-session-sprint-55-planning-and-exploration-be98e3c5.md",
+        "raw/2026-04-18-copilot-session-sprint-56-no-retrain-fixes-planning-895454cb.md",
+        "raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md",
+        "raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md",
+        "raw/2026-04-18-copilot-session-sprint-59-shap-coverage-implementation-9a231f70.md",
+        "raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md"
+      ],
+      "source_titles": [
+        "Copilot Session Checkpoint: Data Source Expansion Exploration",
+        "Copilot Session Checkpoint: Phases 1-4 Implementation and Deployment",
+        "Copilot Session Checkpoint: Retrained Models, Deploying Improvements",
+        "Copilot Session Checkpoint: Sprint 12 Complete and Skills Installed",
+        "Copilot Session Checkpoint: Sprint 13 Model Improvements Code",
+        "Copilot Session Checkpoint: Sprint 55 Implementation and Deployment",
+        "Copilot Session Checkpoint: Sprint 55 Planning and Exploration",
+        "Copilot Session Checkpoint: Sprint 56 No-Retrain Fixes Planning",
+        "Copilot Session Checkpoint: Sprint 57 Ensemble Save Diagnosis",
+        "Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning",
+        "Copilot Session Checkpoint: Sprint 59 SHAP Coverage Implementation",
+        "Copilot Session Checkpoint: Training Status Tracker and OOM Fix"
+      ],
+      "status": "created",
+      "title": "Recurring checkpoint patterns: Parallel Agent Coordination in ML Sprint Implementation, Calibration Leakage Mitigation in ML Model Training, Data Source Expansion for NBA ML Prediction Platform"
+    },
+    {
+      "checkpoint_count": 3,
+      "checkpoint_paths": [
+        "wiki/sources/copilot-session-checkpoint-odds-api-quota-optimization-sgo-investigation.md",
+        "wiki/sources/copilot-session-checkpoint-pipeline-resilience-fixes-dashboard-metrics-investiga.md",
+        "wiki/sources/copilot-session-checkpoint-sgo-data-extraction-fix-and-quality-audit.md"
+      ],
+      "community": 14,
+      "compare_pages": [
+        "Odds API Quota Optimization",
+        "Cascading Pipeline Failure Diagnosis and Resilience",
+        "SportsGameOdds (SGO) API Data Extraction Challenges",
+        "Pipeline Resilience in Machine Learning Systems"
+      ],
+      "mode": "run",
+      "output": "wiki/synthesis/recurring-checkpoint-patterns-odds-api-quota-optimization-cascading-pipeline-fai.md",
+      "raw_paths": [
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-odds-api-quota-optimization-sgo-investigation-f4c98efb.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sgo-data-extraction-fix-and-quality-audit-76644cc8.md"
+      ],
+      "source_titles": [
+        "Copilot Session Checkpoint: Odds API Quota Optimization, SGO Investigation",
+        "Copilot Session Checkpoint: Pipeline Resilience Fixes, Dashboard Metrics Investigation",
+        "Copilot Session Checkpoint: SGO Data Extraction Fix and Quality Audit"
+      ],
+      "status": "created",
+      "title": "Recurring checkpoint patterns: Odds API Quota Optimization, Cascading Pipeline Failure Diagnosis and Resilience, SportsGameOdds (SGO) API Data Extraction Challenges"
+    },
+    {
+      "checkpoint_count": 3,
+      "checkpoint_paths": [
+        "wiki/sources/copilot-session-checkpoint-props-db-query-and-chart-refinement.md",
+        "wiki/sources/copilot-session-checkpoint-rankings-page-and-performance-optimization.md",
+        "wiki/sources/copilot-session-checkpoint-react-dashboard-scaffold-and-pages-built.md"
+      ],
+      "community": 9,
+      "compare_pages": [
+        "Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture",
+        "Handling PostgreSQL NUMERIC Type in Node.js with pg Library",
+        "Dashboard Chart Strategy and Data-Driven Refinement",
+        "Replacing FastAPI Proxy with Direct PostgreSQL Query for Historical Props Data"
+      ],
+      "mode": "run",
+      "output": "wiki/synthesis/recurring-checkpoint-patterns-backend-for-frontend-bff-pattern-in-modern-dashboa.md",
+      "raw_paths": [
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md"
+      ],
+      "source_titles": [
+        "Copilot Session Checkpoint: Props DB Query and Chart Refinement",
+        "Copilot Session Checkpoint: Rankings Page and Performance Optimization",
+        "Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built"
+      ],
+      "status": "created",
+      "title": "Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library, Dashboard Chart Strategy and Data-Driven Refinement"
+    },
+    {
+      "checkpoint_count": 3,
+      "checkpoint_paths": [
+        "wiki/sources/copilot-session-checkpoint-sprint-10-complete-and-deployed.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-10-implementation-and-deployment.md",
+        "wiki/sources/copilot-session-checkpoint-sprint-10-retrain-in-progress.md"
+      ],
+      "community": 7,
+      "compare_pages": [
+        "Feature Engineering for NBA ML Engine Sprint 10",
+        "Warmstarting Hyperparameter Tuning with Optuna",
+        "Target Encoding with Shifted Expanding Mean for Time-Series Features",
+        "Quantile Crossing Fix in XGBoost and LightGBM Models"
+      ],
+      "mode": "run",
+      "output": "wiki/synthesis/recurring-checkpoint-patterns-feature-engineering-for-nba-ml-engine-sprint-10-wa.md",
+      "raw_paths": [
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md",
+        "raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md"
+      ],
+      "source_titles": [
+        "Copilot Session Checkpoint: Sprint 10 Complete and Deployed",
+        "Copilot Session Checkpoint: Sprint 10 Implementation and Deployment",
+        "Copilot Session Checkpoint: Sprint 10 Retrain In Progress"
+      ],
+      "status": "created",
+      "title": "Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint 10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted Expanding Mean for Time-Series Features"
+    }
+  ],
+  "created_pages": [
+    "wiki/synthesis/recurring-checkpoint-patterns-durable-copilot-session-checkpoint-promotion-auto-.md",
+    "wiki/synthesis/recurring-checkpoint-patterns-caddy-handle-path-directive-and-its-impact-on-upst.md",
+    "wiki/synthesis/recurring-checkpoint-patterns-parallel-agent-coordination-in-ml-sprint-implement.md",
+    "wiki/synthesis/recurring-checkpoint-patterns-odds-api-quota-optimization-cascading-pipeline-fai.md",
+    "wiki/synthesis/recurring-checkpoint-patterns-backend-for-frontend-bff-pattern-in-modern-dashboa.md",
+    "wiki/synthesis/recurring-checkpoint-patterns-feature-engineering-for-nba-ml-engine-sprint-10-wa.md"
+  ],
+  "dry_run": false,
+  "generated_at": "2026-04-18T12:12:29.108176+00:00",
+  "health_before": {
+    "recommendations": {
+      "compress": 4,
+      "keep": 2,
+      "merge": 46
+    },
+    "synthesis_neighbor_ratio": 0.038,
+    "total_checkpoints": 52
+  },
+  "model": "gpt-4.1"
+}

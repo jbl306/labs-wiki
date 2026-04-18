@@ -17,7 +17,6 @@ related:
   - "[[Caddy handle_path Directive and Its Impact on Upstream URL Construction]]"
   - "[[KnightCrawler]]"
   - "[[Opencode]]"
-  - "[[Giniecode]]"
   - "[[Caddy]]"
 tier: hot
 tags: [knightcrawler, docker, bash, reverse-proxy, fileback, dashboard, checkpoint, copilot-session, caddy, homelab, opencode, durable-knowledge, configuration]
@@ -48,7 +47,7 @@ This session checkpoint documents the resolution of a 404 error in KnightCrawler
 
 - **[[KnightCrawler]]** — KnightCrawler is a streaming addon service integrated with Stremio, used in this context behind a Caddy reverse proxy with domain gating. It constructs absolute URLs for stream resolution, which required patching to include access token prefixes for proper gating.
 - **[[Opencode]]** — Opencode is a containerized server application configured in this session to run with explicit bash shell paths and recommended default settings. It uses environment variables and config files for runtime configuration but requires CLI flags for network binding when running the serve command.
-- **[[Giniecode]]** — Giniecode is a related containerized server application running alongside opencode, configured with similar bash shell path settings and security hardening measures such as no-new-privileges and capability drops. It runs as user 'ginie' with UID 1001 and has restricted config directory permissions.
+- **Giniecode** — Giniecode is a related containerized server application running alongside opencode, configured with similar bash shell path settings and security hardening measures such as no-new-privileges and capability drops. It runs as user 'ginie' with UID 1001 and has restricted config directory permissions.
 - **[[Caddy]]** — Caddy is a modern reverse proxy server used here to gate access to KnightCrawler streams via the `handle_path` directive. It strips path prefixes before proxying, which impacts upstream URL construction and necessitates patching in the addon service.
 
 ## Notable Quotes

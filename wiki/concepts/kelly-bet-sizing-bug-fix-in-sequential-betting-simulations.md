@@ -6,11 +6,10 @@ last_verified: 2026-04-18
 source_hash: "1544a9390c8a215aeb38b788d3103fd5a18163dc8ce9182c4c6fc36fbb638e43"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-critical-ml-fixes-sprint-28-9cff218d.md
-quality_score: 0
+quality_score: 100
 concepts:
   - kelly-bet-sizing-bug-fix-in-sequential-betting-simulations
 related:
-  - "[[Kelly Criterion]]"
   - "[[Copilot Session Checkpoint: Implementing Critical ML Fixes Sprint 28]]"
 tier: hot
 tags: [betting, kelly criterion, simulation, financial modeling]
@@ -67,7 +66,7 @@ for bet in bets:
 
 ## Relationship to Other Concepts
 
-- **[[Kelly Criterion]]** — The fix ensures correct application of the Kelly criterion in sequential betting simulations.
+- **Kelly Criterion** — The fix ensures correct application of the Kelly criterion in sequential betting simulations.
 
 ## Practical Applications
 

@@ -16,7 +16,6 @@ related:
   - "[[Real-Debrid InstantAvailability API and Playback Issues]]"
   - "[[Knightcrawler Metadata Service and IMDB Data Refresh]]"
   - "[[Knightcrawler]]"
-  - "[[Real-Debrid]]"
 tier: hot
 tags: [knightcrawler, fileback, streaming, checkpoint, cron-job, copilot-session, patches, homelab, imdb, durable-knowledge, metadata, real-debrid]
 checkpoint_class: durable-workflow
@@ -46,7 +45,7 @@ This document details a troubleshooting and enhancement session for the Knightcr
 ## Entities Mentioned
 
 - **[[Knightcrawler]]** — Knightcrawler is a self-hosted homelab media streaming backend that integrates with Stremio and Real-Debrid to provide torrent-based streaming. It includes components such as a metadata service that imports IMDB data, a populate files cron job to map torrents to episodes, and an addon that applies patches to handle Real-Debrid API changes and file selection bugs. Knightcrawler uses a PostgreSQL database schema with tables for torrents, files, ingested torrents, and IMDB metadata.
-- **[[Real-Debrid]]** — Real-Debrid is a multi-hosting torrent caching service that allows faster and more reliable streaming by caching torrents on its servers. It provides an API, including an instantAvailability endpoint to check if a torrent is cached and ready for immediate playback. The permanent disablement of this API endpoint impacts clients relying on it for cache verification, requiring workarounds and manual torrent management.
+- **Real-Debrid** — Real-Debrid is a multi-hosting torrent caching service that allows faster and more reliable streaming by caching torrents on its servers. It provides an API, including an instantAvailability endpoint to check if a torrent is cached and ready for immediate playback. The permanent disablement of this API endpoint impacts clients relying on it for cache verification, requiring workarounds and manual torrent management.
 
 ## Notable Quotes
 

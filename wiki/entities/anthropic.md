@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "37dca25e4ed5998ae5f1377fbae32da1d785a06990c5f9e00b16c9ac74c66bd1"
 sources:
+  - raw/2026-04-18-260414228v1pdf.md
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
   - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
 quality_score: 100
@@ -51,3 +52,4 @@ No related entities documented yet.
 
 - [[Tracing the Thoughts of a Large Language Model]] — where this entity was mentioned
 - [[The Institutional Memory Principle | 10 Claude Code Principles]] — additional source
+- [[Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems]] — additional source

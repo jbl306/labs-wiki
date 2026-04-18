@@ -6,12 +6,10 @@ last_verified: 2026-04-18
 source_hash: "3a38e39284cc0602ec33af8d22ef0dfb3c2a3a21b23b03f06716e3221ca8b49e"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
-quality_score: 0
+quality_score: 100
 concepts:
   - autoagent-framework-research-integration-planning
 related:
-  - "[[Agent Architecture Patterns]]"
-  - "[[Model Context Protocol (MCP)]]"
   - "[[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]]"
 tier: hot
 tags: [autoagent, agent-framework, integration-plan, docker, llm]
@@ -75,8 +73,8 @@ The source mentions an architecture diagram (~line 30 in the plan file) and a fe
 
 ## Relationship to Other Concepts
 
-- **[[Agent Architecture Patterns]]** — AutoAgent's architecture compared to existing agent systems in user's repos.
-- **[[Model Context Protocol (MCP)]]** — AutoAgent lacks MCP support, affecting integration.
+- **Agent Architecture Patterns** — AutoAgent's architecture compared to existing agent systems in user's repos.
+- **Model Context Protocol (MCP)** — AutoAgent lacks MCP support, affecting integration.
 
 ## Practical Applications
 

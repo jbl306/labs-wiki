@@ -1526,6 +1526,39 @@ def _get_all_valid_titles(wiki_dir: Path) -> set[str]:
     return titles
 
 
+def _wikilink_slug(text: str) -> str:
+    """Normalize a wikilink target to the same slug shape used by graph_builder."""
+    text = text.lower().strip()
+    text = re.sub(r"[^\w\s-]", "", text)
+    text = re.sub(r"[\s_-]+", "-", text)
+    return text.strip("-")
+
+
+def _build_wikilink_lookup(wiki_dir: Path) -> tuple[set[str], set[str]]:
+    """Return exact-title and slug-based wikilink targets that resolve in the wiki."""
+    titles: set[str] = set()
+    slugs: set[str] = set()
+    for category in ("sources", "concepts", "entities", "synthesis"):
+        cat_dir = wiki_dir / category
+        if not cat_dir.exists():
+            continue
+        for page in cat_dir.glob("*.md"):
+            if page.name in ("index.md", "hot.md", "log.md", ".gitkeep"):
+                continue
+            fm, _ = parse_frontmatter(page)
+            title = str(fm.get("title") or page.stem.replace("-", " ").title())
+            titles.add(title)
+            slugs.add(_wikilink_slug(title))
+            slugs.add(_wikilink_slug(page.stem))
+    return titles, slugs
+
+
+def _wikilink_target_exists(target: str, valid_titles: set[str], valid_slugs: set[str]) -> bool:
+    """Return True when a wikilink target resolves by title or filename slug."""
+    key = target.strip()
+    return key in valid_titles or _wikilink_slug(key) in valid_slugs
+
+
 def _compute_quality_score(
     fm: dict,
     has_wikilinks: bool,
@@ -1561,8 +1594,11 @@ def postprocess_created_pages(
     3. Deduplicate related: entries
     4. Compute and write quality_score
     """
-    valid_titles = _get_all_valid_titles(wiki_dir)
-    log.info("Post-processing %d pages (%d valid titles in wiki)", len(created_pages), len(valid_titles))
+    valid_titles, valid_slugs = _build_wikilink_lookup(wiki_dir)
+    log.info(
+        "Post-processing %d pages (%d valid titles in wiki)",
+        len(created_pages), len(valid_titles),
+    )
 
     for rel_path in created_pages:
         page_path = project_root / rel_path
@@ -1593,7 +1629,7 @@ def postprocess_created_pages(
             if link_title == page_title:
                 # Self-reference — remove the wikilink, keep the text
                 return link_title
-            if link_title not in valid_titles:
+            if not _wikilink_target_exists(link_title, valid_titles, valid_slugs):
                 # Broken link — keep the text, drop the brackets
                 return link_title
             return m.group(0)
@@ -1624,7 +1660,7 @@ def postprocess_created_pages(
                         continue
 
                     # Skip broken links
-                    if link_title not in valid_titles:
+                    if not _wikilink_target_exists(link_title, valid_titles, valid_slugs):
                         continue
 
                     # Skip duplicates

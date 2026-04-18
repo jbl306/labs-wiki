@@ -11,7 +11,6 @@ concepts:
   - qmd
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
 tags: [search, markdown, tool, llm]

@@ -14,7 +14,7 @@ Scope: 52 pre-existing copilot-session-checkpoint source pages.
 
 All 52 pages now carry `checkpoint_class`, `retention_mode`, normalized `quality_score`, and the correct `tier`. Backfill report: `reports/checkpoint-backfill-2026-04-18.json`.
 
-## Graph health (post-Phase 5)
+## Graph health (post-Phase 5 baseline)
 
 - total_checkpoints: 52
 - recommendations: keep=2, compress=4, merge=46, archive=0
@@ -105,3 +105,27 @@ Each cluster shares a Louvain community and ≥2 concept neighbors. Recommended 
 2. After synthesis lands, re-run `scripts/backfill_checkpoint_curation.py` so newly-anchored checkpoints flip `recommendation` from `merge` to `keep` or `compress`.
 3. Track `synthesis_neighbor_ratio` over time via `GET /graph/checkpoints`; target ≥0.5 once cluster syntheses exist.
 4. Move the 4 `compress` candidates above to `tier: archive` manually — low concept coverage and no community of peers.
+
+## Follow-up execution (2026-04-18)
+
+The backlog synthesis follow-up has now been executed:
+
+1. Added and ran `scripts/backfill_checkpoint_cluster_synthesis.py` to generate one synthesis page per merge cluster.
+2. Created 6 synthesis pages under `wiki/synthesis/`.
+3. Re-ran `scripts/backfill_checkpoint_curation.py` to keep checkpoint frontmatter normalized after the follow-up batch.
+4. Rebuilt `wiki/index.md` and `wiki/graph/graph.json`.
+5. Archived the one remaining post-synthesis `compress` checkpoint: **Copilot Session Checkpoint: Implementing Post-Ingest Quality Fixes**.
+
+### Post-synthesis checkpoint health
+
+- total_checkpoints: 52
+- recommendations: keep=43, merge=8, compress=1 before the final manual archive step
+- synthesis_neighbor_ratio: 0.846
+- merge_clusters detected: 5
+
+### Wiki quality status after follow-up
+
+- `scripts/lint_wiki.py --wiki-dir .`: 503 pages, 107 errors, 0 warnings, 0 contradictions
+- The 107 lint errors are pre-existing broken wikilinks in older pages; the synthesis follow-up did not introduce new lint categories.
+- Batch run report: `reports/checkpoint-cluster-synthesis-2026-04-18.json`
+- Checkpoint rerun report: `reports/checkpoint-backfill-rerun-2026-04-18.json`

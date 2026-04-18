@@ -5,6 +5,7 @@ created: 2026-04-10
 last_verified: 2026-04-10
 source_hash: "dc0945f923f9941ee6eb62e529f5f0be79e0943484843535425876ed4427ac4c"
 sources:
+  - raw/2026-04-18-260414228v1pdf.md
   - raw/2026-04-10-httpsgithubcommidudevautoskills.md
 quality_score: 100
 concepts:
@@ -47,3 +48,4 @@ No related entities documented yet.
 ## Sources
 
 - [[AutoSkills GitHub Repository]] — where this entity was mentioned
+- [[Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems]] — additional source

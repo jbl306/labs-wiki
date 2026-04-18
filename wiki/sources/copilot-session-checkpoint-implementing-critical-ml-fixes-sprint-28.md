@@ -18,9 +18,6 @@ related:
   - "[[Kelly Bet Sizing Bug Fix in Sequential Betting Simulations]]"
   - "[[Dashboard Duplicate Predictions Fix in ML Systems]]"
   - "[[NBA ML Engine]]"
-  - "[[XGBoost 3.2.0]]"
-  - "[[LightGBM 4.6.0]]"
-  - "[[CatBoost 1.2.10]]"
 tier: archive
 tags: [betting, agents, nba-ml-engine, fileback, dashboard, checkpoint, bug fixes, copilot-session, homelab, model training, calibration, durable-knowledge, machine learning, gradient boosting]
 checkpoint_class: project-progress
@@ -52,9 +49,9 @@ This document details the implementation of critical machine learning fixes as p
 ## Entities Mentioned
 
 - **[[NBA ML Engine]]** — NBA ML Engine is a machine learning platform focused on basketball analytics and prediction, involving complex pipelines for data ingestion, feature engineering, model training, and deployment. The platform includes models like XGBoost, LightGBM, and CatBoost, and supports a dashboard UI for prediction visualization.
-- **[[XGBoost 3.2.0]]** — XGBoost is a popular gradient boosting framework for machine learning. Version 3.2.0 introduced an API change where `early_stopping_rounds` is no longer accepted as a `fit()` keyword argument and must be set via `set_params()` before training.
-- **[[LightGBM 4.6.0]]** — LightGBM is a gradient boosting framework that supports early stopping via a callback API. Version 4.6.0 uses callbacks like `lgb.early_stopping()` and `lgb.log_evaluation()` to control training termination and logging.
-- **[[CatBoost 1.2.10]]** — CatBoost is a gradient boosting library that supports early stopping as a direct `fit()` keyword argument. Version 1.2.10 is used in the NBA ML Engine with early stopping configured via `early_stopping_rounds` parameter.
+- **XGBoost 3.2.0** — XGBoost is a popular gradient boosting framework for machine learning. Version 3.2.0 introduced an API change where `early_stopping_rounds` is no longer accepted as a `fit()` keyword argument and must be set via `set_params()` before training.
+- **LightGBM 4.6.0** — LightGBM is a gradient boosting framework that supports early stopping via a callback API. Version 4.6.0 uses callbacks like `lgb.early_stopping()` and `lgb.log_evaluation()` to control training termination and logging.
+- **CatBoost 1.2.10** — CatBoost is a gradient boosting library that supports early stopping as a direct `fit()` keyword argument. Version 1.2.10 is used in the NBA ML Engine with early stopping configured via `early_stopping_rounds` parameter.
 
 ## Notable Quotes
 

@@ -11,7 +11,6 @@ concepts:
   - obsidian-web-clipper
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
 tags: [obsidian, web-clipper, markdown, tool]

@@ -12,9 +12,7 @@ concepts:
 related:
   - "[[Post-Ingest Quality Fixes in Auto-Ingest Pipelines]]"
   - "[[labs-wiki]]"
-  - "[[auto_ingest.py]]"
-  - "[[Graphify]]"
-tier: hot
+tier: archive
 tags: [agents, auto-ingest, fileback, checkpoint, LLM, copilot-session, graph, post-processing, labs-wiki, durable-knowledge, quality-fixes]
 checkpoint_class: durable-architecture
 retention_mode: retain
@@ -41,8 +39,8 @@ This session documents the process of improving the post-ingest quality fixes in
 ## Entities Mentioned
 
 - **[[labs-wiki]]** — labs-wiki is a personal knowledge wiki powered by large language models (LLMs) that automatically ingests source documents and compiles them into structured wiki pages. It features an auto-ingest pipeline implemented primarily in the `auto_ingest.py` script, which fetches, extracts, generates, and post-processes content. labs-wiki supports provenance tracking, reciprocal linking between entities, and quality scoring to maintain high content standards.
-- **[[auto_ingest.py]]** — auto_ingest.py is the core Python script implementing the auto-ingest pipeline for labs-wiki. It handles URL fetching from multiple sources (arXiv, GitHub, Twitter/X, generic HTML), LLM extraction using GPT-4.1 via the GitHub Models API, page generation for sources, concepts, entities, and syntheses, and post-processing to validate wikilinks and compute quality scores. The script is over 1600 lines long and continuously evolving with new fixes and features.
-- **[[Graphify]]** — Graphify is an external knowledge graph integration tool whose full codebase was analyzed and compared against labs-wiki. The comparison included 17 feature points and resulted in a 3-phase integration roadmap to potentially combine strengths of both systems. Graphify's architecture and features informed improvements and integration plans for labs-wiki.
+- **auto_ingest.py** — auto_ingest.py is the core Python script implementing the auto-ingest pipeline for labs-wiki. It handles URL fetching from multiple sources (arXiv, GitHub, Twitter/X, generic HTML), LLM extraction using GPT-4.1 via the GitHub Models API, page generation for sources, concepts, entities, and syntheses, and post-processing to validate wikilinks and compute quality scores. The script is over 1600 lines long and continuously evolving with new fixes and features.
+- **Graphify** — Graphify is an external knowledge graph integration tool whose full codebase was analyzed and compared against labs-wiki. The comparison included 17 feature points and resulted in a 3-phase integration roadmap to potentially combine strengths of both systems. Graphify's architecture and features informed improvements and integration plans for labs-wiki.
 
 ## Notable Quotes
 

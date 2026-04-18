@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "e2f4e2c57a91e050124e6a177d9272a75a50ab4d9ee6cb6bb30f2ad73e5652bb"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-github-crawling-and-richer-extraction-a4ef6de5.md
-quality_score: 0
+quality_score: 100
 concepts:
   - richer-concept-extraction-prompt-for-llm-wiki-pages
 related:

@@ -16,8 +16,6 @@ related:
   - "[[Image Filtering for Vision-Based LLM Extraction]]"
   - "[[Richer Concept Extraction Prompt for LLM Wiki Pages]]"
   - "[[Labs-Wiki]]"
-  - "[[GitHub Trees API]]"
-  - "[[GPT-4.1 Vision API]]"
 tier: hot
 tags: [labs-wiki, llm, docker, agents, auto-ingest, fileback, checkpoint, knowledge-wiki, copilot-session, graph, vision-api, homelab, github, durable-knowledge]
 checkpoint_class: durable-architecture
@@ -46,8 +44,8 @@ This session checkpoint documents enhancements to a personal LLM-powered knowled
 ## Entities Mentioned
 
 - **[[Labs-Wiki]]** — Labs-Wiki is a personal knowledge wiki powered by large language models (LLMs) designed to ingest, process, and organize technical and conceptual content. It supports automated ingestion pipelines, including deep GitHub repository crawling, vision-based image processing, and rich concept extraction to generate detailed wiki pages. Labs-Wiki runs in a Docker-based homelab infrastructure and serves as a living working copy of knowledge for the user.
-- **[[GitHub Trees API]]** — The GitHub Trees API provides a way to retrieve the entire file tree of a repository in a single request. The endpoint `GET /repos/{owner}/{repo}/git/trees/HEAD?recursive=1` returns a JSON structure listing all files and directories recursively, enabling efficient enumeration of repository contents for tools and automation.
-- **[[GPT-4.1 Vision API]]** — GPT-4.1 Vision API is a multimodal extension of the GPT-4 language model that supports image input processing. It accepts images in specific MIME types (PNG, JPEG, WEBP, GIF) and integrates vision capabilities with natural language understanding to enhance content extraction and reasoning.
+- **GitHub Trees API** — The GitHub Trees API provides a way to retrieve the entire file tree of a repository in a single request. The endpoint `GET /repos/{owner}/{repo}/git/trees/HEAD?recursive=1` returns a JSON structure listing all files and directories recursively, enabling efficient enumeration of repository contents for tools and automation.
+- **GPT-4.1 Vision API** — GPT-4.1 Vision API is a multimodal extension of the GPT-4 language model that supports image input processing. It accepts images in specific MIME types (PNG, JPEG, WEBP, GIF) and integrates vision capabilities with natural language understanding to enhance content extraction and reasoning.
 
 ## Notable Quotes
 

@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "d12567d0a0a05fa3d657bf2e2ec6bb6e9fa482a9676eee6bf73ec13f8bbf53c0"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-alt-line-accuracy-fixes-466ff308.md
-quality_score: 0
+quality_score: 100
 concepts:
   - kelly-bankroll-simulator-quarter-kelly-sizing-daily-exposure-cap
 related:

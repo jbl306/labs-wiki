@@ -6,12 +6,10 @@ last_verified: 2026-04-18
 source_hash: "ffde63a096f69c53f35e3e18b31bf69c28aa146571d441566ec26bba004c63d9"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
-quality_score: 0
+quality_score: 100
 concepts:
   - knightcrawler-populate-files-cron-job
 related:
-  - "[[Knightcrawler Metadata Service]]"
-  - "[[Real-Debrid Playback Handling]]"
   - "[[Copilot Session Checkpoint: Fixing Knightcrawler Populate Cron and RD Playback]]"
 tier: hot
 tags: [knightcrawler, cron-job, sql, metadata, logging]
@@ -81,8 +79,8 @@ WHERE ...;
 
 ## Relationship to Other Concepts
 
-- **[[Knightcrawler Metadata Service]]** — Provides refreshed IMDB metadata that the populate cron job relies on
-- **[[Real-Debrid Playback Handling]]** — The populate cron job ensures correct file metadata that supports playback resolution
+- **Knightcrawler Metadata Service** — Provides refreshed IMDB metadata that the populate cron job relies on
+- **Real-Debrid Playback Handling** — The populate cron job ensures correct file metadata that supports playback resolution
 
 ## Practical Applications
 

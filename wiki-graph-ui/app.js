@@ -192,16 +192,100 @@ function findNode(id) {
 
 // ---------- Interactions ---------------------------------------------------
 
-let dragging = false, lastX = 0, lastY = 0;
-canvas.addEventListener("mousedown", (e) => { dragging = true; lastX = e.clientX; lastY = e.clientY; });
-window.addEventListener("mouseup", () => { dragging = false; });
-window.addEventListener("mousemove", (e) => {
-  if (!dragging) return;
-  view.tx += (e.clientX - lastX);
-  view.ty += (e.clientY - lastY);
-  lastX = e.clientX; lastY = e.clientY;
-  draw();
+// Unified pointer handling so mouse, touch, and pen all share one code path.
+// We track active pointers in a Map to support pinch-to-zoom on touch devices.
+const activePointers = new Map(); // pointerId -> {x, y}
+let pinchStartDist = 0;
+let pinchStartScale = 1;
+let panPointerId = null;
+let panLastX = 0, panLastY = 0;
+let pointerDownAt = 0;
+let pointerDownX = 0, pointerDownY = 0;
+let pointerMoved = false;
+const TAP_SLOP_PX = 8;       // Movement under this counts as a tap, not a drag.
+const TAP_MAX_MS = 500;
+const isCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
+
+function pinchDistance() {
+  const pts = Array.from(activePointers.values());
+  if (pts.length < 2) return 0;
+  const dx = pts[0].x - pts[1].x;
+  const dy = pts[0].y - pts[1].y;
+  return Math.hypot(dx, dy);
+}
+
+canvas.addEventListener("pointerdown", (e) => {
+  canvas.setPointerCapture(e.pointerId);
+  activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  pointerDownAt = performance.now();
+  pointerDownX = e.clientX;
+  pointerDownY = e.clientY;
+  pointerMoved = false;
+
+  if (activePointers.size === 1) {
+    panPointerId = e.pointerId;
+    panLastX = e.clientX;
+    panLastY = e.clientY;
+  } else if (activePointers.size === 2) {
+    pinchStartDist = pinchDistance();
+    pinchStartScale = view.scale;
+    panPointerId = null; // Pinch mode — disable single-finger pan.
+  }
 });
+
+canvas.addEventListener("pointermove", (e) => {
+  if (!activePointers.has(e.pointerId)) return;
+  activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+  if (activePointers.size >= 2 && pinchStartDist > 0) {
+    const dist = pinchDistance();
+    const factor = dist / pinchStartDist;
+    view.scale = Math.max(0.05, Math.min(4, pinchStartScale * factor));
+    pointerMoved = true;
+    draw();
+    return;
+  }
+
+  if (e.pointerId === panPointerId) {
+    const dx = e.clientX - panLastX;
+    const dy = e.clientY - panLastY;
+    if (Math.abs(e.clientX - pointerDownX) > TAP_SLOP_PX || Math.abs(e.clientY - pointerDownY) > TAP_SLOP_PX) {
+      pointerMoved = true;
+    }
+    view.tx += dx;
+    view.ty += dy;
+    panLastX = e.clientX;
+    panLastY = e.clientY;
+    draw();
+  }
+});
+
+function endPointer(e) {
+  if (!activePointers.has(e.pointerId)) return;
+  activePointers.delete(e.pointerId);
+
+  // If this was a quick, near-stationary press, treat it as a tap.
+  if (
+    e.pointerId === panPointerId &&
+    !pointerMoved &&
+    performance.now() - pointerDownAt < TAP_MAX_MS
+  ) {
+    handleTap(e.clientX, e.clientY);
+  }
+
+  if (activePointers.size < 2) pinchStartDist = 0;
+  if (activePointers.size === 0) panPointerId = null;
+  else {
+    // One finger lifted during a pinch — promote the remaining one to pan.
+    const [id, pt] = activePointers.entries().next().value;
+    panPointerId = id;
+    panLastX = pt.x;
+    panLastY = pt.y;
+  }
+}
+canvas.addEventListener("pointerup", endPointer);
+canvas.addEventListener("pointercancel", endPointer);
+
 canvas.addEventListener("wheel", (e) => {
   e.preventDefault();
   const factor = Math.exp(-e.deltaY * 0.001);
@@ -209,14 +293,18 @@ canvas.addEventListener("wheel", (e) => {
   draw();
 }, { passive: false });
 
-canvas.addEventListener("click", async (e) => {
+function handleTap(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
-  const px = e.clientX - rect.left;
-  const py = e.clientY - rect.top;
+  const px = clientX - rect.left;
+  const py = clientY - rect.top;
   const cx = canvas.clientWidth / 2;
   const cy = canvas.clientHeight / 2;
   const wx = (px - cx - view.tx) / view.scale;
   const wy = (py - cy - view.ty) / view.scale;
+
+  // On touch devices the visible "finger area" is bigger than a mouse cursor,
+  // so widen the hit radius substantially to make small nodes tappable.
+  const slopMul = isCoarsePointer ? 16 : 4;
 
   let hit = null;
   let best = Infinity;
@@ -224,14 +312,16 @@ canvas.addEventListener("click", async (e) => {
     const dx = n.x - wx, dy = n.y - wy;
     const d2 = dx * dx + dy * dy;
     const r = Math.max(3, 3 + Math.log2(1 + n.degree) * 2);
-    if (d2 < r * r * 4 && d2 < best) { best = d2; hit = n; }
+    if (d2 < r * r * slopMul && d2 < best) { best = d2; hit = n; }
   }
   if (hit) {
     state.highlightedId = hit.id;
     showNodePanel(hit);
     draw();
+    // On phones, slide the drawer in so the tapped node's details are visible.
+    if (isCoarsePointer) openSidebar();
   }
-});
+}
 
 async function showNodePanel(node) {
   document.getElementById("node-panel").classList.remove("hidden");
@@ -317,6 +407,38 @@ function bindUI() {
     state.surprises = e.target.checked; draw();
   });
   document.getElementById("rebuild-btn").addEventListener("click", () => loadGraph());
+
+  // Mobile drawer wiring — these elements are always in the DOM but only
+  // visible at narrow widths via CSS.
+  const toggle = document.getElementById("sidebar-toggle");
+  const closeBtn = document.getElementById("sidebar-close");
+  const backdrop = document.getElementById("sidebar-backdrop");
+  toggle?.addEventListener("click", () => {
+    document.body.classList.contains("sidebar-open") ? closeSidebar() : openSidebar();
+  });
+  closeBtn?.addEventListener("click", closeSidebar);
+  backdrop?.addEventListener("click", closeSidebar);
+  // Allow Esc to dismiss the drawer for keyboard users.
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.body.classList.contains("sidebar-open")) {
+      closeSidebar();
+    }
+  });
+  // Canvas dimensions change when the visual viewport shifts (e.g. mobile
+  // address bar showing/hiding) — keep the renderer in sync.
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", resize);
+  }
+  window.addEventListener("orientationchange", () => setTimeout(resize, 100));
+}
+
+function openSidebar() {
+  document.body.classList.add("sidebar-open");
+  document.getElementById("sidebar-toggle")?.setAttribute("aria-expanded", "true");
+}
+function closeSidebar() {
+  document.body.classList.remove("sidebar-open");
+  document.getElementById("sidebar-toggle")?.setAttribute("aria-expanded", "false");
 }
 
 function subscribeSSE() {

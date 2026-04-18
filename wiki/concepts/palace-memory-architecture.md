@@ -11,7 +11,7 @@ concepts:
   - palace-memory-architecture
 related:
   - "[[Continuum Memory System]]"
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[MemPalace GitHub Repository]]"
 tier: hot
 tags: [memory, ai, knowledge-management, retrieval, architecture]
@@ -68,7 +68,7 @@ A diagram (in README) shows two wings (Person, Project), each with rooms connect
 ## Relationship to Other Concepts
 
 - **[[Continuum Memory System]]** — Both aim to preserve long-term AI memory, but Palace Memory Architecture uses spatial hierarchy for organization.
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — Both focus on persistent knowledge storage, but MemPalace emphasizes verbatim recall and navigable structure.
+- **[[LLM Wiki Architecture]]** — Both focus on persistent knowledge storage, but MemPalace emphasizes verbatim recall and navigable structure.
 
 ## Practical Applications
 

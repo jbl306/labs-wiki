@@ -10,7 +10,7 @@ quality_score: 100
 concepts:
   - marp
 related:
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
@@ -39,7 +39,7 @@ Marp enables the creation of presentations from wiki content, supporting diverse
 
 ## Associated Concepts
 
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — Marp is used for generating slide decks from wiki pages maintained by the LLM.
+- **[[LLM Wiki Architecture]]** — Marp is used for generating slide decks from wiki pages maintained by the LLM.
 - **[[LLM Wiki Architecture]]** — Marp expands the output formats available in the wiki layer.
 
 ## Related Entities

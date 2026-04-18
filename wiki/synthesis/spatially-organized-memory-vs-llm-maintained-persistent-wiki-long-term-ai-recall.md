@@ -9,11 +9,11 @@ sources:
   - raw/2026-04-07-llm-wiki.md
 quality_score: 100
 concepts:
-  - llm-maintained-persistent-wiki-pattern
+  - llm-wiki-architecture
   - palace-memory-architecture
 related:
   - "[[MemPalace GitHub Repository]]"
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[Palace Memory Architecture]]"
 tier: hot
 tags: [AI memory, knowledge management, retrieval, wiki, spatial organization, LLM]
@@ -31,7 +31,7 @@ Spatially-organized memory systems like the Palace Memory Architecture excel at 
 
 ## Comparison
 
-| Dimension | [[Palace Memory Architecture]] | [[LLM-Maintained Persistent Wiki Pattern]] |
+| Dimension | [[Palace Memory Architecture]] | [[LLM Wiki Architecture]] |
 |-----------|---------------------||---------------------|
 | Retrieval Accuracy | Filtering by palace structure yields up to 34% improvement in recall (94.8% vs 60.9% for flat search); preserves verbatim exchanges for precise recall. | Accuracy depends on LLM's extraction and synthesis capabilities; answers are synthesized from summaries and entity pages, with citations but not always verbatim. |
 | Context Preservation | Stores every exchange verbatim in drawers; hierarchical structure (wings, rooms, halls) maintains rich context and reasoning. | Context is preserved through summaries, synthesis, and cross-referenced pages; raw sources remain immutable but are not directly navigable. |
@@ -52,8 +52,8 @@ Common misconceptions include assuming that spatially-organized memory is merely
 ## Key Insights
 
 1. **Spatial hierarchy in memory systems is not just for navigation—it measurably improves retrieval accuracy, especially in multi-domain contexts, outperforming flat search by 34%.** — supported by [[Palace Memory Architecture]]
-2. **LLM automation in persistent wikis shifts the maintenance burden from users to the AI, enabling ongoing synthesis and contradiction detection, but introduces dependence on schema clarity and LLM extraction fidelity.** — supported by [[LLM-Maintained Persistent Wiki Pattern]]
-3. **Verbatim recall and context preservation are strongest in spatially-organized systems, while wiki-based approaches excel at knowledge synthesis and cross-referencing, suggesting they serve complementary roles in long-term AI memory.** — supported by [[Palace Memory Architecture]], [[LLM-Maintained Persistent Wiki Pattern]]
+2. **LLM automation in persistent wikis shifts the maintenance burden from users to the AI, enabling ongoing synthesis and contradiction detection, but introduces dependence on schema clarity and LLM extraction fidelity.** — supported by [[LLM Wiki Architecture]]
+3. **Verbatim recall and context preservation are strongest in spatially-organized systems, while wiki-based approaches excel at knowledge synthesis and cross-referencing, suggesting they serve complementary roles in long-term AI memory.** — supported by [[Palace Memory Architecture]], [[LLM Wiki Architecture]]
 
 ## Open Questions
 
@@ -65,4 +65,4 @@ Common misconceptions include assuming that spatially-organized memory is merely
 
 - [[MemPalace GitHub Repository]]
 - [[Palace Memory Architecture]]
-- [[LLM-Maintained Persistent Wiki Pattern]]
+- [[LLM Wiki Architecture]]

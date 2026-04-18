@@ -10,7 +10,7 @@ quality_score: 100
 concepts:
   - qmd
 related:
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
@@ -39,7 +39,7 @@ qmd enhances the LLM wiki by providing efficient search capabilities as the numb
 
 ## Associated Concepts
 
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — qmd is recommended as a search tool for navigating large-scale LLM-maintained wikis.
+- **[[LLM Wiki Architecture]]** — qmd is recommended as a search tool for navigating large-scale LLM-maintained wikis.
 - **[[LLM Wiki Architecture]]** — qmd supplements the architecture by enabling scalable search across wiki pages.
 
 ## Related Entities

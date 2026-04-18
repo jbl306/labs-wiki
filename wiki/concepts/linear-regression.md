@@ -2,17 +2,22 @@
 title: "Linear Regression"
 type: concept
 created: 2026-04-08
-last_verified: 2026-04-08
+last_verified: 2026-04-17
 source_hash: "64f3d7794fd5e8567333444aa2dcf2ae76e118f9bf78cb15eb014a7029e90e95"
 sources:
   - raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
+  - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
 quality_score: 100
 concepts:
   - linear-regression
 related:
   - "[[Linear Regression in Machine Learning - GeeksforGeeks]]"
-tier: hot
-tags: [machine-learning, regression, supervised-learning, statistics, python]
+  - "[[Top 15 Machine Learning Algorithms Every Data Scientist Should Know in 2025]]"
+  - "[[Logistic Regression]]"
+  - "[[Regularization Techniques in Linear Regression]]"
+  - "[[Gradient Descent in Linear Regression]]"
+tier: established
+tags: [machine-learning, regression, supervised-learning, statistics, python, prediction, interpretability]
 ---
 
 # Linear Regression
@@ -64,7 +69,9 @@ The model is interpretable, with coefficients indicating the influence of each v
 - **Equation:** Simple: y = mx + b; Multiple: \hat{y} = \theta_0 + \theta_1 x_1 + ... + \theta_n x_n
 - **Optimization:** Uses least squares method and gradient descent for parameter estimation.
 - **Evaluation Metrics:** MSE, MAE, RMSE, R-squared, Adjusted R-squared.
-- **Time Complexity:** Training: O(n) for simple regression, O(n^2) for multiple regression depending on implementation.
+- **Time Complexity:** Training: O(n) for simple regression, O(n × d^2) for multiple regression via the closed-form normal equation `β̂ = (XᵀX)⁻¹Xᵀy`.
+- **Auxiliary Space:** O(d), efficient for moderate feature counts.
+- **Interpretability:** Highly interpretable due to explicit coefficients for each feature.
 
 ## Limitations
 
@@ -120,4 +127,5 @@ Linear regression is used in forecasting (e.g., sales, stock prices), trend anal
 
 ## Sources
 
-- [[Linear Regression in Machine Learning - GeeksforGeeks]] — primary source for this concept
+- [[Linear Regression in Machine Learning - GeeksforGeeks]] — primary deep-dive (gradient descent, assumptions, code example)
+- [[Top 15 Machine Learning Algorithms Every Data Scientist Should Know in 2025]] — survey context (closed-form solution, complexity, trade-offs)

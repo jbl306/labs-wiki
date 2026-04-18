@@ -2,19 +2,22 @@
 title: "LLM Wiki Architecture"
 type: concept
 created: 2026-04-08
-last_verified: 2026-04-08
+last_verified: 2026-04-17
 source_hash: "dc3efe98ae62f23dd08acad13aba2e95287beb20b6bec2f4af0423557fe37401"
 sources:
   - raw/2026-04-07-llm-wiki.md
 quality_score: 100
 concepts:
   - llm-wiki-architecture
+  - llm-wiki-architecture
 related:
   - "[[GitHub Copilot]]"
   - "[[Custom Agents in VS Code]]"
   - "[[LLM Wiki]]"
-tier: hot
-tags: [architecture, llm, wiki, knowledge-base, schema]
+  - "[[Palace Memory Architecture]]"
+  - "[[LLM Operating System Architecture]]"
+tier: established
+tags: [architecture, llm, wiki, knowledge-base, schema, automation, personal-knowledge-management]
 ---
 
 # LLM Wiki Architecture
@@ -70,6 +73,9 @@ Obsidian's graph view is recommended for visualizing the wiki's structure, showi
 
 - **[[GitHub Copilot]]** — Both leverage automation for code or knowledge management, but Copilot focuses on code completion while the LLM wiki architecture targets persistent knowledge bases.
 - **[[Custom Agents in VS Code]]** — Custom agents automate workflows in VS Code; similarly, LLMs automate wiki maintenance in this architecture.
+- **Retrieval-Augmented Generation (RAG)** — Contrasts with RAG by emphasizing persistent knowledge accumulation and maintenance rather than rediscovery at query time. Knowledge is *compiled once and kept current*, not re-derived per query.
+- **Memex (Vannevar Bush, 1945)** — Inspired by Memex's vision of a curated knowledge store with associative trails. The unsolved part of Bush's vision was *who maintains it*; the LLM solves that.
+- **[[Palace Memory Architecture]]** — Complementary memory model: MemPalace excels at verbatim recall and spatial navigation; the wiki excels at synthesis and cross-referencing.
 
 ## Practical Applications
 

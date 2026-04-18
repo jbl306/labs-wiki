@@ -25,6 +25,13 @@ from urllib.parse import urljoin
 import httpx
 from openai import OpenAI
 
+try:
+    from rapidfuzz import fuzz as _rf_fuzz
+    _FUZZ_AVAILABLE = True
+except ImportError:  # pragma: no cover
+    _rf_fuzz = None
+    _FUZZ_AVAILABLE = False
+
 log = logging.getLogger("auto-ingest")
 
 # ---------------------------------------------------------------------------
@@ -547,6 +554,45 @@ def get_existing_pages(wiki_dir: Path) -> dict[str, str]:
             title = fm.get("title", page.stem.replace("-", " ").title())
             pages[title] = str(page.relative_to(wiki_dir.parent))
     return pages
+
+
+FUZZY_MERGE_THRESHOLD = 85  # token_set_ratio score above this triggers a merge
+
+
+def find_fuzzy_match(
+    new_title: str,
+    category: str,
+    wiki_dir: Path,
+    threshold: int = FUZZY_MERGE_THRESHOLD,
+) -> Path | None:
+    """Find an existing page in `wiki_dir/<category>/` whose title fuzzy-matches.
+
+    Returns the matched Path or None. Used to prevent the LLM from creating
+    near-duplicate concept/entity pages (e.g. "Linear Regression" vs
+    "Linear Regression Algorithm").
+    """
+    if not _FUZZ_AVAILABLE or not new_title:
+        return None
+    cat_dir = wiki_dir / category
+    if not cat_dir.exists():
+        return None
+    best_score = 0
+    best_path: Path | None = None
+    for page in cat_dir.glob("*.md"):
+        if page.name in ("index.md", "log.md", ".gitkeep"):
+            continue
+        try:
+            fm, _ = parse_frontmatter(page)
+        except Exception:
+            continue
+        existing_title = fm.get("title") or page.stem.replace("-", " ").title()
+        score = _rf_fuzz.token_set_ratio(new_title.lower(), str(existing_title).lower())
+        if score > best_score:
+            best_score = score
+            best_path = page
+    if best_score >= threshold and best_path is not None:
+        return best_path
+    return None
 
 
 def check_already_processed(wiki_dir: Path, source_hash: str) -> bool:
@@ -1583,6 +1629,17 @@ def ingest_raw_source(
         concept_path = wiki_dir / "concepts" / filename
         concept_path.parent.mkdir(parents=True, exist_ok=True)
 
+        # Fuzzy-dedupe: redirect to a near-duplicate existing page if any.
+        if not concept_path.exists():
+            fuzzy_hit = find_fuzzy_match(concept["title"], "concepts", wiki_dir)
+            if fuzzy_hit is not None:
+                log.info(
+                    "Fuzzy-merge: '%s' → existing %s (skipping new file %s)",
+                    concept["title"], fuzzy_hit.name, filename,
+                )
+                concept_path = fuzzy_hit
+                filename = fuzzy_hit.name
+
         if concept_path.exists():
             # Merge: append source reference to existing page
             existing = concept_path.read_text()
@@ -1610,6 +1667,16 @@ def ingest_raw_source(
         )
         entity_path = wiki_dir / "entities" / filename
         entity_path.parent.mkdir(parents=True, exist_ok=True)
+
+        if not entity_path.exists():
+            fuzzy_hit = find_fuzzy_match(entity["title"], "entities", wiki_dir)
+            if fuzzy_hit is not None:
+                log.info(
+                    "Fuzzy-merge: '%s' → existing %s (skipping new file %s)",
+                    entity["title"], fuzzy_hit.name, filename,
+                )
+                entity_path = fuzzy_hit
+                filename = fuzzy_hit.name
 
         if entity_path.exists():
             existing = entity_path.read_text()

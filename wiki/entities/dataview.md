@@ -10,7 +10,7 @@ quality_score: 100
 concepts:
   - dataview
 related:
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
@@ -39,7 +39,7 @@ Dataview enables dynamic querying and visualization of wiki metadata, enhancing 
 
 ## Associated Concepts
 
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — Dataview is used to generate dynamic tables and lists from LLM-generated wiki pages.
+- **[[LLM Wiki Architecture]]** — Dataview is used to generate dynamic tables and lists from LLM-generated wiki pages.
 - **[[LLM Wiki Architecture]]** — Dataview supports the wiki layer by providing advanced querying capabilities.
 
 ## Related Entities

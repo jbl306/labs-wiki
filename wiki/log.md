@@ -1319,3 +1319,69 @@
   status: success
   notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
 ```
+
+## [2026-04-17] curator-merge | duplicate concept consolidation
+- targets:
+  - wiki/concepts/linear-regression.md (canonical, absorbed linear-regression-algorithm)
+  - wiki/concepts/llm-wiki-architecture.md (canonical, absorbed llm-maintained-persistent-wiki-pattern)
+- removed:
+  - wiki/concepts/linear-regression-algorithm.md (same algorithm, different source)
+  - wiki/concepts/llm-maintained-persistent-wiki-pattern.md (same source_hash dc3efe98…)
+- rewired all `[[Linear Regression Algorithm]]` and `[[LLM-Maintained Persistent Wiki Pattern]]` references across 9 pages
+- added bidirectional `[[Attention Mechanism in Large Language Models]]` ↔ `[[Transformer Architecture]]` link to merge graph communities 2 and 9
+- agent: copilot-cli (manual graph review)
+- status: success
+- notes: index.md regeneration + graph rebuild to follow
+
+## [2026-04-17] curator-merge | wiki review + graph hardening (Karpathy LLM-wiki alignment)
+
+Findings → fixes across the wiki + graph stack to align with Karpathy's
+[gist](https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f) on
+LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
+
+**Phase 1 — manual merges + missing cross-refs**
+- Merged duplicate concepts: `linear-regression-algorithm` → `linear-regression`,
+  `llm-maintained-persistent-wiki-pattern` → `llm-wiki-architecture` (both pairs
+  shared an identical `source_hash`). All references swept via sed across 9
+  files. Two duplicate files deleted.
+- Added bidirectional `[[Transformer Architecture]] ↔ [[Attention Mechanism in
+  Large Language Models]]` cross-link plus Flash-Attention / KV-Cache /
+  Positional-Encoding `related:` entries.
+
+**Phase 2 — graph builder bug fix**
+- `wiki-graph-api/graph_builder.py`: previously parsed `[[wikilinks]]` from the
+  body only, **silently dropping every `related:` frontmatter link**. Now
+  regex-scans the frontmatter section too. After cache-bust + rebuild,
+  Transformer & Attention land in the same community for the first time.
+
+**Phase 3 — auto-ingest fuzzy dedup**
+- `scripts/auto_ingest.py`: added `rapidfuzz` (≥3.0) gate before creating any
+  new concept/entity page. If `token_set_ratio >= 85` against an existing title,
+  the new content is merged into the existing page instead of forking.
+- Tested in container: `"linear regression"` vs `"linear regression algorithm"`
+  → 100.0. Future ingests will not recreate the dups we just merged.
+
+**Phase 4 — agent prompt upgrades**
+- `wiki-curator.agent.md`: graph-aware gap analysis (uses /graph/communities,
+  /graph/god-nodes, /graph/surprises), bridge-detection between communities,
+  publisher-smell warning, canonical log-prefix convention
+  `## [YYYY-MM-DD] op | Title`.
+- `wiki-lint.agent.md`: new error classes (duplicate `source_hash`, fuzzy-dup
+  titles ≥85), new warnings (graph orphans degree=0, implicit concepts, missing
+  `related:` body mentions, god-node publishers).
+- `wiki-query.agent.md`: file-back loop — every answer that exposes a wiki gap
+  drafts a capture target or proposes a `related:` cross-link, logged as
+  `query-fileback`. Read-only → read-and-compound, per Karpathy.
+
+**Phase 5 — publisher demotion**
+- `graph_builder.py`: edges touching publisher entities (geeksforgeeks, arxiv,
+  github, youtube, …) get weight 0.1 instead of 1.0. Hosting links no longer
+  pull unrelated topics into the same modularity cluster. Communities split
+  more naturally (18 → 20).
+
+**Operational also:** chowned 56 root-owned wiki files back to `jbl:jbl`
+(auto-ingest container had been writing as root — fixable later with
+`user:` directive in compose).
+
+**Verify with:** `curl -s http://graph-api.jbl-lab.com/graph/stats | jq` and
+`grep "^## \[" wiki/log.md | tail -10`.

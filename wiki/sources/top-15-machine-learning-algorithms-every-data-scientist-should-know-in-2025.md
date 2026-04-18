@@ -8,12 +8,12 @@ sources:
   - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
 quality_score: 100
 concepts:
-  - linear-regression-algorithm
+  - linear-regression
   - decision-tree-algorithm
   - k-means-clustering-algorithm
   - adaboost-adaptive-boosting
 related:
-  - "[[Linear Regression Algorithm]]"
+  - "[[Linear Regression]]"
   - "[[Decision Tree Algorithm]]"
   - "[[K-Means Clustering Algorithm]]"
   - "[[AdaBoost (Adaptive Boosting)]]"
@@ -36,7 +36,7 @@ This article from GeeksforGeeks provides a comprehensive overview of the top 15 
 
 ## Concepts Extracted
 
-- **[[Linear Regression Algorithm]]** — Linear Regression is a foundational supervised learning algorithm used to model the relationship between an independent variable and a dependent variable by fitting a linear equation to observed data. It is widely applied for prediction and trend analysis in domains such as finance, real estate, and economics.
+- **[[Linear Regression]]** — Linear Regression is a foundational supervised learning algorithm used to model the relationship between an independent variable and a dependent variable by fitting a linear equation to observed data. It is widely applied for prediction and trend analysis in domains such as finance, real estate, and economics.
 - **[[Decision Tree Algorithm]]** — Decision Tree is a versatile supervised learning algorithm used for both classification and regression tasks. It models decisions and their possible consequences as a tree structure, enabling intuitive rule-based predictions.
 - **[[K-Means Clustering Algorithm]]** — K-Means Clustering is a popular unsupervised learning algorithm used to partition data into k distinct clusters based on feature similarity. It is widely used for pattern discovery, segmentation, and anomaly detection in large datasets.
 - **[[AdaBoost (Adaptive Boosting)]]** — AdaBoost is a powerful ensemble learning algorithm that combines multiple weak classifiers to form a strong classifier. It iteratively adjusts the weights of misclassified instances, focusing learning on challenging data points to improve accuracy.

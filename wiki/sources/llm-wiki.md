@@ -8,10 +8,10 @@ sources:
   - raw/2026-04-07-llm-wiki.md
 quality_score: 100
 concepts:
-  - llm-maintained-persistent-wiki-pattern
+  - llm-wiki-architecture
   - llm-wiki-architecture
 related:
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki Architecture]]"
   - "[[Obsidian]]"
   - "[[qmd]]"
@@ -36,7 +36,7 @@ This gist outlines a pattern for building personal knowledge bases using LLMs, w
 
 ## Concepts Extracted
 
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — The LLM-maintained persistent wiki pattern is an approach to building personal or organizational knowledge bases where a large language model (LLM) incrementally constructs, updates, and maintains a structured, interlinked wiki from raw source documents. Unlike traditional retrieval-augmented generation (RAG) systems, this pattern focuses on knowledge accumulation, synthesis, and maintenance, enabling the wiki to become richer and more useful over time.
+- **[[LLM Wiki Architecture]]** — The LLM-maintained persistent wiki pattern is an approach to building personal or organizational knowledge bases where a large language model (LLM) incrementally constructs, updates, and maintains a structured, interlinked wiki from raw source documents. Unlike traditional retrieval-augmented generation (RAG) systems, this pattern focuses on knowledge accumulation, synthesis, and maintenance, enabling the wiki to become richer and more useful over time.
 - **[[LLM Wiki Architecture]]** — The LLM Wiki Architecture defines the structural layers and operational workflow for building and maintaining a persistent knowledge base using LLMs. It delineates the roles of raw sources, the wiki, and the schema, ensuring clarity, modularity, and scalability.
 
 ## Entities Mentioned

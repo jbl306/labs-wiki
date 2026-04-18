@@ -10,7 +10,7 @@ quality_score: 100
 concepts:
   - obsidian-web-clipper
 related:
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
@@ -39,7 +39,7 @@ The extension streamlines the process of adding new sources to the raw collectio
 
 ## Associated Concepts
 
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — Obsidian Web Clipper aids in source ingestion for the LLM-maintained wiki.
+- **[[LLM Wiki Architecture]]** — Obsidian Web Clipper aids in source ingestion for the LLM-maintained wiki.
 - **[[LLM Wiki Architecture]]** — The tool supports the raw sources layer by converting web content to markdown.
 
 ## Related Entities

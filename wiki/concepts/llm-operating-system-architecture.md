@@ -11,7 +11,7 @@ concepts:
   - llm-operating-system-architecture
 related:
   - "[[LLM Wiki Architecture]]"
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[Karpathy LLM OS Tweet]]"
 tier: hot
 tags: [llm, architecture, os, agent, multimodal, embeddings]
@@ -65,7 +65,7 @@ The diagram shows a central LLM box with arrows connecting to classical software
 ## Relationship to Other Concepts
 
 - **[[LLM Wiki Architecture]]** — Both envision LLMs as central orchestrators in software environments.
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — Persistent memory via embeddings parallels wiki storage and retrieval.
+- **[[LLM Wiki Architecture]]** — Persistent memory via embeddings parallels wiki storage and retrieval.
 
 ## Practical Applications
 

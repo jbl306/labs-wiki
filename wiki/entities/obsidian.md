@@ -11,7 +11,7 @@ quality_score: 100
 concepts:
   - obsidian
 related:
-  - "[[LLM-Maintained Persistent Wiki Pattern]]"
+  - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki Architecture]]"
   - "[[LLM Wiki]]"
 tier: hot
@@ -40,7 +40,7 @@ Obsidian serves as the primary interface for browsing and interacting with the L
 
 ## Associated Concepts
 
-- **[[LLM-Maintained Persistent Wiki Pattern]]** — Obsidian is used to browse, visualize, and interact with the wiki generated and maintained by the LLM.
+- **[[LLM Wiki Architecture]]** — Obsidian is used to browse, visualize, and interact with the wiki generated and maintained by the LLM.
 - **[[LLM Wiki Architecture]]** — Obsidian provides the IDE environment for the wiki layer in the architecture.
 
 ## Related Entities

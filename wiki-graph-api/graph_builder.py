@@ -119,8 +119,20 @@ def parse_page(root: Path, md_path: Path) -> Page | None:
     if len(summary) > 240:
         summary = summary[:237] + "..."
 
-    # Wikilinks in body only (frontmatter-embedded links are rare and noisy).
-    wikilinks = [m.strip() for m in _WIKILINK_RE.findall(body)]
+    # Wikilinks come from BOTH the body AND any [[...]] inside the frontmatter
+    # (notably the `related:` block-list). The primitive frontmatter parser
+    # above only handles single-line YAML, so we just regex-scan the whole
+    # frontmatter section for [[wikilinks]] — any duplication is deduped below.
+    fm_text = _FRONTMATTER_RE.match(raw).group(1) if _FRONTMATTER_RE.match(raw) else ""
+    body_links = _WIKILINK_RE.findall(body)
+    fm_links = _WIKILINK_RE.findall(fm_text)
+    seen: set[str] = set()
+    wikilinks: list[str] = []
+    for link in (*body_links, *fm_links):
+        link = link.strip()
+        if link and link not in seen:
+            seen.add(link)
+            wikilinks.append(link)
 
     content_hash = hashlib.sha256(raw.encode("utf-8", errors="ignore")).hexdigest()
 
@@ -250,6 +262,31 @@ def _resolve_wikilink(target: str, by_title: dict[str, str], by_slug: dict[str, 
     return None
 
 
+PUBLISHER_DEMOTION_WEIGHT = 0.1  # publisher entities are hosting hubs, not topical bridges
+PUBLISHER_TAGS = {"publisher", "site", "platform", "host"}
+PUBLISHER_NODE_TAILS = {
+    "geeksforgeeks", "arxiv", "github", "youtube", "medium", "substack",
+    "wikipedia", "reddit", "twitter", "x", "stackoverflow", "huggingface",
+    "kaggle", "google-scholar", "papers-with-code",
+}
+
+
+def _is_publisher(page: Page) -> bool:
+    """Identify entity pages that are publishers/hosts rather than topical concepts.
+
+    These create false adjacency when the same publisher hosts many sources, and
+    they distort community detection. We keep their edges but down-weight them so
+    real topical edges dominate modularity-based clustering.
+    """
+    if page.page_type != "entity":
+        return False
+    tags_lower = {t.lower() for t in page.tags}
+    if tags_lower & PUBLISHER_TAGS:
+        return True
+    tail = page.node_id.rsplit("/", 1)[-1].lower()
+    return tail in PUBLISHER_NODE_TAILS
+
+
 def build_graph(pages: list[Page]) -> nx.Graph:
     """Build an undirected NetworkX graph from extracted pages."""
     g = nx.Graph()
@@ -259,6 +296,8 @@ def build_graph(pages: list[Page]) -> nx.Graph:
     # Also index by node_id tail for slug fallback.
     for p in pages:
         by_slug.setdefault(_slugify(p.node_id.rsplit("/", 1)[-1]), p.node_id)
+
+    publisher_ids = {p.node_id for p in pages if _is_publisher(p)}
 
     for p in pages:
         g.add_node(
@@ -271,19 +310,28 @@ def build_graph(pages: list[Page]) -> nx.Graph:
             path=p.path,
             summary=p.summary,
             last_verified=p.last_verified,
+            is_publisher=p.node_id in publisher_ids,
         )
 
     for p in pages:
         for target in p.wikilinks:
             resolved = _resolve_wikilink(target, by_title, by_slug)
             if resolved and resolved != p.node_id:
+                # Down-weight edges that touch a publisher entity — they are
+                # hosting links, not topical bridges. Real concept↔concept edges
+                # keep weight 1.0 and dominate community detection.
+                edge_weight = (
+                    PUBLISHER_DEMOTION_WEIGHT
+                    if (p.node_id in publisher_ids or resolved in publisher_ids)
+                    else 1.0
+                )
                 if g.has_edge(p.node_id, resolved):
-                    g[p.node_id][resolved]["weight"] += 1
+                    g[p.node_id][resolved]["weight"] += edge_weight
                 else:
                     g.add_edge(
                         p.node_id,
                         resolved,
-                        weight=1,
+                        weight=edge_weight,
                         confidence="EXTRACTED",
                         source="wikilink",
                     )

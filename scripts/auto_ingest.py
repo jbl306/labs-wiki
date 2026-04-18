@@ -1756,6 +1756,18 @@ def ingest_raw_source(
     if not content or len(content.strip()) < 10:
         log.warning("Source content too short for meaningful extraction")
 
+    # Retention: skip checkpoints classified as low-signal (or whatever the
+    # operator has overridden to skip via LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES).
+    # No LLM call, no source page; raw is marked so we don't retry it.
+    if route.retention_mode == SKIP:
+        log.info(
+            "Skipping ingest for %s (checkpoint_class=%s retention=skip)",
+            raw_path.name,
+            route.checkpoint_class or "-",
+        )
+        update_raw_status(raw_path, "ingested-skipped")
+        return True
+
     # Compute hash & check incremental
     source_hash = compute_sha256(content)
     wiki_dir = project_root / "wiki"

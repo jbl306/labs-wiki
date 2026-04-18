@@ -135,6 +135,18 @@ function updateZoomLevel() {
   if (label) label.textContent = `${Math.round(view.scale * 100)}%`;
 }
 
+function lerp(start, end, amount) {
+  return start + (end - start) * amount;
+}
+
+function nodeRadius(node) {
+  return Math.max(3, 3 + Math.log2(1 + node.degree) * 2);
+}
+
+function zoomProgress() {
+  return Math.max(0, Math.min(1, (view.scale - 0.55) / 2.75));
+}
+
 function resize() {
   const dpr = window.devicePixelRatio || 1;
   canvas.width = canvas.clientWidth * dpr;
@@ -152,6 +164,51 @@ function screenToWorld(x, y) {
   };
 }
 
+function visibleWorldBounds() {
+  const a = screenToWorld(0, 0);
+  const b = screenToWorld(canvas.clientWidth, canvas.clientHeight);
+  return {
+    minX: Math.min(a.x, b.x),
+    maxX: Math.max(a.x, b.x),
+    minY: Math.min(a.y, b.y),
+    maxY: Math.max(a.y, b.y),
+  };
+}
+
+function isNodeVisible(node, bounds, padding = 0) {
+  const r = nodeRadius(node) + padding;
+  return (
+    node.x + r >= bounds.minX &&
+    node.x - r <= bounds.maxX &&
+    node.y + r >= bounds.minY &&
+    node.y - r <= bounds.maxY
+  );
+}
+
+function pathRoundedRect(x, y, width, height, radius) {
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  if (typeof ctx.roundRect === "function") {
+    ctx.roundRect(x, y, width, height, r);
+    return;
+  }
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+}
+
+function rectOverlaps(a, b, padding = 0) {
+  return !(
+    a.x + a.w + padding < b.x ||
+    b.x + b.w + padding < a.x ||
+    a.y + a.h + padding < b.y ||
+    b.y + b.h + padding < a.y
+  );
+}
+
 function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.clientHeight / 2) {
   const worldPoint = screenToWorld(anchorX, anchorY);
   const clampedScale = clampScale(nextScale);
@@ -167,7 +224,7 @@ function fitViewToNodes(nodes = state.filtered.nodes) {
 
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (const node of nodes) {
-    const r = Math.max(3, 3 + Math.log2(1 + node.degree) * 2);
+    const r = nodeRadius(node);
     minX = Math.min(minX, node.x - r);
     minY = Math.min(minY, node.y - r);
     maxX = Math.max(maxX, node.x + r);
@@ -206,6 +263,11 @@ function draw() {
 
   const cx = canvas.clientWidth / 2;
   const cy = canvas.clientHeight / 2;
+  const bounds = visibleWorldBounds();
+  const viewportPadding = 160 / view.scale;
+  const visibleNodes = nodes.filter((node) => isNodeVisible(node, bounds, viewportPadding));
+  const visibleIds = new Set(visibleNodes.map((node) => node.id));
+  const nodeById = new Map(nodes.map((node) => [node.id, node]));
 
   ctx.save();
   ctx.translate(cx + view.tx, cy + view.ty);
@@ -214,7 +276,8 @@ function draw() {
   // Edges
   ctx.lineWidth = 0.8 / view.scale;
   for (const e of edges) {
-    const a = findNode(e.source), b = findNode(e.target);
+    if (!visibleIds.has(e.source) && !visibleIds.has(e.target)) continue;
+    const a = nodeById.get(e.source), b = nodeById.get(e.target);
     if (!a || !b) continue;
     ctx.strokeStyle = state.surprises && e.cross_community
       ? "rgba(248,113,113,0.85)"
@@ -226,9 +289,16 @@ function draw() {
   }
 
   // Nodes
-  for (const n of nodes) {
-    const r = Math.max(3, 3 + Math.log2(1 + n.degree) * 2);
+  for (const n of visibleNodes) {
+    const r = nodeRadius(n);
     ctx.fillStyle = colorForCommunity(n.community);
+    if (state.highlightedId === n.id) {
+      ctx.fillStyle = "rgba(94,234,212,0.18)";
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 9 / view.scale, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = colorForCommunity(n.community);
+    }
     ctx.beginPath();
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
     ctx.fill();
@@ -241,14 +311,62 @@ function draw() {
 
   // As the user zooms in, relax the label threshold so mobile exploration
   // reveals more context without needing to tap every single node.
-  ctx.fillStyle = "#e5e7eb";
-  ctx.font = `${Math.max(10, 10 / view.scale)}px sans-serif`;
   ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  const zoomT = zoomProgress();
   const labelDegreeThreshold = view.scale >= 1.8 ? 0 : view.scale >= 1.05 ? 2 : 5;
-  const labelMaxChars = view.scale >= 1.4 ? 40 : 32;
-  for (const n of nodes) {
-    if (n.degree < labelDegreeThreshold && state.highlightedId !== n.id) continue;
-    ctx.fillText(n.title.slice(0, labelMaxChars), n.x, n.y - 8);
+  const labelMaxChars = view.scale >= 2.1 ? 56 : view.scale >= 1.4 ? 42 : 32;
+  const maxLabels = view.scale >= 2.3 ? 150 : view.scale >= 1.35 ? 95 : 40;
+  const occupiedLabelRects = [];
+  const labelCandidates = visibleNodes
+    .filter((node) => node.degree >= labelDegreeThreshold || state.highlightedId === node.id)
+    .sort((a, b) => {
+      const aHighlighted = state.highlightedId === a.id ? 1 : 0;
+      const bHighlighted = state.highlightedId === b.id ? 1 : 0;
+      return bHighlighted - aHighlighted || b.degree - a.degree;
+    });
+
+  for (const n of labelCandidates) {
+    const highlighted = state.highlightedId === n.id;
+    if (!highlighted && occupiedLabelRects.length >= maxLabels) break;
+
+    const label = n.title.slice(0, labelMaxChars);
+    const screenFontPx = highlighted
+      ? Math.round(lerp(13, 21, zoomT))
+      : Math.round(lerp(10, 18, zoomT));
+    const fontWorldPx = screenFontPx / view.scale;
+    const padX = (highlighted ? 8 : 6) / view.scale;
+    const padY = (highlighted ? 5 : 4) / view.scale;
+    const chipRadius = 10 / view.scale;
+    const offsetY = (highlighted ? 11 : 8) / view.scale;
+
+    ctx.font = `${fontWorldPx}px sans-serif`;
+    const metrics = ctx.measureText(label);
+    const labelWidth = metrics.width + padX * 2;
+    const labelHeight = fontWorldPx + padY * 2;
+    const x = n.x - labelWidth / 2;
+    const y = n.y - nodeRadius(n) - labelHeight - offsetY;
+    const screenRect = {
+      x: cx + view.tx + x * view.scale,
+      y: cy + view.ty + y * view.scale,
+      w: labelWidth * view.scale,
+      h: labelHeight * view.scale,
+    };
+
+    if (!highlighted && occupiedLabelRects.some((rect) => rectOverlaps(rect, screenRect, 6))) {
+      continue;
+    }
+    occupiedLabelRects.push(screenRect);
+
+    ctx.fillStyle = highlighted ? "rgba(11,13,18,0.92)" : "rgba(11,13,18,0.76)";
+    ctx.strokeStyle = highlighted ? "#5eead4" : "rgba(120,130,150,0.35)";
+    ctx.lineWidth = (highlighted ? 1.5 : 1) / view.scale;
+    pathRoundedRect(x, y, labelWidth, labelHeight, chipRadius);
+    ctx.fill();
+    ctx.stroke();
+
+    ctx.fillStyle = highlighted ? "#f8fafc" : "#e5e7eb";
+    ctx.fillText(label, n.x, y + labelHeight / 2);
   }
 
   ctx.restore();
@@ -396,7 +514,7 @@ function handleTap(clientX, clientY) {
   for (const n of state.filtered.nodes) {
     const dx = n.x - wx, dy = n.y - wy;
     const d2 = dx * dx + dy * dy;
-    const r = Math.max(3, 3 + Math.log2(1 + n.degree) * 2);
+    const r = nodeRadius(n);
     if (d2 < r * r * slopMul && d2 < best) { best = d2; hit = n; }
   }
   if (hit) {

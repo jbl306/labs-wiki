@@ -216,6 +216,8 @@ docker compose -f compose.wiki.yml restart wiki-auto-ingest
 | `LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES` | — | Comma-list `class=mode` overrides for checkpoint retention (e.g. `project-progress=retain,low-signal=compress`) |
 | `AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST` | `2` | Cap follow-on synthesis calls per ingest; set `0` for quota-sensitive backlog imports |
 | `AUTO_INGEST_INCLUDE_EXISTING_PAGES_CONTEXT` | `1` | Include the existing wiki page list in extraction prompts; set `0` for faster, cheaper backlog imports |
+| `AUTO_INGEST_CHECKPOINT_FAMILY_MIN` | `3` | Minimum checkpoints (incl. the new one) sharing concepts that triggers a "recurring patterns" synthesis suggestion |
+| `AUTO_INGEST_CHECKPOINT_FAMILY_SHARED` | `1` | Minimum number of concepts a checkpoint must share with the new one to count as a family member |
 | `DEBOUNCE_SECONDS` | `5` | Wait time after file creation before processing |
 | `NTFY_SERVER` | — | ntfy notification server URL |
 | `NTFY_TOPIC` | — | ntfy topic for alerts |

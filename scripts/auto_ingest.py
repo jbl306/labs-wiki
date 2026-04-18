@@ -18,6 +18,7 @@ import re
 import subprocess
 import sys
 import textwrap
+from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -970,6 +971,56 @@ MAX_SYNTHESIS_PER_INGEST = max(
     int(os.environ.get("AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST", "2")),
 )
 
+# Checkpoint-family synthesis trigger: minimum number of checkpoint sources
+# (including the freshly-ingested one) that must share concepts before we
+# auto-suggest a cross-checkpoint synthesis. Default shared=1 because the
+# current concept extractor produces hyper-specific concepts that almost never
+# repeat verbatim across checkpoints (52 checkpoints / 140 unique concepts /
+# max 2 hits per concept on the existing corpus). Operators with denser concept
+# graphs can raise this via env.
+CHECKPOINT_FAMILY_MIN_SIZE = max(
+    2,
+    int(os.environ.get("AUTO_INGEST_CHECKPOINT_FAMILY_MIN", "3")),
+)
+CHECKPOINT_FAMILY_MIN_SHARED = max(
+    1,
+    int(os.environ.get("AUTO_INGEST_CHECKPOINT_FAMILY_SHARED", "1")),
+)
+
+
+def find_checkpoint_family(
+    wiki_dir: Path,
+    concept_slugs: list[str],
+    exclude_slug: str | None = None,
+) -> list[tuple[Path, set[str]]]:
+    """Find existing checkpoint source pages that share >= CHECKPOINT_FAMILY_MIN_SHARED
+    concepts with the given slug list.
+
+    Returns a list of (path, shared_slugs) tuples, sorted by overlap size descending.
+    """
+    if not concept_slugs:
+        return []
+    target = set(concept_slugs)
+    fam: list[tuple[Path, set[str]]] = []
+    sources_dir = wiki_dir / "sources"
+    if not sources_dir.is_dir():
+        return []
+    for src in sources_dir.glob("copilot-session-checkpoint-*.md"):
+        if exclude_slug and src.stem == exclude_slug:
+            continue
+        try:
+            fm, _ = parse_frontmatter(src)
+        except Exception:
+            continue
+        their = fm.get("concepts") or []
+        if not isinstance(their, list):
+            continue
+        shared = target & set(their)
+        if len(shared) >= CHECKPOINT_FAMILY_MIN_SHARED:
+            fam.append((src, shared))
+    fam.sort(key=lambda x: len(x[1]), reverse=True)
+    return fam
+
 
 def call_llm_synthesis(
     concept_pages: dict[str, str],
@@ -1883,6 +1934,73 @@ def ingest_raw_source(
             log.info("Created: wiki/entities/%s", filename)
 
         created_pages.append(f"wiki/entities/{filename}")
+
+    # ------------------------------------------------------------------
+    # Phase 3: checkpoint-family synthesis trigger
+    # If this is a durable checkpoint and there are >= CHECKPOINT_FAMILY_MIN_SIZE
+    # checkpoints (incl. self) sharing concepts, append a synthesis suggestion so
+    # the existing call_llm_synthesis loop picks it up.
+    # ------------------------------------------------------------------
+    if (
+        route.checkpoint_class
+        and route.checkpoint_class.startswith("durable-")
+        and route.retention_mode != SKIP
+    ):
+        own_concept_slugs = [
+            c["slug"] for c in extraction.get("concepts", []) if c.get("slug")
+        ]
+        if len(own_concept_slugs) >= CHECKPOINT_FAMILY_MIN_SHARED:
+            family = find_checkpoint_family(
+                wiki_dir,
+                own_concept_slugs,
+                exclude_slug=Path(src_filename).stem,
+            )
+            if len(family) + 1 >= CHECKPOINT_FAMILY_MIN_SIZE:
+                tally: Counter[str] = Counter()
+                for _, shared in family:
+                    for s in shared:
+                        tally[s] += 1
+                top_slugs = [slug for slug, _ in tally.most_common(3)]
+                if top_slugs:
+                    anchor = top_slugs[0].replace("-", " ")
+                    syn_title = f"Recurring checkpoint patterns: {anchor}"
+                    syn_slug = slugify(syn_title)
+                    syn_path = wiki_dir / "synthesis" / f"{syn_slug}.md"
+                    if syn_path.exists():
+                        log.info(
+                            "Checkpoint family of %d touching %s already has synthesis %s",
+                            len(family) + 1, top_slugs, syn_path.name,
+                        )
+                    else:
+                        # Resolve concept titles for compare list (slug -> title)
+                        compare_titles: list[str] = []
+                        for slug in top_slugs:
+                            cp = wiki_dir / "concepts" / f"{slug}.md"
+                            if cp.exists():
+                                cfm, _ = parse_frontmatter(cp)
+                                compare_titles.append(
+                                    cfm.get("title") or slug.replace("-", " ").title()
+                                )
+                            else:
+                                compare_titles.append(slug.replace("-", " ").title())
+                        suggestion = {
+                            "title": syn_title,
+                            "slug": syn_slug,
+                            "question": (
+                                f"What recurring decisions, fixes, and patterns "
+                                f"appear across the {len(family) + 1} session "
+                                f"checkpoints touching {', '.join(compare_titles)}?"
+                            ),
+                            "concepts_to_compare": compare_titles,
+                            "dimensions": ["Approach", "Outcome", "Lessons"],
+                        }
+                        extraction.setdefault("synthesis_suggestions", []).append(
+                            suggestion
+                        )
+                        log.info(
+                            "Checkpoint family trigger: %d members on %s -> queued synthesis '%s'",
+                            len(family) + 1, top_slugs, syn_title,
+                        )
 
     # Generate synthesis pages from suggestions
     synthesis_count = 0

@@ -21,6 +21,8 @@ related:
   - "[[TimescaleDB]]"
 tier: hot
 tags: [graph, checkpoint, copilot-session, dashboard, machine-learning, database-optimization, homelab, batch-prediction, durable-knowledge, agents, fileback, nba-ml-engine]
+checkpoint_class: durable-debugging
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Phases 1-4 Implementation and Deployment

@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "8569d239f29d3a3edd5d15d9e9f3fcf1f4cd252be8b9dbbc7c751bf7b2fced19"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-graphify-comparison-and-quality-evaluation-6949c984.md
-quality_score: 0
+quality_score: 100
 concepts:
   - labs-wiki-architecture
   - graphify-features-for-knowledge-graph-integration
@@ -23,6 +23,8 @@ related:
   - "[[AutoSkills]]"
 tier: hot
 tags: [graphify, labs-wiki, agents, auto-ingest, fileback, quality-evaluation, checkpoint, copilot-session, graph, homelab, durable-knowledge, knowledge-graph]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Graphify Comparison and Quality Evaluation

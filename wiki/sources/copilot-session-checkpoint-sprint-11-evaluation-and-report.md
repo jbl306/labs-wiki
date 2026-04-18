@@ -17,8 +17,10 @@ related:
   - "[[NBA ML Engine]]"
   - "[[Durable Copilot Session Checkpoint]]"
   - "[[Homelab]]"
-tier: hot
+tier: archive
 tags: [checkpoint, copilot-session, dashboard, machine-learning, homelab, evaluation, feature-alignment, durable-knowledge, agents, lstm-gating, fileback, nba-ml-engine]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 11 Evaluation and Report

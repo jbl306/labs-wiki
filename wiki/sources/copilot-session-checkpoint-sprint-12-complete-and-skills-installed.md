@@ -20,8 +20,10 @@ related:
   - "[[NBA ML Engine]]"
   - "[[Node Version Manager (nvm)]]"
   - "[[Taste-Skill Package]]"
-tier: hot
+tier: archive
 tags: [nba, checkpoint, copilot-session, dashboard, machine-learning, feature-engineering, skill-installation, homelab, nodejs, durable-knowledge, agents, model-calibration, ai-agents, fileback, nba-ml-engine]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 12 Complete and Skills Installed

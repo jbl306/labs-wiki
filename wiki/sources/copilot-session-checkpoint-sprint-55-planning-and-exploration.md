@@ -17,8 +17,10 @@ related:
   - "[[NBA ML Engine]]"
   - "[[MLflow API]]"
   - "[[NBA-ML Model Registry]]"
-tier: hot
+tier: archive
 tags: [copilot-session, agents, homelab, ml-sprint, calibration, nba-ml-engine, durable-knowledge, feature-engineering, dashboard, agentic-workflows, fileback, checkpoint, data-quality]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 55 Planning and Exploration

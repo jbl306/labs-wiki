@@ -23,6 +23,8 @@ related:
   - "[[PostgreSQL]]"
 tier: hot
 tags: [graph, checkpoint, copilot-session, dashboard, postgresql, express, homelab, backend-for-frontend, durable-knowledge, agents, data-visualization, fastapi, fileback, nba-ml-engine]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Props DB Query and Chart Refinement

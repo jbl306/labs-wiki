@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "62a3c4ffbf12d604468b3d8046bc22088aed94feabac8006f2b13c5583c1d345"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md
-quality_score: 0
+quality_score: 100
 concepts:
   - knightcrawler-gating-fix-for-stremio-streams
   - opencode-docker-container-bash-shell-configuration
@@ -21,6 +21,8 @@ related:
   - "[[Caddy]]"
 tier: hot
 tags: [knightcrawler, docker, bash, reverse-proxy, fileback, dashboard, checkpoint, copilot-session, caddy, homelab, opencode, durable-knowledge, configuration]
+checkpoint_class: durable-debugging
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: KnightCrawler Gating Fix, Opencode Bash Config

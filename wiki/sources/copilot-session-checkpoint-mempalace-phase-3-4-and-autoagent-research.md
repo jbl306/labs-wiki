@@ -18,8 +18,10 @@ related:
   - "[[ChromaDB]]"
   - "[[LiteLLM]]"
   - "[[Docker]]"
-tier: hot
+tier: archive
 tags: [labs-wiki, agents, LLM Frameworks, nba-ml-engine, fileback, dashboard, MemPalace, checkpoint, copilot-session, graph, mempalace, homelab, Docker, Knowledge Management, durable-knowledge, AI Agents, AutoAgent]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research

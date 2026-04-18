@@ -19,6 +19,8 @@ related:
   - "[[MCP (MemPalace Control Protocol)]]"
 tier: hot
 tags: [mempalace, operational-fix, checkpoint, agents, nba-ml-engine, wiki-ingestion, database-lock, labs-wiki, homelab, fileback, timeout, durable-knowledge, graph, copilot, chroma-db, copilot-session]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Fixing MemPalace Timeouts

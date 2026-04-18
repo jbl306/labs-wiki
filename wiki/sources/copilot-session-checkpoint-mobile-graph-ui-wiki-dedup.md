@@ -18,6 +18,8 @@ related:
   - "[[Labs-Wiki]]"
 tier: hot
 tags: [labs-wiki, copilot-session, mempalace, agents, curation, automation, graph, homelab, mobile, agentic-workflow, durable-knowledge, llm-wiki, dashboard, graph-ui, deduplication, fileback, checkpoint]
+checkpoint_class: durable-workflow
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Mobile Graph UI + Wiki Dedup

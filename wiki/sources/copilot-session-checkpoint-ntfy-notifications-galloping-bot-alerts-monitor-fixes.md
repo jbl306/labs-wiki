@@ -24,6 +24,8 @@ related:
   - "[[Galloping-Bot]]"
 tier: hot
 tags: [checkpoint, copilot-session, dashboard, docker, notifications, homelab, resource-optimization, proxy, durable-knowledge, monitoring, fileback]
+checkpoint_class: durable-debugging
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: ntfy Notifications, Galloping-Bot Alerts, Monitor Fixes

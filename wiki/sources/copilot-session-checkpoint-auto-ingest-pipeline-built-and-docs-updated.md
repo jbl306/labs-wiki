@@ -16,6 +16,8 @@ related:
   - "[[Python Watchdog Library]]"
 tier: hot
 tags: [labs-wiki, docker, llm, automation, auto-ingest, fileback, github-models-api, checkpoint, copilot-session, graph, homelab, pipeline, durable-knowledge]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Auto-ingest Pipeline Built and Docs Updated

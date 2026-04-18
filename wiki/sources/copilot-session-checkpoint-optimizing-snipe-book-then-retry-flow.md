@@ -16,6 +16,8 @@ related:
   - "[[Durable Copilot Session Checkpoint]]"
 tier: hot
 tags: [checkpoint, copilot-session, booking, automation, retry-strategy, golf, homelab, durable-knowledge, copilot, fileback]
+checkpoint_class: durable-debugging
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Optimizing Snipe Book-Then-Retry Flow

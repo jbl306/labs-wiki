@@ -19,8 +19,10 @@ related:
   - "[[GitHub Models API]]"
   - "[[fxtwitter API]]"
   - "[[GPT-4.1]]"
-tier: hot
+tier: archive
 tags: [graph, auto-ingest, checkpoint, copilot-session, pipeline, vision, knowledge-wiki, labs-wiki, homelab, twitter, llm, durable-knowledge, agents, gpt-4.1, github, fileback]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Pipeline Enhancements and Vision Support Deployed

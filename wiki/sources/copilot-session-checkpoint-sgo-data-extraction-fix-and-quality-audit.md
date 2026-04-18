@@ -12,8 +12,10 @@ concepts:
 related:
   - "[[SportsGameOdds (SGO) API]]"
   - "[[Durable Copilot Session Checkpoint]]"
-tier: hot
+tier: archive
 tags: [data-quality, checkpoint, copilot-session, dashboard, api-integration, homelab, sports-data, durable-knowledge, nba-ml, fileback]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: SGO Data Extraction Fix and Quality Audit

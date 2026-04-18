@@ -17,8 +17,10 @@ related:
   - "[[NBA ML Engine]]"
   - "[[EnsembleModel]]"
   - "[[MinutesModel]]"
-tier: hot
+tier: archive
 tags: [ml-pipeline, copilot-session, artifact-saving, nba-ml-engine, durable-knowledge, validation, dashboard, fileback, checkpoint, ensemble-models, root-cause-analysis]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 57 Ensemble Save Diagnosis

@@ -20,6 +20,8 @@ related:
   - "[[KnightCrawler]]"
 tier: hot
 tags: [mempalace, checkpoint, copilot-session, automation, labs-wiki, docker, homelab, durable-knowledge, agents, nba-ml, ai-agents, mlops, fileback, nba-ml-engine]
+checkpoint_class: durable-debugging
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: NBA-ML Agents and Homelab Fixes

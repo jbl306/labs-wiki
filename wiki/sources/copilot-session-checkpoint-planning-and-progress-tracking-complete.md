@@ -15,8 +15,10 @@ related:
   - "[[Multi-Device Source Ingestion Architecture]]"
   - "[[Phased Implementation Planning and Progress Tracking for LLM Wikis]]"
   - "[[obra superpowers skills]]"
-tier: hot
+tier: archive
 tags: [graph, phased-implementation, checkpoint, copilot-session, labs-wiki, agent-personas, workflow-automation, homelab, llm, durable-knowledge, agents, knowledge-wiki, multi-device-ingestion, fileback]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Planning and Progress Tracking Complete

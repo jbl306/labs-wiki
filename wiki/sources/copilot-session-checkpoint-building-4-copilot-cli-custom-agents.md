@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "3a38e39284cc0602ec33af8d22ef0dfb3c2a3a21b23b03f06716e3221ca8b49e"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
-quality_score: 0
+quality_score: 100
 concepts:
   - custom-copilot-cli-agents
   - autoagent-framework-research-integration-planning
@@ -22,6 +22,8 @@ related:
   - "[[NBA-ML Engine]]"
 tier: hot
 tags: [multi-repo, labs-wiki, automation, custom-agents, agents, nba-ml-engine, fileback, dashboard, checkpoint, copilot-session, autoagent, mempalace, agent-feedback, homelab, durable-knowledge, copilot-cli]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents

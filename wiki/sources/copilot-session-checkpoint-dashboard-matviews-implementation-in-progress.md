@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "775f812f7b3878f9c18195d90e9cda4785608659d21041c4a0edfdd122da8024"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md
-quality_score: 0
+quality_score: 100
 concepts:
   - postgresql-materialized-views-for-dashboard-optimization
   - concurrent-refresh-postgresql-materialized-views
@@ -18,8 +18,10 @@ related:
   - "[[NBA ML Engine]]"
   - "[[Dashboard Agent]]"
   - "[[Alembic Migration]]"
-tier: hot
+tier: archive
 tags: [agents, nba-ml-engine, fileback, dashboard, checkpoint, postgresql, copilot-session, mempalace, bff, homelab, database-optimization, materialized-views, durable-knowledge]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Dashboard Matviews Implementation In Progress

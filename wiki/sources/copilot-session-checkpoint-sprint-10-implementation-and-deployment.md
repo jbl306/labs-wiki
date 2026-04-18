@@ -20,8 +20,10 @@ related:
   - "[[Optuna]]"
   - "[[XGBoost]]"
   - "[[LightGBM]]"
-tier: hot
+tier: archive
 tags: [nba, checkpoint, copilot-session, dashboard, homelab, machine learning, feature engineering, durable-knowledge, model tuning, deployment, fileback, nba-ml-engine]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 10 Implementation and Deployment

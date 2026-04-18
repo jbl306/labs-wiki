@@ -15,8 +15,10 @@ related:
   - "[[Stat Exclusion Policy In ML Prediction Pipelines]]"
   - "[[NBA-ML Model Registry]]"
   - "[[PRA Composite Prediction]]"
-tier: hot
+tier: archive
 tags: [ml-pipeline, copilot-session, artifact-validation, production, homelab, nba-ml, durable-knowledge, stat-exclusion, dashboard, fileback, checkpoint]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 56 No-Retrain Fixes Planning

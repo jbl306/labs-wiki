@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "26f254b5e6c65170bfc0d1bbf80f2de1aafe3266407d54a0e3243b0e1600d156"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-creating-claude-and-labs-wiki-repos-cccb14d5.md
-quality_score: 0
+quality_score: 100
 concepts:
   - karpathy-llm-wiki-pattern
   - hybrid-retrieval-agent-memory-systems
@@ -22,6 +22,8 @@ related:
   - "[[OpenCode]]"
 tier: hot
 tags: [labs-wiki, agent-schema, agents, fileback, checkpoint, llm-wiki, vscode, copilot-session, graph, homelab, knowledge-management, github, durable-knowledge, copilot-cli, agent-memory]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Creating Claude and Labs-Wiki Repos

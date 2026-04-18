@@ -23,6 +23,8 @@ related:
   - "[[Homelab]]"
 tier: hot
 tags: [mempalace, graph, checkpoint, copilot-session, dashboard, migration, labs-wiki, opencode, copilot-cli, homelab, openmemory, ai-memory, durable-knowledge, agents, fileback]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode

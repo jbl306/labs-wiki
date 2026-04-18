@@ -17,6 +17,8 @@ related:
   - "[[OpenMemory]]"
 tier: hot
 tags: [mempalace, graph, checkpoint, copilot-session, vector-search, labs-wiki, homelab, knowledge-graph, durable-knowledge, agents, personal-knowledge-management, memory-systems, fileback]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Researching MemPalace for Comparison Doc

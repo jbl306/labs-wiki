@@ -17,8 +17,10 @@ related:
   - "[[EnsembleModel Stacking Meta-Learner]]"
   - "[[Homelab Server Deployment Architecture for NBA ML Platform]]"
   - "[[EnsembleModel]]"
-tier: hot
+tier: archive
 tags: [checkpoint, copilot-session, dashboard, docker, homelab, machine learning, ensemble learning, durable-knowledge, nba ml, deployment, fileback, nba-ml-engine]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Retrained Models, Deploying Improvements

@@ -23,8 +23,10 @@ related:
   - "[[XGBoost]]"
   - "[[CatBoost]]"
   - "[[ModelRegistry]]"
-tier: hot
+tier: archive
 tags: [nba, checkpoint, copilot-session, dashboard, machine-learning, feature-engineering, homelab, durable-knowledge, model-training, hyperparameter-tuning, fileback, nba-ml-engine]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 10 Retrain In Progress

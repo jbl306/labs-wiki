@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "9f90b86f2aab32a86e7ca650c6477398444e04958726c5b3ca2ccd9f465e7581"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-data-source-expansion-exploration-b12f747f.md
-quality_score: 0
+quality_score: 100
 concepts:
   - data-source-expansion-nba-ml-prediction-platform
   - homelab-server-deployment-nba-ml-platform
@@ -20,6 +20,8 @@ related:
   - "[[EnsembleModel]]"
 tier: hot
 tags: [deployment, nba-ml-engine, fileback, dashboard, data ingestion, checkpoint, copilot-session, nba, homelab, feature engineering, durable-knowledge, machine learning, ensemble learning]
+checkpoint_class: durable-debugging
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Data Source Expansion Exploration

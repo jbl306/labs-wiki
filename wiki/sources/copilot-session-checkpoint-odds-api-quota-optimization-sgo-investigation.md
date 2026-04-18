@@ -17,8 +17,10 @@ related:
   - "[[SportsGameOdds (SGO) API Data Extraction Challenges]]"
   - "[[Odds API]]"
   - "[[SportsGameOdds (SGO) API]]"
-tier: hot
+tier: archive
 tags: [api, checkpoint, copilot-session, dashboard, homelab, sports-betting, durable-knowledge, agents, quota-optimization, pipeline-resilience, data-extraction, fileback, nba-ml-engine]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Odds API Quota Optimization, SGO Investigation

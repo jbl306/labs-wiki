@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "1544a9390c8a215aeb38b788d3103fd5a18163dc8ce9182c4c6fc36fbb638e43"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-critical-ml-fixes-sprint-28-9cff218d.md
-quality_score: 0
+quality_score: 100
 concepts:
   - early-stopping-in-gradient-boosting-models
   - calibration-leakage-fix-in-machine-learning-pipelines
@@ -21,8 +21,10 @@ related:
   - "[[XGBoost 3.2.0]]"
   - "[[LightGBM 4.6.0]]"
   - "[[CatBoost 1.2.10]]"
-tier: hot
+tier: archive
 tags: [betting, agents, nba-ml-engine, fileback, dashboard, checkpoint, bug fixes, copilot-session, homelab, model training, calibration, durable-knowledge, machine learning, gradient boosting]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Implementing Critical ML Fixes Sprint 28

@@ -19,6 +19,8 @@ related:
   - "[[Labs-Wiki Ingest API]]"
 tier: hot
 tags: [labs-wiki, Server-Side, Android, fileback, checkpoint, copilot-session, API, homelab, Debugging, HTTP Shortcuts, Ingest, durable-knowledge]
+checkpoint_class: durable-debugging
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Fixing Android Share Ingest API

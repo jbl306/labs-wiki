@@ -17,6 +17,8 @@ related:
   - "[[Karpathy Compile-Once Wiki Principle]]"
 tier: hot
 tags: [mempalace, checkpoint, agents, knowledge-management, nba-ml-engine, wiki-ingestion, efficiency, model-routing, labs-wiki, homelab, fileback, durable-knowledge, graph, karpathy-principle, session-curation, copilot, copilot-session]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Session Wiki Promotion

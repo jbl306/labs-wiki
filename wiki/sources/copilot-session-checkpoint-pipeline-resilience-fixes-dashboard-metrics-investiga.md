@@ -19,6 +19,8 @@ related:
   - "[[Odds API]]"
 tier: hot
 tags: [checkpoint, copilot-session, dashboard, mlflow, homelab, durable-knowledge, pipeline-resilience, nba-ml-pipeline, dashboard-metrics, fileback, model-fallback]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Pipeline Resilience Fixes, Dashboard Metrics Investigation

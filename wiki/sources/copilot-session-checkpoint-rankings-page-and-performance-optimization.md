@@ -19,6 +19,8 @@ related:
   - "[[PostgreSQL]]"
 tier: hot
 tags: [nba, checkpoint, copilot-session, dashboard, performance-optimization, sql, homelab, durable-knowledge, agents, bff, caching, fileback, nba-ml-engine]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Rankings Page and Performance Optimization

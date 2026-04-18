@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "09d0f25cf67625d2215d0a83135693fea032d2bab65425e15c21d99f6b87103a"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
-quality_score: 0
+quality_score: 100
 concepts:
   - walk-forward-cross-validation-for-model-selection
   - shap-based-feature-selection-with-gradient-boosting-fallback
@@ -20,8 +20,10 @@ related:
   - "[[NBA ML Engine]]"
   - "[[Optuna]]"
   - "[[SHAP (SHapley Additive exPlanations)]]"
-tier: hot
+tier: archive
 tags: [agents, nba-ml-engine, fileback, dashboard, time-series, checkpoint, model evaluation, feature selection, copilot-session, production ml, homelab, durable-knowledge, machine learning]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements

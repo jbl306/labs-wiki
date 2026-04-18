@@ -19,8 +19,10 @@ related:
   - "[[OverUnderClassifier]]"
   - "[[Edge Optimizer]]"
   - "[[EnsembleModel]]"
-tier: hot
+tier: archive
 tags: [nba, model improvements, checkpoint, copilot-session, dashboard, sports betting, homelab, machine learning, xgboost, ensemble learning, durable-knowledge, agents, fileback, nba-ml-engine]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Sprint 13 Model Improvements Code

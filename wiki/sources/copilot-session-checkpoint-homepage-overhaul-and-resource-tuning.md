@@ -20,6 +20,8 @@ related:
   - "[[KnightCrawler]]"
 tier: hot
 tags: [labs-wiki, copilot-session, database-indexing, mempalace, agents, resource-tuning, container-management, homelab, nba-ml-engine, durable-knowledge, dashboard, fileback, checkpoint, devops]
+checkpoint_class: durable-workflow
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: Homepage Overhaul And Resource Tuning

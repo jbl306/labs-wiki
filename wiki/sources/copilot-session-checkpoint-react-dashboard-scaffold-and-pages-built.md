@@ -21,6 +21,8 @@ related:
   - "[[Vite]]"
 tier: hot
 tags: [checkpoint, copilot-session, dashboard, frontend-redesign, tailwindcss, homelab, typescript, durable-knowledge, agents, react, bff, fileback, nba-ml-engine]
+checkpoint_class: durable-architecture
+retention_mode: retain
 ---
 
 # Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built

@@ -18,8 +18,10 @@ related:
   - "[[KnightCrawler]]"
   - "[[OpenCode]]"
   - "[[Caddy]]"
-tier: hot
+tier: archive
 tags: [containerization, checkpoint, copilot-session, dashboard, opencode, docker, resource-optimization, homelab, knightcrawler, durable-knowledge, bash-shell, caddy, fileback]
+checkpoint_class: project-progress
+retention_mode: compress
 ---
 
 # Copilot Session Checkpoint: Resource Optimization, Opencode Bash Fix

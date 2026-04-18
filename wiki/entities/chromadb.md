@@ -5,6 +5,8 @@ created: 2026-04-11
 last_verified: 2026-04-11
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
+  - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
 quality_score: 100
 concepts:
@@ -52,3 +54,5 @@ ChromaDB powers the semantic retrieval capabilities of MemPalace, allowing users
 ## Sources
 
 - [[MemPalace GitHub Repository]] — where this entity was mentioned
+- [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — additional source
+- [[Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research]] — additional source

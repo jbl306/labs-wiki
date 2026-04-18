@@ -5,6 +5,8 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "4283d5051205b4b685c0610b6b50ef642f6ff15e703f606bbbbbed91a7f5b021"
 sources:
+  - raw/2026-04-18-copilot-session-sprint-59-shap-coverage-implementation-9a231f70.md
+  - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
   - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
 quality_score: 100
 concepts:
@@ -46,3 +48,5 @@ No related entities documented yet.
 ## Sources
 
 - [[LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks]] — where this entity was mentioned
+- [[Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning]] — additional source
+- [[Copilot Session Checkpoint: Sprint 59 SHAP Coverage Implementation]] — additional source

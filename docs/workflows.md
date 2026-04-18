@@ -212,6 +212,8 @@ docker compose -f compose.wiki.yml restart wiki-auto-ingest
 | `GITHUB_MODELS_MODEL_LIGHT` | `GITHUB_MODELS_MODEL_DEFAULT` | Cheaper lane for session checkpoints / MemPalace exports |
 | `GITHUB_MODELS_MODEL_VISION` | `GITHUB_MODELS_MODEL_DEFAULT` | Vision-capable lane for image-bearing sources |
 | `GITHUB_MODELS_MODEL_OVERRIDE` | — | Force one model for debugging/manual runs |
+| `AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST` | `2` | Cap follow-on synthesis calls per ingest; set `0` for quota-sensitive backlog imports |
+| `AUTO_INGEST_INCLUDE_EXISTING_PAGES_CONTEXT` | `1` | Include the existing wiki page list in extraction prompts; set `0` for faster, cheaper backlog imports |
 | `DEBOUNCE_SECONDS` | `5` | Wait time after file creation before processing |
 | `NTFY_SERVER` | — | ntfy notification server URL |
 | `NTFY_TOPIC` | — | ntfy topic for alerts |

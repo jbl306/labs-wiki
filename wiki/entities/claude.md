@@ -5,6 +5,8 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "37dca25e4ed5998ae5f1377fbae32da1d785a06990c5f9e00b16c9ac74c66bd1"
 sources:
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-creating-claude-and-labs-wiki-repos-cccb14d5.md
   - raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
@@ -57,3 +59,5 @@ No related entities documented yet.
 - [[The Hardening Principle | 10 Claude Code Principles]] — additional source
 - [[The Institutional Memory Principle | 10 Claude Code Principles]] — additional source
 - [[The Living Documentation Principle | 10 Claude Code Principles]] — additional source
+- [[Copilot Session Checkpoint: Creating Claude and Labs-Wiki Repos]] — additional source
+- [[Copilot Session Checkpoint: Planning and Progress Tracking Complete]] — additional source

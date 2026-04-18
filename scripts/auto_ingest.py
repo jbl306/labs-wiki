@@ -64,6 +64,9 @@ MODEL_VISION = _env_str("GITHUB_MODELS_MODEL_VISION", default=MODEL_DEFAULT)
 MAX_SOURCE_CHARS_DEFAULT = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_DEFAULT", "30000"))
 MAX_SOURCE_CHARS_LIGHT = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_LIGHT", "18000"))
 MAX_SOURCE_CHARS_VISION = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_VISION", "24000"))
+INCLUDE_EXISTING_PAGES_CONTEXT = os.environ.get(
+    "AUTO_INGEST_INCLUDE_EXISTING_PAGES_CONTEXT", "1"
+).strip().lower() not in {"0", "false", "no"}
 
 
 @dataclass(frozen=True)
@@ -832,11 +835,14 @@ def call_llm(
     """Call GitHub Models API to extract knowledge from source content."""
     client = OpenAI(base_url=GITHUB_MODELS_URL, api_key=token)
 
-    existing_list = "\n".join(
-        f"- {title} ({path})" for title, path in sorted(existing_pages.items())
-    )
-    if not existing_list:
-        existing_list = "(no existing pages yet)"
+    if INCLUDE_EXISTING_PAGES_CONTEXT:
+        existing_list = "\n".join(
+            f"- {title} ({path})" for title, path in sorted(existing_pages.items())
+        )
+        if not existing_list:
+            existing_list = "(no existing pages yet)"
+    else:
+        existing_list = "(existing wiki page context suppressed for this ingest run)"
 
     user_prompt = f"""## Source Document
 Title: {source_title}
@@ -874,6 +880,10 @@ Title: {source_title}
             raw = response.choices[0].message.content
             return json.loads(raw)
         except Exception as e:
+            message = str(e).lower()
+            status_code = getattr(e, "status_code", None)
+            if "budget limit" in message and (status_code == 403 or "403" in message):
+                raise RuntimeError(f"GitHub Models budget limit reached: {e}") from e
             last_error = e
             log.warning("LLM call attempt %d failed: %s", attempt, e)
             if attempt < MAX_RETRIES:
@@ -926,7 +936,10 @@ SYNTHESIS_SYSTEM_PROMPT = textwrap.dedent("""\
     }
 """)
 
-MAX_SYNTHESIS_PER_INGEST = 2
+MAX_SYNTHESIS_PER_INGEST = max(
+    0,
+    int(os.environ.get("AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST", "2")),
+)
 
 
 def call_llm_synthesis(

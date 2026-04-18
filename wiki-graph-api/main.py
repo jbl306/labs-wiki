@@ -263,6 +263,32 @@ def graph_surprises(
     return {"surprises": filtered[:limit]}
 
 
+@app.get("/graph/checkpoints")
+def graph_checkpoints(
+    recommendation: str | None = Query(
+        None, pattern="^(keep|compress|archive|merge)$",
+    ),
+    limit: int = Query(200, ge=1, le=1000),
+) -> dict[str, Any]:
+    """Per-checkpoint health report with curation recommendations.
+
+    Filter by ``recommendation`` to focus on candidates for one action
+    (e.g. ``?recommendation=archive`` for orphaned checkpoints).
+    """
+    health = state.payload.get("checkpoint_health") or {}
+    items = health.get("checkpoints", [])
+    if recommendation:
+        items = [c for c in items if c.get("recommendation") == recommendation]
+    return {
+        "total_checkpoints": health.get("total_checkpoints", 0),
+        "recommendations": health.get("recommendations", {}),
+        "synthesis_neighbor_ratio": health.get("synthesis_neighbor_ratio", 0.0),
+        "merge_clusters": health.get("merge_clusters", []),
+        "returned": len(items[:limit]),
+        "checkpoints": items[:limit],
+    }
+
+
 @app.get("/graph/export/json")
 def graph_export_json() -> JSONResponse:
     return JSONResponse(state.payload)

@@ -5,6 +5,15 @@ created: 2026-04-11
 last_verified: 2026-04-11
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-installing-mempalace-beginning-migration-f4a540d2.md
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
+  - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
+  - raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
+  - raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md
+  - raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md
   - raw/2026-04-17-watcher-e2e-validation.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
 quality_score: 100
@@ -57,3 +66,12 @@ MemPalace addresses the problem of ephemeral AI conversations by preserving ever
 
 - [[MemPalace GitHub Repository]] — where this entity was mentioned
 - [[Watcher E2E Validation]] — additional source
+- [[Copilot Session Checkpoint: Homepage Overhaul And Resource Tuning]] — additional source
+- [[Copilot Session Checkpoint: NBA ML OOM Fix And Docs Cleanup]] — additional source
+- [[Copilot Session Checkpoint: Session Wiki Promotion]] — additional source
+- [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — additional source
+- [[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]] — additional source
+- [[Copilot Session Checkpoint: Installing MemPalace, Beginning Migration]] — additional source
+- [[Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research]] — additional source
+- [[Copilot Session Checkpoint: Researching MemPalace for Comparison Doc]] — additional source
+- [[Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode]] — additional source

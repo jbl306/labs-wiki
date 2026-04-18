@@ -18,6 +18,7 @@ import re
 import subprocess
 import sys
 import textwrap
+from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -32,6 +33,15 @@ try:
 except ImportError:  # pragma: no cover
     _rf_fuzz = None
     _FUZZ_AVAILABLE = False
+
+from checkpoint_classifier import (
+    CLASS_PROJECT_PROGRESS,
+    COMPRESS,
+    RETAIN,
+    SKIP,
+    classify_checkpoint,
+    resolve_retention,
+)
 
 log = logging.getLogger("auto-ingest")
 
@@ -64,6 +74,9 @@ MODEL_VISION = _env_str("GITHUB_MODELS_MODEL_VISION", default=MODEL_DEFAULT)
 MAX_SOURCE_CHARS_DEFAULT = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_DEFAULT", "30000"))
 MAX_SOURCE_CHARS_LIGHT = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_LIGHT", "18000"))
 MAX_SOURCE_CHARS_VISION = int(os.environ.get("AUTO_INGEST_MAX_SOURCE_CHARS_VISION", "24000"))
+INCLUDE_EXISTING_PAGES_CONTEXT = os.environ.get(
+    "AUTO_INGEST_INCLUDE_EXISTING_PAGES_CONTEXT", "1"
+).strip().lower() not in {"0", "false", "no"}
 
 
 @dataclass(frozen=True)
@@ -73,6 +86,8 @@ class IngestRoute:
     priority: int
     max_source_chars: int
     source_class: str
+    checkpoint_class: str = ""
+    retention_mode: str = RETAIN
 
 
 def classify_ingest_route(
@@ -80,6 +95,7 @@ def classify_ingest_route(
     *,
     has_images: bool = False,
     model_override: str | None = None,
+    body: str | None = None,
 ) -> IngestRoute:
     """Classify a raw source into a model lane + queue priority.
 
@@ -111,12 +127,29 @@ def classify_ingest_route(
         )
 
     if source == "copilot-session-curator" or "copilot-session" in tags_lower:
+        # Honour the class written by the curator if present; otherwise
+        # re-classify from the title + body so legacy/backlog imports still
+        # benefit from retention logic.
+        cp_class = str(fm.get("checkpoint_class", "")).strip().lower()
+        if cp_class not in {"durable-architecture", "durable-debugging",
+                            "durable-workflow", "project-progress",
+                            "low-signal"}:
+            classification = classify_checkpoint(
+                str(fm.get("title", "")),
+                body or "",
+            )
+            cp_class = classification.cls
+        retention = str(fm.get("retention_mode", "")).strip().lower()
+        if retention not in {RETAIN, COMPRESS, SKIP}:
+            retention = resolve_retention(cp_class)
         return IngestRoute(
             lane="light",
             model=MODEL_LIGHT,
             priority=30,
             max_source_chars=MAX_SOURCE_CHARS_LIGHT,
             source_class="copilot-session-checkpoint",
+            checkpoint_class=cp_class,
+            retention_mode=retention,
         )
 
     if source == "mempalace-bridge" or "mempalace" in tags_lower:
@@ -832,11 +865,14 @@ def call_llm(
     """Call GitHub Models API to extract knowledge from source content."""
     client = OpenAI(base_url=GITHUB_MODELS_URL, api_key=token)
 
-    existing_list = "\n".join(
-        f"- {title} ({path})" for title, path in sorted(existing_pages.items())
-    )
-    if not existing_list:
-        existing_list = "(no existing pages yet)"
+    if INCLUDE_EXISTING_PAGES_CONTEXT:
+        existing_list = "\n".join(
+            f"- {title} ({path})" for title, path in sorted(existing_pages.items())
+        )
+        if not existing_list:
+            existing_list = "(no existing pages yet)"
+    else:
+        existing_list = "(existing wiki page context suppressed for this ingest run)"
 
     user_prompt = f"""## Source Document
 Title: {source_title}
@@ -874,6 +910,10 @@ Title: {source_title}
             raw = response.choices[0].message.content
             return json.loads(raw)
         except Exception as e:
+            message = str(e).lower()
+            status_code = getattr(e, "status_code", None)
+            if "budget limit" in message and (status_code == 403 or "403" in message):
+                raise RuntimeError(f"GitHub Models budget limit reached: {e}") from e
             last_error = e
             log.warning("LLM call attempt %d failed: %s", attempt, e)
             if attempt < MAX_RETRIES:
@@ -926,7 +966,60 @@ SYNTHESIS_SYSTEM_PROMPT = textwrap.dedent("""\
     }
 """)
 
-MAX_SYNTHESIS_PER_INGEST = 2
+MAX_SYNTHESIS_PER_INGEST = max(
+    0,
+    int(os.environ.get("AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST", "2")),
+)
+
+# Checkpoint-family synthesis trigger: minimum number of checkpoint sources
+# (including the freshly-ingested one) that must share concepts before we
+# auto-suggest a cross-checkpoint synthesis. Default shared=1 because the
+# current concept extractor produces hyper-specific concepts that almost never
+# repeat verbatim across checkpoints (52 checkpoints / 140 unique concepts /
+# max 2 hits per concept on the existing corpus). Operators with denser concept
+# graphs can raise this via env.
+CHECKPOINT_FAMILY_MIN_SIZE = max(
+    2,
+    int(os.environ.get("AUTO_INGEST_CHECKPOINT_FAMILY_MIN", "3")),
+)
+CHECKPOINT_FAMILY_MIN_SHARED = max(
+    1,
+    int(os.environ.get("AUTO_INGEST_CHECKPOINT_FAMILY_SHARED", "1")),
+)
+
+
+def find_checkpoint_family(
+    wiki_dir: Path,
+    concept_slugs: list[str],
+    exclude_slug: str | None = None,
+) -> list[tuple[Path, set[str]]]:
+    """Find existing checkpoint source pages that share >= CHECKPOINT_FAMILY_MIN_SHARED
+    concepts with the given slug list.
+
+    Returns a list of (path, shared_slugs) tuples, sorted by overlap size descending.
+    """
+    if not concept_slugs:
+        return []
+    target = set(concept_slugs)
+    fam: list[tuple[Path, set[str]]] = []
+    sources_dir = wiki_dir / "sources"
+    if not sources_dir.is_dir():
+        return []
+    for src in sources_dir.glob("copilot-session-checkpoint-*.md"):
+        if exclude_slug and src.stem == exclude_slug:
+            continue
+        try:
+            fm, _ = parse_frontmatter(src)
+        except Exception:
+            continue
+        their = fm.get("concepts") or []
+        if not isinstance(their, list):
+            continue
+        shared = target & set(their)
+        if len(shared) >= CHECKPOINT_FAMILY_MIN_SHARED:
+            fam.append((src, shared))
+    fam.sort(key=lambda x: len(x[1]), reverse=True)
+    return fam
 
 
 def call_llm_synthesis(
@@ -995,6 +1088,9 @@ def generate_source_page(
     source_url: str | None,
     today: str,
     raw_tags: list[str],
+    *,
+    checkpoint_class: str = "",
+    retention_mode: str = RETAIN,
 ) -> tuple[str, str]:
     """Generate source summary page. Returns (filename, content)."""
     ss = extraction["source_summary"]
@@ -1034,6 +1130,16 @@ def generate_source_page(
         for q in ss.get("notable_quotes", [])
     )
 
+    # Tier defaults to "hot" for new source pages but compressed checkpoints
+    # land in "archive" so they don't bubble up in hot.md / surfacing lists.
+    page_tier = "archive" if (checkpoint_class and retention_mode == COMPRESS) else "hot"
+
+    extra_fm: list[str] = []
+    if checkpoint_class:
+        extra_fm.append(f"checkpoint_class: {checkpoint_class}")
+        extra_fm.append(f"retention_mode: {retention_mode}")
+    extra_fm_block = ("\n" + "\n".join(extra_fm)) if extra_fm else ""
+
     content = f"""---
 title: "{title}"
 type: source
@@ -1047,7 +1153,7 @@ concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
 {chr(10).join(related) if related else '  []'}
-tier: hot
+tier: {page_tier}{extra_fm_block}
 tags: [{', '.join(tags)}]
 ---
 
@@ -1667,7 +1773,7 @@ def ingest_raw_source(
     source_type = fm.get("type", "text")
     source_url = fm.get("url")
     raw_tags = fm.get("tags", []) if isinstance(fm.get("tags"), list) else []
-    route = classify_ingest_route(fm, model_override=model)
+    route = classify_ingest_route(fm, model_override=model, body=body)
 
     # For URL sources, fetch the actual content
     content = body
@@ -1686,18 +1792,32 @@ def ingest_raw_source(
         log.info("Downloading %d images for vision analysis...", len(image_urls))
         images_b64 = download_images_as_base64(image_urls)
         log.info("Successfully encoded %d images", len(images_b64))
-    route = classify_ingest_route(fm, has_images=bool(images_b64), model_override=model)
+    route = classify_ingest_route(fm, has_images=bool(images_b64), model_override=model, body=body)
     log.info(
-        "Ingest route: class=%s lane=%s model=%s priority=%d images=%s",
+        "Ingest route: class=%s lane=%s model=%s priority=%d images=%s checkpoint_class=%s retention=%s",
         route.source_class,
         route.lane,
         route.model,
         route.priority,
         bool(images_b64),
+        route.checkpoint_class or "-",
+        route.retention_mode,
     )
 
     if not content or len(content.strip()) < 10:
         log.warning("Source content too short for meaningful extraction")
+
+    # Retention: skip checkpoints classified as low-signal (or whatever the
+    # operator has overridden to skip via LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES).
+    # No LLM call, no source page; raw is marked so we don't retry it.
+    if route.retention_mode == SKIP:
+        log.info(
+            "Skipping ingest for %s (checkpoint_class=%s retention=skip)",
+            raw_path.name,
+            route.checkpoint_class or "-",
+        )
+        update_raw_status(raw_path, "ingested-skipped")
+        return True
 
     # Compute hash & check incremental
     source_hash = compute_sha256(content)
@@ -1733,6 +1853,8 @@ def ingest_raw_source(
     # Generate source summary page
     src_filename, src_content = generate_source_page(
         extraction, raw_rel, source_hash, source_url, today, raw_tags,
+        checkpoint_class=route.checkpoint_class,
+        retention_mode=route.retention_mode,
     )
     src_path = wiki_dir / "sources" / src_filename
     src_path.parent.mkdir(parents=True, exist_ok=True)
@@ -1812,6 +1934,73 @@ def ingest_raw_source(
             log.info("Created: wiki/entities/%s", filename)
 
         created_pages.append(f"wiki/entities/{filename}")
+
+    # ------------------------------------------------------------------
+    # Phase 3: checkpoint-family synthesis trigger
+    # If this is a durable checkpoint and there are >= CHECKPOINT_FAMILY_MIN_SIZE
+    # checkpoints (incl. self) sharing concepts, append a synthesis suggestion so
+    # the existing call_llm_synthesis loop picks it up.
+    # ------------------------------------------------------------------
+    if (
+        route.checkpoint_class
+        and route.checkpoint_class.startswith("durable-")
+        and route.retention_mode != SKIP
+    ):
+        own_concept_slugs = [
+            c["slug"] for c in extraction.get("concepts", []) if c.get("slug")
+        ]
+        if len(own_concept_slugs) >= CHECKPOINT_FAMILY_MIN_SHARED:
+            family = find_checkpoint_family(
+                wiki_dir,
+                own_concept_slugs,
+                exclude_slug=Path(src_filename).stem,
+            )
+            if len(family) + 1 >= CHECKPOINT_FAMILY_MIN_SIZE:
+                tally: Counter[str] = Counter()
+                for _, shared in family:
+                    for s in shared:
+                        tally[s] += 1
+                top_slugs = [slug for slug, _ in tally.most_common(3)]
+                if top_slugs:
+                    anchor = top_slugs[0].replace("-", " ")
+                    syn_title = f"Recurring checkpoint patterns: {anchor}"
+                    syn_slug = slugify(syn_title)
+                    syn_path = wiki_dir / "synthesis" / f"{syn_slug}.md"
+                    if syn_path.exists():
+                        log.info(
+                            "Checkpoint family of %d touching %s already has synthesis %s",
+                            len(family) + 1, top_slugs, syn_path.name,
+                        )
+                    else:
+                        # Resolve concept titles for compare list (slug -> title)
+                        compare_titles: list[str] = []
+                        for slug in top_slugs:
+                            cp = wiki_dir / "concepts" / f"{slug}.md"
+                            if cp.exists():
+                                cfm, _ = parse_frontmatter(cp)
+                                compare_titles.append(
+                                    cfm.get("title") or slug.replace("-", " ").title()
+                                )
+                            else:
+                                compare_titles.append(slug.replace("-", " ").title())
+                        suggestion = {
+                            "title": syn_title,
+                            "slug": syn_slug,
+                            "question": (
+                                f"What recurring decisions, fixes, and patterns "
+                                f"appear across the {len(family) + 1} session "
+                                f"checkpoints touching {', '.join(compare_titles)}?"
+                            ),
+                            "concepts_to_compare": compare_titles,
+                            "dimensions": ["Approach", "Outcome", "Lessons"],
+                        }
+                        extraction.setdefault("synthesis_suggestions", []).append(
+                            suggestion
+                        )
+                        log.info(
+                            "Checkpoint family trigger: %d members on %s -> queued synthesis '%s'",
+                            len(family) + 1, top_slugs, syn_title,
+                        )
 
     # Generate synthesis pages from suggestions
     synthesis_count = 0

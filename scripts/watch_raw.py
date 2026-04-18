@@ -92,7 +92,7 @@ class RawFileHandler(FileSystemEventHandler):
             if fm.get("status") != "pending":
                 log.debug("Skipping %s (status: %s)", raw_path.name, fm.get("status"))
                 continue
-            route = classify_ingest_route(fm, model_override=self.model_override)
+            route = classify_ingest_route(fm, model_override=self.model_override, body=None)
             prioritized.append((route.priority, raw_path.name, raw_path))
 
         for _, _, raw_path in sorted(prioritized):

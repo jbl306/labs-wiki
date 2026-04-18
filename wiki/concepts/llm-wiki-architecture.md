@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-17
 source_hash: "dc3efe98ae62f23dd08acad13aba2e95287beb20b6bec2f4af0423557fe37401"
 sources:
+  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
   - raw/2026-04-07-llm-wiki.md
 quality_score: 100
 concepts:
@@ -84,3 +85,4 @@ Applicable to personal knowledge management, research wikis, business/team inter
 ## Sources
 
 - [[LLM Wiki]] — primary source for this concept
+- [[Copilot Session Checkpoint: Planning and Progress Tracking Complete]] — additional source

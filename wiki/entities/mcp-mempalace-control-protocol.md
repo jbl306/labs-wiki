@@ -5,6 +5,7 @@ created: 2026-04-11
 last_verified: 2026-04-11
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
+  - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
 quality_score: 100
 concepts:
@@ -52,3 +53,4 @@ MCP integration allows MemPalace to be used seamlessly by AI agents, automating 
 ## Sources
 
 - [[MemPalace GitHub Repository]] — where this entity was mentioned
+- [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — additional source

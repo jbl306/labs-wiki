@@ -403,10 +403,106 @@ def analyze_graph(g: nx.Graph, communities: dict[str, int]) -> dict[str, Any]:
         for idx, size in sorted(community_sizes.items(), key=lambda kv: kv[1], reverse=True)
     ]
 
+    checkpoint_health = _checkpoint_health_report(g, communities)
+
     return {
         "god_nodes": god_nodes,
         "surprises": surprises[:50],
         "communities": community_summary,
+        "checkpoint_health": checkpoint_health,
+    }
+
+
+_CHECKPOINT_TITLE_PREFIX = "Copilot Session Checkpoint"
+
+
+def _checkpoint_health_report(
+    g: nx.Graph, communities: dict[str, int]
+) -> dict[str, Any]:
+    """Score each Copilot session checkpoint by graph connectivity.
+
+    For each checkpoint node, count neighbours by page_type and emit a
+    recommendation:
+
+    - ``keep``: well-connected to concepts/synthesis (degree>=4 and
+      synthesis_neighbors>=1).
+    - ``compress``: connected but no synthesis upstream — candidate for the
+      archive tier so it stops surfacing in hot lists.
+    - ``archive``: degree<=1 — the checkpoint is essentially orphaned.
+    - ``merge``: shares a community with >=2 other checkpoints AND overlaps on
+      concept neighbours — candidate for a synthesis page.
+
+    Returns a dict with per-checkpoint records plus aggregate counters.
+    """
+    checkpoints: list[dict[str, Any]] = []
+    rec_counts: Counter[str] = Counter()
+    community_checkpoints: dict[int, list[str]] = {}
+
+    for node, data in g.nodes(data=True):
+        title = data.get("title", "")
+        if data.get("page_type") != "source":
+            continue
+        if not title.startswith(_CHECKPOINT_TITLE_PREFIX):
+            continue
+
+        neighbours = list(g.neighbors(node))
+        by_type: Counter[str] = Counter()
+        for nb in neighbours:
+            by_type[g.nodes[nb].get("page_type", "other")] += 1
+
+        degree = len(neighbours)
+        synthesis_n = by_type.get("synthesis", 0)
+        concept_n = by_type.get("concept", 0)
+        source_n = by_type.get("source", 0)
+        community = communities.get(node, -1)
+
+        if degree <= 1:
+            recommendation = "archive"
+        elif synthesis_n >= 1 and degree >= 4:
+            recommendation = "keep"
+        elif concept_n >= 2 and synthesis_n == 0:
+            recommendation = "merge"
+        else:
+            recommendation = "compress"
+
+        rec_counts[recommendation] += 1
+        community_checkpoints.setdefault(community, []).append(node)
+
+        checkpoints.append(
+            {
+                "node_id": node,
+                "title": title,
+                "tier": data.get("tier", ""),
+                "quality_score": data.get("quality_score", 0.0),
+                "degree": degree,
+                "synthesis_neighbors": synthesis_n,
+                "concept_neighbors": concept_n,
+                "source_neighbors": source_n,
+                "community": community,
+                "recommendation": recommendation,
+            }
+        )
+
+    checkpoints.sort(key=lambda r: (r["recommendation"] != "archive", -r["degree"]))
+
+    merge_clusters = [
+        {"community": cid, "checkpoints": nodes}
+        for cid, nodes in community_checkpoints.items()
+        if len(nodes) >= 3
+    ]
+
+    return {
+        "total_checkpoints": len(checkpoints),
+        "recommendations": dict(rec_counts),
+        "synthesis_neighbor_ratio": (
+            round(
+                sum(1 for c in checkpoints if c["synthesis_neighbors"] >= 1)
+                / max(1, len(checkpoints)),
+                3,
+            )
+        ),
+        "merge_clusters": merge_clusters,
+        "checkpoints": checkpoints,
     }
 
 
@@ -462,6 +558,7 @@ def to_node_link(
         "god_nodes": analysis["god_nodes"],
         "surprises": analysis["surprises"],
         "communities": analysis["communities"],
+        "checkpoint_health": analysis.get("checkpoint_health", {}),
     }
 
 

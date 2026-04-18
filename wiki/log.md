@@ -1385,3 +1385,679 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
 
 **Verify with:** `curl -s http://graph-api.jbl-lab.com/graph/stats | jq` and
 `grep "^## \[" wiki/log.md | tail -10`.
+
+- timestamp: 2026-04-18T01:37:52+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-mobile-graph-ui-wiki-dedup.md
+    - wiki/concepts/mobile-first-graph-ui-design-for-wiki-systems.md
+    - wiki/concepts/wiki-concept-deduplication-and-canonicalization.md
+    - wiki/concepts/agentic-wiki-optimization-karpathy-compile-once-principles.md
+    - wiki/entities/karpathy-compile-once-wiki-principle.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:38:48+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-56-no-retrain-fixes-planning.md
+    - wiki/concepts/artifact-registry-validation-in-ml-pipelines.md
+    - wiki/concepts/stat-exclusion-policy-in-ml-prediction-pipelines.md
+    - wiki/entities/nba-ml-model-registry.md
+    - wiki/entities/pra-composite-prediction.md
+  source: raw/2026-04-18-copilot-session-sprint-56-no-retrain-fixes-planning-895454cb.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:38:50+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-mobile-graph-ui-wiki-dedup.md
+    - wiki/concepts/mobile-first-graph-ui-design-for-wiki-systems.md
+    - wiki/concepts/wiki-deduplication-and-concept-merging-in-llm-wikis.md
+    - wiki/concepts/agentic-workflow-optimization-for-llm-wikis.md
+    - wiki/entities/graph-jbl-lab.md
+    - wiki/entities/labs-wiki.md
+    - wiki/synthesis/complementarity-and-competition-exact-source-hash-deduplication-vs-fuzzy-concept.md
+  source: raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 2 entities, 1 synthesis)"
+
+- timestamp: 2026-04-18T01:38:56+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-homepage-overhaul-and-resource-tuning.md
+    - wiki/concepts/homelab-service-inventory-and-dashboard-synchronization.md
+    - wiki/concepts/container-resource-tuning-and-performance-remediation.md
+    - wiki/concepts/database-indexing-for-performance-optimization.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/qdrant.md
+    - wiki/entities/knightcrawler.md
+  source: raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:39:43+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-57-ensemble-save-diagnosis.md
+    - wiki/concepts/ensemble-model-save-round-trip-validation-gate.md
+    - wiki/concepts/root-cause-analysis-silent-ensemble-model-save-failures.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/ensemblemodel.md
+    - wiki/entities/labs-wiki.md
+  source: raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:39:54+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-nba-ml-oom-fix-and-docs-cleanup.md
+    - wiki/concepts/container-resource-tuning-and-performance-remediation.md
+    - wiki/concepts/agent-documentation-hygiene-and-migration.md
+    - wiki/entities/nba-ml-model-registry.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/openmemory.md
+  source: raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:39:56+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-57-ensemble-save-diagnosis.md
+    - wiki/concepts/atomic-model-artifact-saving-in-ml-training-loops.md
+    - wiki/concepts/ensemble-model-save-round-trip-validation-gate.md
+    - wiki/concepts/root-cause-analysis-of-silent-model-artifact-save-failures.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/ensemblemodel.md
+    - wiki/entities/minutesmodel.md
+  source: raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:40:54+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-58-shap-bug-planning.md
+    - wiki/concepts/shap-analysis-bug-resolution-in-nba-ml-engine.md
+    - wiki/concepts/atomic-save-pattern-for-model-artifacts.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/modelregistry.md
+    - wiki/entities/ensemblemodel.md
+    - wiki/synthesis/shap-explainability-across-tree-based-linear-and-ensemble-models-in-production-m.md
+  source: raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
+  status: success
+  notes: "Auto-ingested 7 pages (2 concepts, 3 entities, 1 synthesis)"
+
+- timestamp: 2026-04-18T01:41:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-55-implementation-and-deployment.md
+    - wiki/concepts/parallel-agent-coordination-ml-sprint-implementation.md
+    - wiki/concepts/calibration-leakage-mitigation-ml-model-training.md
+    - wiki/concepts/edge-gating-stat-specific-thresholds-ml-prediction-pipelines.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/labs-wiki.md
+  source: raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:42:11+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-59-shap-coverage-implementation.md
+    - wiki/concepts/shap-coverage-extension-for-ridge-and-ensemble-models.md
+    - wiki/concepts/atomic-model-artifact-saving-via-atomic-pickle-dump.md
+    - wiki/concepts/registry-health-snapshot-tracking-and-dashboard-integration.md
+    - wiki/entities/shap-shapley-additive-explanations.md
+    - wiki/entities/ensemblemodel.md
+    - wiki/entities/ridgemodel.md
+  source: raw/2026-04-18-copilot-session-sprint-59-shap-coverage-implementation-9a231f70.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:42:31+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-58-shap-bug-planning.md
+    - wiki/concepts/shap-analysis-bug-root-cause-and-remediation.md
+    - wiki/concepts/atomic-save-pattern-for-model-artifacts.md
+    - wiki/concepts/registry-health-validation-via-scheduled-cron.md
+    - wiki/entities/shap-shapley-additive-explanations.md
+    - wiki/entities/modelregistry.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/synthesis/shap-explainability-standard-lightgbm-vs-custom-serialized-models-in-production.md
+  source: raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 3 entities, 1 synthesis)"
+
+- timestamp: 2026-04-18T01:43:36+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-55-planning-and-exploration.md
+    - wiki/concepts/parallel-agent-coordination-ml-sprint-implementation.md
+    - wiki/concepts/context-aware-imputation-ml-pipelines.md
+    - wiki/concepts/calibration-leakage-mitigation-ml-model-training.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/mlflow-api.md
+    - wiki/entities/nba-ml-model-registry.md
+  source: raw/2026-04-18-copilot-session-sprint-55-planning-and-exploration-be98e3c5.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T01:45:15+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-training-status-tracker-and-oom-fix.md
+    - wiki/concepts/training-pipeline-status-tracking-ml-systems.md
+    - wiki/concepts/oom-failure-diagnosis-remediation-ml-containers.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/nba-ml-api.md
+    - wiki/entities/minutesmodel.md
+    - wiki/entities/qdrant.md
+  source: raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
+  status: success
+  notes: "Auto-ingested 7 pages (2 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T02:16:29+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-session-wiki-promotion.md
+    - wiki/concepts/durable-copilot-session-checkpoint-promotion.md
+    - wiki/concepts/source-aware-model-routing-wiki-ingestion-pipelines.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/karpathy-compile-once-wiki-principle.md
+  source: raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T02:52:52+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-fixing-mempalace-timeouts.md
+    - wiki/concepts/mempalace-timeout-database-lock-remediation.md
+    - wiki/concepts/durable-copilot-session-checkpoint-promotion.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/chromadb.md
+    - wiki/entities/mempalace-watcher.md
+    - wiki/entities/mcp-mempalace-control-protocol.md
+  source: raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
+  status: success
+  notes: "Auto-ingested 7 pages (2 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:24:31+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-auto-ingest-pipeline-built-and-docs-updated.md
+    - wiki/concepts/auto-ingest-pipeline-for-wiki-markdown-processing.md
+    - wiki/entities/github-models-api.md
+    - wiki/entities/docker.md
+    - wiki/entities/python-watchdog-library.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:28:04+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-fixing-android-share-ingest-api.md
+    - wiki/concepts/universal-ingest-endpoint-for-flexible-api-request-parsing.md
+    - wiki/concepts/http-shortcuts-android-app-scripting-api-quirks.md
+    - wiki/concepts/auto-type-detection-in-api-ingest-requests.md
+    - wiki/entities/http-shortcuts.md
+    - wiki/entities/labs-wiki-ingest-api.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-android-share-ingest-api-bbff237c.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:35:05+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-mempalace-phase-3-4-and-autoagent-research.md
+    - wiki/concepts/mempalace-phase-3-4-features-and-implementation.md
+    - wiki/concepts/autoagent-framework-research.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/autoagent.md
+    - wiki/entities/chromadb.md
+    - wiki/entities/litellm.md
+    - wiki/entities/docker.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
+  status: success
+  notes: "Auto-ingested 8 pages (2 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:36:35+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-nba-ml-agents-and-homelab-fixes.md
+    - wiki/concepts/nba-ml-specialized-prediction-agents.md
+    - wiki/concepts/sprint-workflow-integration-for-ai-agents.md
+    - wiki/concepts/adguard-memory-oom-diagnosis-and-fix.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/copilot-cli.md
+    - wiki/entities/adguard.md
+    - wiki/entities/knightcrawler.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:37:25+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-ntfy-notifications-galloping-bot-alerts-monitor-fixes.md
+    - wiki/concepts/ntfy-push-notifications-for-service-monitoring.md
+    - wiki/concepts/caddy-handle-path-directive-and-url-token-injection.md
+    - wiki/concepts/docker-container-resource-auditing-and-optimization.md
+    - wiki/concepts/uptime-kuma-monitor-authentication-and-notification-integration.md
+    - wiki/entities/ntfy.md
+    - wiki/entities/caddy.md
+    - wiki/entities/uptime-kuma.md
+    - wiki/entities/knightcrawler.md
+    - wiki/entities/galloping-bot.md
+    - wiki/entities/docker.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
+  status: success
+  notes: "Auto-ingested 11 pages (4 concepts, 6 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:38:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-odds-api-quota-optimization-sgo-investigation.md
+    - wiki/concepts/odds-api-quota-optimization.md
+    - wiki/concepts/cascading-pipeline-failure-diagnosis-and-resilience.md
+    - wiki/concepts/sportsgameodds-sgo-api-data-extraction-challenges.md
+    - wiki/entities/odds-api.md
+    - wiki/entities/sportsgameodds-sgo-api.md
+    - wiki/entities/mlflow-api.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-odds-api-quota-optimization-sgo-investigation-f4c98efb.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:38:22+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-optimizing-snipe-book-then-retry-flow.md
+    - wiki/concepts/book-then-retry-booking-flow-optimization.md
+    - wiki/entities/galloping-bot.md
+    - wiki/entities/ezlinks-api.md
+    - wiki/entities/durable-copilot-session-checkpoint.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-optimizing-snipe-book-then-retry-flow-a86837aa.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:38:54+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-phases-1-4-implementation-and-deployment.md
+    - wiki/concepts/batch-prediction-optimization-nba-ml-engine.md
+    - wiki/concepts/dashboard-expansion-player-profile-waiver-wire-data-health.md
+    - wiki/concepts/database-query-performance-hardening-nba-ml-platform.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/ensemblemodel.md
+    - wiki/entities/streamlit-dashboard.md
+    - wiki/entities/timescaledb.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-phases-1-4-implementation-and-deployment-16041f82.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:39:37+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-pipeline-enhancements-and-vision-support-deployed.md
+    - wiki/concepts/auto-ingest-pipeline-for-llm-powered-knowledge-wiki.md
+    - wiki/concepts/smart-url-handlers-twitter-x-github-repositories.md
+    - wiki/concepts/vision-support-in-llm-knowledge-ingestion-using-gpt-4-1.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/github-models-api.md
+    - wiki/entities/fxtwitter-api.md
+    - wiki/entities/gpt-4-1.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:41:16+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-pipeline-resilience-fixes-dashboard-metrics-investiga.md
+    - wiki/concepts/pipeline-resilience-in-machine-learning-systems.md
+    - wiki/concepts/dashboard-metrics-consistency-and-hit-rate-discrepancy-analysis.md
+    - wiki/concepts/mlflow-resilience-and-fallback-mechanisms-in-model-training.md
+    - wiki/entities/mlflow-api.md
+    - wiki/entities/nba-ml-prediction-pipeline.md
+    - wiki/entities/odds-api.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:41:50+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-planning-and-progress-tracking-complete.md
+    - wiki/concepts/llm-wiki-architecture.md
+    - wiki/concepts/multi-device-source-ingestion-architecture.md
+    - wiki/concepts/phased-implementation-planning-progress-tracking-llm-wikis.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/claude.md
+    - wiki/entities/obra-superpowers-skills.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:42:29+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-props-db-query-and-chart-refinement.md
+    - wiki/concepts/backend-for-frontend-pattern-in-modern-dashboard-architecture.md
+    - wiki/concepts/handling-postgresql-numeric-type-in-nodejs-pg-library.md
+    - wiki/concepts/dashboard-chart-strategy-and-data-driven-refinement.md
+    - wiki/concepts/replacing-fastapi-proxy-with-direct-postgresql-query-for-historical-props-data.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/express-js.md
+    - wiki/entities/fastapi.md
+    - wiki/entities/postgresql.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:43:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-rankings-page-and-performance-optimization.md
+    - wiki/concepts/backend-for-frontend-pattern-in-modern-dashboard-architecture.md
+    - wiki/concepts/replacing-lateral-joins-with-regular-join-case-for-performance-optimization.md
+    - wiki/concepts/server-side-in-memory-caching-with-ttl-for-api-performance.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/express-js.md
+    - wiki/entities/postgresql.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:43:42+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-react-dashboard-scaffold-and-pages-built.md
+    - wiki/concepts/backend-for-frontend-pattern-in-modern-dashboard-architecture.md
+    - wiki/concepts/react-dashboard-redesign-typescript-tailwindcss.md
+    - wiki/concepts/taste-skill-design-system-ui-consistency.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/express-5.md
+    - wiki/entities/fastapi.md
+    - wiki/entities/tailwind-css-4.md
+    - wiki/entities/vite.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
+  status: success
+  notes: "Auto-ingested 9 pages (3 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:44:14+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-researching-mempalace-for-comparison-doc.md
+    - wiki/concepts/mempalace-memory-system.md
+    - wiki/concepts/comparison-mempalace-labs-wiki-openmemory.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/openmemory.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:44:46+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-resource-optimization-opencode-bash-fix.md
+    - wiki/concepts/caddy-handle-path-directive-and-its-impact-on-upstream-url-construction.md
+    - wiki/concepts/opencode-bash-shell-configuration-posix-spawn-enoent-fix.md
+    - wiki/concepts/docker-container-resource-auditing-and-optimization.md
+    - wiki/entities/knightcrawler.md
+    - wiki/entities/opencode.md
+    - wiki/entities/caddy.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:45:39+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-retrained-models-deploying-improvements.md
+    - wiki/concepts/nba-ml-prediction-platform-sprint-workflow.md
+    - wiki/concepts/ensemblemodel-stacking-meta-learner.md
+    - wiki/concepts/edge-gating-stat-specific-thresholds-ml-prediction-pipelines.md
+    - wiki/concepts/homelab-server-deployment-nba-ml-platform.md
+    - wiki/entities/ensemblemodel.md
+    - wiki/entities/homelab.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-retrained-models-deploying-improvements-59ba9a6c.md
+  status: success
+  notes: "Auto-ingested 7 pages (4 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:46:25+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-reworking-docs-for-copilotopencode.md
+    - wiki/concepts/mempalace-architecture-and-migration.md
+    - wiki/concepts/copilot-cli-opencode-integration-with-mempalace.md
+    - wiki/concepts/homelab-infrastructure-patterns-for-ai-memory-migration.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/copilot-cli.md
+    - wiki/entities/opencode.md
+    - wiki/entities/openmemory.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/homelab.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
+  status: success
+  notes: "Auto-ingested 10 pages (3 concepts, 6 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:46:48+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sgo-data-extraction-fix-and-quality-audit.md
+    - wiki/concepts/sportsgameodds-sgo-api-data-extraction-challenges.md
+    - wiki/entities/sportsgameodds-sgo-api.md
+    - wiki/entities/durable-copilot-session-checkpoint.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sgo-data-extraction-fix-and-quality-audit-76644cc8.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:47:25+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-10-complete-and-deployed.md
+    - wiki/concepts/feature-engineering-nba-ml-engine-sprint-10.md
+    - wiki/concepts/warmstarting-hyperparameter-tuning-optuna.md
+    - wiki/concepts/quantile-crossing-fix-xgboost-lightgbm.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/optuna.md
+    - wiki/entities/docker.md
+    - wiki/entities/lightgbm.md
+    - wiki/entities/xgboost.md
+    - wiki/entities/catboost.md
+    - wiki/entities/ensemblemodel.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md
+  status: success
+  notes: "Auto-ingested 11 pages (3 concepts, 7 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:48:12+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-10-implementation-and-deployment.md
+    - wiki/concepts/quantile-crossing-fix-gradient-boosting-models.md
+    - wiki/concepts/warmstarting-hyperparameter-tuning-optuna.md
+    - wiki/concepts/target-encoding-shifted-expanding-mean-time-series.md
+    - wiki/concepts/feature-engineering-nba-ml-engine-sprint-10.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/optuna.md
+    - wiki/entities/xgboost.md
+    - wiki/entities/lightgbm.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:48:57+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-10-retrain-in-progress.md
+    - wiki/concepts/feature-engineering-nba-player-performance-modeling.md
+    - wiki/concepts/warmstarting-hyperparameter-tuning-optuna.md
+    - wiki/concepts/quantile-crossing-fix-uncertainty-prediction.md
+    - wiki/entities/optuna.md
+    - wiki/entities/xgboost.md
+    - wiki/entities/lightgbm.md
+    - wiki/entities/nba-ml-engine.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:49:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-10-retrain-in-progress.md
+    - wiki/concepts/quantile-crossing-fix-gradient-boosting-models.md
+    - wiki/concepts/warmstarting-hyperparameter-tuning-optuna.md
+    - wiki/concepts/target-encoding-shifted-expanding-mean-time-series.md
+    - wiki/concepts/per-stat-model-selection-and-ensemble-learning-nba-ml-engine.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/optuna.md
+    - wiki/entities/lightgbm.md
+    - wiki/entities/xgboost.md
+    - wiki/entities/catboost.md
+    - wiki/entities/modelregistry.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
+  status: success
+  notes: "Auto-ingested 11 pages (4 concepts, 6 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:49:34+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-11-evaluation-and-report.md
+    - wiki/concepts/holdout-evaluator-module.md
+    - wiki/concepts/feature-alignment-for-feature-selection-models.md
+    - wiki/concepts/calibration-analysis-for-regression-models.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/lstm-model.md
+    - wiki/entities/holdout-evaluator-cli-command.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:49:40+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-11-evaluation-and-report.md
+    - wiki/concepts/holdout-evaluator-module.md
+    - wiki/concepts/lstm-gating-mechanism-nba-ml-engine.md
+    - wiki/concepts/feature-alignment-for-feature-selection-models.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/durable-copilot-session-checkpoint.md
+    - wiki/entities/homelab.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:50:10+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-12-complete-and-skills-installed.md
+    - wiki/concepts/feature-group-tuning-via-configuration-flags.md
+    - wiki/concepts/per-statistic-calibration-percentiles.md
+    - wiki/concepts/persistence-of-residuals-in-model-save-load.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/taste-skill-package.md
+    - wiki/entities/node-version-manager-nvm.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-12-complete-and-skills-installed-48a02b58.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:50:19+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-12-complete-and-skills-installed.md
+    - wiki/concepts/sprint-12-nba-ml-engine-code-cleanup-feature-tuning.md
+    - wiki/concepts/per-stat-calibration-fixes-residual-persistence-model-save-load.md
+    - wiki/concepts/walk-forward-stability-analysis-backtesting-nba-ml-engine.md
+    - wiki/concepts/nodejs-installation-nvm-global-taste-skill-installation.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/node-version-manager-nvm.md
+    - wiki/entities/taste-skill-package.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-12-complete-and-skills-installed-48a02b58.md
+  status: success
+  notes: "Auto-ingested 8 pages (4 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:50:45+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-13-model-improvements-code.md
+    - wiki/concepts/minutes-prediction-sub-model.md
+    - wiki/concepts/edge-threshold-optimizer-kelly-criterion.md
+    - wiki/concepts/dynamic-ensemble-weighting.md
+    - wiki/concepts/binary-over-under-classifier.md
+    - wiki/entities/minutesmodel.md
+    - wiki/entities/overunderclassifier.md
+    - wiki/entities/edge-optimizer.md
+    - wiki/entities/ensemblemodel.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T03:51:02+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-13-model-improvements-code.md
+    - wiki/concepts/minutes-prediction-sub-model.md
+    - wiki/concepts/edge-threshold-optimizer-kelly-criterion.md
+    - wiki/concepts/dynamic-ensemble-weighting.md
+    - wiki/concepts/binary-over-under-classifier.md
+    - wiki/entities/minutesmodel.md
+    - wiki/entities/overunderclassifier.md
+    - wiki/entities/edge-optimizer.md
+    - wiki/entities/ensemblemodel.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+```

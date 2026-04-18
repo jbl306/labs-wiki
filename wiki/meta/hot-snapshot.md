@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-04-17T15:36:40+00:00
+generated: 2026-04-18T03:22:17+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,38 +11,38 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-04-17T15:36:40+00:00
+> Regenerated: 2026-04-18T03:22:17+00:00
 
 ## Recent Wiki Edits
 
-- `2026-04-11` — [[aaak-compression-dialect]] (`wiki/concepts/aaak-compression-dialect.md`)
-- `2026-04-11` — [[contradiction-detection-utility]] (`wiki/concepts/contradiction-detection-utility.md`)
-- `2026-04-11` — [[palace-memory-architecture]] (`wiki/concepts/palace-memory-architecture.md`)
-- `2026-04-11` — [[aaak-compression-dialect]] (`wiki/entities/aaak-compression-dialect.md`)
-- `2026-04-11` — [[chromadb]] (`wiki/entities/chromadb.md`)
-- `2026-04-11` — [[mcp-mempalace-control-protocol]] (`wiki/entities/mcp-mempalace-control-protocol.md`)
-- `2026-04-11` — [[mempalace]] (`wiki/entities/mempalace.md`)
-- `2026-04-11` — [[mempalace-github-repository]] (`wiki/sources/mempalace-github-repository.md`)
-- `2026-04-11` — [[spatially-organized-memory-vs-llm-maintained-persistent-wiki-long-term-ai-recall]] (`wiki/synthesis/spatially-organized-memory-vs-llm-maintained-persistent-wiki-long-term-ai-recall.md`)
-- `2026-04-10` — [[activation-functions-in-neural-networks]] (`wiki/concepts/activation-functions-in-neural-networks.md`)
+- `2026-04-17` — [[attention-mechanism-in-large-language-models]] (`wiki/concepts/attention-mechanism-in-large-language-models.md`)
+- `2026-04-17` — [[linear-regression-algorithm]] (`wiki/concepts/linear-regression-algorithm.md`)
+- `2026-04-17` — [[linear-regression]] (`wiki/concepts/linear-regression.md`)
+- `2026-04-17` — [[llm-maintained-persistent-wiki-pattern]] (`wiki/concepts/llm-maintained-persistent-wiki-pattern.md`)
+- `2026-04-17` — [[llm-operating-system-architecture]] (`wiki/concepts/llm-operating-system-architecture.md`)
+- `2026-04-17` — [[llm-wiki-architecture]] (`wiki/concepts/llm-wiki-architecture.md`)
+- `2026-04-17` — [[palace-memory-architecture]] (`wiki/concepts/palace-memory-architecture.md`)
+- `2026-04-17` — [[transformer-architecture]] (`wiki/concepts/transformer-architecture.md`)
+- `2026-04-17` — [[dataview]] (`wiki/entities/dataview.md`)
+- `2026-04-17` — [[marp]] (`wiki/entities/marp.md`)
 
 ## Recent Sources Captured
 
-- `2026-04-16` — `raw/2026-04-16-251004618v3pdf.md`
-- `2026-04-14` — `raw/2026-04-14-legal_rag_hallucinationspdf.md`
-- `2026-04-13` — `raw/2026-04-13-260406231v1pdf.md`
-- `2026-04-13` — `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md`
-- `2026-04-13` — `raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md`
-- `2026-04-13` — `raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md`
-- `2026-04-13` — `raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md`
-- `2026-04-12` — `raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md`
-- `2026-04-12` — `raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md`
-- `2026-04-12` — `raw/2026-04-12-httpsgithubcomhkudsautoagent.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-sprint-55-planning-and-exploration-be98e3c5.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-sprint-59-shap-coverage-implementation-9a231f70.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md`
+- `2026-04-18` — `raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md`
 
 ## Always-Hot Pages (`tier: hot`)
 
 - [[Claude Code]] → `wiki/entities/claude-code.md`
-- [[MemPalace]] → `wiki/entities/mempalace.md`
+- [[Qdrant]] → `wiki/entities/qdrant.md`
 - [[TimesFM]] → `wiki/entities/timesfm.md`
 - [[Hermes Agent]] → `wiki/entities/hermes-agent.md`
 - [[Microsoft]] → `wiki/entities/microsoft.md`

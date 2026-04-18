@@ -5,6 +5,7 @@ created: 2026-04-17
 last_verified: 2026-04-17
 source_hash: "7bf8bbb0c432057091205c5fe544f18bb53336cae63d1397730656c15195deab"
 sources:
+  - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
   - raw/2026-04-17-watcher-e2e-validation.md
 quality_score: 100
 concepts:
@@ -49,3 +50,4 @@ MemPalace-Watcher is crucial for maintaining up-to-date memory in agentic workfl
 ## Sources
 
 - [[Watcher E2E Validation]] — where this entity was mentioned
+- [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — additional source

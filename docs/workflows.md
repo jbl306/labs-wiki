@@ -171,6 +171,7 @@ processed by the `wiki-auto-ingest` Docker service.
      - **GitHub repos:** fetches README, metadata (description, stars, language, topics), and file tree via REST API
      - **HTML pages:** standard fetch with content extraction
     - **Source-aware routing:** Copilot session checkpoint exports and MemPalace bridge exports prefer a lighter text-only model; standard URLs/repos use the default model
+    - **Checkpoint classification:** Copilot session checkpoints are classified by `scripts/checkpoint_classifier.py` into one of `durable-architecture`, `durable-debugging`, `durable-workflow`, `project-progress`, or `low-signal`. The class is stamped into raw frontmatter by `homelab/scripts/mempalace-session-curator.py` and propagated into the source page as `checkpoint_class` + `retention_mode`. Retention defaults: durable → `retain`, project-progress → `compress` (page lands in `tier: archive` so it's excluded from hot-tier surfacing), low-signal → `skip`. Override per-class via `LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES="class=mode,..."`.
     - **Vision support:** downloads images from tweets and pages, analyzes charts/diagrams/screenshots only on the vision-capable lane
    - Auto-follows t.co shortened URLs
    - Extracts concepts, entities, and facts
@@ -212,6 +213,7 @@ docker compose -f compose.wiki.yml restart wiki-auto-ingest
 | `GITHUB_MODELS_MODEL_LIGHT` | `GITHUB_MODELS_MODEL_DEFAULT` | Cheaper lane for session checkpoints / MemPalace exports |
 | `GITHUB_MODELS_MODEL_VISION` | `GITHUB_MODELS_MODEL_DEFAULT` | Vision-capable lane for image-bearing sources |
 | `GITHUB_MODELS_MODEL_OVERRIDE` | — | Force one model for debugging/manual runs |
+| `LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES` | — | Comma-list `class=mode` overrides for checkpoint retention (e.g. `project-progress=retain,low-signal=compress`) |
 | `AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST` | `2` | Cap follow-on synthesis calls per ingest; set `0` for quota-sensitive backlog imports |
 | `AUTO_INGEST_INCLUDE_EXISTING_PAGES_CONTEXT` | `1` | Include the existing wiki page list in extraction prompts; set `0` for faster, cheaper backlog imports |
 | `DEBOUNCE_SECONDS` | `5` | Wait time after file creation before processing |

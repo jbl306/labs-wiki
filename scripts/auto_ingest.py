@@ -33,6 +33,15 @@ except ImportError:  # pragma: no cover
     _rf_fuzz = None
     _FUZZ_AVAILABLE = False
 
+from checkpoint_classifier import (
+    CLASS_PROJECT_PROGRESS,
+    COMPRESS,
+    RETAIN,
+    SKIP,
+    classify_checkpoint,
+    resolve_retention,
+)
+
 log = logging.getLogger("auto-ingest")
 
 # ---------------------------------------------------------------------------
@@ -76,6 +85,8 @@ class IngestRoute:
     priority: int
     max_source_chars: int
     source_class: str
+    checkpoint_class: str = ""
+    retention_mode: str = RETAIN
 
 
 def classify_ingest_route(
@@ -83,6 +94,7 @@ def classify_ingest_route(
     *,
     has_images: bool = False,
     model_override: str | None = None,
+    body: str | None = None,
 ) -> IngestRoute:
     """Classify a raw source into a model lane + queue priority.
 
@@ -114,12 +126,29 @@ def classify_ingest_route(
         )
 
     if source == "copilot-session-curator" or "copilot-session" in tags_lower:
+        # Honour the class written by the curator if present; otherwise
+        # re-classify from the title + body so legacy/backlog imports still
+        # benefit from retention logic.
+        cp_class = str(fm.get("checkpoint_class", "")).strip().lower()
+        if cp_class not in {"durable-architecture", "durable-debugging",
+                            "durable-workflow", "project-progress",
+                            "low-signal"}:
+            classification = classify_checkpoint(
+                str(fm.get("title", "")),
+                body or "",
+            )
+            cp_class = classification.cls
+        retention = str(fm.get("retention_mode", "")).strip().lower()
+        if retention not in {RETAIN, COMPRESS, SKIP}:
+            retention = resolve_retention(cp_class)
         return IngestRoute(
             lane="light",
             model=MODEL_LIGHT,
             priority=30,
             max_source_chars=MAX_SOURCE_CHARS_LIGHT,
             source_class="copilot-session-checkpoint",
+            checkpoint_class=cp_class,
+            retention_mode=retention,
         )
 
     if source == "mempalace-bridge" or "mempalace" in tags_lower:
@@ -1008,6 +1037,9 @@ def generate_source_page(
     source_url: str | None,
     today: str,
     raw_tags: list[str],
+    *,
+    checkpoint_class: str = "",
+    retention_mode: str = RETAIN,
 ) -> tuple[str, str]:
     """Generate source summary page. Returns (filename, content)."""
     ss = extraction["source_summary"]
@@ -1047,6 +1079,16 @@ def generate_source_page(
         for q in ss.get("notable_quotes", [])
     )
 
+    # Tier defaults to "hot" for new source pages but compressed checkpoints
+    # land in "archive" so they don't bubble up in hot.md / surfacing lists.
+    page_tier = "archive" if (checkpoint_class and retention_mode == COMPRESS) else "hot"
+
+    extra_fm: list[str] = []
+    if checkpoint_class:
+        extra_fm.append(f"checkpoint_class: {checkpoint_class}")
+        extra_fm.append(f"retention_mode: {retention_mode}")
+    extra_fm_block = ("\n" + "\n".join(extra_fm)) if extra_fm else ""
+
     content = f"""---
 title: "{title}"
 type: source
@@ -1060,7 +1102,7 @@ concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
 {chr(10).join(related) if related else '  []'}
-tier: hot
+tier: {page_tier}{extra_fm_block}
 tags: [{', '.join(tags)}]
 ---
 
@@ -1680,7 +1722,7 @@ def ingest_raw_source(
     source_type = fm.get("type", "text")
     source_url = fm.get("url")
     raw_tags = fm.get("tags", []) if isinstance(fm.get("tags"), list) else []
-    route = classify_ingest_route(fm, model_override=model)
+    route = classify_ingest_route(fm, model_override=model, body=body)
 
     # For URL sources, fetch the actual content
     content = body
@@ -1699,14 +1741,16 @@ def ingest_raw_source(
         log.info("Downloading %d images for vision analysis...", len(image_urls))
         images_b64 = download_images_as_base64(image_urls)
         log.info("Successfully encoded %d images", len(images_b64))
-    route = classify_ingest_route(fm, has_images=bool(images_b64), model_override=model)
+    route = classify_ingest_route(fm, has_images=bool(images_b64), model_override=model, body=body)
     log.info(
-        "Ingest route: class=%s lane=%s model=%s priority=%d images=%s",
+        "Ingest route: class=%s lane=%s model=%s priority=%d images=%s checkpoint_class=%s retention=%s",
         route.source_class,
         route.lane,
         route.model,
         route.priority,
         bool(images_b64),
+        route.checkpoint_class or "-",
+        route.retention_mode,
     )
 
     if not content or len(content.strip()) < 10:
@@ -1746,6 +1790,8 @@ def ingest_raw_source(
     # Generate source summary page
     src_filename, src_content = generate_source_page(
         extraction, raw_rel, source_hash, source_url, today, raw_tags,
+        checkpoint_class=route.checkpoint_class,
+        retention_mode=route.retention_mode,
     )
     src_path = wiki_dir / "sources" / src_filename
     src_path.parent.mkdir(parents=True, exist_ok=True)

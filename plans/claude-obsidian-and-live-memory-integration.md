@@ -56,25 +56,30 @@ claude-obsidian (1.6k stars) is Karpathy-wiki-pattern turned into a polished Obs
 
 MemPalace mining is **pure file indexing**: SHA hashing, markdown parsing, drawer generation, embedding into ChromaDB (which uses a local sentence-transformers model, not OpenAI/Anthropic). `mempalace mine` does not call any paid model. The "LLM key only" constraint (GitHub Copilot Pro+) simply means we can't spawn an LLM agent from inside a hook — but indexing, re-mining, and cache generation don't need one.
 
-### What Copilot CLI gives us (and doesn't)
+### What this Copilot CLI runtime gives us
 
-Confirmed via GitHub docs (2026):
+Validated against the current runtime plus installed hook tooling (2026-04-18):
 
-| Capability | Copilot CLI | VS Code Copilot | OpenCode |
-|------------|-------------|-----------------|----------|
-| SessionStart hook | ❌ no native | ❌ no native | ✅ (opencode.json) |
-| Stop / SessionEnd hook | ❌ | ❌ | ✅ |
-| PreCompact hook | ❌ (auto at 95%, no user callback) | ❌ | ❌ |
-| Session state on disk | ✅ `~/.copilot/session-state/*.json` | ✅ VS Code workspace storage | ✅ `~/.opencode/` |
-| Custom instructions always loaded | ✅ `.github/copilot-instructions.md`, `AGENTS.md` | ✅ same | ✅ `AGENTS.md` |
-| Slash commands (user-invoked) | ✅ via skills | ✅ via prompts | ✅ via skills |
-| MCP server | ✅ | ✅ | ✅ |
+| Capability | Copilot CLI (this environment) | Why it matters |
+|------------|--------------------------------|----------------|
+| SessionStart hook | ✅ observed in `events.jsonl`; installed plugins use `hooks/hooks.json` | Good place to write a tiny project-scoped "session opened" note or refresh hot context |
+| Stop / SessionEnd hook | ✅ hook tooling supports it; runtime also emitted `agentStop` events | Good place for lightweight handoff notes |
+| PreCompact hook | ⚠ documented by installed hook tooling, but not yet observed firing in this session | Use opportunistically if reliable; do not make the pipeline depend on it |
+| Session state on disk | ✅ `~/.copilot/session-state/` with `events.jsonl`, `checkpoints/*.md`, `plan.md` | Canonical local source of session artifacts |
+| Compaction summary artifact | ✅ `session.compaction_complete` carries `summaryContent`, `checkpointPath`, and checkpoint number | Best durable summary source for wiki promotion |
+| Slash commands / skills | ✅ | Manual save fallback when a user wants explicit capture |
+| MCP server / local tooling | ✅ | Lets the watcher, MemPalace, and wiki pipeline stay local-first |
 
-**Conclusion:** we can't register true lifecycle hooks for Copilot. But we can get **equivalent behavior** from three independent layers, each of which works without any LLM key:
+**Revised conclusion:** Copilot CLI is better than "no hooks," but the safest durable artifact is still the **official compaction/checkpoint summary**, not a homegrown event-log synthesis.
 
-1. **External file watcher** on `~/.copilot/session-state/` → mempalace re-mine on change (sub-minute latency, no agent involvement).
-2. **User-invoked slash-skill `/wiki-save`** → manual end-of-session capture (agent already has context loaded, uses existing Copilot tokens, no extra key).
-3. **Always-loaded `hot.md` + AGENTS.md snippet** → every new session starts with recent context already in the prompt, no hook needed.
+Recommended layering:
+
+1. **User-level hook pack** (all projects) writes small project-scoped pre-capture markdowns on `SessionStart` and stop-like events (`agentStop` / `SessionEnd`).
+2. **Optional `PreCompact` hook** writes an extra pre-summary note only if it proves reliable in this runtime.
+3. **External watcher + curator** continue to promote official checkpoint markdowns or `session.compaction_complete.summaryContent` into `labs-wiki/raw/`.
+4. **`/wiki-save`** remains the manual override when the user wants immediate explicit filing.
+
+This means hooks should **augment** checkpoint promotion, not replace it.
 
 ### Architecture
 

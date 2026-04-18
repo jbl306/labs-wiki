@@ -55,8 +55,13 @@ function applyFilters() {
   const ids = new Set(nodes.map((n) => n.id));
   const edges = state.graph.edges.filter((e) => ids.has(e.source) && ids.has(e.target));
 
+  if (state.highlightedId && !ids.has(state.highlightedId)) {
+    clearSelection({ redraw: false });
+  }
+
   state.filtered = { nodes, edges };
   positionNodes(state.filtered.nodes, state.filtered.edges);
+  fitViewToNodes(state.filtered.nodes);
 }
 
 // ---------- Simple force-directed layout (Fruchterman-Reingold-ish) ---------
@@ -109,29 +114,89 @@ function positionNodes(nodes, edges) {
     }
     t *= 0.95;
   }
-  draw();
 }
 
 // ---------- Canvas rendering ----------------------------------------------
 
 const canvas = document.getElementById("graph");
 const ctx = canvas.getContext("2d");
+const isCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
 const view = { scale: 0.35, tx: 0, ty: 0 };
+const MIN_SCALE = 0.05;
+const MAX_SCALE = isCoarsePointer ? 6 : 4.5;
+const ZOOM_STEP = 1.22;
+
+function clampScale(nextScale) {
+  return Math.max(MIN_SCALE, Math.min(MAX_SCALE, nextScale));
+}
+
+function updateZoomLevel() {
+  const label = document.getElementById("zoom-level");
+  if (label) label.textContent = `${Math.round(view.scale * 100)}%`;
+}
 
 function resize() {
   const dpr = window.devicePixelRatio || 1;
   canvas.width = canvas.clientWidth * dpr;
   canvas.height = canvas.clientHeight * dpr;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  updateZoomLevel();
   draw();
 }
 window.addEventListener("resize", resize);
 
-function world(x, y) {
+function screenToWorld(x, y) {
   return {
-    x: (x - view.tx) / view.scale + canvas.clientWidth / 2,
-    y: (y - view.ty) / view.scale + canvas.clientHeight / 2,
+    x: (x - canvas.clientWidth / 2 - view.tx) / view.scale,
+    y: (y - canvas.clientHeight / 2 - view.ty) / view.scale,
   };
+}
+
+function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.clientHeight / 2) {
+  const worldPoint = screenToWorld(anchorX, anchorY);
+  const clampedScale = clampScale(nextScale);
+  view.scale = clampedScale;
+  view.tx = anchorX - canvas.clientWidth / 2 - worldPoint.x * clampedScale;
+  view.ty = anchorY - canvas.clientHeight / 2 - worldPoint.y * clampedScale;
+  updateZoomLevel();
+  draw();
+}
+
+function fitViewToNodes(nodes = state.filtered.nodes) {
+  if (!nodes.length || !canvas.clientWidth || !canvas.clientHeight) return;
+
+  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  for (const node of nodes) {
+    const r = Math.max(3, 3 + Math.log2(1 + node.degree) * 2);
+    minX = Math.min(minX, node.x - r);
+    minY = Math.min(minY, node.y - r);
+    maxX = Math.max(maxX, node.x + r);
+    maxY = Math.max(maxY, node.y + r);
+  }
+
+  const width = Math.max(maxX - minX, 120);
+  const height = Math.max(maxY - minY, 120);
+  const gutter = isCoarsePointer ? 56 : 80;
+  const availableWidth = Math.max(canvas.clientWidth - gutter * 2, 120);
+  const availableHeight = Math.max(canvas.clientHeight - gutter * 2, 120);
+  const nextScale = clampScale(Math.min(availableWidth / width, availableHeight / height));
+  const targetX = canvas.clientWidth / 2;
+  const targetY = isCoarsePointer ? canvas.clientHeight * 0.46 : canvas.clientHeight / 2;
+  const centerX = (minX + maxX) / 2;
+  const centerY = (minY + maxY) / 2;
+
+  view.scale = nextScale;
+  view.tx = targetX - canvas.clientWidth / 2 - centerX * nextScale;
+  view.ty = targetY - canvas.clientHeight / 2 - centerY * nextScale;
+  updateZoomLevel();
+  draw();
+}
+
+function centerNodeInView(node) {
+  const targetX = canvas.clientWidth / 2;
+  const targetY = isCoarsePointer ? canvas.clientHeight * 0.3 : canvas.clientHeight / 2;
+  view.tx = targetX - canvas.clientWidth / 2 - node.x * view.scale;
+  view.ty = targetY - canvas.clientHeight / 2 - node.y * view.scale;
 }
 
 function draw() {
@@ -174,13 +239,16 @@ function draw() {
     }
   }
 
-  // Labels for large nodes
+  // As the user zooms in, relax the label threshold so mobile exploration
+  // reveals more context without needing to tap every single node.
   ctx.fillStyle = "#e5e7eb";
   ctx.font = `${Math.max(10, 10 / view.scale)}px sans-serif`;
   ctx.textAlign = "center";
+  const labelDegreeThreshold = view.scale >= 1.8 ? 0 : view.scale >= 1.05 ? 2 : 5;
+  const labelMaxChars = view.scale >= 1.4 ? 40 : 32;
   for (const n of nodes) {
-    if (n.degree < 5 && state.highlightedId !== n.id) continue;
-    ctx.fillText(n.title.slice(0, 32), n.x, n.y - 8);
+    if (n.degree < labelDegreeThreshold && state.highlightedId !== n.id) continue;
+    ctx.fillText(n.title.slice(0, labelMaxChars), n.x, n.y - 8);
   }
 
   ctx.restore();
@@ -188,6 +256,24 @@ function draw() {
 
 function findNode(id) {
   return state.filtered.nodes.find((n) => n.id === id);
+}
+
+function clearSelection({ redraw = true } = {}) {
+  state.highlightedId = null;
+  document.body.classList.remove("node-panel-open");
+  document.getElementById("node-panel").classList.add("hidden");
+  if (redraw) draw();
+}
+
+function openNodePanel() {
+  document.body.classList.add("node-panel-open");
+}
+
+function selectNode(node) {
+  state.highlightedId = node.id;
+  centerNodeInView(node);
+  showNodePanel(node);
+  draw();
 }
 
 // ---------- Interactions ---------------------------------------------------
@@ -204,7 +290,6 @@ let pointerDownX = 0, pointerDownY = 0;
 let pointerMoved = false;
 const TAP_SLOP_PX = 8;       // Movement under this counts as a tap, not a drag.
 const TAP_MAX_MS = 500;
-const isCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
 
 function pinchDistance() {
   const pts = Array.from(activePointers.values());
@@ -240,9 +325,12 @@ canvas.addEventListener("pointermove", (e) => {
   if (activePointers.size >= 2 && pinchStartDist > 0) {
     const dist = pinchDistance();
     const factor = dist / pinchStartDist;
-    view.scale = Math.max(0.05, Math.min(4, pinchStartScale * factor));
+    const pts = Array.from(activePointers.values());
+    const rect = canvas.getBoundingClientRect();
+    const midX = (pts[0].x + pts[1].x) / 2 - rect.left;
+    const midY = (pts[0].y + pts[1].y) / 2 - rect.top;
+    setScale(pinchStartScale * factor, midX, midY);
     pointerMoved = true;
-    draw();
     return;
   }
 
@@ -289,18 +377,15 @@ canvas.addEventListener("pointercancel", endPointer);
 canvas.addEventListener("wheel", (e) => {
   e.preventDefault();
   const factor = Math.exp(-e.deltaY * 0.001);
-  view.scale = Math.max(0.05, Math.min(4, view.scale * factor));
-  draw();
+  const rect = canvas.getBoundingClientRect();
+  setScale(view.scale * factor, e.clientX - rect.left, e.clientY - rect.top);
 }, { passive: false });
 
 function handleTap(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
   const px = clientX - rect.left;
   const py = clientY - rect.top;
-  const cx = canvas.clientWidth / 2;
-  const cy = canvas.clientHeight / 2;
-  const wx = (px - cx - view.tx) / view.scale;
-  const wy = (py - cy - view.ty) / view.scale;
+  const { x: wx, y: wy } = screenToWorld(px, py);
 
   // On touch devices the visible "finger area" is bigger than a mouse cursor,
   // so widen the hit radius substantially to make small nodes tappable.
@@ -315,16 +400,18 @@ function handleTap(clientX, clientY) {
     if (d2 < r * r * slopMul && d2 < best) { best = d2; hit = n; }
   }
   if (hit) {
-    state.highlightedId = hit.id;
-    showNodePanel(hit);
-    draw();
-    // On phones, slide the drawer in so the tapped node's details are visible.
-    if (isCoarsePointer) openSidebar();
+    selectNode(hit);
+  } else if (state.highlightedId) {
+    clearSelection();
   }
 }
 
 async function showNodePanel(node) {
   document.getElementById("node-panel").classList.remove("hidden");
+  if (isCoarsePointer) {
+    closeSidebar();
+    openNodePanel();
+  }
   document.getElementById("node-title").textContent = node.title;
   document.getElementById("node-meta").textContent =
     `${node.page_type || "page"} · tier=${node.tier || "—"} · degree=${node.degree} · community=${node.community}`;
@@ -339,9 +426,13 @@ async function showNodePanel(node) {
       const li = document.createElement("li");
       li.textContent = `${n.title}  · ${n.page_type}`;
       li.addEventListener("click", () => {
-        state.highlightedId = n.id;
         const local = state.filtered.nodes.find((x) => x.id === n.id);
-        if (local) showNodePanel(local);
+        if (local) {
+          selectNode(local);
+          return;
+        }
+        state.highlightedId = n.id;
+        showNodePanel(n);
         draw();
       });
       ul.appendChild(li);
@@ -356,6 +447,7 @@ async function showNodePanel(node) {
 
 function populateTypes() {
   const select = document.getElementById("type-filter");
+  select.innerHTML = "<option value=''>(any)</option>";
   const types = Array.from(new Set(state.graph.nodes.map((n) => n.page_type))).filter(Boolean).sort();
   for (const t of types) {
     const opt = document.createElement("option");
@@ -385,8 +477,8 @@ async function loadGraph() {
     populateTypes();
     updateStats();
     updateLegend();
-    applyFilters();
     resize();
+    applyFilters();
     document.getElementById("connection-state").textContent = "connected";
   } catch (e) {
     document.getElementById("connection-state").textContent = `error: ${e.message}`;
@@ -407,6 +499,10 @@ function bindUI() {
     state.surprises = e.target.checked; draw();
   });
   document.getElementById("rebuild-btn").addEventListener("click", () => loadGraph());
+  document.getElementById("zoom-in").addEventListener("click", () => setScale(view.scale * ZOOM_STEP));
+  document.getElementById("zoom-out").addEventListener("click", () => setScale(view.scale / ZOOM_STEP));
+  document.getElementById("zoom-fit").addEventListener("click", () => fitViewToNodes());
+  document.getElementById("node-panel-close").addEventListener("click", () => clearSelection());
 
   // Mobile drawer wiring — these elements are always in the DOM but only
   // visible at narrow widths via CSS.
@@ -422,6 +518,8 @@ function bindUI() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && document.body.classList.contains("sidebar-open")) {
       closeSidebar();
+    } else if (e.key === "Escape" && state.highlightedId) {
+      clearSelection();
     }
   });
   // Canvas dimensions change when the visual viewport shifts (e.g. mobile
@@ -433,6 +531,7 @@ function bindUI() {
 }
 
 function openSidebar() {
+  document.body.classList.remove("node-panel-open");
   document.body.classList.add("sidebar-open");
   document.getElementById("sidebar-toggle")?.setAttribute("aria-expanded", "true");
 }

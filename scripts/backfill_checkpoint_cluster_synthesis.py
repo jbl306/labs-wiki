@@ -10,6 +10,7 @@ new ingests to trigger Phase 3 family synthesis.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import logging
 import os
@@ -155,6 +156,104 @@ def ensure_unique_title(wiki_dir: Path, title: str, community: int) -> str:
     return f"{fallback} {datetime.now(timezone.utc).strftime('%H%M%S')}"
 
 
+def build_cluster_signature(raw_paths: list[str]) -> str:
+    payload = "\n".join(sorted(raw_paths))
+    return hashlib.sha256(payload.encode()).hexdigest()[:16]
+
+
+def load_existing_cluster_syntheses(wiki_dir: Path) -> list[dict[str, Any]]:
+    synth_dir = wiki_dir / "synthesis"
+    if not synth_dir.is_dir():
+        return []
+
+    pages: list[dict[str, Any]] = []
+    for path in sorted(synth_dir.glob("*.md")):
+        fm, _ = parse_frontmatter(path)
+        title = str(fm.get("title") or path.stem)
+        tags = fm.get("tags") if isinstance(fm.get("tags"), list) else []
+        tags_lower = {str(tag).strip().lower() for tag in tags}
+        if not title.lower().startswith("recurring checkpoint patterns:") and "checkpoint-synthesis" not in tags_lower:
+            continue
+        sources = fm.get("sources") if isinstance(fm.get("sources"), list) else []
+        if not sources:
+            continue
+        raw_community = str(fm.get("checkpoint_cluster_community", "")).strip()
+        community = int(raw_community) if raw_community.lstrip("-").isdigit() else None
+        pages.append(
+            {
+                "path": path,
+                "community": community,
+                "signature": str(fm.get("checkpoint_cluster_signature", "")).strip(),
+                "sources": [str(source) for source in sources],
+            }
+        )
+    return pages
+
+
+def find_existing_cluster_synthesis(
+    existing_pages: list[dict[str, Any]],
+    community: int,
+    raw_paths: list[str],
+) -> tuple[dict[str, Any], str] | None:
+    desired_sources = sorted(raw_paths)
+    desired_signature = build_cluster_signature(raw_paths)
+    for page in existing_pages:
+        if page["signature"] and page["signature"] == desired_signature:
+            return page, "signature"
+        if sorted(page["sources"]) == desired_sources:
+            return page, "sources"
+        if page["community"] == community:
+            return page, "community"
+    return None
+
+
+def stamp_cluster_metadata(
+    page_path: Path,
+    community: int,
+    checkpoint_count: int,
+    raw_paths: list[str],
+) -> bool:
+    content = page_path.read_text()
+    if not content.startswith("---"):
+        return False
+
+    parts = content.split("---", 2)
+    if len(parts) < 3:
+        return False
+
+    frontmatter_lines = parts[1].strip().split("\n")
+    body = parts[2]
+    desired = {
+        "checkpoint_cluster_community": str(community),
+        "checkpoint_cluster_checkpoint_count": str(checkpoint_count),
+        "checkpoint_cluster_signature": build_cluster_signature(raw_paths),
+    }
+
+    def upsert(lines: list[str], key: str, value: str) -> list[str]:
+        prefix = f"{key}:"
+        for idx, line in enumerate(lines):
+            if line.strip().startswith(prefix):
+                lines[idx] = f"{key}: {value}"
+                return lines
+        insert_at = len(lines)
+        for idx, line in enumerate(lines):
+            if line.strip().startswith("tags:"):
+                insert_at = idx
+                break
+        lines.insert(insert_at, f"{key}: {value}")
+        return lines
+
+    updated_lines = list(frontmatter_lines)
+    for key, value in desired.items():
+        updated_lines = upsert(updated_lines, key, value)
+
+    normalized = "---\n" + "\n".join(updated_lines) + "\n---" + body
+    if normalized == content:
+        return False
+    page_path.write_text(normalized)
+    return True
+
+
 def render_question(source_titles: list[str], compare_labels: list[str]) -> str:
     focus = ", ".join(compare_labels[:3]) if compare_labels else "the shared themes"
     return (
@@ -229,10 +328,6 @@ def main() -> int:
         print("No merge clusters to process.")
         return 0
 
-    if not args.dry_run and not args.token:
-        print("No API token. Set GITHUB_MODELS_TOKEN or pass --token.", file=sys.stderr)
-        return 1
-
     created_pages: list[str] = []
     report: dict[str, Any] = {
         "generated_at": datetime.now(timezone.utc).isoformat(),
@@ -247,6 +342,19 @@ def main() -> int:
         "clusters": [],
         "created_pages": created_pages,
     }
+    existing_syntheses = load_existing_cluster_syntheses(wiki_dir)
+    llm_needed = False
+    if not args.dry_run:
+        for cluster in clusters:
+            community = int(cluster.get("community", -1))
+            cluster_paths = resolve_cluster_paths(wiki_dir, list(cluster.get("checkpoints", [])))
+            _, raw_paths, _, _, _ = collect_cluster_inputs(cluster_paths)
+            if not find_existing_cluster_synthesis(existing_syntheses, community, raw_paths):
+                llm_needed = True
+                break
+        if llm_needed and not args.token:
+            print("No API token. Set GITHUB_MODELS_TOKEN or pass --token.", file=sys.stderr)
+            return 1
 
     for cluster in clusters:
         community = int(cluster.get("community", -1))
@@ -257,7 +365,29 @@ def main() -> int:
         title = ensure_unique_title(wiki_dir, build_synthesis_title(community, compare_labels), community)
         cluster_info = cluster_summary(community, cluster_paths, source_titles, compare_labels, title)
         cluster_info["raw_paths"] = raw_paths
+        cluster_info["signature"] = build_cluster_signature(raw_paths)
         cluster_info["mode"] = "dry-run" if args.dry_run else "run"
+
+        existing = find_existing_cluster_synthesis(existing_syntheses, community, raw_paths)
+        if existing:
+            existing_page, matched_by = existing
+            rel_path = str(existing_page["path"].relative_to(ROOT))
+            cluster_info["status"] = "existing"
+            cluster_info["matched_by"] = matched_by
+            cluster_info["output"] = rel_path
+            if not args.dry_run:
+                cluster_info["metadata_updated"] = stamp_cluster_metadata(
+                    existing_page["path"],
+                    community,
+                    len(cluster_paths),
+                    raw_paths,
+                )
+            report["clusters"].append(cluster_info)
+            print(
+                f"[existing] community={community} checkpoints={len(cluster_paths)} "
+                f"matched_by={matched_by} -> {rel_path}"
+            )
+            continue
 
         if len(compare_pages) < MIN_COMPARE_PAGES:
             cluster_info["status"] = "skipped"
@@ -301,12 +431,30 @@ def main() -> int:
         synthesis["tags"] = tags
 
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-        filename, content = generate_synthesis_page(synthesis, raw_paths, source_titles, today)
+        filename, content = generate_synthesis_page(
+            synthesis,
+            raw_paths,
+            source_titles,
+            today,
+            extra_frontmatter={
+                "checkpoint_cluster_community": str(community),
+                "checkpoint_cluster_checkpoint_count": str(len(cluster_paths)),
+                "checkpoint_cluster_signature": cluster_info["signature"],
+            },
+        )
         rel_path = f"wiki/synthesis/{filename}"
         out_path = ROOT / rel_path
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(content)
         created_pages.append(rel_path)
+        existing_syntheses.append(
+            {
+                "path": out_path,
+                "community": community,
+                "signature": cluster_info["signature"],
+                "sources": list(raw_paths),
+            }
+        )
 
         cluster_info["status"] = "created"
         cluster_info["output"] = rel_path

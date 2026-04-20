@@ -137,7 +137,7 @@ Works with all three tools — they all read `AGENTS.md`:
 - **Staleness:** pages not verified in 90+ days are flagged
 - **Quality:** 0-100 score based on structure (completeness, cross-refs, attribution, recency), not execution certainty
 - **Tiers:** hot → established → core → workflow (consolidation over time)
-- **Checkpoint policy:** Copilot `project-progress` checkpoints are compressed into archived source pages; planning-only checkpoints keep the summary but do not mint standalone concept/entity pages
+- **Checkpoint policy:** Copilot `project-progress` checkpoints are compressed into archived source pages; planning-only checkpoints keep the summary but do not mint standalone concept/entity pages, and checkpoint source pages carry `knowledge_state: planned|executed|validated` separately from structural quality
 
 See [docs/memory-model.md](docs/memory-model.md) for details.
 

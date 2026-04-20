@@ -41,6 +41,7 @@ from checkpoint_classifier import (  # noqa: E402
     classify_checkpoint,
     resolve_retention,
 )
+from checkpoint_state import derive_knowledge_state  # noqa: E402
 
 CHECKPOINT_GLOB = "copilot-session-checkpoint-*.md"
 REQUIRED_FIELDS = ("title", "type", "created", "sources")
@@ -159,8 +160,19 @@ def process_page(path: Path) -> dict[str, Any]:
     fm = parse_simple_fm(fm_lines)
 
     title = fm.get("title", path.stem)
-    cls = classify_checkpoint(title, body)
+    checkpoint_body = body
+    sources = fm.get("sources") if isinstance(fm.get("sources"), list) else []
+    for source in sources:
+        raw_path = ROOT / str(source)
+        if not raw_path.exists():
+            continue
+        raw_parts = split_frontmatter(raw_path.read_text())
+        checkpoint_body = raw_parts[1] if raw_parts is not None else raw_path.read_text()
+        break
+
+    cls = classify_checkpoint(title, checkpoint_body)
     retention = resolve_retention(cls.cls)
+    knowledge_state = derive_knowledge_state(title, checkpoint_body, cls.cls, retention)
 
     has_related = bool(fm.get("related")) and fm.get("related") != "[]"
     wikilinks = re.findall(r"\[\[([^\]]+)\]\]", body)
@@ -176,11 +188,13 @@ def process_page(path: Path) -> dict[str, Any]:
     old_retention = fm.get("retention_mode", "")
     old_tier = fm.get("tier", "hot") or "hot"
     old_score = fm.get("quality_score", "0")
+    old_knowledge_state = fm.get("knowledge_state", "")
 
     new_lines = list(fm_lines)
     new_lines = upsert_fm_field(new_lines, "checkpoint_class", cls.cls)
     new_lines = upsert_fm_field(new_lines, "retention_mode", retention)
     new_lines = upsert_fm_field(new_lines, "tier", desired_tier)
+    new_lines = upsert_fm_field(new_lines, "knowledge_state", knowledge_state)
     new_lines = upsert_fm_field(new_lines, "quality_score", str(score))
 
     new_text = "---\n" + "\n".join(new_lines) + "\n---" + body
@@ -193,6 +207,7 @@ def process_page(path: Path) -> dict[str, Any]:
         "retention_mode": retention,
         "tier_before": old_tier,
         "tier_after": desired_tier,
+        "knowledge_state": knowledge_state,
         "score_before": str(old_score),
         "score_after": score,
         "wikilinks": len(wikilinks),
@@ -202,7 +217,42 @@ def process_page(path: Path) -> dict[str, Any]:
         "new_text": new_text if changed else None,
         "class_before": old_class,
         "retention_before": old_retention,
+        "knowledge_state_before": old_knowledge_state,
     }
+
+
+def resolve_target_paths(sources_dir: Path, requested: list[str], limit: int) -> list[Path]:
+    """Resolve repo-relative or basename checkpoint targets."""
+    if not requested:
+        paths = sorted(sources_dir.glob(CHECKPOINT_GLOB))
+        return paths[:limit] if limit > 0 else paths
+
+    resolved: list[Path] = []
+    seen: set[Path] = set()
+    for raw in requested:
+        candidate_strings = (
+            raw,
+            str(ROOT / raw),
+            str(sources_dir / raw),
+            str(sources_dir / Path(raw).name),
+        )
+        match: Path | None = None
+        for candidate_str in candidate_strings:
+            candidate = Path(candidate_str)
+            if candidate.exists() and candidate.is_file():
+                match = candidate.resolve()
+                break
+        if match is None:
+            basename_matches = sorted(sources_dir.glob(Path(raw).name))
+            if len(basename_matches) == 1:
+                match = basename_matches[0].resolve()
+        if match is None:
+            raise SystemExit(f"checkpoint page not found: {raw}")
+        if match not in seen:
+            resolved.append(match)
+            seen.add(match)
+
+    return resolved[:limit] if limit > 0 else resolved
 
 
 # ---------------------------------------------------------------------------
@@ -216,6 +266,18 @@ def main() -> int:
     ap.add_argument("--report", type=Path, default=None,
                     help="Write a JSON report of all changes")
     ap.add_argument("--wiki", type=Path, default=ROOT / "wiki")
+    ap.add_argument(
+        "--path",
+        action="append",
+        default=[],
+        help="Only process the given checkpoint page (repeatable; basename or repo-relative path)",
+    )
+    ap.add_argument(
+        "--limit",
+        type=int,
+        default=0,
+        help="Limit processed checkpoint pages after filtering (0 = all)",
+    )
     args = ap.parse_args()
 
     sources_dir = args.wiki / "sources"
@@ -223,8 +285,9 @@ def main() -> int:
         print(f"sources dir not found: {sources_dir}", file=sys.stderr)
         return 1
 
+    target_paths = resolve_target_paths(sources_dir, args.path, args.limit)
     results: list[dict[str, Any]] = []
-    for p in sorted(sources_dir.glob(CHECKPOINT_GLOB)):
+    for p in target_paths:
         r = process_page(p)
         results.append(r)
         if r.get("changed") and not args.dry_run:
@@ -234,6 +297,7 @@ def main() -> int:
             r.pop("new_text", None)
 
     cls_counts = Counter(r["checkpoint_class"] for r in results)
+    knowledge_state_counts = Counter(r["knowledge_state"] for r in results)
     ret_counts = Counter(r["retention_mode"] for r in results)
     tier_after = Counter(r["tier_after"] for r in results)
     score_dist = Counter()
@@ -243,7 +307,10 @@ def main() -> int:
         score_dist[bucket] += 1
     changed_count = sum(1 for r in results if r["changed"])
 
-    print(f"== Phase 5 backfill ({len(results)} checkpoints, dry_run={args.dry_run}) ==")
+    print(
+        f"== Phase 5 backfill ({len(results)} checkpoints, dry_run={args.dry_run}, "
+        f"filtered={bool(args.path or args.limit)}) =="
+    )
     print()
     print("Class distribution:")
     for k in ("durable-architecture", "durable-debugging", "durable-workflow",
@@ -253,6 +320,10 @@ def main() -> int:
     print("Retention distribution:")
     for k in (RETAIN, COMPRESS, SKIP):
         print(f"  {k:10s} = {ret_counts.get(k,0):3d}")
+    print()
+    print("Knowledge-state distribution:")
+    for k in ("planned", "executed", "validated"):
+        print(f"  {k:10s} = {knowledge_state_counts.get(k,0):3d}")
     print()
     print("Tier (after):")
     for k, v in tier_after.most_common():
@@ -272,6 +343,7 @@ def main() -> int:
             "changed": changed_count,
             "dry_run": args.dry_run,
             "class_distribution": dict(cls_counts),
+            "knowledge_state_distribution": dict(knowledge_state_counts),
             "retention_distribution": dict(ret_counts),
             "tier_after": dict(tier_after),
             "quality_score_buckets": dict(score_dist),

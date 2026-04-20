@@ -1,5 +1,5 @@
 {
-  "generated_at": 1776687220,
+  "generated_at": 1776687782,
   "node_count": 568,
   "edge_count": 1450,
   "community_count": 24,
@@ -24563,5 +24563,5 @@
       }
     ]
   },
-  "build_seconds": 0.131
+  "build_seconds": 0.102
 }

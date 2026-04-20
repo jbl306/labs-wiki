@@ -1,11 +1,10 @@
 {
-  "generated_at": 1776685885,
-  "node_count": 569,
+  "generated_at": 1776687220,
+  "node_count": 568,
   "edge_count": 1450,
-  "community_count": 25,
+  "community_count": 24,
   "extraction_stats": {
-    "cache_hits": 568,
-    "cache_misses": 1
+    "cache_hits": 568
   },
   "nodes": [
     {
@@ -7663,19 +7662,6 @@
       "degree": 9
     },
     {
-      "id": "reports/checkpoint-graph-tracker",
-      "title": "Checkpoint Graph Tracker",
-      "page_type": "other",
-      "tier": "",
-      "quality_score": 0.0,
-      "tags": [],
-      "path": "reports/checkpoint-graph-tracker.md",
-      "summary": "> **Report-only.** This file is auto-generated on every graph build. > It does not rewrite retention settings, tier values, or checkpoint > frontmatter. Its purpose is to surface disagreements between the > heuristic classifier and the g...",
-      "last_verified": "",
-      "community": 23,
-      "degree": 0
-    },
-    {
       "id": "sources/10-claude-code-principles-what-the-research-actually-says",
       "title": "10 Claude Code Principles | What the Research Actually Says",
       "page_type": "source",
@@ -7706,7 +7692,7 @@
       "path": "sources/6372438pdf.md",
       "summary": "The source is a PDF document hosted on SSRN, but its content could not be extracted. No textual or visual information is available for analysis.",
       "last_verified": "2026-04-19",
-      "community": 24,
+      "community": 23,
       "degree": 0
     },
     {
@@ -23436,26 +23422,20 @@
     {
       "community": 23,
       "size": 1
-    },
-    {
-      "community": 24,
-      "size": 1
     }
   ],
   "checkpoint_health": {
     "total_checkpoints": 61,
     "recommendations": {
       "keep": 43,
-      "merge": 17,
-      "compress": 1
+      "compress": 8,
+      "merge": 10
     },
     "synthesis_neighbor_ratio": 0.721,
-    "disagreement_count": 52,
+    "disagreement_count": 22,
     "disagreement_breakdown": {
-      "compress\u2192keep": 34,
-      "compress\u2192merge": 12,
-      "keep\u2192merge": 5,
-      "keep\u2192compress": 1
+      "keep\u2192compress": 4,
+      "compress\u2192keep": 18
     },
     "merge_clusters": [
       {
@@ -23556,8 +23536,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23573,10 +23553,10 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-workflow",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-ntfy-notifications-galloping-bot-alerts-monitor-fixes",
@@ -23590,10 +23570,10 @@
         "source_neighbors": 0,
         "community": 3,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-debugging",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-sprint-10-complete-and-deployed",
@@ -23607,8 +23587,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23624,8 +23604,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23641,8 +23621,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23658,10 +23638,10 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-building-4-copilot-cli-custom-agents",
@@ -23692,10 +23672,10 @@
         "source_neighbors": 0,
         "community": 8,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-react-dashboard-scaffold-and-pages-built",
@@ -23709,10 +23689,10 @@
         "source_neighbors": 0,
         "community": 8,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-sprint-10-implementation-and-deployment",
@@ -23726,8 +23706,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23742,11 +23722,11 @@
         "concept_neighbors": 4,
         "source_neighbors": 0,
         "community": 13,
-        "recommendation": "merge",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "recommendation": "compress",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-sprint-13-model-improvements-code",
@@ -23760,8 +23740,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23777,8 +23757,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23794,10 +23774,10 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-mempalace-phase-3-4-and-autoagent-research",
@@ -23811,8 +23791,8 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23828,10 +23808,10 @@
         "source_neighbors": 0,
         "community": 3,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-debugging",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-phases-1-4-implementation-and-deployment",
@@ -23845,10 +23825,10 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-debugging",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-pipeline-enhancements-and-vision-support-deployed",
@@ -23862,8 +23842,8 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23878,7 +23858,7 @@
         "concept_neighbors": 3,
         "source_neighbors": 0,
         "community": 4,
-        "recommendation": "merge",
+        "recommendation": "compress",
         "checkpoint_class": "durable-architecture",
         "retention_mode": "retain",
         "heuristic_recommendation": "keep",
@@ -23896,10 +23876,10 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-homepage-overhaul-and-resource-tuning",
@@ -23913,10 +23893,10 @@
         "source_neighbors": 0,
         "community": 3,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-workflow",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-implementing-sprint-29-ml-improvements",
@@ -23929,11 +23909,11 @@
         "concept_neighbors": 4,
         "source_neighbors": 0,
         "community": 17,
-        "recommendation": "merge",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "recommendation": "compress",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-knightcrawler-done-routing-traced",
@@ -23950,7 +23930,7 @@
         "checkpoint_class": "",
         "retention_mode": "",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-knightcrawler-gating-fix-opencode-bash-config",
@@ -23981,8 +23961,8 @@
         "source_neighbors": 0,
         "community": 11,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -23998,10 +23978,10 @@
         "source_neighbors": 0,
         "community": 11,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-rankings-page-and-performance-optimization",
@@ -24015,10 +23995,10 @@
         "source_neighbors": 0,
         "community": 8,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-resource-optimization-opencode-bash-fix",
@@ -24032,8 +24012,8 @@
         "source_neighbors": 0,
         "community": 3,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -24049,8 +24029,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -24069,7 +24049,7 @@
         "checkpoint_class": "durable-debugging",
         "retention_mode": "retain",
         "heuristic_recommendation": "keep",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-sprint-55-planning-and-exploration",
@@ -24083,8 +24063,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -24100,8 +24080,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -24117,10 +24097,10 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-debugging",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-data-source-expansion-exploration",
@@ -24168,10 +24148,10 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-debugging",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-planning-and-progress-tracking-complete",
@@ -24185,10 +24165,10 @@
         "source_neighbors": 0,
         "community": 9,
         "recommendation": "merge",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-researching-mempalace-for-comparison-doc",
@@ -24202,10 +24182,10 @@
         "source_neighbors": 0,
         "community": 1,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-architecture",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-second-curation-reports",
@@ -24222,7 +24202,7 @@
         "checkpoint_class": "project-progress",
         "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-sprint-55-implementation-and-deployment",
@@ -24236,8 +24216,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -24269,11 +24249,11 @@
         "concept_neighbors": 3,
         "source_neighbors": 0,
         "community": 18,
-        "recommendation": "merge",
+        "recommendation": "compress",
         "checkpoint_class": "project-progress",
         "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-dashboard-matviews-implementation-in-progress",
@@ -24303,10 +24283,10 @@
         "concept_neighbors": 3,
         "source_neighbors": 0,
         "community": 14,
-        "recommendation": "merge",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
+        "recommendation": "compress",
+        "checkpoint_class": "durable-debugging",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
         "disagrees": true
       },
       {
@@ -24337,7 +24317,7 @@
         "concept_neighbors": 3,
         "source_neighbors": 0,
         "community": 4,
-        "recommendation": "merge",
+        "recommendation": "compress",
         "checkpoint_class": "durable-architecture",
         "retention_mode": "retain",
         "heuristic_recommendation": "keep",
@@ -24388,11 +24368,11 @@
         "concept_neighbors": 4,
         "source_neighbors": 0,
         "community": 16,
-        "recommendation": "merge",
+        "recommendation": "compress",
         "checkpoint_class": "project-progress",
         "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-optimizing-snipe-book-then-retry-flow",
@@ -24406,10 +24386,10 @@
         "source_neighbors": 0,
         "community": 3,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
-        "heuristic_recommendation": "compress",
-        "disagrees": true
+        "checkpoint_class": "durable-debugging",
+        "retention_mode": "retain",
+        "heuristic_recommendation": "keep",
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-session-wiki-promotion",
@@ -24440,8 +24420,8 @@
         "source_neighbors": 0,
         "community": 0,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -24460,7 +24440,7 @@
         "checkpoint_class": "project-progress",
         "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-phase-5-backfill-script-written",
@@ -24477,7 +24457,7 @@
         "checkpoint_class": "project-progress",
         "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-phase-5-merged-graph-ui-next",
@@ -24494,7 +24474,7 @@
         "checkpoint_class": "",
         "retention_mode": "",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-sgo-data-extraction-fix-and-quality-audit",
@@ -24508,8 +24488,8 @@
         "source_neighbors": 0,
         "community": 11,
         "recommendation": "keep",
-        "checkpoint_class": "",
-        "retention_mode": "",
+        "checkpoint_class": "project-progress",
+        "retention_mode": "compress",
         "heuristic_recommendation": "compress",
         "disagrees": true
       },
@@ -24528,7 +24508,7 @@
         "checkpoint_class": "project-progress",
         "retention_mode": "compress",
         "heuristic_recommendation": "compress",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-implementing-checkpoint-curation-phases",
@@ -24545,7 +24525,7 @@
         "checkpoint_class": "durable-architecture",
         "retention_mode": "retain",
         "heuristic_recommendation": "keep",
-        "disagrees": true
+        "disagrees": false
       },
       {
         "node_id": "sources/copilot-session-checkpoint-implementing-post-ingest-quality-fixes",
@@ -24579,9 +24559,9 @@
         "checkpoint_class": "durable-architecture",
         "retention_mode": "retain",
         "heuristic_recommendation": "keep",
-        "disagrees": true
+        "disagrees": false
       }
     ]
   },
-  "build_seconds": 0.105
+  "build_seconds": 0.131
 }

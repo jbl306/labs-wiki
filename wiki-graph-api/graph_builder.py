@@ -466,15 +466,22 @@ def _checkpoint_health_report(
     - ``compress``: connected but no synthesis upstream — candidate for the
       archive tier so it stops surfacing in hot lists.
     - ``archive``: degree<=1 — the checkpoint is essentially orphaned.
-    - ``merge``: shares a community with >=2 other checkpoints AND overlaps on
-      concept neighbours — candidate for a synthesis page.
+    - ``merge``: concept-heavy (concept_neighbors>=2), no synthesis neighbor,
+      AND the checkpoint belongs to a checkpoint community with at least 3
+      members (itself + >=2 other checkpoints) — candidate for a synthesis page.
+
+    ``merge`` is a pure structural graph signal.  The heuristic baseline never
+    emits it, so graph-merge recommendations are tracked separately and are NOT
+    counted in the heuristic-vs-graph disagreement metric.
 
     Returns a dict with per-checkpoint records plus aggregate counters.
     """
     checkpoints: list[dict[str, Any]] = []
-    rec_counts: Counter[str] = Counter()
     community_checkpoints: dict[int, list[str]] = {}
 
+    # First pass: compute connectivity signals and tentative recommendations.
+    # "merge" here is tentative — it is verified against community size in the
+    # post-pass below.
     for node, data in g.nodes(data=True):
         title = data.get("title", "")
         if data.get("page_type") != "source":
@@ -498,16 +505,14 @@ def _checkpoint_health_report(
         elif synthesis_n >= 1 and degree >= 4:
             recommendation = "keep"
         elif concept_n >= 2 and synthesis_n == 0:
-            recommendation = "merge"
+            recommendation = "merge"  # tentative; verified in post-pass
         else:
             recommendation = "compress"
 
         checkpoint_class = data.get("checkpoint_class", "")
         retention_mode = data.get("retention_mode", "")
         heuristic_rec = _heuristic_recommendation(checkpoint_class, retention_mode)
-        disagrees = heuristic_rec != recommendation
 
-        rec_counts[recommendation] += 1
         community_checkpoints.setdefault(community, []).append(node)
 
         checkpoints.append(
@@ -527,10 +532,33 @@ def _checkpoint_health_report(
                 "checkpoint_class": checkpoint_class,
                 "retention_mode": retention_mode,
                 "heuristic_recommendation": heuristic_rec,
-                # Disagreement signal
-                "disagrees": disagrees,
+                # Filled in the post-pass below
+                "disagrees": False,
             }
         )
+
+    # Post-pass 1: enforce community-size requirement for merge.
+    # A checkpoint only gets "merge" if its community contains >= 3 checkpoints
+    # (itself + at least 2 others).  Demote to "compress" when that is not met.
+    cp_community_count = Counter(c["community"] for c in checkpoints)
+    for c in checkpoints:
+        if c["recommendation"] == "merge" and cp_community_count[c["community"]] < 3:
+            c["recommendation"] = "compress"
+
+    # Post-pass 2: compute disagreement flags and recommendation counts.
+    # graph "merge" has no heuristic equivalent — counting it as a disagreement
+    # would inflate the metric artificially.  It is excluded from disagrees.
+    rec_counts: Counter[str] = Counter()
+    disagreement_breakdown: Counter[str] = Counter()
+    for c in checkpoints:
+        rec = c["recommendation"]
+        rec_counts[rec] += 1
+        heuristic_rec = c["heuristic_recommendation"]
+        disagrees = (heuristic_rec != rec) and (rec != "merge")
+        c["disagrees"] = disagrees
+        if disagrees:
+            transition = f"{heuristic_rec}→{rec}"
+            disagreement_breakdown[transition] += 1
 
     checkpoints.sort(key=lambda r: (r["recommendation"] != "archive", -r["degree"]))
 
@@ -539,13 +567,6 @@ def _checkpoint_health_report(
         for cid, nodes in community_checkpoints.items()
         if len(nodes) >= 3
     ]
-
-    # Disagreement breakdown: count each heuristic→graph transition.
-    disagreement_breakdown: Counter[str] = Counter()
-    for c in checkpoints:
-        if c["disagrees"]:
-            transition = f"{c['heuristic_recommendation']}→{c['recommendation']}"
-            disagreement_breakdown[transition] += 1
 
     return {
         "total_checkpoints": len(checkpoints),
@@ -626,6 +647,11 @@ def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
     Compares the graph recommendation layer against the heuristic baseline from
     frontmatter (checkpoint_class + retention_mode) and surfaces disagreements.
     Does NOT modify any wiki page or retention setting.
+
+    Graph ``merge`` is a structural signal (checkpoint belongs to a community
+    with ≥ 3 checkpoints AND has concept_neighbors≥2 with no synthesis
+    neighbor).  The heuristic baseline never emits ``merge``, so it is shown
+    separately and excluded from the heuristic-vs-graph disagreement count.
     """
     checkpoints: list[dict[str, Any]] = health.get("checkpoints", [])
     total = health.get("total_checkpoints", len(checkpoints))
@@ -658,7 +684,11 @@ def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
         "",
         "## Disagreement summary",
         "",
-        f"**Disagreements:** {disagree_count} of {total}",
+        "> **Note:** Graph `merge` is a structural signal (checkpoint community ≥ 3 members,",
+        "> concept-connected, no synthesis neighbor). The heuristic baseline never emits `merge`,",
+        "> so graph-`merge` checkpoints are shown separately below and are **not** counted here.",
+        "",
+        f"**Disagreements (excluding merge):** {disagree_count} of {total}",
         "",
     ]
     if disagree_breakdown:
@@ -672,7 +702,7 @@ def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
         lines.append("_No disagreements detected._")
     lines += [""]
 
-    # Disagreement detail table.
+    # Disagreement detail table (excludes merge).
     disagreements = [c for c in checkpoints if c.get("disagrees")]
     if disagreements:
         lines += [
@@ -693,6 +723,30 @@ def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
             snb = c.get("synthesis_neighbors", 0)
             tier = c.get("tier", "")
             lines.append(f"| {title} | `{path}` | {cls} | {ret} | `{hrec}` | `{grec}` | {deg} | {cnb} | {snb} | {tier} |")
+        lines.append("")
+
+    # Merge-signal checkpoints (separate from disagreements).
+    merge_flagged = [c for c in checkpoints if c.get("recommendation") == "merge"]
+    if merge_flagged:
+        lines += [
+            "## Merge-signal checkpoints",
+            "",
+            "> Structural candidates for a synthesis page: concept-connected (concept_nb ≥ 2),",
+            "> no synthesis neighbor, and in a checkpoint community of ≥ 3 members.",
+            "> These are not counted in the disagreement metric above.",
+            "",
+            "| Title | Path | Class | Community | Degree | Concept nb | Tier |",
+            "| --- | --- | --- | --- | --- | --- | --- |",
+        ]
+        for c in sorted(merge_flagged, key=lambda r: r.get("title", "")):
+            title = c.get("title", "").replace("|", "\\|")
+            path = c.get("path", "")
+            cls = c.get("checkpoint_class", "")
+            comm = c.get("community", "")
+            deg = c.get("degree", 0)
+            cnb = c.get("concept_neighbors", 0)
+            tier = c.get("tier", "")
+            lines.append(f"| {title} | `{path}` | {cls} | {comm} | {deg} | {cnb} | {tier} |")
         lines.append("")
 
     # Merge-cluster candidates.

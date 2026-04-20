@@ -12,6 +12,14 @@ You are a **coordinator**. You delegate to specialized agents and track progress
 
 > **Note:** The `wiki-auto-ingest` Docker sidecar automatically processes pending sources in `raw/`. Orchestrate focuses on **maintenance** — lint, audit, gap analysis, and stale page review.
 
+## Context-Engineering Skill Routing
+
+Before changing orchestration, agent prompts, memory handoffs, or evaluator loops, load the shared context-engineering skills first:
+
+- `context-fundamentals`, `tool-design`, `filesystem-context`
+- `multi-agent-patterns`, `memory-systems`, `project-development`, `latent-briefing`
+- `context-degradation`, `context-compression`, `context-optimization`, `evaluation`, `advanced-evaluation`
+
 ## Available Sub-Agents
 
 | Agent | Use For |

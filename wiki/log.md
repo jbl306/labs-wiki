@@ -2268,4 +2268,167 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
   status: success
   notes: "Auto-ingested 9 pages (3 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:27:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agents-that-remember-introducing-agent-memory.md
+    - wiki/concepts/agent-memory-ingestion-pipeline.md
+    - wiki/concepts/agent-memory-retrieval-pipeline.md
+    - wiki/concepts/memory-supersession-chains.md
+    - wiki/entities/agent-memory.md
+    - wiki/entities/cloudflare.md
+    - wiki/entities/durable-object.md
+    - wiki/entities/vectorize.md
+    - wiki/entities/workers-ai.md
+  source: raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
+  status: success
+  notes: "Auto-ingested 9 pages (3 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:29:16+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
+    - wiki/concepts/lightgbm-leaf-wise-tree-growth.md
+    - wiki/concepts/gradient-based-one-side-sampling-goss.md
+    - wiki/concepts/histogram-based-learning-in-lightgbm.md
+    - wiki/concepts/lightgbm-hyperparameter-tuning.md
+    - wiki/entities/lightgbm.md
+    - wiki/entities/microsoft.md
+  source: raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 7 pages (4 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:30:20+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/entities/agentic-context-engineering-ace.md
+    - wiki/entities/appworld-benchmark.md
+    - wiki/entities/finer.md
+    - wiki/entities/deepseek-v3-1.md
+  source: raw/2026-04-16-251004618v3pdf.md
+  status: success
+  notes: "Auto-ingested 7 pages (2 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:33:17+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/entities/ace-agentic-context-engineering.md
+    - wiki/entities/appworld-benchmark.md
+    - wiki/entities/finer.md
+    - wiki/entities/deepseek-v3-1.md
+  source: raw/2026-04-16-251004618v3pdf.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:36:11+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/incremental-delta-updates.md
+    - wiki/entities/ace-agentic-context-engineering.md
+    - wiki/entities/appworld-benchmark.md
+    - wiki/entities/finer.md
+    - wiki/entities/deepseek-v3-1.md
+  source: raw/2026-04-16-251004618v3pdf.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:50:02+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/incremental-delta-updates.md
+    - wiki/entities/ace-agentic-context-engineering.md
+    - wiki/entities/appworld-benchmark.md
+    - wiki/entities/finer.md
+    - wiki/entities/deepseek-v3-1.md
+  source: raw/2026-04-16-251004618v3pdf.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:51:45+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/incremental-delta-updates.md
+    - wiki/entities/ace-agentic-context-engineering.md
+    - wiki/entities/appworld-benchmark.md
+    - wiki/entities/finer.md
+    - wiki/entities/deepseek-v3-1.md
+  source: raw/2026-04-16-251004618v3pdf.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T19:04:37+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agents-that-remember-introducing-agent-memory.md
+    - wiki/concepts/agent-memory-ingestion-pipeline.md
+    - wiki/concepts/agent-memory-retrieval-pipeline.md
+    - wiki/concepts/memory-supersession-chains.md
+    - wiki/concepts/hybrid-retrieval-agent-memory-systems.md
+    - wiki/entities/agent-memory.md
+    - wiki/entities/cloudflare.md
+    - wiki/entities/durable-object.md
+    - wiki/entities/vectorize.md
+    - wiki/entities/workers-ai.md
+  source: raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
+  status: success
+  notes: "Auto-ingested 10 pages (4 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T19:05:55+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
+    - wiki/concepts/lightgbm-leaf-wise-tree-growth.md
+    - wiki/concepts/gradient-based-one-side-sampling-goss.md
+    - wiki/concepts/histogram-based-learning-in-lightgbm.md
+    - wiki/concepts/lightgbm-hyperparameter-tuning.md
+    - wiki/entities/lightgbm.md
+    - wiki/entities/microsoft.md
+  source: raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 7 pages (4 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T19:08:46+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/incremental-delta-updates.md
+    - wiki/concepts/grow-and-refine-mechanism-context-engineering.md
+    - wiki/entities/ace-agentic-context-engineering.md
+    - wiki/entities/appworld-benchmark.md
+    - wiki/entities/finer.md
+    - wiki/entities/deepseek-v3-1.md
+  source: raw/2026-04-16-251004618v3pdf.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
 ```

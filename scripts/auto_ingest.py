@@ -11,6 +11,7 @@ from __future__ import annotations
 import argparse
 import base64
 import hashlib
+import html
 import json
 import logging
 import os
@@ -25,6 +26,7 @@ from pathlib import Path
 from urllib.parse import urljoin
 
 import httpx
+from bs4 import BeautifulSoup
 from openai import OpenAI
 
 try:
@@ -57,6 +59,16 @@ MAX_RETRIES = 3
 URL_FETCH_TIMEOUT = 30
 MAX_IMAGES = 5  # Max images to process per source for vision
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB max per image download
+FETCHED_CONTENT_START = "<!-- fetched-content:start -->"
+FETCHED_CONTENT_END = "<!-- fetched-content:end -->"
+
+
+@dataclass(frozen=True)
+class UrlFetchResult:
+    text: str
+    image_urls: list[str]
+    resolved_url: str | None = None
+    content_type: str | None = None
 
 
 def _env_str(*names: str, default: str = "") -> str:
@@ -66,6 +78,225 @@ def _env_str(*names: str, default: str = "") -> str:
         if value:
             return value
     return default
+
+
+def _fetched_content_pattern() -> re.Pattern[str]:
+    return re.compile(
+        rf"\n?{re.escape(FETCHED_CONTENT_START)}\n.*?\n{re.escape(FETCHED_CONTENT_END)}\n?",
+        flags=re.S,
+    )
+
+
+def strip_fetched_content_block(body: str) -> str:
+    return re.sub(_fetched_content_pattern(), "\n", body).strip()
+
+
+def extract_manual_notes(body: str, source_url: str | None) -> str:
+    raw_body = strip_fetched_content_block(body)
+    if not raw_body:
+        return ""
+    lines = raw_body.splitlines()
+    if source_url and lines and lines[0].strip() == source_url.strip():
+        lines = lines[1:]
+    return "\n".join(line.rstrip() for line in lines).strip()
+
+
+def read_persisted_fetched_content(body: str) -> tuple[str | None, dict[str, object]]:
+    pattern = re.compile(
+        rf"{re.escape(FETCHED_CONTENT_START)}\n(.*?)\n{re.escape(FETCHED_CONTENT_END)}",
+        flags=re.S,
+    )
+    match = pattern.search(body)
+    if not match:
+        return None, {}
+
+    metadata: dict[str, object] = {}
+    text_lines: list[str] = []
+    in_text = False
+
+    for line in match.group(1).splitlines():
+        stripped = line.strip()
+        if stripped == "## Fetched Content":
+            in_text = True
+            continue
+        if not in_text and stripped.startswith("- "):
+            key, _, value = stripped[2:].partition(":")
+            parsed_key = key.strip()
+            parsed_value = value.strip()
+            if parsed_key == "image_urls":
+                try:
+                    metadata[parsed_key] = json.loads(parsed_value)
+                except json.JSONDecodeError:
+                    metadata[parsed_key] = []
+            else:
+                metadata[parsed_key] = parsed_value
+            continue
+        if in_text:
+            text_lines.append(line)
+
+    text = "\n".join(text_lines).strip()
+    return (text or None), metadata
+
+
+def build_fetched_content_block(
+    *,
+    fetched_at: str,
+    source_url: str,
+    resolved_url: str | None,
+    content_type: str | None,
+    image_urls: list[str],
+    text: str,
+) -> str:
+    lines = [
+        FETCHED_CONTENT_START,
+        "## Fetched Metadata",
+        f"- fetched_at: {fetched_at}",
+        f"- source_url: {source_url}",
+        f"- resolved_url: {resolved_url or source_url}",
+        f"- content_type: {content_type or 'unknown'}",
+        f"- image_urls: {json.dumps(image_urls)}",
+        "",
+        "## Fetched Content",
+        text.strip(),
+        FETCHED_CONTENT_END,
+    ]
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def upsert_fetched_content_block(raw_text: str, block: str) -> str:
+    pattern = _fetched_content_pattern()
+    cleaned = pattern.sub("\n", raw_text).rstrip()
+    if cleaned:
+        return cleaned + "\n\n" + block
+    return block
+
+
+def build_url_ingest_content(
+    *,
+    body: str,
+    source_url: str | None,
+    persisted_text: str | None,
+) -> str:
+    manual_notes = extract_manual_notes(body, source_url)
+    parts: list[str] = []
+    if persisted_text:
+        parts.append(persisted_text.strip())
+    if manual_notes:
+        if persisted_text:
+            parts.append(f"## Manual Notes\n{manual_notes}")
+        else:
+            parts.append(manual_notes)
+    if parts:
+        return "\n\n".join(parts).strip()
+    return strip_fetched_content_block(body).strip()
+
+
+def is_meaningful_fetched_body(text: str, source_url: str | None) -> bool:
+    cleaned = text.strip()
+    if not cleaned:
+        return False
+    if source_url and cleaned == source_url.strip():
+        return False
+    if cleaned.startswith("[PDF document at ") and "content could not be extracted" in cleaned:
+        return False
+    compressed = re.sub(r"\s+", "", cleaned)
+    return len(compressed) >= 30
+
+
+def extract_image_urls(raw_html: str, page_url: str) -> list[str]:
+    soup = BeautifulSoup(raw_html, "html.parser")
+    base_tag = soup.find("base", href=True)
+    base_url = urljoin(page_url, base_tag["href"]) if base_tag else page_url
+
+    image_urls: list[str] = []
+    og_match = re.search(
+        r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
+        raw_html,
+        flags=re.I,
+    )
+    if not og_match:
+        og_match = re.search(
+            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
+            raw_html,
+            flags=re.I,
+        )
+    if og_match:
+        image_urls.append(og_match.group(1))
+
+    skip_patterns = re.compile(r"logo|icon|favicon|badge|avatar|sprite|\.svg", re.I)
+    for img_src in re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw_html, flags=re.I):
+        if img_src.startswith("data:") or skip_patterns.search(img_src):
+            continue
+        if img_src not in image_urls:
+            image_urls.append(img_src)
+        if len(image_urls) >= MAX_IMAGES:
+            break
+
+    return [
+        urljoin(base_url, img) if not img.startswith(("http://", "https://")) else img
+        for img in image_urls[:MAX_IMAGES]
+    ]
+
+
+def _serialize_html_table(table) -> str:
+    rows: list[list[str]] = []
+    for tr in table.find_all("tr"):
+        cells = [cell.get_text(" ", strip=True) for cell in tr.find_all(["th", "td"])]
+        if cells:
+            rows.append(cells)
+    if not rows:
+        return ""
+
+    width = max(len(row) for row in rows)
+    normalized_rows = [row + [""] * (width - len(row)) for row in rows]
+    header = normalized_rows[0]
+    divider = ["---"] * width
+    body_rows = normalized_rows[1:]
+    markdown_rows = [
+        "| " + " | ".join(header) + " |",
+        "| " + " | ".join(divider) + " |",
+    ]
+    markdown_rows.extend("| " + " | ".join(row) + " |" for row in body_rows)
+    return "\n".join(markdown_rows)
+
+
+def normalize_html_document(raw_html: str) -> str:
+    soup = BeautifulSoup(raw_html, "html.parser")
+    for node in soup(["script", "style", "noscript", "nav", "header", "footer", "aside", "form"]):
+        node.decompose()
+    for node in soup.select("[aria-hidden='true'], .visually-hidden, .sr-only"):
+        node.decompose()
+    for br in soup.find_all("br"):
+        br.replace_with("\n")
+
+    for table in soup.find_all("table"):
+        table_md = _serialize_html_table(table)
+        if table_md:
+            table.replace_with("\n" + table_md + "\n")
+        else:
+            table.decompose()
+
+    for tag_name in ("h1", "h2", "h3", "h4", "h5", "h6"):
+        for tag in soup.find_all(tag_name):
+            level = int(tag_name[1])
+            tag.replace_with("\n" + ("#" * level) + " " + tag.get_text(" ", strip=True) + "\n")
+
+    for pre in soup.find_all("pre"):
+        pre.replace_with("\n```\n" + pre.get_text("\n", strip=False).strip() + "\n```\n")
+
+    for code in soup.find_all("code"):
+        if code.parent.name != "pre":
+            code.replace_with("`" + code.get_text(" ", strip=True) + "`")
+
+    for li in soup.find_all("li"):
+        li.replace_with("\n- " + li.get_text(" ", strip=True))
+
+    text = soup.get_text("\n")
+    text = html.unescape(text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    text = re.sub(r"[ \t]+\n", "\n", text)
+    lines = [line.strip() for line in text.splitlines() if line.strip()]
+    return "\n".join(lines).strip()[:50_000]
 
 
 MODEL_DEFAULT = _env_str("GITHUB_MODELS_MODEL_DEFAULT", "GITHUB_MODELS_MODEL", default=DEFAULT_MODEL)
@@ -386,11 +617,10 @@ def _crawl_github_tree(
 # ---------------------------------------------------------------------------
 
 
-def fetch_url_content(url: str) -> tuple[str, list[str]]:
-    """Fetch text content from a URL. Returns (text, image_urls).
+def fetch_url_content(url: str) -> UrlFetchResult:
+    """Fetch text content from a URL.
 
     Handles Twitter/X, GitHub repos, GitHub gists, and generic HTML.
-    image_urls contains any images found for vision processing.
     """
     # --- arxiv handler: rewrite /pdf/ and /abs/ to /html/ for full text ---
     arxiv_match = re.match(
@@ -428,7 +658,7 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
             return fetch_url_content(resolved)
         except Exception as e:
             log.warning("Failed to resolve t.co URL %s: %s", url, e)
-            return ("", [])
+            return UrlFetchResult(text="", image_urls=[], resolved_url=url, content_type=None)
 
     # --- Twitter/X handler ---
     twitter_pattern = re.match(
@@ -482,10 +712,15 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
                         image_urls.append(photo_url)
 
             content = "\n".join(p for p in parts)
-            return (content[:50_000], image_urls)
+            return UrlFetchResult(
+                text=content[:50_000],
+                image_urls=image_urls,
+                resolved_url=url,
+                content_type="application/json",
+            )
         except Exception as e:
             log.warning("fxtwitter API failed for %s: %s", tweet_id, e)
-            return ("", [])
+            return UrlFetchResult(text="", image_urls=[], resolved_url=url, content_type=None)
 
     # --- GitHub repo handler ---
     clean_url = re.sub(r"[?#].*$", "", url)
@@ -549,7 +784,12 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
         except Exception as e:
             log.warning("GitHub tree crawl failed for %s/%s: %s", owner, repo, e)
 
-        return ("\n".join(parts)[:50_000], [])
+        return UrlFetchResult(
+            text="\n".join(parts)[:50_000],
+            image_urls=[],
+            resolved_url=url,
+            content_type="application/vnd.github+json",
+        )
 
     # --- GitHub gist handler ---
     gist_match = re.match(
@@ -561,7 +801,12 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
         log.info("Fetching GitHub gist raw content: %s", raw_url)
         resp = httpx.get(raw_url, follow_redirects=True, timeout=URL_FETCH_TIMEOUT)
         resp.raise_for_status()
-        return (resp.text, [])
+        return UrlFetchResult(
+            text=resp.text,
+            image_urls=[],
+            resolved_url=str(resp.url),
+            content_type=resp.headers.get("content-type"),
+        )
 
     # --- Default HTML handler ---
     log.info("Fetching URL content: %s", url)
@@ -577,60 +822,28 @@ def fetch_url_content(url: str) -> tuple[str, list[str]]:
     # Reject binary formats that can't be meaningfully parsed as text
     if "application/pdf" in content_type:
         log.warning("URL returned PDF binary (unsupported): %s", url)
-        return (f"[PDF document at {url} — content could not be extracted]", [])
+        return UrlFetchResult(
+            text=f"[PDF document at {url} — content could not be extracted]",
+            image_urls=[],
+            resolved_url=str(resp.url),
+            content_type=content_type,
+        )
 
     if "html" in content_type:
         raw_html = resp.text
-
-        # Extract image URLs before stripping tags
-        image_urls = []
-        # og:image meta tag
-        og_match = re.search(
-            r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
-            raw_html,
-            flags=re.I,
+        return UrlFetchResult(
+            text=normalize_html_document(raw_html),
+            image_urls=extract_image_urls(raw_html, str(resp.url)),
+            resolved_url=str(resp.url),
+            content_type=content_type,
         )
-        if not og_match:
-            og_match = re.search(
-                r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
-                raw_html,
-                flags=re.I,
-            )
-        if og_match:
-            image_urls.append(og_match.group(1))
 
-        # Prominent <img> tags (skip logos, icons, SVGs, tiny images)
-        _SKIP_IMG_PATTERNS = re.compile(
-            r"logo|icon|favicon|badge|avatar|sprite|\.svg", re.I
-        )
-        img_matches = re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw_html, flags=re.I)
-        for img_src in img_matches:
-            if img_src not in image_urls and not img_src.startswith("data:"):
-                if _SKIP_IMG_PATTERNS.search(img_src):
-                    continue
-                image_urls.append(img_src)
-                if len(image_urls) >= MAX_IMAGES:
-                    break
-
-        image_urls = image_urls[:MAX_IMAGES]
-
-        # Resolve relative URLs against the page base URL
-        page_base = str(resp.url)
-        if not page_base.endswith("/"):
-            page_base += "/"
-        image_urls = [
-            urljoin(page_base, img) if not img.startswith(("http://", "https://")) else img
-            for img in image_urls
-        ]
-
-        # Strip HTML tags for text extraction
-        text = re.sub(r"<script[^>]*>.*?</script>", "", raw_html, flags=re.S)
-        text = re.sub(r"<style[^>]*>.*?</style>", "", text, flags=re.S)
-        text = re.sub(r"<[^>]+>", " ", text)
-        text = re.sub(r"\s+", " ", text).strip()
-        return (text[:50_000], image_urls)
-
-    return (resp.text[:50_000], [])
+    return UrlFetchResult(
+        text=resp.text[:50_000],
+        image_urls=[],
+        resolved_url=str(resp.url),
+        content_type=content_type,
+    )
 
 
 def download_images_as_base64(image_urls: list[str], max_count: int = MAX_IMAGES) -> list[str]:
@@ -1853,6 +2066,9 @@ def ingest_raw_source(
     project_root: Path,
     token: str,
     model: str | None = None,
+    *,
+    force: bool = False,
+    refresh_fetch: bool = False,
 ) -> bool:
     """Process a single raw source file. Returns True on success."""
     log.info("Processing: %s", raw_path)
@@ -1864,7 +2080,7 @@ def ingest_raw_source(
         return False
 
     status = fm.get("status", "pending")
-    if status != "pending":
+    if status != "pending" and not force:
         log.info("Skipping %s (status: %s)", raw_path.name, status)
         return False
 
@@ -1874,16 +2090,59 @@ def ingest_raw_source(
     raw_tags = fm.get("tags", []) if isinstance(fm.get("tags"), list) else []
     route = classify_ingest_route(fm, model_override=model, body=body)
 
-    # For URL sources, fetch the actual content
+    # For URL sources, prefer the durable fetched-content block. Only fetch
+    # when the raw file has never been enriched or the caller explicitly asks
+    # to refresh the persisted block.
     content = body
     image_urls: list[str] = []
+    persisted_text: str | None = None
     if source_type == "url" and source_url:
+        persisted_text, persisted_metadata = read_persisted_fetched_content(body)
+        should_fetch = refresh_fetch or not persisted_text
+        live_fetch_succeeded = False
         try:
-            content, image_urls = fetch_url_content(source_url)
-            log.info("Fetched %d chars from URL, %d images found", len(content), len(image_urls))
+            if should_fetch:
+                fetch_result = fetch_url_content(source_url)
+                if is_meaningful_fetched_body(fetch_result.text, source_url):
+                    persisted_text = fetch_result.text.strip()
+                    image_urls = fetch_result.image_urls
+                    persisted_metadata = {
+                        "image_urls": fetch_result.image_urls,
+                    }
+                    live_fetch_succeeded = True
+                    updated_raw = upsert_fetched_content_block(
+                        raw_path.read_text(),
+                        build_fetched_content_block(
+                            fetched_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                            source_url=source_url,
+                            resolved_url=fetch_result.resolved_url,
+                            content_type=fetch_result.content_type,
+                            image_urls=fetch_result.image_urls,
+                            text=persisted_text,
+                        ),
+                    )
+                    raw_path.write_text(updated_raw)
+                    log.info(
+                        "Persisted %d chars of fetched content for %s",
+                        len(persisted_text),
+                        raw_path.name,
+                    )
+                else:
+                    log.warning(
+                        "Fetched URL content for %s was not meaningful; leaving raw content unchanged",
+                        source_url,
+                    )
         except Exception as e:
             log.error("Failed to fetch URL %s: %s", source_url, e)
-            content = body
+        if persisted_text and not image_urls and not live_fetch_succeeded:
+            persisted_image_urls = persisted_metadata.get("image_urls", [])
+            if isinstance(persisted_image_urls, list):
+                image_urls = [str(url) for url in persisted_image_urls[:MAX_IMAGES] if str(url)]
+        content = build_url_ingest_content(
+            body=body,
+            source_url=source_url,
+            persisted_text=persisted_text,
+        )
 
     # Download and encode images for vision
     images_b64: list[str] = []
@@ -1922,7 +2181,7 @@ def ingest_raw_source(
     source_hash = compute_sha256(content)
     wiki_dir = project_root / "wiki"
 
-    if check_already_processed(wiki_dir, source_hash):
+    if not force and check_already_processed(wiki_dir, source_hash):
         log.info("Already processed, updating status only")
         update_raw_status(raw_path, "ingested")
         return True
@@ -2281,6 +2540,16 @@ def main() -> None:
         help="Optional explicit model override (otherwise source-based routing decides)",
     )
     parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Process a specific raw file even if it is already marked ingested",
+    )
+    parser.add_argument(
+        "--refresh-fetch",
+        action="store_true",
+        help="Re-fetch URL content and replace the persisted fetched-content block",
+    )
+    parser.add_argument(
         "--token",
         default=os.environ.get("GITHUB_MODELS_TOKEN", os.environ.get("GITHUB_TOKEN", "")),
         help="GitHub Models API token",
@@ -2289,6 +2558,8 @@ def main() -> None:
         "--verbose", "-v", action="store_true", help="Enable debug logging",
     )
     args = parser.parse_args()
+    if args.refresh_fetch and not args.force:
+        parser.error("--refresh-fetch requires --force")
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
@@ -2303,8 +2574,18 @@ def main() -> None:
     project_root = Path(args.project_root).resolve()
 
     if args.raw_file:
-        raw_path = Path(args.raw_file).resolve()
-        ok = ingest_raw_source(raw_path, project_root, args.token, args.model)
+        raw_path = Path(args.raw_file)
+        if not raw_path.is_absolute():
+            raw_path = project_root / raw_path
+        raw_path = raw_path.resolve()
+        ok = ingest_raw_source(
+            raw_path,
+            project_root,
+            args.token,
+            args.model,
+            force=args.force,
+            refresh_fetch=args.refresh_fetch,
+        )
         sys.exit(0 if ok else 1)
     else:
         count = process_all_pending(project_root, args.token, args.model)

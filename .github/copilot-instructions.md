@@ -77,6 +77,6 @@ MemPalace is the persistent memory MCP. Two relevant wings:
 ### Core Rules
 
 - Every wiki fact must trace to a `sources:` entry (provenance)
-- Never modify `raw/` files (immutable inbox, except `status` field)
+- Never manually modify `raw/` files; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources plus the `status` field
 - Log all operations to `wiki/log.md`; rebuild `wiki/index.md` after changes
 - Run `python3 scripts/lint_wiki.py` or use `@wiki-lint` to validate

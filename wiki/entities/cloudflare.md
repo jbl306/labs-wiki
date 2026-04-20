@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "9087cb7649f7304dd2917525af12c2fd1f436fd5b0eb12bcf0b6c9787bb8f3f4"
 sources:
+  - raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
   - raw/2026-04-20-cloudflare-launches-code-mode-mcp-server-to-optimize-token-u.md
   - raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
 quality_score: 100
@@ -53,3 +54,4 @@ Cloudflare is critical for enabling public HTTPS access to homelab services whil
 
 - [[Copilot Session Checkpoint: Knightcrawler done, routing traced]] — where this entity was mentioned
 - [[Cloudflare Launches Code Mode MCP Server to Optimize Token Usage for AI Agents]] — additional source
+- [[Agents that remember: introducing Agent Memory]] — additional source

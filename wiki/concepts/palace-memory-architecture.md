@@ -5,6 +5,7 @@ created: 2026-04-11
 last_verified: 2026-04-11
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
+  - raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
 quality_score: 100
 concepts:
@@ -77,3 +78,4 @@ Used by AI agents (Claude Code, ChatGPT, Gemini CLI) to recall decisions, debugg
 ## Sources
 
 - [[MemPalace GitHub Repository]] — primary source for this concept
+- [[Agents that remember: introducing Agent Memory]] — additional source

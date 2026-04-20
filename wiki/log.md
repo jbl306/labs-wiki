@@ -2251,4 +2251,21 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
   status: success
   notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T11:37:24+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/agents-that-remember-introducing-agent-memory.md
+    - wiki/concepts/palace-memory-architecture.md
+    - wiki/concepts/agent-memory-ingestion-pipeline.md
+    - wiki/concepts/agent-memory-retrieval-pipeline.md
+    - wiki/entities/agent-memory.md
+    - wiki/entities/cloudflare.md
+    - wiki/entities/durable-object.md
+    - wiki/entities/vectorize.md
+    - wiki/entities/workers-ai.md
+  source: raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
+  status: success
+  notes: "Auto-ingested 9 pages (3 concepts, 5 entities, 0 synthesis)"
 ```

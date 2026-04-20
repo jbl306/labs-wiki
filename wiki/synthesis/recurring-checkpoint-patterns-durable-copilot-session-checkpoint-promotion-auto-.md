@@ -43,6 +43,9 @@ related:
   - "[[Copilot Session Checkpoint: Graphify Comparison and Quality Evaluation]]"
   - "[[Copilot Session Checkpoint: Researching MemPalace for Comparison Doc]]"
 tier: hot
+checkpoint_cluster_community: 1
+checkpoint_cluster_checkpoint_count: 14
+checkpoint_cluster_signature: d098258a944eccb3
 tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, durable-knowledge, fileback, graph, homelab, labs-wiki]
 ---
 

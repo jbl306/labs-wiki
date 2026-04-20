@@ -94,5 +94,6 @@ hot → established → core → workflow
 - `durable-*` checkpoints remain first-class source pages and can generate concepts, entities, and synthesis pages.
 - `project-progress` checkpoints default to `retention_mode: compress` and are archived as source pages.
 - Planning-only `project-progress` checkpoints keep the source summary for provenance, but concept/entity extraction is suppressed so future work is not promoted as settled knowledge.
+- Checkpoint source pages also carry `knowledge_state: planned | executed | validated` so execution posture is explicit; `quality_score` remains structural and should not be read as implementation certainty.
 
 Tier changes are tracked in `wiki/log.md` and performed by the Curator agent during `/wiki-orchestrate maintenance`.

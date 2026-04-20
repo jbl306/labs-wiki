@@ -24,6 +24,7 @@ tier: hot
 tags: [multi-repo, labs-wiki, automation, custom-agents, agents, nba-ml-engine, fileback, dashboard, checkpoint, copilot-session, autoagent, mempalace, agent-feedback, homelab, durable-knowledge, copilot-cli]
 checkpoint_class: durable-architecture
 retention_mode: retain
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents

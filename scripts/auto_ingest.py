@@ -35,13 +35,13 @@ except ImportError:  # pragma: no cover
     _FUZZ_AVAILABLE = False
 
 from checkpoint_classifier import (
-    CLASS_PROJECT_PROGRESS,
     COMPRESS,
     RETAIN,
     SKIP,
     classify_checkpoint,
     resolve_retention,
 )
+from checkpoint_state import derive_knowledge_state, is_planning_only_checkpoint
 
 log = logging.getLogger("auto-ingest")
 
@@ -178,53 +178,6 @@ def classify_ingest_route(
         source_class="text-source",
     )
 
-
-_PLANNING_TITLE_HINTS = ("planning", "audit", "exploration")
-_PLANNING_BODY_HINTS = (
-    "<next_steps>",
-    "open questions",
-    "conversation compacted before",
-    "plan + tracker",
-    "sql todos seeded",
-    "branch + tracker",
-)
-_NO_EXECUTION_HINTS = (
-    "no code changes made this session",
-    "files modified this session: **none**",
-    "files modified: **none**",
-    "(no edits yet this session)",
-)
-_EXECUTION_HINTS = (
-    "- [x] implementation",
-    "- [x] tests",
-    "- [x] deploy",
-    "merged feature branches",
-    "deployed and verified",
-    "committed, pushed",
-)
-
-
-def is_planning_only_checkpoint(
-    title: str,
-    body: str,
-    checkpoint_class: str,
-    retention_mode: str,
-) -> bool:
-    """Return True for project-progress checkpoints that contain plans, not outcomes."""
-    if checkpoint_class != CLASS_PROJECT_PROGRESS or retention_mode != COMPRESS:
-        return False
-
-    lower_title = (title or "").lower()
-    lower_body = (body or "").lower()
-
-    if any(hint in lower_body for hint in _NO_EXECUTION_HINTS):
-        return True
-
-    title_planning = any(hint in lower_title for hint in _PLANNING_TITLE_HINTS)
-    planning_hits = sum(1 for hint in _PLANNING_BODY_HINTS if hint in lower_body)
-    has_execution = any(hint in lower_body for hint in _EXECUTION_HINTS)
-
-    return title_planning and planning_hits >= 2 and not has_execution
 
 # ---------------------------------------------------------------------------
 # Frontmatter helpers
@@ -1139,6 +1092,7 @@ def generate_source_page(
     *,
     checkpoint_class: str = "",
     retention_mode: str = RETAIN,
+    knowledge_state: str = "",
 ) -> tuple[str, str]:
     """Generate source summary page. Returns (filename, content)."""
     ss = extraction["source_summary"]
@@ -1186,6 +1140,8 @@ def generate_source_page(
     if checkpoint_class:
         extra_fm.append(f"checkpoint_class: {checkpoint_class}")
         extra_fm.append(f"retention_mode: {retention_mode}")
+    if knowledge_state:
+        extra_fm.append(f"knowledge_state: {knowledge_state}")
     extra_fm_block = ("\n" + "\n".join(extra_fm)) if extra_fm else ""
 
     content = f"""---
@@ -1244,6 +1200,7 @@ def normalize_checkpoint_source_page(
     page_path: Path,
     checkpoint_class: str,
     retention_mode: str,
+    knowledge_state: str = "",
 ) -> None:
     """Ensure checkpoint source pages carry class/retention/tier frontmatter."""
     if not checkpoint_class or not page_path.exists():
@@ -1264,6 +1221,8 @@ def normalize_checkpoint_source_page(
         "retention_mode": retention_mode,
         "tier": "archive" if retention_mode == COMPRESS else "hot",
     }
+    if knowledge_state:
+        desired["knowledge_state"] = knowledge_state
 
     def upsert(lines: list[str], key: str, value: str) -> list[str]:
         prefix = f"{key}:"
@@ -1491,6 +1450,8 @@ def generate_synthesis_page(
     raw_paths: list[str],
     source_titles: list[str],
     today: str,
+    *,
+    extra_frontmatter: dict[str, str] | None = None,
 ) -> tuple[str, str]:
     """Generate a synthesis wiki page. Returns (filename, content)."""
     title = synthesis.get("title", "Untitled Synthesis")
@@ -1549,6 +1510,12 @@ def generate_synthesis_page(
     tags = synthesis.get("tags", [])
 
     sources_fm = "\n".join(f"  - {rp}" for rp in raw_paths)
+    extra_fm_lines = [
+        f"{key}: {value}"
+        for key, value in (extra_frontmatter or {}).items()
+        if str(value).strip()
+    ]
+    extra_fm_block = ("\n" + "\n".join(extra_fm_lines)) if extra_fm_lines else ""
 
     content = f"""---
 title: "{title}"
@@ -1563,7 +1530,7 @@ concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
 {related_links if related_links else '  []'}
-tier: hot
+tier: hot{extra_fm_block}
 tags: [{', '.join(tags)}]
 ---
 
@@ -1993,6 +1960,12 @@ def ingest_raw_source(
         if "planning-only" not in raw_tags:
             raw_tags = raw_tags + ["planning-only"]
 
+    knowledge_state = derive_knowledge_state(
+        title,
+        body,
+        route.checkpoint_class,
+        route.retention_mode,
+    )
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     raw_rel = str(raw_path.relative_to(project_root))
     source_title = extraction["source_summary"]["title"]
@@ -2004,6 +1977,7 @@ def ingest_raw_source(
         extraction, raw_rel, source_hash, source_url, today, raw_tags,
         checkpoint_class=route.checkpoint_class,
         retention_mode=route.retention_mode,
+        knowledge_state=knowledge_state,
     )
     src_path = wiki_dir / "sources" / src_filename
     src_path.parent.mkdir(parents=True, exist_ok=True)
@@ -2012,6 +1986,7 @@ def ingest_raw_source(
         src_path,
         route.checkpoint_class,
         route.retention_mode,
+        knowledge_state,
     )
     created_pages.append(f"wiki/sources/{src_filename}")
     log.info("Created: wiki/sources/%s", src_filename)

@@ -3,7 +3,8 @@
 
 Reads wiki/concepts/, wiki/synthesis/, and wiki/entities/ pages and upserts
 them into MemPalace's ChromaDB collection. Safe to re-run — uses upsert with
-stable IDs derived from file paths.
+stable IDs derived from file paths and prunes orphaned drawers when pages are
+deleted or renamed.
 
 Usage:
     python3 scripts/wiki_to_mempalace.py [--dry-run] [--wing WING]
@@ -90,20 +91,21 @@ def main() -> int:
     print(f"  Pages:  {len(pages)}")
     print("-" * 50)
 
-    if not args.dry_run:
-        # Import ChromaDB from mempalace's venv
-        sys.path.insert(0, str(Path.home() / ".local/share/pipx/venvs/mempalace/lib/python3.12/site-packages"))
-        import chromadb
-        client = chromadb.PersistentClient(path=str(args.palace))
-        try:
-            collection = client.get_collection(COLLECTION_NAME)
-        except Exception:
-            collection = client.create_collection(COLLECTION_NAME)
+    # Import ChromaDB from mempalace's venv so dry-runs can still report the
+    # orphan-cleanup delta without mutating the collection.
+    sys.path.insert(0, str(Path.home() / ".local/share/pipx/venvs/mempalace/lib/python3.12/site-packages"))
+    import chromadb
+    client = chromadb.PersistentClient(path=str(args.palace))
+    try:
+        collection = client.get_collection(COLLECTION_NAME)
+    except Exception:
+        collection = None if args.dry_run else client.create_collection(COLLECTION_NAME)
 
     stats: dict[str, int] = {}
     ids_batch: list[str] = []
     docs_batch: list[str] = []
     metas_batch: list[dict] = []
+    desired_ids: set[str] = set()
 
     now = datetime.now(timezone.utc).isoformat()
 
@@ -118,6 +120,7 @@ def main() -> int:
         room = subdir
 
         drawer_id = stable_id(args.wing, page)
+        desired_ids.add(drawer_id)
         content = f"# {title}\n\n{body}"
 
         # Truncate to ~8000 chars for embedding efficiency
@@ -143,8 +146,10 @@ def main() -> int:
             docs_batch.append(content)
             metas_batch.append(metadata)
 
+    deleted_orphans = 0
+
     # Batch upsert (ChromaDB handles batching internally up to ~41666)
-    if not args.dry_run and ids_batch:
+    if not args.dry_run and ids_batch and collection is not None:
         # Upsert in chunks of 500 for safety
         chunk_size = 500
         for i in range(0, len(ids_batch), chunk_size):
@@ -154,8 +159,20 @@ def main() -> int:
                 metadatas=metas_batch[i:i + chunk_size],
             )
 
+    if collection is not None:
+        existing = collection.get(where={"wing": args.wing}, include=[])
+        existing_ids = set(existing.get("ids", []))
+        stale_ids = sorted(existing_ids - desired_ids)
+        deleted_orphans = len(stale_ids)
+
+        if stale_ids and not args.dry_run:
+            chunk_size = 500
+            for i in range(0, len(stale_ids), chunk_size):
+                collection.delete(ids=stale_ids[i:i + chunk_size])
+
     print("-" * 50)
     print(f"{'[DRY RUN] ' if args.dry_run else ''}Done. {len(pages)} pages processed.")
+    print(f"  {'Would prune' if args.dry_run else 'Pruned'} orphaned drawers: {deleted_orphans}")
     print(f"\n  By room:")
     for room, count in sorted(stats.items()):
         print(f"    {room:<20} {count} pages")

@@ -178,6 +178,54 @@ def classify_ingest_route(
         source_class="text-source",
     )
 
+
+_PLANNING_TITLE_HINTS = ("planning", "audit", "exploration")
+_PLANNING_BODY_HINTS = (
+    "<next_steps>",
+    "open questions",
+    "conversation compacted before",
+    "plan + tracker",
+    "sql todos seeded",
+    "branch + tracker",
+)
+_NO_EXECUTION_HINTS = (
+    "no code changes made this session",
+    "files modified this session: **none**",
+    "files modified: **none**",
+    "(no edits yet this session)",
+)
+_EXECUTION_HINTS = (
+    "- [x] implementation",
+    "- [x] tests",
+    "- [x] deploy",
+    "merged feature branches",
+    "deployed and verified",
+    "committed, pushed",
+)
+
+
+def is_planning_only_checkpoint(
+    title: str,
+    body: str,
+    checkpoint_class: str,
+    retention_mode: str,
+) -> bool:
+    """Return True for project-progress checkpoints that contain plans, not outcomes."""
+    if checkpoint_class != CLASS_PROJECT_PROGRESS or retention_mode != COMPRESS:
+        return False
+
+    lower_title = (title or "").lower()
+    lower_body = (body or "").lower()
+
+    if any(hint in lower_body for hint in _NO_EXECUTION_HINTS):
+        return True
+
+    title_planning = any(hint in lower_title for hint in _PLANNING_TITLE_HINTS)
+    planning_hits = sum(1 for hint in _PLANNING_BODY_HINTS if hint in lower_body)
+    has_execution = any(hint in lower_body for hint in _EXECUTION_HINTS)
+
+    return title_planning and planning_hits >= 2 and not has_execution
+
 # ---------------------------------------------------------------------------
 # Frontmatter helpers
 # ---------------------------------------------------------------------------
@@ -1192,6 +1240,54 @@ tags: [{', '.join(tags)}]
     return filename, content
 
 
+def normalize_checkpoint_source_page(
+    page_path: Path,
+    checkpoint_class: str,
+    retention_mode: str,
+) -> None:
+    """Ensure checkpoint source pages carry class/retention/tier frontmatter."""
+    if not checkpoint_class or not page_path.exists():
+        return
+
+    content = page_path.read_text()
+    if not content.startswith("---"):
+        return
+
+    parts = content.split("---", 2)
+    if len(parts) < 3:
+        return
+
+    frontmatter_lines = parts[1].strip().split("\n")
+    body = parts[2]
+    desired = {
+        "checkpoint_class": checkpoint_class,
+        "retention_mode": retention_mode,
+        "tier": "archive" if retention_mode == COMPRESS else "hot",
+    }
+
+    def upsert(lines: list[str], key: str, value: str) -> list[str]:
+        prefix = f"{key}:"
+        for idx, line in enumerate(lines):
+            if line.strip().startswith(prefix):
+                lines[idx] = f"{key}: {value}"
+                return lines
+        insert_at = len(lines)
+        for idx, line in enumerate(lines):
+            if line.strip().startswith("tags:"):
+                insert_at = idx
+                break
+        lines.insert(insert_at, f"{key}: {value}")
+        return lines
+
+    updated_lines = list(frontmatter_lines)
+    for key, value in desired.items():
+        updated_lines = upsert(updated_lines, key, value)
+
+    normalized = "---\n" + "\n".join(updated_lines) + "\n---" + body
+    if normalized != content:
+        page_path.write_text(normalized)
+
+
 def generate_concept_page(
     concept: dict,
     raw_path: str,
@@ -1880,6 +1976,23 @@ def ingest_raw_source(
         images=images_b64,
     )
 
+    planning_only = is_planning_only_checkpoint(
+        title,
+        body,
+        route.checkpoint_class,
+        route.retention_mode,
+    )
+    if planning_only:
+        log.info(
+            "Planning-only checkpoint detected for %s; keeping archived source summary only",
+            raw_path.name,
+        )
+        extraction["concepts"] = []
+        extraction["entities"] = []
+        extraction["synthesis_suggestions"] = []
+        if "planning-only" not in raw_tags:
+            raw_tags = raw_tags + ["planning-only"]
+
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     raw_rel = str(raw_path.relative_to(project_root))
     source_title = extraction["source_summary"]["title"]
@@ -1895,6 +2008,11 @@ def ingest_raw_source(
     src_path = wiki_dir / "sources" / src_filename
     src_path.parent.mkdir(parents=True, exist_ok=True)
     src_path.write_text(src_content)
+    normalize_checkpoint_source_page(
+        src_path,
+        route.checkpoint_class,
+        route.retention_mode,
+    )
     created_pages.append(f"wiki/sources/{src_filename}")
     log.info("Created: wiki/sources/%s", src_filename)
 

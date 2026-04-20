@@ -93,6 +93,7 @@ Copilot CLI and VS Code Copilot have **no native SessionStart/Stop/PreCompact ho
 - **Script:** [homelab/scripts/mempalace-remine.sh](../../homelab/scripts/mempalace-remine.sh)
 - **Schedule:** Sunday 4am (moved from 3am so the watcher has its full week before the sweep runs).
 - **Purpose:** catches orphan files the watcher missed (e.g., crashes, startup gaps) and re-runs `wiki_to_mempalace.py` injection.
+- **MemPalace sync behavior:** `wiki_to_mempalace.py` upserts current wiki pages and prunes orphaned drawers for renamed/deleted pages, so `labs_wiki_knowledge` stays aligned with the filesystem.
 
 ## Installation
 

@@ -66,6 +66,8 @@ Every page gets a 0-100 quality score computed by `/wiki-lint`:
 | 30-49 | 🟠 Low quality | Flagged in lint report |
 | 0-29 | 🔴 Critical | Blocked from index until fixed |
 
+**Note:** `quality_score` measures page structure and linkage, not whether the source reflects executed work versus a tentative plan. That distinction is tracked through checkpoint classification and retention.
+
 ## Consolidation Tiers
 
 Pages mature through four tiers over their lifecycle:
@@ -86,5 +88,11 @@ hot → established → core → workflow
 - **hot → established:** Page has been verified at least once, has `related:` entries, and `quality_score` ≥ 50
 - **established → core:** Referenced by 3+ other pages, `quality_score` ≥ 70, verified within 90 days
 - **workflow:** Manual classification for procedural content (not auto-promoted)
+
+### Copilot Session Checkpoints
+
+- `durable-*` checkpoints remain first-class source pages and can generate concepts, entities, and synthesis pages.
+- `project-progress` checkpoints default to `retention_mode: compress` and are archived as source pages.
+- Planning-only `project-progress` checkpoints keep the source summary for provenance, but concept/entity extraction is suppressed so future work is not promoted as settled knowledge.
 
 Tier changes are tracked in `wiki/log.md` and performed by the Curator agent during `/wiki-orchestrate maintenance`.

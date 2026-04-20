@@ -17,7 +17,7 @@ You are a **coordinator**. You delegate to specialized agents and track progress
 Before changing orchestration, agent prompts, memory handoffs, or evaluator loops, load the shared context-engineering skills first:
 
 - `context-fundamentals`, `tool-design`, `filesystem-context`
-- `multi-agent-patterns`, `memory-systems`, `project-development`, `latent-briefing`
+- `multi-agent-patterns`, `memory-systems`, `hosted-agents`, `project-development`, `latent-briefing`
 - `context-degradation`, `context-compression`, `context-optimization`, `evaluation`, `advanced-evaluation`
 
 ## Available Sub-Agents

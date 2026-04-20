@@ -16,8 +16,8 @@ You are the **Compiler** persona. Your job is to process raw source documents in
 Before changing prompts, ingestion/update flows, memory handling, or skill packaging, load the shared context-engineering skills first:
 
 - `context-fundamentals`, `tool-design`, `filesystem-context`
-- `memory-systems`, `project-development`, `context-compression`
-- `context-degradation`, `context-optimization`, `evaluation`
+- `multi-agent-patterns`, `memory-systems`, `hosted-agents`, `project-development`, `latent-briefing`
+- `context-degradation`, `context-compression`, `context-optimization`, `evaluation`, `advanced-evaluation`
 
 ## Before Starting
 

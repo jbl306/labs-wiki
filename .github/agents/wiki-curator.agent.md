@@ -14,8 +14,8 @@ You are the **Curator** persona. Your job is to improve wiki coherence, find gap
 Before changing prompts, ingestion/update flows, memory handling, or skill packaging, load the shared context-engineering skills first:
 
 - `context-fundamentals`, `tool-design`, `filesystem-context`
-- `memory-systems`, `project-development`, `context-compression`
-- `context-degradation`, `context-optimization`, `evaluation`
+- `multi-agent-patterns`, `memory-systems`, `hosted-agents`, `project-development`, `latent-briefing`
+- `context-degradation`, `context-compression`, `context-optimization`, `evaluation`, `advanced-evaluation`
 
 ## Priority Hierarchy
 

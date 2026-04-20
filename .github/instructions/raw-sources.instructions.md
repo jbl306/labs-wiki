@@ -3,13 +3,13 @@ applyTo: "raw/**/*.md"
 ---
 # Raw Source Document Rules
 
-Files in `raw/` are **immutable source documents**. They are the ground truth for the wiki.
+Files in `raw/` are the ground truth for the wiki. Preserve them carefully.
 
-## CRITICAL: Never Modify Raw Sources
+## CRITICAL: Preserve Raw Sources Carefully
 
-- Files in `raw/` must NEVER be edited after initial creation
+- Files in `raw/` must NEVER be manually rewritten after initial creation
 - If a source needs correction, create a new file with today's date
-- The only allowed change is updating `status: pending` → `ingested` or `failed`
+- The only automated changes allowed are updating `status: pending` → `ingested` or `failed`, plus replacing the deterministic fetched-content block for `type: url` sources
 
 ## Raw Source Frontmatter
 
@@ -38,6 +38,7 @@ status: pending | ingested | failed
 - The service watches `raw/` and triggers within ~5 seconds of a new file
 - Processing: GPT-4.1 extracts concepts/entities → generates wiki pages → updates index/log
 - **Smart URL handlers**: Twitter/X tweets, GitHub repos, HTML pages with image extraction
+- URL sources may gain a deterministic fetched-content block so later re-ingest can reuse the normalized article text without a fresh network fetch
 - **Vision support**: Charts, diagrams, and text-in-images are analyzed via GPT-4.1 multimodal
 - Manual alternative: `python3 scripts/auto_ingest.py` or `/wiki-ingest` skill
 - Use `status: pending` for unprocessed sources (auto-ingest only picks up pending)

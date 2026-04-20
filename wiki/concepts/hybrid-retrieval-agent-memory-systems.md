@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "26f254b5e6c65170bfc0d1bbf80f2de1aafe3266407d54a0e3243b0e1600d156"
 sources:
+  - raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-creating-claude-and-labs-wiki-repos-cccb14d5.md
 quality_score: 100
 concepts:
@@ -64,3 +65,4 @@ Improves AI agent memory recall accuracy and relevance in coding assistants, kno
 ## Sources
 
 - [[Copilot Session Checkpoint: Creating Claude and Labs-Wiki Repos]] — primary source for this concept
+- [[Agents that remember: introducing Agent Memory]] — additional source

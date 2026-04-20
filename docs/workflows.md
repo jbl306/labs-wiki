@@ -34,8 +34,8 @@ Add a raw source — it's automatically processed into wiki pages.
 
 2. **Auto-ingest processes it** (within ~5 seconds):
    - The `wiki-auto-ingest` Docker service detects the new file
-   - Fetches URL content (for `type: url` sources)
-   - Extracts concepts, entities, and facts via GPT-4o
+   - Fetches URL content (for `type: url` sources) and persists a deterministic fetched-content block back into `raw/`
+    - Extracts concepts, entities, and facts via GPT-4.1
    - Generates wiki pages from templates
    - Updates index and log
    - Marks raw source `status: ingested`
@@ -169,7 +169,7 @@ processed by the `wiki-auto-ingest` Docker service.
    - Fetches URL content for `type: url` sources with specialized handlers:
      - **Twitter/X:** extracts tweet text, author, timestamps, and images via fxtwitter API (supports twitter.com, x.com, t.co, vxtwitter, fxtwitter URLs)
      - **GitHub repos:** fetches README, metadata (description, stars, language, topics), and file tree via REST API
-     - **HTML pages:** standard fetch with content extraction
+      - **HTML pages:** structure-aware fetch with headings/lists/code/table preservation
     - **Source-aware routing:** Copilot session checkpoint exports and MemPalace bridge exports prefer a lighter text-only model; standard URLs/repos use the default model
     - **Checkpoint classification:** Copilot session checkpoints are classified by `scripts/checkpoint_classifier.py` into one of `durable-architecture`, `durable-debugging`, `durable-workflow`, `project-progress`, or `low-signal`. The class is stamped into raw frontmatter by `homelab/scripts/mempalace-session-curator.py` and propagated into the source page as `checkpoint_class` + `retention_mode`. Retention defaults: durable → `retain`, project-progress → `compress` (page lands in `tier: archive` so it's excluded from hot-tier surfacing), low-signal → `skip`. Override per-class via `LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES="class=mode,..."`.
     - **Vision support:** downloads images from tweets and pages, analyzes charts/diagrams/screenshots only on the vision-capable lane
@@ -184,6 +184,15 @@ processed by the `wiki-auto-ingest` Docker service.
 ```bash
 # Process a specific file
 python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root .
+
+# Reprocess an already-ingested file using the persisted fetched-content block
+python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root . --force
+
+# Re-fetch the URL and replace the persisted fetched-content block
+python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root . --force --refresh-fetch
+
+# Quota-safe targeted rerun
+AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST=0 python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root . --force
 
 # Process all pending files
 python3 scripts/auto_ingest.py --project-root .

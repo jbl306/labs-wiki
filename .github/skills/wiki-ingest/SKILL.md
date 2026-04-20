@@ -75,7 +75,7 @@ Use the **Compiler** persona (`agents/compiler.md`).
 
 ## Rules
 
-- Never modify files in `raw/` — they are immutable
+- Never manually modify files in `raw/`; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources plus the `status` field
 - Always check hash before processing — skip unchanged sources
 - Every wiki page must have valid frontmatter (see AGENTS.md)
 - Every fact must trace to a source via the `sources:` field

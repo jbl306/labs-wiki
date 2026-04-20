@@ -55,7 +55,7 @@ Before changing prompts, ingestion/update flows, memory handling, or skill packa
 
 ## Rules
 
-- Never modify files in `raw/` (except `status: pending` → `ingested`)
+- Never manually modify files in `raw/`; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources plus the `status` field
 - Every wiki page fact must trace to a `sources:` entry
 - One raw source = exactly one `wiki/sources/` page
 - One raw source may create multiple concept/entity pages

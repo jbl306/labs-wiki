@@ -37,7 +37,7 @@ graph LR
 
 ```
 labs-wiki/
-├── raw/                    # Layer 1: Immutable source documents
+├── raw/                    # Layer 1: Source documents + durable URL snapshots
 │   └── assets/             # Binary files (images, PDFs)
 ├── wiki/                   # Layer 2: LLM-compiled knowledge
 │   ├── sources/            # Source summaries (1:1 with raw/)
@@ -99,7 +99,17 @@ Add sources from anywhere — they're automatically processed into wiki pages:
 | 🐦 Twitter/X | Share tweet URL → fxtwitter API extracts text + images | ⚡ Auto |
 | 🐙 GitHub Repo | Share repo URL → REST API fetches README + metadata | ⚡ Auto |
 
-The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GitHub Models within seconds. It now uses **source-aware model routing**: lightweight text-only sources such as Copilot session checkpoint exports can run on a cheaper text model, standard URLs/repos use the default model, and image-bearing sources are routed to the vision-capable lane. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed only when present.
+The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GitHub Models within seconds. It now uses **source-aware model routing**: lightweight text-only sources such as Copilot session checkpoint exports can run on a cheaper text model, standard URLs/repos use the default model, and image-bearing sources are routed to the vision-capable lane. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed only when present. For `type: url` sources, the normalized fetched body is persisted back into a deterministic fetched-content block in `raw/` so later re-ingest can reuse the durable snapshot without a fresh network round-trip.
+
+For targeted reruns:
+
+```bash
+# Reprocess one raw file even if it is already marked ingested
+python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-root . --force
+
+# Re-fetch the live URL and replace the persisted fetched-content block
+python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-root . --force --refresh-fetch
+```
 
 See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 

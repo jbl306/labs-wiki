@@ -727,7 +727,9 @@ def build(
     """Full pipeline: extract → build graph → detect communities → analyze → write.
 
     Returns the serialised node-link dict (also written to `out_path`).
-    If ``tracker_path`` is given, also writes reports/checkpoint-graph-tracker.md.
+    If ``tracker_path`` is given, also writes reports/checkpoint-graph-tracker.md
+    relative to repo root.  When omitted, the default resolves to
+    ``<wiki_dir parent>/reports/checkpoint-graph-tracker.md``.
     """
     t0 = time.time()
     pages, stats = extract_pages(wiki_dir, cache_dir)
@@ -755,7 +757,8 @@ def build(
     )
 
     # Write the checkpoint-graph tracker report.
-    resolved_tracker = tracker_path or out_path.parent.parent / "reports" / "checkpoint-graph-tracker.md"
+    # Default: repo-root/reports/checkpoint-graph-tracker.md (wiki_dir.parent is repo root).
+    resolved_tracker = tracker_path or wiki_dir.parent / "reports" / "checkpoint-graph-tracker.md"
     write_checkpoint_tracker(payload.get("checkpoint_health", {}), resolved_tracker)
     log.info("wrote checkpoint tracker %s", resolved_tracker)
 
@@ -770,7 +773,7 @@ if __name__ == "__main__":
     ap.add_argument("--wiki", default="wiki", help="Path to wiki/ root")
     ap.add_argument("--cache", default=".graph_cache", help="Extraction cache directory")
     ap.add_argument("--out", default="wiki/graph/graph.json", help="Output graph.json path")
-    ap.add_argument("--tracker", default=None, help="Path for checkpoint-graph-tracker.md (default: reports/checkpoint-graph-tracker.md relative to --out parent's parent)")
+    ap.add_argument("--tracker", default=None, help="Path for checkpoint-graph-tracker.md (default: reports/checkpoint-graph-tracker.md relative to repo root)")
     args = ap.parse_args()
 
     tracker = Path(args.tracker) if args.tracker else None

@@ -15,6 +15,7 @@ Call ``build_graph(wiki_dir, cache_dir, out_path)`` to produce the artifact.
 
 from __future__ import annotations
 
+import datetime
 import hashlib
 import json
 import logging
@@ -53,6 +54,8 @@ class Page:
     last_verified: str = ""
     summary: str = ""
     content_hash: str = ""
+    checkpoint_class: str = ""   # durable-architecture | durable-debugging | project-progress | …
+    retention_mode: str = ""     # retain | compress | archive
 
 
 def _parse_frontmatter(text: str) -> dict[str, Any]:
@@ -148,6 +151,8 @@ def parse_page(root: Path, md_path: Path) -> Page | None:
         last_verified=str(fm.get("last_verified", "")),
         summary=summary,
         content_hash=content_hash,
+        checkpoint_class=str(fm.get("checkpoint_class", "")).strip(),
+        retention_mode=str(fm.get("retention_mode", "")).strip(),
     )
 
 
@@ -172,6 +177,8 @@ def _page_to_cache_dict(p: Page) -> dict[str, Any]:
         "last_verified": p.last_verified,
         "summary": p.summary,
         "content_hash": p.content_hash,
+        "checkpoint_class": p.checkpoint_class,
+        "retention_mode": p.retention_mode,
     }
 
 
@@ -188,6 +195,8 @@ def _page_from_cache_dict(d: dict[str, Any]) -> Page:
         last_verified=d.get("last_verified", ""),
         summary=d.get("summary", ""),
         content_hash=d["content_hash"],
+        checkpoint_class=d.get("checkpoint_class", ""),
+        retention_mode=d.get("retention_mode", ""),
     )
 
 
@@ -311,6 +320,8 @@ def build_graph(pages: list[Page]) -> nx.Graph:
             summary=p.summary,
             last_verified=p.last_verified,
             is_publisher=p.node_id in publisher_ids,
+            checkpoint_class=p.checkpoint_class,
+            retention_mode=p.retention_mode,
         )
 
     for p in pages:
@@ -415,6 +426,32 @@ def analyze_graph(g: nx.Graph, communities: dict[str, int]) -> dict[str, Any]:
 
 _CHECKPOINT_TITLE_PREFIX = "Copilot Session Checkpoint"
 
+# ---------------------------------------------------------------------------
+# Heuristic baseline helpers
+# ---------------------------------------------------------------------------
+
+def _heuristic_recommendation(checkpoint_class: str, retention_mode: str) -> str:
+    """Derive the heuristic editorial recommendation from frontmatter fields.
+
+    Maps the existing curation policy to the same vocabulary used by the graph
+    recommendation layer (keep / compress / archive).  When both fields are
+    absent the checkpoint is treated as unclassified → compress (conservative).
+    """
+    if retention_mode == "retain":
+        return "keep"
+    if retention_mode == "compress":
+        return "compress"
+    if retention_mode == "archive":
+        return "archive"
+    # No retention_mode set — infer from checkpoint_class alone.
+    if checkpoint_class.startswith("durable-"):
+        return "keep"
+    if checkpoint_class == "project-progress":
+        return "compress"
+    if checkpoint_class == "low-signal":
+        return "archive"
+    return "compress"  # conservative default for unclassified
+
 
 def _checkpoint_health_report(
     g: nx.Graph, communities: dict[str, int]
@@ -429,15 +466,22 @@ def _checkpoint_health_report(
     - ``compress``: connected but no synthesis upstream — candidate for the
       archive tier so it stops surfacing in hot lists.
     - ``archive``: degree<=1 — the checkpoint is essentially orphaned.
-    - ``merge``: shares a community with >=2 other checkpoints AND overlaps on
-      concept neighbours — candidate for a synthesis page.
+    - ``merge``: concept-heavy (concept_neighbors>=2), no synthesis neighbor,
+      AND the checkpoint belongs to a checkpoint community with at least 3
+      members (itself + >=2 other checkpoints) — candidate for a synthesis page.
+
+    ``merge`` is a pure structural graph signal.  The heuristic baseline never
+    emits it, so graph-merge recommendations are tracked separately and are NOT
+    counted in the heuristic-vs-graph disagreement metric.
 
     Returns a dict with per-checkpoint records plus aggregate counters.
     """
     checkpoints: list[dict[str, Any]] = []
-    rec_counts: Counter[str] = Counter()
     community_checkpoints: dict[int, list[str]] = {}
 
+    # First pass: compute connectivity signals and tentative recommendations.
+    # "merge" here is tentative — it is verified against community size in the
+    # post-pass below.
     for node, data in g.nodes(data=True):
         title = data.get("title", "")
         if data.get("page_type") != "source":
@@ -461,17 +505,21 @@ def _checkpoint_health_report(
         elif synthesis_n >= 1 and degree >= 4:
             recommendation = "keep"
         elif concept_n >= 2 and synthesis_n == 0:
-            recommendation = "merge"
+            recommendation = "merge"  # tentative; verified in post-pass
         else:
             recommendation = "compress"
 
-        rec_counts[recommendation] += 1
+        checkpoint_class = data.get("checkpoint_class", "")
+        retention_mode = data.get("retention_mode", "")
+        heuristic_rec = _heuristic_recommendation(checkpoint_class, retention_mode)
+
         community_checkpoints.setdefault(community, []).append(node)
 
         checkpoints.append(
             {
                 "node_id": node,
                 "title": title,
+                "path": data.get("path", ""),
                 "tier": data.get("tier", ""),
                 "quality_score": data.get("quality_score", 0.0),
                 "degree": degree,
@@ -480,8 +528,37 @@ def _checkpoint_health_report(
                 "source_neighbors": source_n,
                 "community": community,
                 "recommendation": recommendation,
+                # Heuristic baseline from frontmatter
+                "checkpoint_class": checkpoint_class,
+                "retention_mode": retention_mode,
+                "heuristic_recommendation": heuristic_rec,
+                # Filled in the post-pass below
+                "disagrees": False,
             }
         )
+
+    # Post-pass 1: enforce community-size requirement for merge.
+    # A checkpoint only gets "merge" if its community contains >= 3 checkpoints
+    # (itself + at least 2 others).  Demote to "compress" when that is not met.
+    cp_community_count = Counter(c["community"] for c in checkpoints)
+    for c in checkpoints:
+        if c["recommendation"] == "merge" and cp_community_count[c["community"]] < 3:
+            c["recommendation"] = "compress"
+
+    # Post-pass 2: compute disagreement flags and recommendation counts.
+    # graph "merge" has no heuristic equivalent — counting it as a disagreement
+    # would inflate the metric artificially.  It is excluded from disagrees.
+    rec_counts: Counter[str] = Counter()
+    disagreement_breakdown: Counter[str] = Counter()
+    for c in checkpoints:
+        rec = c["recommendation"]
+        rec_counts[rec] += 1
+        heuristic_rec = c["heuristic_recommendation"]
+        disagrees = (heuristic_rec != rec) and (rec != "merge")
+        c["disagrees"] = disagrees
+        if disagrees:
+            transition = f"{heuristic_rec}→{rec}"
+            disagreement_breakdown[transition] += 1
 
     checkpoints.sort(key=lambda r: (r["recommendation"] != "archive", -r["degree"]))
 
@@ -501,6 +578,8 @@ def _checkpoint_health_report(
                 3,
             )
         ),
+        "disagreement_count": sum(1 for c in checkpoints if c["disagrees"]),
+        "disagreement_breakdown": dict(disagreement_breakdown),
         "merge_clusters": merge_clusters,
         "checkpoints": checkpoints,
     }
@@ -562,14 +641,149 @@ def to_node_link(
     }
 
 
+def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
+    """Write a report-only markdown tracker for checkpoint graph recommendations.
+
+    Compares the graph recommendation layer against the heuristic baseline from
+    frontmatter (checkpoint_class + retention_mode) and surfaces disagreements.
+    Does NOT modify any wiki page or retention setting.
+
+    Graph ``merge`` is a structural signal (checkpoint belongs to a community
+    with ≥ 3 checkpoints AND has concept_neighbors≥2 with no synthesis
+    neighbor).  The heuristic baseline never emits ``merge``, so it is shown
+    separately and excluded from the heuristic-vs-graph disagreement count.
+    """
+    checkpoints: list[dict[str, Any]] = health.get("checkpoints", [])
+    total = health.get("total_checkpoints", len(checkpoints))
+    recs: dict[str, int] = health.get("recommendations", {})
+    disagree_count: int = health.get("disagreement_count", 0)
+    disagree_breakdown: dict[str, int] = health.get("disagreement_breakdown", {})
+    merge_clusters: list[dict[str, Any]] = health.get("merge_clusters", [])
+    generated_ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    lines: list[str] = [
+        "# Checkpoint Graph Tracker",
+        "",
+        "> **Report-only.** This file is auto-generated on every graph build.",
+        "> It does not rewrite retention settings, tier values, or checkpoint",
+        "> frontmatter. Its purpose is to surface disagreements between the",
+        "> heuristic classifier and the graph recommendation layer so they can",
+        "> be evaluated before any policy change is made.",
+        "",
+        f"**Generated:** {generated_ts}  ",
+        f"**Total checkpoints:** {total}  ",
+        "",
+        "## Graph recommendation counts",
+        "",
+        "| Recommendation | Count |",
+        "| --- | --- |",
+    ]
+    for rec in ("keep", "compress", "merge", "archive"):
+        lines.append(f"| `{rec}` | {recs.get(rec, 0)} |")
+    lines += [
+        "",
+        "## Disagreement summary",
+        "",
+        "> **Note:** Graph `merge` is a structural signal (checkpoint community ≥ 3 members,",
+        "> concept-connected, no synthesis neighbor). The heuristic baseline never emits `merge`,",
+        "> so graph-`merge` checkpoints are shown separately below and are **not** counted here.",
+        "",
+        f"**Disagreements (excluding merge):** {disagree_count} of {total}",
+        "",
+    ]
+    if disagree_breakdown:
+        lines += [
+            "| Transition (heuristic→graph) | Count |",
+            "| --- | --- |",
+        ]
+        for transition, count in sorted(disagree_breakdown.items(), key=lambda kv: -kv[1]):
+            lines.append(f"| `{transition}` | {count} |")
+    else:
+        lines.append("_No disagreements detected._")
+    lines += [""]
+
+    # Disagreement detail table (excludes merge).
+    disagreements = [c for c in checkpoints if c.get("disagrees")]
+    if disagreements:
+        lines += [
+            "## Disagreement detail",
+            "",
+            "| Title | Path | Class | Retention | Heuristic rec | Graph rec | Degree | Concept nb | Synth nb | Tier |",
+            "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        ]
+        for c in sorted(disagreements, key=lambda r: r.get("title", "")):
+            title = c.get("title", "").replace("|", "\\|")
+            path = c.get("path", "")
+            cls = c.get("checkpoint_class", "")
+            ret = c.get("retention_mode", "")
+            hrec = c.get("heuristic_recommendation", "")
+            grec = c.get("recommendation", "")
+            deg = c.get("degree", 0)
+            cnb = c.get("concept_neighbors", 0)
+            snb = c.get("synthesis_neighbors", 0)
+            tier = c.get("tier", "")
+            lines.append(f"| {title} | `{path}` | {cls} | {ret} | `{hrec}` | `{grec}` | {deg} | {cnb} | {snb} | {tier} |")
+        lines.append("")
+
+    # Merge-signal checkpoints (separate from disagreements).
+    merge_flagged = [c for c in checkpoints if c.get("recommendation") == "merge"]
+    if merge_flagged:
+        lines += [
+            "## Merge-signal checkpoints",
+            "",
+            "> Structural candidates for a synthesis page: concept-connected (concept_nb ≥ 2),",
+            "> no synthesis neighbor, and in a checkpoint community of ≥ 3 members.",
+            "> These are not counted in the disagreement metric above.",
+            "",
+            "| Title | Path | Class | Community | Degree | Concept nb | Tier |",
+            "| --- | --- | --- | --- | --- | --- | --- |",
+        ]
+        for c in sorted(merge_flagged, key=lambda r: r.get("title", "")):
+            title = c.get("title", "").replace("|", "\\|")
+            path = c.get("path", "")
+            cls = c.get("checkpoint_class", "")
+            comm = c.get("community", "")
+            deg = c.get("degree", 0)
+            cnb = c.get("concept_neighbors", 0)
+            tier = c.get("tier", "")
+            lines.append(f"| {title} | `{path}` | {cls} | {comm} | {deg} | {cnb} | {tier} |")
+        lines.append("")
+
+    # Merge-cluster candidates.
+    lines += [
+        "## Merge-cluster candidates",
+        "",
+    ]
+    if merge_clusters:
+        lines += [
+            "Communities with ≥ 3 checkpoints are candidates for a synthesis page.",
+            "",
+            "| Community | Checkpoint node IDs |",
+            "| --- | --- |",
+        ]
+        for mc in merge_clusters:
+            nodes_str = ", ".join(f"`{n}`" for n in mc.get("checkpoints", []))
+            lines.append(f"| {mc.get('community', '')} | {nodes_str} |")
+    else:
+        lines.append("_No merge-cluster candidates (no community contains ≥ 3 checkpoints)._")
+    lines += [""]
+
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    out_path.write_text("\n".join(lines) + "\n")
+
+
 def build(
     wiki_dir: Path,
     cache_dir: Path | None,
     out_path: Path,
+    tracker_path: Path | None = None,
 ) -> dict[str, Any]:
     """Full pipeline: extract → build graph → detect communities → analyze → write.
 
     Returns the serialised node-link dict (also written to `out_path`).
+    If ``tracker_path`` is given, also writes reports/checkpoint-graph-tracker.md
+    relative to repo root.  When omitted, the default resolves to
+    ``<wiki_dir parent>/reports/checkpoint-graph-tracker.md``.
     """
     t0 = time.time()
     pages, stats = extract_pages(wiki_dir, cache_dir)
@@ -595,6 +809,13 @@ def build(
         payload["edge_count"],
         payload["community_count"],
     )
+
+    # Write the checkpoint-graph tracker report.
+    # Default: repo-root/reports/checkpoint-graph-tracker.md (wiki_dir.parent is repo root).
+    resolved_tracker = tracker_path or wiki_dir.parent / "reports" / "checkpoint-graph-tracker.md"
+    write_checkpoint_tracker(payload.get("checkpoint_health", {}), resolved_tracker)
+    log.info("wrote checkpoint tracker %s", resolved_tracker)
+
     return payload
 
 
@@ -606,6 +827,8 @@ if __name__ == "__main__":
     ap.add_argument("--wiki", default="wiki", help="Path to wiki/ root")
     ap.add_argument("--cache", default=".graph_cache", help="Extraction cache directory")
     ap.add_argument("--out", default="wiki/graph/graph.json", help="Output graph.json path")
+    ap.add_argument("--tracker", default=None, help="Path for checkpoint-graph-tracker.md (default: reports/checkpoint-graph-tracker.md relative to repo root)")
     args = ap.parse_args()
 
-    build(Path(args.wiki), Path(args.cache), Path(args.out))
+    tracker = Path(args.tracker) if args.tracker else None
+    build(Path(args.wiki), Path(args.cache), Path(args.out), tracker_path=tracker)

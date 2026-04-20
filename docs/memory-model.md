@@ -96,4 +96,10 @@ hot → established → core → workflow
 - Planning-only `project-progress` checkpoints keep the source summary for provenance, but concept/entity extraction is suppressed so future work is not promoted as settled knowledge.
 - Checkpoint source pages also carry `knowledge_state: planned | executed | validated` so execution posture is explicit; `quality_score` remains structural and should not be read as implementation certainty.
 
+#### Graph recommendation layer
+
+On every graph build, `wiki-graph-api/graph_builder.py` produces a second editorial recommendation per checkpoint derived from graph position (degree, synthesis-neighbor count, community membership). This recommendation is compared to the heuristic baseline from `checkpoint_class` and `retention_mode`.
+
+The comparison is written to `reports/checkpoint-graph-tracker.md` as a **report-only** artifact — it does not rewrite any wiki page or frontmatter. Its purpose is to surface disagreements between the heuristic classifier and the graph layer so they can be evaluated before any policy change is applied.
+
 Tier changes are tracked in `wiki/log.md` and performed by the Curator agent during `/wiki-orchestrate maintenance`.

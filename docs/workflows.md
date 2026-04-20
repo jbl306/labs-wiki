@@ -224,6 +224,37 @@ docker compose -f compose.wiki.yml restart wiki-auto-ingest
 
 ---
 
+## 7. Build the Knowledge Graph
+
+Rebuild the graph artifact and generate the checkpoint graph tracker report.
+
+### Command
+
+```bash
+python3 wiki-graph-api/graph_builder.py \
+  --wiki wiki \
+  --cache wiki-graph-api/.cache \
+  --out wiki/graph/graph.json
+```
+
+This writes two artifacts:
+
+- `wiki/graph/graph.json` — node-link graph for the Cosmograph UI and the graph API
+- `reports/checkpoint-graph-tracker.md` — **report-only** tracker comparing graph recommendations to heuristic frontmatter baselines
+
+### Checkpoint graph tracker
+
+The tracker is auto-generated on every build. It:
+
+- Compares the graph-derived recommendation (`keep` / `compress` / `merge` / `archive`) to the heuristic baseline from each checkpoint's `checkpoint_class` + `retention_mode` frontmatter
+- Shows disagreement counts and a breakdown by transition type (e.g. `compress→keep`)
+- Lists every disagreeing checkpoint with path, class, retention, recommendations, degree, and neighbor counts
+- Surfaces merge-cluster candidates (communities with ≥ 3 checkpoints)
+
+It does **not** rewrite any wiki page, tier, or frontmatter field. Use it to evaluate whether the graph and heuristic layers agree before making any policy change.
+
+---
+
 ## Workflow Quick Reference
 
 | I want to... | Command |
@@ -237,4 +268,5 @@ docker compose -f compose.wiki.yml restart wiki-auto-ingest
 | Process all pending sources | `/wiki-orchestrate` or `python3 scripts/auto_ingest.py` |
 | Run offline lint | `python3 scripts/lint_wiki.py` |
 | Rebuild index | `python3 scripts/compile_index.py` |
+| Build knowledge graph + checkpoint tracker | `python3 wiki-graph-api/graph_builder.py --wiki wiki --cache wiki-graph-api/.cache --out wiki/graph/graph.json` |
 | Check auto-ingest logs | `docker logs -f wiki-auto-ingest` |

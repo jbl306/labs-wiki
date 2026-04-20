@@ -194,9 +194,25 @@ python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root . --forc
 # Quota-safe targeted rerun
 AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST=0 python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root . --force
 
+# Validation rerun — update raw snapshot and pages; skip wiki/log.md and notifications
+AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST=0 python3 scripts/auto_ingest.py raw/2025-07-17-article.md --project-root . --force --refresh-fetch --validation-run
+
 # Process all pending files
 python3 scripts/auto_ingest.py --project-root .
 ```
+
+### Validation-Run Policy
+
+Use `--validation-run` (requires `--force`) when you want to verify extraction quality on a single
+already-ingested file without generating audit noise. A validation run:
+
+- re-fetches the URL (with `--refresh-fetch`) or reuses the persisted block
+- rewrites the raw snapshot and wiki source pages normally
+- **does not** append an entry to `wiki/log.md`
+- **does not** send an ntfy notification
+
+This keeps the production audit trail clean for review-only reruns, such as verifying improved article-body
+extraction or image ranking after a follow-up pass.
 
 ### Docker Service
 

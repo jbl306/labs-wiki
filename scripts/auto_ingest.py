@@ -203,12 +203,121 @@ def is_meaningful_fetched_body(text: str, source_url: str | None) -> bool:
     return len(compressed) >= 30
 
 
+_IMG_PENALIZE = re.compile(
+    r"logo|icon|favicon|badge|avatar|sprite"
+    r"|app[_-]?store|google[_-]?play|download[_-]?on[_-]?the|get[_-]?it[_-]?on"
+    r"|btn|button|banner|ad[_\-/]|promo|pixel|tracking|1x1",
+    re.I,
+)
+_IMG_PREFER_PATH = re.compile(
+    r"/articles?/|/posts?/|/images?/|/content/|/media/|/uploads?/|/figures?/",
+    re.I,
+)
+
+
+def _parse_img_dimension(value: str | None) -> int | None:
+    if not value:
+        return None
+    match = re.search(r"\d+", value)
+    if not match:
+        return None
+    return int(match.group(0))
+
+
+def _parse_dimension_from_src(src: str) -> tuple[int | None, int | None]:
+    match = re.search(r"(?<!\d)(\d{2,4})x(\d{2,4})(?!\d)", src)
+    if not match:
+        return None, None
+    return int(match.group(1)), int(match.group(2))
+
+
+def _extract_img_src(tag) -> str:
+    src = (
+        tag.get("src")
+        or tag.get("data-src")
+        or tag.get("data-lazy-src")
+        or tag.get("data-original")
+    )
+    if src:
+        return src
+    srcset = tag.get("srcset") or tag.get("data-srcset")
+    if not srcset:
+        return ""
+    candidates = [part.strip().split()[0] for part in srcset.split(",") if part.strip()]
+    return candidates[-1] if candidates else ""
+
+
+def _resolve_image_url(src: str, base_url: str) -> str:
+    return urljoin(base_url, src) if not src.startswith(("http://", "https://")) else src
+
+
+def _score_img(
+    src: str,
+    alt: str,
+    in_figure: bool,
+    in_article_root: bool,
+    width: int | None,
+    height: int | None,
+    *,
+    is_og_image: bool = False,
+) -> float:
+    """Score an <img> as an article-content image. Higher is better."""
+    if src.startswith("data:"):
+        return -1000.0
+    score = 0.0
+    if _IMG_PENALIZE.search(src) or _IMG_PENALIZE.search(alt):
+        score -= 50.0
+    if src.lower().endswith(".svg") and not in_figure and not in_article_root:
+        score -= 20.0
+    if _IMG_PREFER_PATH.search(src):
+        score += 20.0
+    if in_figure:
+        score += 15.0
+    if in_article_root:
+        score += 10.0
+    alt_words = len(alt.split())
+    if alt_words >= 4:
+        score += 10.0
+    elif alt_words >= 2:
+        score += 5.0
+    elif alt_words == 0:
+        score -= 5.0
+    if is_og_image:
+        score += 8.0
+    if width and height:
+        largest = max(width, height)
+        smallest = max(min(width, height), 1)
+        aspect_ratio = largest / smallest
+        if not in_article_root and largest <= 256 and aspect_ratio <= 1.2:
+            score -= 25.0
+        elif not in_article_root and largest <= 320 and aspect_ratio <= 1.2:
+            score -= 12.0
+        area = width * height
+        if area >= 200_000:
+            score += 12.0
+        elif area >= 80_000:
+            score += 6.0
+        elif area <= 12_000:
+            score -= 20.0
+        elif area <= 32_000:
+            score -= 8.0
+        if width >= 800 or height >= 800:
+            score += 4.0
+    elif width or height:
+        largest = max(width or 0, height or 0)
+        if largest >= 800:
+            score += 4.0
+        elif largest <= 120:
+            score -= 12.0
+    return score
+
+
 def extract_image_urls(raw_html: str, page_url: str) -> list[str]:
     soup = BeautifulSoup(raw_html, "html.parser")
     base_tag = soup.find("base", href=True)
     base_url = urljoin(page_url, base_tag["href"]) if base_tag else page_url
 
-    image_urls: list[str] = []
+    scored: list[tuple[float, str]] = []
     og_match = re.search(
         r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
         raw_html,
@@ -221,21 +330,110 @@ def extract_image_urls(raw_html: str, page_url: str) -> list[str]:
             flags=re.I,
         )
     if og_match:
-        image_urls.append(og_match.group(1))
+        og_src = _resolve_image_url(og_match.group(1), base_url)
+        og_width, og_height = _parse_dimension_from_src(og_src)
+        scored.append((
+            _score_img(
+                og_src,
+                "",
+                False,
+                False,
+                og_width,
+                og_height,
+                is_og_image=True,
+            ),
+            og_src,
+        ))
 
-    skip_patterns = re.compile(r"logo|icon|favicon|badge|avatar|sprite|\.svg", re.I)
-    for img_src in re.findall(r'<img[^>]+src=["\']([^"\']+)["\']', raw_html, flags=re.I):
-        if img_src.startswith("data:") or skip_patterns.search(img_src):
+    # Score all <img> tags; prefer article-local and figure images
+    article_root = _select_content_root(soup)
+    article_img_ids = {id(img) for img in article_root.find_all("img")}
+    for img in soup.find_all("img"):
+        src = _extract_img_src(img)
+        if not src or src.startswith("data:"):
             continue
-        if img_src not in image_urls:
-            image_urls.append(img_src)
+        resolved_src = _resolve_image_url(src, base_url)
+        alt = img.get("alt", "")
+        in_figure = bool(img.parent and img.parent.name == "figure")
+        in_article_root = id(img) in article_img_ids
+        width = _parse_img_dimension(img.get("width"))
+        height = _parse_img_dimension(img.get("height"))
+        if not width and not height:
+            width, height = _parse_dimension_from_src(resolved_src)
+        score = _score_img(resolved_src, alt, in_figure, in_article_root, width, height)
+        scored.append((score, resolved_src))
+
+    image_urls: list[str] = []
+    seen: set[str] = set()
+    for score, src in sorted(scored, key=lambda x: x[0], reverse=True):
+        if score < -10.0:
+            continue
+        if src not in seen:
+            image_urls.append(src)
+            seen.add(src)
         if len(image_urls) >= MAX_IMAGES:
             break
 
-    return [
-        urljoin(base_url, img) if not img.startswith(("http://", "https://")) else img
-        for img in image_urls[:MAX_IMAGES]
-    ]
+    return image_urls[:MAX_IMAGES]
+
+
+_CONTENT_ROOT_SELECTORS = [
+    "article",
+    "main",
+    "[role='main']",
+    "[itemprop='articleBody']",
+    ".article-body",
+    ".article-content",
+    ".entry-content",
+    ".post-content",
+    ".content",
+    "#content",
+]
+
+
+def _score_content_root(tag) -> float:
+    """Score a BeautifulSoup tag as an article content root. Higher is better."""
+    text = tag.get_text(" ", strip=True)
+    text_len = len(text)
+    if text_len < 100:
+        return 0.0
+    html_len = len(str(tag))
+    density = text_len / max(html_len, 1)
+    p_count = len(tag.find_all("p"))
+    li_count = len(tag.find_all("li"))
+    table_count = len(tag.find_all("table"))
+    pre_count = len(tag.find_all("pre"))
+    h_count = sum(len(tag.find_all(f"h{i}")) for i in range(1, 7))
+    score = (
+        density * 50
+        + min(p_count, 20) * 2
+        + min(li_count, 30) * 1
+        + min(table_count, 10) * 3
+        + min(pre_count, 10) * 3
+        + min(h_count, 15) * 2
+        + min(text_len, 10_000) / 200
+    )
+    return score
+
+
+def _select_content_root(soup: BeautifulSoup):
+    """Select the best article-like content root from a parsed document.
+
+    Tries selectors in _CONTENT_ROOT_SELECTORS, scores each candidate by
+    text density and structural richness, and returns the highest-scoring
+    match. Falls back to <body> (or the soup root) when no candidate
+    clears the minimum quality bar.
+    """
+    candidates: list[tuple[float, object]] = []
+    for selector in _CONTENT_ROOT_SELECTORS:
+        for tag in soup.select(selector):
+            score = _score_content_root(tag)
+            if score > 0:
+                candidates.append((score, tag))
+    if candidates:
+        return max(candidates, key=lambda x: x[0])[1]
+    body = soup.find("body")
+    return body if body else soup
 
 
 def _serialize_html_table(table) -> str:
@@ -262,14 +460,22 @@ def _serialize_html_table(table) -> str:
 
 def normalize_html_document(raw_html: str) -> str:
     soup = BeautifulSoup(raw_html, "html.parser")
-    for node in soup(["script", "style", "noscript", "nav", "header", "footer", "aside", "form"]):
+    # Strip script/style/noscript globally before root selection
+    for node in soup(["script", "style", "noscript"]):
         node.decompose()
     for node in soup.select("[aria-hidden='true'], .visually-hidden, .sr-only"):
         node.decompose()
-    for br in soup.find_all("br"):
+
+    # Select article-like content root (e.g. GeeksforGeeks .content wins over body)
+    root = _select_content_root(soup)
+
+    # Strip structural chrome from within the selected root
+    for node in root(["nav", "header", "footer", "aside", "form"]):
+        node.decompose()
+    for br in root.find_all("br"):
         br.replace_with("\n")
 
-    for table in soup.find_all("table"):
+    for table in root.find_all("table"):
         table_md = _serialize_html_table(table)
         if table_md:
             table.replace_with("\n" + table_md + "\n")
@@ -277,24 +483,26 @@ def normalize_html_document(raw_html: str) -> str:
             table.decompose()
 
     for tag_name in ("h1", "h2", "h3", "h4", "h5", "h6"):
-        for tag in soup.find_all(tag_name):
+        for tag in root.find_all(tag_name):
             level = int(tag_name[1])
             tag.replace_with("\n" + ("#" * level) + " " + tag.get_text(" ", strip=True) + "\n")
 
-    for pre in soup.find_all("pre"):
+    for pre in root.find_all("pre"):
         pre.replace_with("\n```\n" + pre.get_text("\n", strip=False).strip() + "\n```\n")
 
-    for code in soup.find_all("code"):
+    for code in root.find_all("code"):
         if code.parent.name != "pre":
             code.replace_with("`" + code.get_text(" ", strip=True) + "`")
 
-    for li in soup.find_all("li"):
+    for li in root.find_all("li"):
         li.replace_with("\n- " + li.get_text(" ", strip=True))
 
-    text = soup.get_text("\n")
+    text = root.get_text("\n")
     text = html.unescape(text)
     text = re.sub(r"\n{3,}", "\n\n", text)
     text = re.sub(r"[ \t]+\n", "\n", text)
+    # Preserve all non-empty lines; no global short-line deduplication so
+    # lists, table rows, captions, and footnotes survive verbatim.
     lines = [line.strip() for line in text.splitlines() if line.strip()]
     return "\n".join(lines).strip()[:50_000]
 
@@ -2069,6 +2277,7 @@ def ingest_raw_source(
     *,
     force: bool = False,
     refresh_fetch: bool = False,
+    validation_run: bool = False,
 ) -> bool:
     """Process a single raw source file. Returns True on success."""
     log.info("Processing: %s", raw_path)
@@ -2464,29 +2673,34 @@ def ingest_raw_source(
     # Post-process: validate wikilinks, dedup, compute quality scores
     postprocess_created_pages(wiki_dir, created_pages, project_root)
 
-    # Append to log
-    log_path = wiki_dir / "log.md"
-    append_log(log_path, {
-        "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "operation": "ingest",
-        "targets": created_pages,
-        "source": raw_rel,
-        "status": "success",
-        "notes": f"Auto-ingested {len(created_pages)} pages ({len(extraction.get('concepts', []))} concepts, {len(extraction.get('entities', []))} entities, {synthesis_count} synthesis)",
-    })
+    if validation_run:
+        # Validation runs update raw snapshots and pages but do not append to
+        # wiki/log.md or send ntfy notifications so review reruns don't pollute
+        # the audit trail.
+        log.info("Validation run — skipping log.md append and ntfy notification")
+    else:
+        # Append to log
+        log_path = wiki_dir / "log.md"
+        append_log(log_path, {
+            "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "operation": "ingest",
+            "targets": created_pages,
+            "source": raw_rel,
+            "status": "success",
+            "notes": f"Auto-ingested {len(created_pages)} pages ({len(extraction.get('concepts', []))} concepts, {len(extraction.get('entities', []))} entities, {synthesis_count} synthesis)",
+        })
+        # Notify
+        send_ntfy(
+            f"Wiki: {source_title}",
+            f"Ingested {len(created_pages)} pages from {raw_path.name}",
+            tags="books,white_check_mark",
+        )
 
     # Rebuild index
     rebuild_index(project_root)
 
     # Mark raw source as ingested
     update_raw_status(raw_path, "ingested")
-
-    # Notify
-    send_ntfy(
-        f"Wiki: {source_title}",
-        f"Ingested {len(created_pages)} pages from {raw_path.name}",
-        tags="books,white_check_mark",
-    )
 
     log.info(
         "✅ Ingested %s → %d pages created",
@@ -2496,7 +2710,13 @@ def ingest_raw_source(
     return True
 
 
-def process_all_pending(project_root: Path, token: str, model: str | None = None) -> int:
+def process_all_pending(
+    project_root: Path,
+    token: str,
+    model: str | None = None,
+    *,
+    validation_run: bool = False,
+) -> int:
     """Process all pending raw sources. Returns count of processed files."""
     raw_dir = project_root / "raw"
     count = 0
@@ -2509,16 +2729,23 @@ def process_all_pending(project_root: Path, token: str, model: str | None = None
 
     for _, _, raw_file in sorted(pending_files):
         try:
-            if ingest_raw_source(raw_file, project_root, token, model):
+            if ingest_raw_source(
+                raw_file,
+                project_root,
+                token,
+                model,
+                validation_run=validation_run,
+            ):
                 count += 1
         except Exception:
             log.exception("Failed to process %s", raw_file.name)
             update_raw_status(raw_file, "failed")
-            send_ntfy(
-                f"❌ Wiki ingest failed: {raw_file.name}",
-                f"Error processing {raw_file.name}. Check logs.",
-                tags="warning",
-            )
+            if not validation_run:
+                send_ntfy(
+                    f"❌ Wiki ingest failed: {raw_file.name}",
+                    f"Error processing {raw_file.name}. Check logs.",
+                    tags="warning",
+                )
     return count
 
 
@@ -2550,6 +2777,15 @@ def main() -> None:
         help="Re-fetch URL content and replace the persisted fetched-content block",
     )
     parser.add_argument(
+        "--validation-run",
+        action="store_true",
+        help=(
+            "Mark this as a review-only rerun (requires --force). "
+            "Still updates raw snapshots and wiki pages but suppresses "
+            "wiki/log.md append and ntfy notifications."
+        ),
+    )
+    parser.add_argument(
         "--token",
         default=os.environ.get("GITHUB_MODELS_TOKEN", os.environ.get("GITHUB_TOKEN", "")),
         help="GitHub Models API token",
@@ -2560,6 +2796,14 @@ def main() -> None:
     args = parser.parse_args()
     if args.refresh_fetch and not args.force:
         parser.error("--refresh-fetch requires --force")
+    if args.validation_run and not args.force:
+        parser.error("--validation-run requires --force")
+    if args.force and not args.raw_file:
+        parser.error("--force requires a specific raw_file")
+    if args.validation_run and not args.raw_file:
+        parser.error("--validation-run requires a specific raw_file")
+    if args.refresh_fetch and not args.raw_file:
+        parser.error("--refresh-fetch requires a specific raw_file")
 
     logging.basicConfig(
         level=logging.DEBUG if args.verbose else logging.INFO,
@@ -2585,10 +2829,16 @@ def main() -> None:
             args.model,
             force=args.force,
             refresh_fetch=args.refresh_fetch,
+            validation_run=args.validation_run,
         )
         sys.exit(0 if ok else 1)
     else:
-        count = process_all_pending(project_root, args.token, args.model)
+        count = process_all_pending(
+            project_root,
+            args.token,
+            args.model,
+            validation_run=args.validation_run,
+        )
         log.info("Processed %d pending source(s)", count)
 
 

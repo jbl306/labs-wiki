@@ -13,35 +13,13 @@ https://www.geeksforgeeks.org/machine-learning/lightgbm-light-gradient-boosting-
 
 <!-- fetched-content:start -->
 ## Fetched Metadata
-- fetched_at: 2026-04-20T19:04:38+00:00
+- fetched_at: 2026-04-20T20:27:41+00:00
 - source_url: https://www.geeksforgeeks.org/machine-learning/lightgbm-light-gradient-boosting-machine/
 - resolved_url: https://www.geeksforgeeks.org/machine-learning/lightgbm-light-gradient-boosting-machine/
 - content_type: text/html; charset=utf-8
-- image_urls: ["https://media.geeksforgeeks.org/wp-content/cdn-uploads/gfg_200x200-min.png", "https://media.geeksforgeeks.org/auth-dashboard-uploads/googleplay-%281%29.png", "https://media.geeksforgeeks.org/auth-dashboard-uploads/appstore-%281%29.png"]
+- image_urls: []
 
 ## Fetched Content
-LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks
-- Courses
-- Tutorials
-- Interview Prep
-- Python for Machine Learning
-- Machine Learning with R
-- Machine Learning Algorithms
-- EDA
-- Math for Machine Learning
-- Machine Learning Interview Questions
-- ML Projects
-- Deep Learning
-- NLP
-- Computer vision
-- Data Science
-- Artificial Intelligence
-# LightGBM (Light Gradient Boosting Machine)
-Last Updated :
-15 Jul, 2025
--
--
--
 LightGBM is an open-source high-performance framework developed by Microsoft. It is an ensemble learning framework that uses gradient boosting method which constructs a strong learner by sequentially adding weak learners in a gradient descent manner.
 It's designed for efficiency, scalability and high accuracy particularly with large datasets. It uses decision trees that grow efficiently by minimizing memory usage and optimizing training time. Key innovations like Gradient-based One-Side Sampling (GOSS), histogram-based algorithms and leaf-wise tree growth enable LightGBM to outperform other frameworks in both speed and accuracy.
 ## Prerequisites
@@ -136,64 +114,4 @@ A comparison between LightGBM and other boosting algorithms such as Gradient Boo
 - LightGBM vs XGBOOST
 - GradientBoosting vs AdaBoost vs XGBoost vs CatBoost vs LightGBM
 LightGBM is an outstanding choice for solving supervised learning tasks particularly for classification, regression and ranking problems. Its unique algorithms, efficient memory usage and support for parallel and GPU training give it a distinct advantage over other gradient boosting methods.
-Comment
-Article Tags:
-Article Tags:
-Computer Subject
-Machine Learning
-AI-ML-DS
-LightGBM
-AI-ML-DS With Python
-+
-1
-More
-### Explore
-Machine Learning Basics
-- Introduction 5 min read
-- Types 7 min read
-- ML Pipeline 6 min read
-- Applications 3 min read
-Python for Machine Learning
-- ML with Python 3 min read
-- Numpy 3 min read
-- Pandas 4 min read
-- Data Preprocessing 3 min read
-- EDA 6 min read
-Feature Engineering
-- Feature Engineering 5 min read
-- Dimensionality Reduction 4 min read
-- Feature Selection 4 min read
-Supervised Learning
-- Supervised Learning 6 min read
-- Linear Regression 10 min read
-- Logistic Regression 10 min read
-- Decision Tree 8 min read
-- Random Forest 4 min read
-- KNN 8 min read
-- SVM 9 min read
-- Naive Bayes 6 min read
-Unsupervised Learning
-- Unsupervised Learning 5 min read
-- K means Clustering 6 min read
-- Hierarchical Clustering 6 min read
-- DBSCAN Clustering 6 min read
-- Apriori Algorithm 6 min read
-- FP Growth Algorithm 4 min read
-- ECLAT Algorithm 5 min read
-- PCA 6 min read
-Model Evaluation and Tuning
-- Evaluation Metrics 9 min read
-- Regularization 5 min read
-- Cross Validation 5 min read
-- Hyperparameter Tuning 5 min read
-- Underfitting and Overfitting 3 min read
-- Bias and Variance 6 min read
-Advanced Techniques
-- Reinforcement Learning 9 min read
-- Semi-Supervised Learning 5 min read
-- Self-Supervised Learning 6 min read
-- Ensemble Learning 6 min read
-Machine Learning Practice
-- Interview Questions 15+ min read
-- ML Projects 5 min read
 <!-- fetched-content:end -->

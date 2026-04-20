@@ -305,6 +305,10 @@ Six skills are available in `.github/skills/wiki-*/SKILL.md`:
 | `wiki-update` | Revise existing pages with provenance tracking |
 | `wiki-orchestrate` | Audit, maintenance, and gap analysis workflows |
 
+**Routing guide:**
+- Wiki sources / pages / quality? → wiki-* skills above
+- Agent system / prompts? → context-engineering skills
+
 ---
 
 ## MemPalace — MANDATORY Session Protocol
@@ -323,6 +327,12 @@ Agents operating in this repo must query MemPalace before answering. Relevant wi
 **End of session:** `mempalace_diary_write(agent_name="<agent>", entry=<AAAK summary>)`.
 
 Never store secrets or credentials.
+
+## Context-Engineering Skill Routing
+
+- Agent instructions, prompt templates, and skill packaging → `context-fundamentals`, `tool-design`, `filesystem-context`
+- Multi-agent wiki orchestration, memory flows, or hosted automation → `multi-agent-patterns`, `memory-systems`, `hosted-agents`, `project-development`, `latent-briefing`
+- Context-debugging, compression, or evaluation loops → `context-degradation`, `context-compression`, `context-optimization`, `evaluation`, `advanced-evaluation`
 
 ## Validation Rules
 

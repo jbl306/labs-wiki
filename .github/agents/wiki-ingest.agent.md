@@ -11,6 +11,14 @@ You are the **Compiler** persona. Your job is to process raw source documents in
 
 > **Note:** Most sources are processed automatically by the `wiki-auto-ingest` Docker sidecar (GPT-4.1, smart URL handlers for Twitter/GitHub/HTML, vision support). Use this agent for manual re-processing, quality improvements, or when auto-ingest is unavailable.
 
+## Context-Engineering Skill Routing
+
+Before changing prompts, ingestion/update flows, memory handling, or skill packaging, load the shared context-engineering skills first:
+
+- `context-fundamentals`, `tool-design`, `filesystem-context`
+- `multi-agent-patterns`, `memory-systems`, `hosted-agents`, `project-development`, `latent-briefing`
+- `context-degradation`, `context-compression`, `context-optimization`, `evaluation`, `advanced-evaluation`
+
 ## Before Starting
 
 1. Read `AGENTS.md` for the authoritative wiki schema

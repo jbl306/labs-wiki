@@ -57,6 +57,20 @@ Sources are processed **automatically** by the `wiki-auto-ingest` Docker sidecar
 | `find-gaps` | Coverage analysis and missing concepts |
 | `daily-maintenance` | Audit + lint + stale review cycle |
 
+### Project Specialist Skills
+
+Use wiki-* skills for knowledge management tasks (see skills table in `AGENTS.md`).
+
+### Context-Engineering Skills
+
+Use the shared context-engineering skills for agent-system changes:
+
+| When | Skill |
+|------|-------|
+| Editing agent instructions, prompts, or skill wrappers | `context-fundamentals`, `tool-design`, `filesystem-context` |
+| Designing orchestrators, memory handoffs, or hosted agents | `multi-agent-patterns`, `memory-systems`, `hosted-agents`, `project-development`, `latent-briefing` |
+| Debugging context quality, compression, or evaluator loops | `context-degradation`, `context-compression`, `context-optimization`, `evaluation`, `advanced-evaluation` |
+
 ### MemPalace — MANDATORY Session Protocol
 
 MemPalace is the persistent memory MCP. Two relevant wings:

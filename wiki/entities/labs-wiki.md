@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "499ac65895e3b4c5dbf581d0dac3942433dcc90dd7be66960430f78040b8df5a"
 sources:
+  - raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
@@ -62,3 +63,4 @@ Labs-Wiki serves as the backend for knowledge codification, agent-driven curatio
 - [[Copilot Session Checkpoint: Planning and Progress Tracking Complete]] — additional source
 - [[Copilot Session Checkpoint: Researching MemPalace for Comparison Doc]] — additional source
 - [[Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode]] — additional source
+- [[Copilot Session Checkpoint: Second Curation Reports]] — additional source

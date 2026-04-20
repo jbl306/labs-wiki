@@ -11,22 +11,26 @@ concepts:
   - layered-agentic-architecture-claude-code
   - design-principles-agentic-coding-tools
   - comparative-agent-system-architecture-claude-code-vs-openclaw
+  - human-centric-design-values-principles-agent-systems
+  - context-management-compaction-pipeline-claude-code
 related:
   - "[[Layered Agentic Architecture in Claude Code]]"
   - "[[Design Principles for Agentic Coding Tools]]"
   - "[[Comparative Agent System Architecture: Claude Code vs. OpenClaw]]"
+  - "[[Human-Centric Design Values and Principles in Agent Systems]]"
+  - "[[Context Management and Compaction Pipeline in Claude Code]]"
   - "[[Claude Code]]"
   - "[[OpenClaw]]"
   - "[[Anthropic]]"
 tier: hot
-tags: [agentic-architecture, session-persistence, context-management, agent-comparison, extensibility, design-principles, safety]
+tags: [agentic-architecture, session-persistence, context-management, agent-comparison, extensibility, design-principles, safety, human-values]
 ---
 
 # Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems
 
 ## Summary
 
-This paper presents a comprehensive architectural analysis of Claude Code, an agentic coding tool by Anthropic, focusing on its design philosophies, subsystem decomposition, and operational mechanisms. It traces five core human values through thirteen design principles, details the layered architecture (including safety, extensibility, context management, delegation, and persistence), and contrasts Claude Code with OpenClaw to highlight how deployment context shapes agent system design. The study also identifies open directions for future agent systems, such as observability, memory persistence, and governance.
+This paper presents a comprehensive architectural analysis of Claude Code, an agentic coding tool by Anthropic, focusing on its design philosophies, subsystem decomposition, and operational mechanisms. It traces five core human values through thirteen design principles, details the layered architecture (including safety, extensibility, context management, delegation, and persistence), and contrasts Claude Code with OpenClaw to highlight how deployment context shapes agent system design. The study also identifies open directions for future agent systems, such as observability, memory persistence, governance, and long-term capability preservation.
 
 ## Key Points
 
@@ -41,6 +45,8 @@ This paper presents a comprehensive architectural analysis of Claude Code, an ag
 - **[[Layered Agentic Architecture in Claude Code]]** — Claude Code employs a layered agentic architecture that decomposes the system into distinct functional subsystems, each addressing recurring design questions in agentic coding tools. This structure enables robust safety, extensibility, context management, and delegation, supporting both autonomous operation and human oversight.
 - **[[Design Principles for Agentic Coding Tools]]** — Thirteen design principles operationalize five core human values in Claude Code, guiding architectural decisions for safety, adaptability, reliability, capability, and authority. These principles address recurring design questions in agentic coding tools and inform subsystem implementation.
 - **[[Comparative Agent System Architecture: Claude Code vs. OpenClaw]]** — The paper contrasts Claude Code’s architecture with OpenClaw, an open-source multi-channel personal assistant gateway, across six design dimensions. This comparison reveals how deployment context, product goals, and safety requirements shape divergent architectural choices in agent systems.
+- **[[Human-Centric Design Values and Principles in Agent Systems]]** — Claude Code’s architecture is motivated by five core human values—decision authority, safety, reliable execution, capability amplification, and contextual adaptability—operationalized through thirteen design principles.
+- **[[Context Management and Compaction Pipeline in Claude Code]]** — Claude Code treats context as a scarce resource, using a five-layer compaction pipeline to preserve reliability and capability under tight context budgets.
 
 ## Entities Mentioned
 
@@ -52,6 +58,7 @@ This paper presents a comprehensive architectural analysis of Claude Code, an ag
 
 > "Agents must be able to work autonomously; their independent operation is exactly what makes them valuable. But humans should retain control over how their goals are pursued." — Anthropic Safe Agents Framework
 > "The architecture enables qualitatively new workflows, not merely faster existing ones: approximately 27% of tasks represented work that would not otherwise have been attempted." — Anthropic Internal Survey
+> "Claude Code’s principle set is distinctive in combining minimal decision scaffolding with layered policy enforcement, values-based judgment with deny-first defaults, and progressive context management with composable extensibility." — Paper, Section 2.2
 
 ## Source Details
 

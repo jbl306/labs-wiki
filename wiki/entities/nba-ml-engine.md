@@ -5,6 +5,9 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "665c60129067f8fba29792521cb202b0e0ab91fc22982f1f58081019b034c549"
 sources:
+  - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
+  - raw/2026-04-19-copilot-session-sprint-61-planning-audit-6c5cb258.md
+  - raw/2026-04-19-copilot-session-sprint-60-pts-feature-planning-abd21993.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-12-complete-and-skills-installed-48a02b58.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
@@ -80,3 +83,6 @@ Central to the session, the NBA ML Engine's reliability and artifact integrity a
 - [[Copilot Session Checkpoint: Sprint 10 Retrain In Progress]] — additional source
 - [[Copilot Session Checkpoint: Sprint 11 Evaluation and Report]] — additional source
 - [[Copilot Session Checkpoint: Sprint 12 Complete and Skills Installed]] — additional source
+- [[Copilot Session Checkpoint: Sprint 60 PTS Feature Planning]] — additional source
+- [[Copilot Session Checkpoint: Sprint 61 Planning + Audit]] — additional source
+- [[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]] — additional source

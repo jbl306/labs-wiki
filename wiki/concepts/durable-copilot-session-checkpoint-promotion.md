@@ -5,6 +5,8 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "c65fce884e028922d59862433952d95e905dc7bcd8639c99bbaa0493de3d3fbb"
 sources:
+  - raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md
+  - raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md
   - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
   - raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
 quality_score: 100
@@ -76,3 +78,5 @@ This workflow is ideal for teams or individuals managing persistent knowledge ba
 
 - [[Copilot Session Checkpoint: Session Wiki Promotion]] — primary source for this concept
 - [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — additional source
+- [[Copilot Session Checkpoint: Phase 5 Merged; Graph UI Next]] — additional source
+- [[Copilot Session Checkpoint: Implementing Checkpoint Curation Phases]] — additional source

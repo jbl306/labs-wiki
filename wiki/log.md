@@ -2061,6 +2061,21 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   status: success
   notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
 
+- timestamp: 2026-04-18T12:13:21+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems.md
+    - wiki/concepts/layered-agentic-architecture-claude-code.md
+    - wiki/concepts/human-centric-design-values-principles-agent-systems.md
+    - wiki/concepts/context-management-compaction-pipeline-claude-code.md
+    - wiki/entities/claude-code.md
+    - wiki/entities/openclaw.md
+    - wiki/entities/anthropic.md
+  source: raw/2026-04-18-260414228v1pdf.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
 - timestamp: 2026-04-18T12:14:02+00:00
   operation: checkpoint-cluster-synthesis
   agent: auto-ingest
@@ -2087,6 +2102,153 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/entities/openclaw.md
     - wiki/entities/anthropic.md
   source: raw/2026-04-18-260414228v1pdf.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T15:48:35+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-phase-5-merged-graph-ui-next.md
+    - wiki/concepts/durable-copilot-session-checkpoint-promotion.md
+    - wiki/concepts/full-corpus-wikilink-cleanup-lint-resolution.md
+    - wiki/concepts/synthesis-batch-runner-merge-cluster-backlog.md
+    - wiki/entities/durable-copilot-session-checkpoint.md
+  source: raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-18T22:37:40+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-knightcrawler-done-routing-traced.md
+    - wiki/concepts/knightcrawler-cron-automation-monitoring-status-tracking.md
+    - wiki/concepts/homelab-media-domain-routing-lan-public-https-diagnostics.md
+    - wiki/concepts/diagnosing-browser-automation-failures-containerized-web-services.md
+    - wiki/entities/knightcrawler.md
+    - wiki/entities/opencode.md
+    - wiki/entities/caddy.md
+    - wiki/entities/cloudflare.md
+  source: raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-19T14:59:45+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/6372438pdf.md
+  source: raw/2026-04-19-6372438pdf.md
+  status: success
+  notes: "Auto-ingested 1 pages (0 concepts, 0 entities, 0 synthesis)"
+
+- timestamp: 2026-04-19T15:33:30+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-60-pts-feature-planning.md
+    - wiki/concepts/pts-feature-engineering-opponent-defensive-rating-rolling-window.md
+    - wiki/concepts/teammate-injured-usage-delta-feature.md
+    - wiki/concepts/classifier-stats-extension-calibration-audit.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/sgo-sportsgameodds-api.md
+  source: raw/2026-04-19-copilot-session-sprint-60-pts-feature-planning-abd21993.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-19T22:54:18+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-61-planning-audit.md
+    - wiki/concepts/pickle-load-audit-across-base-model-classes.md
+    - wiki/concepts/pts-feature-interaction-engineering.md
+    - wiki/concepts/stl-edge-threshold-audit-backtesting.md
+    - wiki/entities/nba-ml-engine.md
+  source: raw/2026-04-19-copilot-session-sprint-61-planning-audit-6c5cb258.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T00:23:49+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-scheduler-dns-agents-cleanup.md
+    - wiki/concepts/stale-training-status-detection-remediation-ml-pipelines.md
+    - wiki/concepts/split-dns-routing-cloudflare-tunnel-overrides-homelab-services.md
+    - wiki/concepts/agent-skill-surface-optimization-multi-tool-ai-project-compatibility.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/homelab.md
+    - wiki/entities/ofelia-scheduler.md
+    - wiki/entities/adguard.md
+  source: raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T03:13:14+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/cloudflare-launches-code-mode-mcp-server-to-optimize-token-usage-for-ai-agents.md
+    - wiki/concepts/code-mode-mcp-server.md
+    - wiki/concepts/token-footprint-optimization-agent-api-integration.md
+    - wiki/concepts/secure-sandbox-execution-agentic-workflows.md
+    - wiki/entities/cloudflare.md
+    - wiki/entities/code-mode-mcp-server.md
+  source: raw/2026-04-20-cloudflare-launches-code-mode-mcp-server-to-optimize-token-u.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T03:15:56+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-wiki-audit-followups.md
+    - wiki/concepts/planning-only-checkpoint-suppression-wiki-auto-ingest-pipelines.md
+    - wiki/concepts/orphan-pruning-mempalace-sync-scripts.md
+    - wiki/concepts/heuristic-based-classification-session-checkpoints.md
+  source: raw/2026-04-20-copilot-session-wiki-audit-followups-92b1089b.md
+  status: success
+  notes: "Auto-ingested 4 pages (3 concepts, 0 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T03:21:34+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-implementing-checkpoint-curation-phases.md
+    - wiki/concepts/durable-copilot-session-checkpoint-promotion.md
+    - wiki/concepts/heuristic-based-classification-session-checkpoints.md
+    - wiki/entities/checkpoint-classifier-module.md
+  source: raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T03:22:12+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-phase-5-backfill-script-written.md
+    - wiki/concepts/backfill-script-copilot-session-checkpoint-curation.md
+    - wiki/concepts/quality-score-normalization-wiki-session-checkpoints.md
+    - wiki/entities/backfill-checkpoint-curation-script.md
+    - wiki/entities/checkpoint-classifier-module.md
+  source: raw/2026-04-18-copilot-session-phase-5-backfill-script-written-6227b6ae.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T11:12:01+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-second-curation-reports.md
+    - wiki/concepts/graph-aware-editorial-scoring-wiki-checkpoint-curation.md
+    - wiki/concepts/clean-worktree-based-development-wiki-curation-pipelines.md
+    - wiki/concepts/robust-path-resolution-wiki-curation-scripts.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/homelab.md
+    - wiki/entities/scripts-backfill-checkpoint-curation-py.md
+  source: raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
   status: success
   notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
 ```

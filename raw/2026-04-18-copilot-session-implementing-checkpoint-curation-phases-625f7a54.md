@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, labs-w
 checkpoint_class: durable-architecture
 checkpoint_class_rule: "body:graph-api"
 retention_mode: retain
-status: pending
+status: ingested
 ---
 
 # Copilot Session Checkpoint Export

@@ -11,11 +11,12 @@ concepts:
   - openclaw
 related:
   - "[[Comparative Agent System Architecture: Claude Code vs. OpenClaw]]"
+  - "[[Layered Agentic Architecture in Claude Code]]"
   - "[[Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems]]"
   - "[[Claude Code]]"
   - "[[Anthropic]]"
 tier: hot
-tags: [agentic-system, open-source, gateway, multi-agent-orchestration]
+tags: [agentic-system, open-source, gateway, multi-agent-orchestration, architecture, personal-assistant]
 ---
 
 # OpenClaw
@@ -41,6 +42,7 @@ OpenClaw provides an alternative architectural approach to agentic systems, prio
 ## Associated Concepts
 
 - **[[Comparative Agent System Architecture: Claude Code vs. OpenClaw]]** — OpenClaw is contrasted with Claude Code across six design dimensions.
+- **[[Layered Agentic Architecture in Claude Code]]** — Contrasts OpenClaw’s gateway-oriented model with Claude Code’s layered internal harness.
 
 ## Related Entities
 

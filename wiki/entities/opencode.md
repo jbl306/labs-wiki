@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "8f16e4e60e551cdd3f674035b1b2a27a6be65980aad74f267605217db5acbc98"
 sources:
+  - raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
 quality_score: 100
@@ -52,3 +53,4 @@ Fixing OpenCode's shell environment and path issues was necessary to restore rel
 
 - [[Copilot Session Checkpoint: Resource Optimization, Opencode Bash Fix]] — where this entity was mentioned
 - [[Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode]] — additional source
+- [[Copilot Session Checkpoint: Knightcrawler done, routing traced]] — additional source

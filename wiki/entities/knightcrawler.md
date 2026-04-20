@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "b86ec7cb4abcfbce82b0a9b160fefa2aa57af2722acf67653163c263a5b39884"
 sources:
+  - raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
@@ -56,3 +57,4 @@ KnightCrawler's performance optimization was a major focus of the session, demon
 - [[Copilot Session Checkpoint: NBA-ML Agents and Homelab Fixes]] — additional source
 - [[Copilot Session Checkpoint: ntfy Notifications, Galloping-Bot Alerts, Monitor Fixes]] — additional source
 - [[Copilot Session Checkpoint: Resource Optimization, Opencode Bash Fix]] — additional source
+- [[Copilot Session Checkpoint: Knightcrawler done, routing traced]] — additional source

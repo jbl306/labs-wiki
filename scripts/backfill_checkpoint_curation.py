@@ -151,7 +151,7 @@ def compute_quality_score(fm: dict, has_wikilinks: bool, has_related: bool) -> i
 # ---------------------------------------------------------------------------
 
 
-def process_page(path: Path) -> dict[str, Any]:
+def process_page(path: Path, project_root: Path) -> dict[str, Any]:
     text = path.read_text()
     parts = split_frontmatter(text)
     if parts is None:
@@ -163,7 +163,7 @@ def process_page(path: Path) -> dict[str, Any]:
     checkpoint_body = body
     sources = fm.get("sources") if isinstance(fm.get("sources"), list) else []
     for source in sources:
-        raw_path = ROOT / str(source)
+        raw_path = project_root / str(source)
         if not raw_path.exists():
             continue
         raw_parts = split_frontmatter(raw_path.read_text())
@@ -201,7 +201,7 @@ def process_page(path: Path) -> dict[str, Any]:
     changed = new_text != text
 
     return {
-        "path": str(path.relative_to(ROOT)),
+        "path": str(path.relative_to(project_root)),
         "title": title,
         "checkpoint_class": cls.cls,
         "retention_mode": retention,
@@ -221,7 +221,12 @@ def process_page(path: Path) -> dict[str, Any]:
     }
 
 
-def resolve_target_paths(sources_dir: Path, requested: list[str], limit: int) -> list[Path]:
+def resolve_target_paths(
+    sources_dir: Path,
+    requested: list[str],
+    limit: int,
+    project_root: Path,
+) -> list[Path]:
     """Resolve repo-relative or basename checkpoint targets."""
     if not requested:
         paths = sorted(sources_dir.glob(CHECKPOINT_GLOB))
@@ -232,7 +237,7 @@ def resolve_target_paths(sources_dir: Path, requested: list[str], limit: int) ->
     for raw in requested:
         candidate_strings = (
             raw,
-            str(ROOT / raw),
+            str(project_root / raw),
             str(sources_dir / raw),
             str(sources_dir / Path(raw).name),
         )
@@ -280,19 +285,21 @@ def main() -> int:
     )
     args = ap.parse_args()
 
-    sources_dir = args.wiki / "sources"
+    wiki_dir = args.wiki.resolve()
+    project_root = wiki_dir.parent
+    sources_dir = wiki_dir / "sources"
     if not sources_dir.is_dir():
         print(f"sources dir not found: {sources_dir}", file=sys.stderr)
         return 1
 
-    target_paths = resolve_target_paths(sources_dir, args.path, args.limit)
+    target_paths = resolve_target_paths(sources_dir, args.path, args.limit, project_root)
     results: list[dict[str, Any]] = []
     for p in target_paths:
-        r = process_page(p)
+        r = process_page(p, project_root)
         results.append(r)
         if r.get("changed") and not args.dry_run:
             Path(r["path"]).resolve()  # safety: ensure resolved
-            (ROOT / r["path"]).write_text(r.pop("new_text"))
+            (project_root / r["path"]).write_text(r.pop("new_text"))
         else:
             r.pop("new_text", None)
 

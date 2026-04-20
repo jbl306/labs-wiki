@@ -141,6 +141,26 @@ Works with all three tools — they all read `AGENTS.md`:
 
 See [docs/memory-model.md](docs/memory-model.md) for details.
 
+## Knowledge Graph
+
+The knowledge graph links all wiki pages by wikilinks and tier co-occurrence, runs community detection, and identifies checkpoint health.
+
+```bash
+# Build the graph and generate the checkpoint tracker report
+python3 wiki-graph-api/graph_builder.py \
+  --wiki wiki \
+  --cache wiki-graph-api/.cache \
+  --out wiki/graph/graph.json
+```
+
+This writes `wiki/graph/graph.json` and auto-generates `reports/checkpoint-graph-tracker.md`.
+
+### Checkpoint graph tracker
+
+`reports/checkpoint-graph-tracker.md` is a **report-only** file written on every graph build. It compares the graph-derived recommendation (`keep` / `compress` / `merge` / `archive`) against the heuristic baseline from each checkpoint's frontmatter (`checkpoint_class` + `retention_mode`). It does **not** rewrite any wiki page or retention setting. Use it to evaluate whether the graph and heuristic layers agree before deciding on policy changes.
+
+See [docs/workflows.md](docs/workflows.md) for the full graph build workflow.
+
 ## Inspiration
 
 Built on research from:

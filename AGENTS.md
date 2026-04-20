@@ -175,7 +175,16 @@ For targeted re-processing or when auto-ingest is not running:
 - Never manually rewrite files in `raw/`; the only automated edits are `status` updates and replacement of the deterministic fetched-content block for `type: url` sources
 - Every fact in a wiki page must trace to a source via `sources:` field
 - One raw source may produce multiple wiki pages (concepts, entities)
-- Always update `wiki/log.md` with timestamp, operation, and targets
+- Always update `wiki/log.md` with timestamp, operation, and targets, **unless running in `--validation-run` mode** (review-only reruns suppress log and notification noise)
+
+### Validation-Run Mode
+
+Use `--validation-run --force` (and optionally `--refresh-fetch`) for review-only reruns of a single raw
+file, such as verifying improved extraction or image ranking after a follow-up pass. Behavior:
+
+- Updates the raw fetched-content block and wiki pages as normal
+- **Suppresses** `wiki/log.md` append and ntfy notifications
+- Default production ingest path is unchanged; `--validation-run` must be passed explicitly
 
 ### Query Workflow (`/wiki-query`)
 

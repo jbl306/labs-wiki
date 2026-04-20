@@ -109,7 +109,14 @@ python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-r
 
 # Re-fetch the live URL and replace the persisted fetched-content block
 python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-root . --force --refresh-fetch
+
+# Validation rerun: update raw snapshot and pages without polluting wiki/log.md or sending notifications
+python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-root . --force --refresh-fetch --validation-run
 ```
+
+`--validation-run` is intended for review-only reruns of a single already-ingested raw file (e.g. verifying
+improved extraction quality). It requires `--force`, still writes raw snapshots and wiki pages, but
+suppresses the `wiki/log.md` append and ntfy notifications so the audit trail stays clean.
 
 See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 

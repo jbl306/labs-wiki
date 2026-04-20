@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "8198d9aadc30c60df6456d83ba4231bd753980c7e1788975924e28655780b91d"
 sources:
+  - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
   - raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
   - raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
   - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
@@ -77,3 +78,4 @@ No related entities documented yet.
 - [[Top 15 Machine Learning Algorithms Every Data Scientist Should Know in 2025]] — additional source
 - [[What is LSTM - Long Short Term Memory? - GeeksforGeeks]] — additional source
 - [[Copilot Session Checkpoint: Mobile Graph UI + Wiki Dedup]] — additional source
+- [[LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks]] — additional source

@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "e07e5051691c4755e2f30694f3fc063b4f6c821a142667606bf4f3c54ed9a4a1"
 sources:
+  - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-observability-imperative-10-claude-code-principles.md
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
 quality_score: 100
@@ -49,3 +50,4 @@ No related entities documented yet.
 
 - [[The Specialized Review Principle | 10 Claude Code Principles]] — where this entity was mentioned
 - [[The Observability Imperative | 10 Claude Code Principles]] — additional source
+- [[The Strategic Human Gate Principle | 10 Claude Code Principles]] — additional source

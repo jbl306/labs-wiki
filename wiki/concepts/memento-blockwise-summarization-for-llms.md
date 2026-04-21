@@ -5,6 +5,7 @@ created: 2026-04-21
 last_verified: 2026-04-21
 source_hash: "7b344980e889d401d340d2539bd18583a585c26640fe19f36c596d887e647ba2"
 sources:
+  - raw/2026-04-13-260406231v1pdf.md
   - raw/2026-04-21-httpsgithubcommicrosoftmemento.md
 quality_score: 100
 concepts:
@@ -75,3 +76,4 @@ Memento is particularly useful in scenarios requiring long-form reasoning, such 
 ## Sources
 
 - [[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]] — primary source for this concept
+- [[Hope: A Memory Architecture for Continual Learning with Long Contexts]] — additional source

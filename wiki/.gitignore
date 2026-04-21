@@ -1,7 +1,7 @@
 # hot.md is regenerated every mine (~hourly + on-demand).
 # Keep git history clean per proposed-answer Part 5 Q2:
-# "commit only daily snapshot, .gitignore the hourly rewrites."
+# "commit snapshots, .gitignore the hourly rewrites."
 #
-# The committed daily snapshot lives at wiki/meta/hot-snapshot.md
-# (written by scripts/snapshot_hot.py via a daily cron).
+# The committed snapshot lives at wiki/meta/hot-snapshot.md
+# (written by scripts/snapshot_hot.py when you choose to checkpoint it).
 hot.md

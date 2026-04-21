@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "9f90b86f2aab32a86e7ca650c6477398444e04958726c5b3ca2ccd9f465e7581"
 sources:
+  - raw/2026-04-07-jbl306homelab.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-retrained-models-deploying-improvements-59ba9a6c.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-data-source-expansion-exploration-b12f747f.md
 quality_score: 100
@@ -95,3 +96,4 @@ This architecture is suitable for small to medium scale ML projects requiring re
 
 - [[Copilot Session Checkpoint: Data Source Expansion Exploration]] — primary source for this concept
 - [[Copilot Session Checkpoint: Retrained Models, Deploying Improvements]] — additional source
+- [[jbl306/homelab]] — additional source

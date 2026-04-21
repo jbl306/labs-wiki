@@ -5,6 +5,7 @@ created: 2026-04-21
 last_verified: 2026-04-21
 source_hash: "9b909ca9eada78d8d05ef05a3e511af46402d434c5a0b53123bbb430e41e3e8d"
 sources:
+  - raw/2026-04-13-260406231v1pdf.md
   - raw/2026-04-10-260206176v1pdf.md
 quality_score: 100
 concepts:
@@ -52,3 +53,4 @@ Han's contributions advance understanding of systemic weaknesses in LLM reasonin
 ## Sources
 
 - [[Large Language Model Reasoning Failures]] — where this entity was mentioned
+- [[Hope: A Memory Architecture for Continual Learning with Long Contexts]] — additional source

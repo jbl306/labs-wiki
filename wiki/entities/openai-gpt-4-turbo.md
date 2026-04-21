@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "a4e125acd956ed0ccf70ba66d6510f746deb20fa870597168af46311ee8dd133"
 sources:
+  - raw/2026-04-14-legal_rag_hallucinationspdf.md
   - raw/2026-04-07-test-tweet.md
 quality_score: 100
 concepts:
@@ -47,3 +48,4 @@ No related entities documented yet.
 ## Sources
 
 - [[Karpathy LLM OS Tweet]] — where this entity was mentioned
+- [[Legal RAG Hallucinations]] — additional source

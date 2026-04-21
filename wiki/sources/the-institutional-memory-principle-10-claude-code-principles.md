@@ -1,9 +1,9 @@
 ---
 title: "The Institutional Memory Principle | 10 Claude Code Principles"
 type: source
-created: 2026-04-08
-last_verified: 2026-04-08
-source_hash: "1a63a2c55a4cb9725f715d148e3ee71297cad06f65870fef29a77de550825598"
+created: 2026-04-21
+last_verified: 2026-04-21
+source_hash: "1f6fb939a3093961c224b0dcd4f0ee6818f53d9a3e2c4ee308d7fdb4e834266e"
 sources:
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
 quality_score: 100
@@ -11,37 +11,36 @@ concepts:
   - the-institutional-memory-principle
 related:
   - "[[The Institutional Memory Principle]]"
-  - "[[Claude]]"
-  - "[[Anthropic]]"
 tier: hot
-tags: [prompting, engineering-workflow, ai-agents, knowledge-management, error-prevention]
+knowledge_state: executed
+tags: [documentation, knowledge-management, context-hygiene, ai-engineering, agentic-workflows]
 ---
 
 # The Institutional Memory Principle | 10 Claude Code Principles
 
 ## Summary
 
-This article introduces the Institutional Memory Principle, emphasizing the importance of codifying project-specific patterns, rules, and past mistakes in a living engineering handbook. It explains how this approach prevents repeat errors by ensuring that all agents and developers have access to accumulated knowledge, steering AI outputs toward project conventions rather than generic defaults. The piece provides tactical steps for implementation, highlights common pitfalls, and underscores the measurable impact on error rates and team trust.
+This article introduces the Institutional Memory Principle for AI agent workflows, emphasizing the need for a living engineering handbook that codifies project-specific patterns, rules, and past mistakes. It explains how codifying corrections with reasoning prevents repeat errors, generalizes agent behavior, and improves onboarding and trust. The article provides scientific backing, practical implementation steps, and highlights common pitfalls and expected impacts.
 
 ## Key Points
 
-- Codifying corrections in a shared handbook prevents repeat errors by making knowledge accessible to all agents and developers.
-- Rules should follow the 'Always/Never [action] BECAUSE [reason]' format to ensure generalization and maintainability.
-- Regular pruning and updating of the handbook are essential to avoid contradictions and context bloat.
+- Session-only corrections evaporate, leading to repeated agent mistakes.
+- Codifying rules with reasons in a shared handbook shifts agent output toward project-specific conventions.
+- Negative constraints and explanations steer LLMs away from generic patterns and enable generalization.
 
 ## Concepts Extracted
 
-- **[[The Institutional Memory Principle]]** — The Institutional Memory Principle is a workflow discipline that mandates codifying project-specific patterns, rules, and past mistakes in a living engineering handbook. This principle ensures that every agent and developer can access and contribute to a persistent knowledge base, preventing the recurrence of the same errors and steering AI outputs toward team conventions.
+- **[[The Institutional Memory Principle]]** — The Institutional Memory Principle advocates for maintaining a living engineering handbook that codifies project-specific patterns, rules, and past mistakes. This principle ensures that AI agents and developers consult and update the handbook as part of their workflow, preventing repeat errors and enabling the system to learn permanently. It addresses the core challenge of knowledge evaporation in agentic workflows, where corrections are often lost between sessions.
 
 ## Entities Mentioned
 
-- **[[Claude]]** — Claude is an AI assistant developed by Anthropic, designed to assist with code generation, review, and other language tasks. It can be integrated into developer workflows to automate or augment programming and documentation processes.
-- **[[Anthropic]]** — Anthropic is an AI research and deployment company focused on building reliable, interpretable, and steerable AI systems. They are the creators of Claude and contributors to research on prompt engineering and agent workflows.
+No entities mentioned.
 
 ## Notable Quotes
 
-> "When an agent makes a mistake, don't just correct it — codify it forever." — J.D. Forsythe
-> "A rule without an explanation is brittle. A principle with an explanation generalizes." — J.D. Forsythe
+> "Maintain a living engineering handbook of project-specific patterns, rules, and past mistakes so the system learns permanently and stops repeating errors across every session and every developer." — Fact Sheet
+> "Every session-only correction is a future repeat error waiting to happen." — Fact Sheet
+> "Rules without reasons become dead weight; prune the handbook quarterly." — Fact Sheet
 
 ## Source Details
 
@@ -49,6 +48,6 @@ This article introduces the Institutional Memory Principle, emphasizing the impo
 |-------|-------|
 | Original | `raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md` |
 | Type | article |
-| Author | J.D. Forsythe |
+| Author | Unknown |
 | Date | Unknown |
 | URL | https://jdforsythe.github.io/10-principles/principles/institutional-memory/ |

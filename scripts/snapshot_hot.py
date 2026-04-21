@@ -3,12 +3,9 @@
 snapshot_hot.py — Copy the ephemeral wiki/hot.md to wiki/meta/hot-snapshot.md.
 
 Per proposed-answer Part 5 Q2 of the claude-obsidian integration plan:
-`wiki/hot.md` is gitignored (rewritten hourly); a once-per-day snapshot is
-committed so git history preserves the evolution of "what was hot" without
-being noisy.
-
-Run via cron once per day:
-    23 23 * * * /usr/bin/python3 ~/projects/labs-wiki/scripts/snapshot_hot.py
+`wiki/hot.md` is gitignored (rewritten frequently); an externally scheduled
+snapshot can still be committed so git history preserves the evolution of
+"what was hot" without the hourly churn.
 """
 
 from __future__ import annotations
@@ -31,7 +28,7 @@ def main() -> int:
     # Prepend a notice so readers don't confuse the snapshot with the live cache.
     content = DST.read_text()
     banner = (
-        "<!-- Auto-generated daily snapshot of wiki/hot.md. "
+        "<!-- Auto-generated snapshot of wiki/hot.md. "
         "The live cache is gitignored; this file is its committed history. -->\n\n"
     )
     if not content.startswith("<!-- Auto-generated"):

@@ -2851,4 +2851,557 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-21-260402176v2pdf.md
   status: success
   notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:09:27+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/custom-agents-in-vs-code.md
+    - wiki/concepts/custom-agents-in-vs-code.md
+    - wiki/concepts/agent-handoffs-in-vs-code.md
+    - wiki/concepts/custom-agent-file-structure.md
+    - wiki/entities/visual-studio-code.md
+  source: raw/2026-04-07-custom-agents-in-vs-code.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:10:09+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/jbl306homelab.md
+    - wiki/concepts/homelab-infrastructure-patterns-for-ai-memory-migration.md
+    - wiki/entities/homelab.md
+  source: raw/2026-04-07-jbl306homelab.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:11:08+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/llm-wiki.md
+    - wiki/concepts/karpathy-llm-wiki-pattern.md
+    - wiki/concepts/llm-wiki-architecture.md
+    - wiki/entities/obsidian.md
+    - wiki/entities/qmd.md
+    - wiki/entities/obsidian-web-clipper.md
+    - wiki/entities/dataview.md
+    - wiki/entities/marp.md
+  source: raw/2026-04-07-llm-wiki.md
+  status: success
+  notes: "Auto-ingested 8 pages (2 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:11:39+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/htmx-html-over-the-wire.md
+    - wiki/concepts/html-over-the-wire-with-htmx.md
+    - wiki/entities/htmx.md
+  source: raw/2026-04-07-test-github-repo.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:12:36+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/karpathy-llm-os-tweet.md
+    - wiki/concepts/llm-operating-system-architecture.md
+    - wiki/entities/openai-gpt-4-turbo.md
+    - wiki/entities/ada002.md
+  source: raw/2026-04-07-test-tweet.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:13:24+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/apriori-algorithm-geeksforgeeks.md
+    - wiki/concepts/apriori-algorithm.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-apriori-algorithm-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:14:31+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/decision-tree-geeksforgeeks.md
+    - wiki/concepts/decision-tree-algorithm.md
+    - wiki/concepts/splitting-criteria-in-decision-trees.md
+    - wiki/concepts/pruning-in-decision-trees.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-decision-tree-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:15:24+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/implementing-the-adaboost-algorithm-from-scratch-geeksforgeeks.md
+    - wiki/concepts/adaboost-algorithm.md
+    - wiki/entities/adaboost.md
+    - wiki/entities/decisiontreeclassifier.md
+    - wiki/entities/scikit-learn.md
+  source: raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:15:57+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/k-nearest-neighborknn-algorithm-geeksforgeeks.md
+    - wiki/concepts/k-nearest-neighbor-algorithm.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:17:34+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/naive-bayes-classifiers-geeksforgeeks.md
+    - wiki/concepts/naive-bayes-classifier.md
+    - wiki/concepts/gaussian-naive-bayes.md
+    - wiki/concepts/multinomial-naive-bayes.md
+    - wiki/concepts/bernoulli-naive-bayes.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 6 pages (4 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:18:25+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/principal-component-analysis-pca-geeksforgeeks.md
+    - wiki/concepts/principal-component-analysis.md
+    - wiki/entities/geeksforgeeks.md
+    - wiki/entities/scikit-learn.md
+  source: raw/2026-04-08-principal-component-analysis-pca-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:19:27+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/random-forest-regression-in-python-geeksforgeeks.md
+    - wiki/concepts/random-forest-regression.md
+    - wiki/entities/randomforestregressor.md
+    - wiki/entities/labelencoder.md
+    - wiki/entities/scikit-learn.md
+  source: raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:21:23+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/support-vector-machine-svm-algorithm-geeksforgeeks.md
+    - wiki/concepts/support-vector-machine-algorithm.md
+    - wiki/entities/scikit-learn.md
+    - wiki/entities/support-vector-classifier-svc.md
+    - wiki/entities/breast-cancer-dataset.md
+  source: raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:22:30+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-context-hygiene-principle-10-claude-code-principles.md
+    - wiki/concepts/the-context-hygiene-principle.md
+    - wiki/concepts/u-shaped-attention-curve-transformer-models.md
+    - wiki/concepts/progressive-disclosure-context-loading.md
+    - wiki/concepts/context-poisoning-llm-workflows.md
+    - wiki/entities/jig.md
+  source: raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 6 pages (4 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:23:01+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-disposable-blueprint-principle-10-claude-code-principles.md
+    - wiki/concepts/the-disposable-blueprint-principle.md
+  source: raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 2 pages (1 concepts, 0 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:23:34+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-hardening-principle-10-claude-code-principles.md
+    - wiki/concepts/the-hardening-principle.md
+  source: raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 2 pages (1 concepts, 0 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:24:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-institutional-memory-principle-10-claude-code-principles.md
+    - wiki/concepts/the-institutional-memory-principle.md
+  source: raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 2 pages (1 concepts, 0 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:24:34+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-living-documentation-principle-10-claude-code-principles.md
+    - wiki/concepts/the-living-documentation-principle.md
+    - wiki/entities/architecture-decision-record-adr.md
+    - wiki/entities/claude-md.md
+  source: raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:26:42+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/custom-agents-in-vs-code.md
+    - wiki/concepts/custom-agents-in-vs-code.md
+    - wiki/concepts/agent-handoffs-in-vs-code.md
+    - wiki/concepts/custom-agent-file-structure.md
+    - wiki/entities/visual-studio-code.md
+  source: raw/2026-04-07-custom-agents-in-vs-code.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:27:41+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/jbl306homelab.md
+    - wiki/concepts/homelab-server-deployment-nba-ml-platform.md
+    - wiki/concepts/split-dns-routing-cloudflare-tunnel-overrides-homelab-services.md
+    - wiki/concepts/comprehensive-grafana-monitoring-for-docker-homelab-services.md
+    - wiki/entities/homelab.md
+  source: raw/2026-04-07-jbl306homelab.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:28:45+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/llm-wiki.md
+    - wiki/concepts/karpathy-llm-wiki-pattern.md
+    - wiki/concepts/schema-guided-llm-knowledge-base-maintenance.md
+    - wiki/concepts/contradiction-detection-utility.md
+    - wiki/entities/obsidian.md
+    - wiki/entities/obsidian-web-clipper.md
+    - wiki/entities/marp.md
+    - wiki/entities/dataview.md
+    - wiki/entities/qmd.md
+  source: raw/2026-04-07-llm-wiki.md
+  status: success
+  notes: "Auto-ingested 9 pages (3 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:29:19+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/htmx-html-over-the-wire.md
+    - wiki/concepts/html-over-the-wire-with-htmx.md
+    - wiki/entities/htmx.md
+  source: raw/2026-04-07-test-github-repo.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:29:58+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/karpathy-llm-os-tweet.md
+    - wiki/concepts/llm-operating-system-architecture.md
+    - wiki/entities/openai-gpt-4-turbo.md
+    - wiki/entities/ada002.md
+  source: raw/2026-04-07-test-tweet.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:30:57+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/apriori-algorithm-geeksforgeeks.md
+    - wiki/concepts/apriori-algorithm.md
+    - wiki/concepts/association-rule-mining.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-apriori-algorithm-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:32:06+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/decision-tree-geeksforgeeks.md
+    - wiki/concepts/decision-tree-algorithm.md
+    - wiki/concepts/splitting-criteria-in-decision-trees.md
+    - wiki/concepts/pruning-in-decision-trees.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-decision-tree-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:32:59+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/implementing-the-adaboost-algorithm-from-scratch-geeksforgeeks.md
+    - wiki/concepts/adaboost-algorithm.md
+    - wiki/entities/adaboost.md
+    - wiki/entities/decisiontreeclassifier.md
+    - wiki/entities/scikit-learn.md
+  source: raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:33:29+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/k-nearest-neighborknn-algorithm-geeksforgeeks.md
+    - wiki/concepts/k-nearest-neighbor-algorithm.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:34:20+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/naive-bayes-classifiers-geeksforgeeks.md
+    - wiki/concepts/naive-bayes-classifier.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:35:14+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/principal-component-analysis-pca-geeksforgeeks.md
+    - wiki/concepts/principal-component-analysis.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-principal-component-analysis-pca-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:37:05+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-specialized-review-principle-10-claude-code-principles.md
+    - wiki/concepts/the-specialized-review-principle.md
+    - wiki/entities/forge.md
+    - wiki/entities/prism-persona-science.md
+    - wiki/entities/mast-failure-taxonomy.md
+  source: raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:37:46+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-strategic-human-gate-principle-10-claude-code-principles.md
+    - wiki/concepts/the-strategic-human-gate-principle.md
+    - wiki/entities/mast-failure-taxonomy.md
+    - wiki/entities/prism-persona-science.md
+    - wiki/entities/forge.md
+  source: raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:38:22+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-token-economy-principle-10-claude-code-principles.md
+    - wiki/concepts/the-token-economy-principle.md
+    - wiki/entities/deepmind.md
+    - wiki/entities/forge.md
+    - wiki/entities/jig.md
+  source: raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:39:26+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/what-is-lstm-long-short-term-memory-geeksforgeeks.md
+    - wiki/concepts/long-short-term-memory-lstm.md
+    - wiki/concepts/lstm-gating-mechanism-nba-ml-engine.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:40:32+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/recursive-language-models.md
+    - wiki/concepts/recursive-language-models.md
+    - wiki/entities/rlm-qwen3-8b.md
+    - wiki/entities/qwen3-coder-480b-a35b.md
+  source: raw/2026-04-10-251224601v2pdf.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:41:45+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/autoagent-fully-automated-and-zero-code-llm-agent-framework-hkudsautoagent-githu.md
+    - wiki/concepts/natural-language-driven-agent-building.md
+    - wiki/concepts/self-managing-workflow-generation.md
+    - wiki/concepts/intelligent-resource-orchestration.md
+    - wiki/entities/autoagent.md
+    - wiki/entities/metachain.md
+    - wiki/entities/hkuds.md
+  source: raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:42:47+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/autoagent-fully-automated-and-zero-code-llm-agent-framework-hkudsautoagent-githu.md
+    - wiki/concepts/natural-language-driven-agent-building.md
+    - wiki/concepts/self-managing-workflow-generation.md
+    - wiki/concepts/intelligent-resource-orchestration.md
+    - wiki/entities/autoagent.md
+    - wiki/entities/metachain.md
+    - wiki/entities/hkuds.md
+  source: raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:44:14+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/hope-a-memory-architecture-for-continual-learning-with-long-contexts.md
+    - wiki/concepts/hope-architecture.md
+    - wiki/concepts/memento-blockwise-summarization-for-llms.md
+    - wiki/concepts/catastrophic-forgetting-mitigation-continual-learning.md
+    - wiki/entities/hope.md
+    - wiki/entities/pengrui-han.md
+    - wiki/entities/peiyang-song.md
+    - wiki/entities/noah-goodman.md
+    - wiki/entities/michael-carbin.md
+  source: raw/2026-04-13-260406231v1pdf.md
+  status: success
+  notes: "Auto-ingested 9 pages (3 concepts, 5 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:44:49+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/nousresearchautoreason-autoresearch-for-subjective-domains.md
+    - wiki/concepts/autoreason-iterative-self-refinement-framework.md
+    - wiki/entities/autoreason.md
+    - wiki/entities/shl0ms.md
+    - wiki/entities/hermes-agent.md
+  source: raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:45:51+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/legal-rag-hallucinations.md
+    - wiki/concepts/hallucinations-in-legal-retrieval-augmented-generation-rag-systems.md
+    - wiki/concepts/hallucinations-in-legal-retrieval-augmented-generation-rag-systems.md
+    - wiki/concepts/typology-legal-hallucinations-correctness-groundedness.md
+    - wiki/entities/lexisnexis-lexis-plus-ai.md
+    - wiki/entities/thomson-reuters-westlaw-ai-assisted-research.md
+    - wiki/entities/thomson-reuters-ask-practical-law-ai.md
+    - wiki/entities/openai-gpt-4-turbo.md
+  source: raw/2026-04-14-legal_rag_hallucinationspdf.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:46:33+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/6372438pdf.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/the-context-hygiene-principle.md
+    - wiki/concepts/memory-supersession-chains.md
+    - wiki/entities/agentic-context-engineering-ace.md
+  source: raw/2026-04-19-6372438pdf.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:48:06+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/leworldmodel-stable-end-to-end-joint-embedding-predictive-architecture-from-pixe.md
+    - wiki/concepts/leworldmodel-architecture.md
+    - wiki/concepts/sketched-isotropic-gaussian-regularizer-sigreg.md
+    - wiki/concepts/latent-planning-leworldmodel.md
+    - wiki/entities/leworldmodel.md
+    - wiki/entities/sketched-isotropic-gaussian-regularizer-sigreg.md
+    - wiki/entities/pldm.md
+    - wiki/entities/dino-wm.md
+  source: raw/2026-04-20-260319312v2pdf.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:49:24+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/adams-law-textual-frequency-law-on-large-language-models.md
+    - wiki/concepts/textual-frequency-law-tfl.md
+    - wiki/concepts/textual-frequency-distillation-tfd.md
+    - wiki/concepts/curriculum-textual-frequency-training-ctft.md
+    - wiki/concepts/textual-frequency-paired-dataset.md
+    - wiki/entities/textual-frequency-paired-dataset-tfpd.md
+    - wiki/entities/facemind-corporation.md
+    - wiki/entities/the-chinese-university-of-hong-kong.md
+  source: raw/2026-04-21-260402176v2pdf.md
+  status: success
+  notes: "Auto-ingested 8 pages (4 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T13:49:57+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/memento-github-repository.md
+    - wiki/concepts/memento-blockwise-summarization-for-llms.md
+    - wiki/entities/memento.md
+    - wiki/entities/openmementos-dataset.md
+    - wiki/entities/microsoft.md
+  source: raw/2026-04-21-httpsgithubcommicrosoftmemento.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
 ```

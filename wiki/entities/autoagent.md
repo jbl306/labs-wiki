@@ -5,6 +5,7 @@ created: 2026-04-12
 last_verified: 2026-04-12
 source_hash: "8452c060914e7b5fd5e6c6af1568e8d1f557cb6e9d7082b5cae7e3360aaf7c1d"
 sources:
+  - raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
@@ -58,3 +59,4 @@ AutoAgent democratizes AI agent development by eliminating the need for manual c
 - [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]] — additional source
 - [[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]] — additional source
 - [[Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research]] — additional source
+- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source

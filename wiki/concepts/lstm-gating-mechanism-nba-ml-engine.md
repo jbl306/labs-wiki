@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "7947d08e9a063fe0b24b8984da65f96b90179927fffc01c1f05927569f503763"
 sources:
+  - raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
 quality_score: 100
 concepts:
@@ -76,3 +77,4 @@ This gating mechanism is useful for controlled experimentation with LSTM models 
 ## Sources
 
 - [[Copilot Session Checkpoint: Sprint 11 Evaluation and Report]] — primary source for this concept
+- [[What is LSTM - Long Short Term Memory? - GeeksforGeeks]] — additional source

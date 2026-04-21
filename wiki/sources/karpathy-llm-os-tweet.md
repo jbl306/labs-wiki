@@ -1,8 +1,8 @@
 ---
 title: "Karpathy LLM OS Tweet"
 type: source
-created: 2026-04-08
-last_verified: 2026-04-08
+created: 2026-04-21
+last_verified: 2026-04-21
 source_hash: "a4e125acd956ed0ccf70ba66d6510f746deb20fa870597168af46311ee8dd133"
 sources:
   - raw/2026-04-07-test-tweet.md
@@ -14,29 +14,30 @@ related:
   - "[[OpenAI GPT-4 Turbo]]"
   - "[[Ada002]]"
 tier: hot
-tags: [multimodal, architecture, llm, ai, os, embeddings, agent]
+knowledge_state: executed
+tags: [embedding, ai, agentic-computing, os, openai, multimodal, llm, karpathy, architecture]
 ---
 
 # Karpathy LLM OS Tweet
 
 ## Summary
 
-Andrej Karpathy sketches a conceptual architecture for an 'LLM OS,' positioning a large language model as the central processor in a computing environment. The tweet outlines hardware-like specs for the LLM and presents a diagram showing the LLM's integration with classical software tools, filesystems, browsers, peripheral devices, and other LLMs. The vision is to treat the LLM as the CPU, orchestrating interactions across traditional and modern computational resources.
+Andrej Karpathy's tweet sketches an 'LLM OS'—a conceptual architecture for treating a large language model as the central processor of a modern computing environment. The diagram and specs describe the LLM as a CPU with RAM (context window), disk (file system with embeddings), and connections to classical software tools, peripheral devices, browsers, and other LLMs. This vision frames LLMs as the foundation for a new kind of operating system.
 
 ## Key Points
 
-- LLM OS envisions an LLM as the central processing unit of a new computing paradigm.
-- Specs include OpenAI GPT-4 Turbo with 256 core batch processing, 128K token RAM, and Ada002-based filesystem.
-- Diagram shows LLM interacting with classical software tools, filesystems, browsers, peripherals, and other LLMs.
+- LLM is positioned as the CPU of a computing environment, with RAM (context window) and disk (file system + embeddings).
+- Peripheral devices (video, audio), classical software tools, browsers, and other LLMs are integrated via distinct interfaces.
+- Specs include OpenAI GPT-4 Turbo (256 core, 20Hz), 128K token RAM, and Ada002 for the file system.
 
 ## Concepts Extracted
 
-- **[[LLM Operating System Architecture]]** — LLM Operating System Architecture is a conceptual framework that treats a large language model (LLM) as the central processing unit (CPU) of a computing environment. This architecture integrates the LLM with classical software tools, filesystems, browsers, peripheral devices, and other LLMs, enabling it to orchestrate and mediate all computational interactions.
+- **[[LLM Operating System Architecture]]** — LLM Operating System Architecture is a conceptual framework for treating a large language model (LLM) as the central processing unit (CPU) of a computing environment. It reimagines traditional OS components—RAM, disk, peripheral I/O, and software tools—around the LLM, enabling integration with classical software, browsers, other LLMs, and multimedia devices.
 
 ## Entities Mentioned
 
-- **[[OpenAI GPT-4 Turbo]]** — OpenAI GPT-4 Turbo is a high-performance variant of the GPT-4 language model, optimized for speed and cost. It supports large batch sizes and extended context windows, making it suitable for demanding applications such as LLM OS.
-- **[[Ada002]]** — Ada002 is an OpenAI embedding model used for generating semantic vector representations of text. In the LLM OS architecture, it powers the filesystem's embedding capabilities, enabling efficient document retrieval and memory augmentation.
+- **[[OpenAI GPT-4 Turbo]]** — OpenAI GPT-4 Turbo is a high-performance large language model variant used as the CPU in the LLM OS architecture. It features a 256-core batch processor operating at 20Hz (tokens per second), enabling parallel processing and high throughput for agentic workflows.
+- **[[Ada002]]** — Ada002 is an embedding model referenced as the file system layer in the LLM OS architecture. It provides semantic embeddings for persistent storage and retrieval, enabling the LLM to augment its memory and context with rich, searchable representations.
 
 ## Notable Quotes
 

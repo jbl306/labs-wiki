@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "a5ed6720a8e499fec504f09a5c3ce60d6067385dc5b5038864e2b0f8372284f3"
 sources:
+  - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-toolkit-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
@@ -55,3 +56,4 @@ No related entities documented yet.
 - [[The Specialized Review Principle | 10 Claude Code Principles]] — additional source
 - [[The Token Economy Principle | 10 Claude Code Principles]] — additional source
 - [[The Toolkit Principle | 10 Claude Code Principles]] — additional source
+- [[The Strategic Human Gate Principle | 10 Claude Code Principles]] — additional source

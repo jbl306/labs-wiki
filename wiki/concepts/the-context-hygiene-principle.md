@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "a5ed6720a8e499fec504f09a5c3ce60d6067385dc5b5038864e2b0f8372284f3"
 sources:
+  - raw/2026-04-19-6372438pdf.md
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
   - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
 quality_score: 100
@@ -64,3 +65,4 @@ Essential for prompt engineering, agentic workflow design, and any application w
 
 - [[10 Claude Code Principles | What the Research Actually Says]] — primary source for this concept
 - The Context Hygiene Principle — additional source
+- [[6372438.pdf]] — additional source

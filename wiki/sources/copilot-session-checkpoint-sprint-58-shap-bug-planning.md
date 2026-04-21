@@ -21,6 +21,7 @@ tier: archive
 tags: [copilot-session, homelab, explainability, nba-ml-engine, durable-knowledge, bug-fix, reliability, fileback, ml-engineering, checkpoint, artifact-management]
 checkpoint_class: project-progress
 retention_mode: compress
+knowledge_state: planned
 ---
 
 # Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning

@@ -20,6 +20,7 @@ tier: hot
 tags: [labs-wiki, copilot-session, ml-pipeline, mempalace, agents, memory, homelab, agent, container, nba-ml-engine, durable-knowledge, fileback, resource-management, checkpoint, documentation]
 checkpoint_class: durable-debugging
 retention_mode: retain
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: NBA ML OOM Fix And Docs Cleanup

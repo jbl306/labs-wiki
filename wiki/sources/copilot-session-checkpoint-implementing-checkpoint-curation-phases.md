@@ -17,6 +17,7 @@ tier: hot
 checkpoint_class: durable-architecture
 retention_mode: retain
 tags: [checkpoint-curation, copilot-session, durable-knowledge, retention-policy, documentation-hygiene, mempalace, labs-wiki, wiki-ingestion, classification, durable-architecture, homelab, graph, fileback, checkpoint]
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Implementing Checkpoint Curation Phases

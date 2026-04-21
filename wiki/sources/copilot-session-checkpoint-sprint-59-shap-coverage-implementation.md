@@ -22,6 +22,7 @@ tier: archive
 tags: [copilot-session, atomic-save, agents, homelab, shap, explainability, ridge, nba-ml-engine, durable-knowledge, dashboard, ensemble-model, fileback, checkpoint]
 checkpoint_class: project-progress
 retention_mode: compress
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Sprint 59 SHAP Coverage Implementation

@@ -21,6 +21,7 @@ tier: hot
 tags: [copilot-session, container-management, ml-ops, homelab, dashboard-integration, nba, nba-ml-engine, durable-knowledge, dashboard, fileback, checkpoint]
 checkpoint_class: durable-debugging
 retention_mode: retain
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Training Status Tracker and OOM Fix

@@ -3404,4 +3404,652 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-21-httpsgithubcommicrosoftmemento.md
   status: success
   notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
+
+2026-04-21T14:42:05.620261+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-17-tests-and-skill-conversion.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-17-tests-and-skill-conversion-6d9a2330.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.545879+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-auto-ingest-pipeline-built-and-docs-updated.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.548131+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-building-4-copilot-cli-custom-agents.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.550528+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-creating-claude-and-labs-wiki-repos.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-creating-claude-and-labs-wiki-repos-cccb14d5.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.552148+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-dashboard-alt-line-accuracy-fixes.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-alt-line-accuracy-fixes-466ff308.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.553993+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-dashboard-matviews-implementation-in-progress.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.555976+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-data-source-expansion-exploration.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-data-source-expansion-exploration-b12f747f.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.557376+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-fixing-android-share-ingest-api.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-android-share-ingest-api-bbff237c.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.558823+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-fixing-knightcrawler-populate-cron-and-rd-playback.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.560908+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-full-labs-wiki-implementation-complete.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-full-labs-wiki-implementation-complete-22f8c487.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.562457+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-github-crawling-and-richer-extraction.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-github-crawling-and-richer-extraction-a4ef6de5.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.564231+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-graphify-comparison-and-quality-evaluation.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-graphify-comparison-and-quality-evaluation-6949c984.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.565862+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-homelab-monitoring-and-knightcrawler-fixes.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-homelab-monitoring-and-knightcrawler-fixes-a62133b0.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.567406+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-implementing-critical-ml-fixes-sprint-28.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-critical-ml-fixes-sprint-28-9cff218d.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.569230+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-implementing-post-ingest-quality-fixes.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.570793+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-implementing-sprint-29-ml-improvements.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.572454+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-installing-mempalace-beginning-migration.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-installing-mempalace-beginning-migration-f4a540d2.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.573877+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-knightcrawler-gating-fix-opencode-bash-config.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.575624+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-mempalace-phase-3-4-and-autoagent-research.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.577381+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-nba-ml-agents-and-homelab-fixes.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.579193+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-ntfy-notifications-galloping-bot-alerts-monitor-fixes.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.581534+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-odds-api-quota-optimization-sgo-investigation.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-odds-api-quota-optimization-sgo-investigation-f4c98efb.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.582955+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-optimizing-snipe-book-then-retry-flow.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-optimizing-snipe-book-then-retry-flow-a86837aa.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.584969+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-phases-1-4-implementation-and-deployment.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-phases-1-4-implementation-and-deployment-16041f82.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.587110+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-pipeline-enhancements-and-vision-support-deployed.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.589058+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-pipeline-resilience-fixes-dashboard-metrics-investiga.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.590722+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-planning-and-progress-tracking-complete.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.592752+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-props-db-query-and-chart-refinement.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.595241+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-rankings-page-and-performance-optimization.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.597277+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-react-dashboard-scaffold-and-pages-built.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.599330+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-researching-mempalace-for-comparison-doc.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.601114+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-resource-optimization-opencode-bash-fix.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.602689+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-retrained-models-deploying-improvements.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-retrained-models-deploying-improvements-59ba9a6c.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.604418+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-reworking-docs-for-copilotopencode.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.606153+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sgo-data-extraction-fix-and-quality-audit.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sgo-data-extraction-fix-and-quality-audit-76644cc8.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.607770+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-10-complete-and-deployed.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.609503+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-10-implementation-and-deployment.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.611498+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-10-retrain-in-progress.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.613222+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-11-evaluation-and-report.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.615094+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-12-complete-and-skills-installed.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-12-complete-and-skills-installed-48a02b58.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.616873+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-13-model-improvements-code.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.618740+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-14-retrain-and-composite-edge.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-14-retrain-and-composite-edge-c04846ad.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.621971+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-18-ge-integration-and-credential-purge.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-18-ge-integration-and-credential-purge-ebee2aa1.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.623770+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-22-post-retrain-optimization.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-22-post-retrain-optimization-f0d53185.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.625661+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-23-props-dashboard-fixes.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-23-props-dashboard-fixes-92176283.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.627580+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-24-prop-consolidation-implementation.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-24-prop-consolidation-implementation-e5c3d4c3.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.629521+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-25-dashboard-fixes-implementation.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-25-dashboard-fixes-implementation-a58c0fb5.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.631673+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-32-feature-implementation.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-32-feature-implementation-648fcb7c.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.633759+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-33-drift-aware-training-deployment.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-33-drift-aware-training-deployment-4459476a.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.635554+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-35-36-and-game-lines-diagnosis.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-35-36-and-game-lines-diagnosis-1dbf44ee.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.637202+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-35-props-page-audit.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-35-props-page-audit-a5db365f.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.639097+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-37-backfill-and-dashboard-enhancements.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-37-backfill-and-dashboard-enhancements-6d6f5926.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.640937+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-38-and-documentation-audit.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-38-and-documentation-audit-e1161529.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.643067+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-39-41-implementation-and-deployment.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-39-41-implementation-and-deployment-21d53faf.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.645028+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-39-drift-health-improvements.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-39-drift-health-improvements-f8461728.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.647032+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-41-42-completion-and-roadmap.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-41-42-completion-and-roadmap-2b962496.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.649109+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-47-prediction-accuracy-fixes.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-47-prediction-accuracy-fixes-6c547374.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.650711+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-48-complete-sprint-49-audit-done.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-48-complete-sprint-49-audit-done-e75afeeb.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.652272+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-50-audit-complete-ready-to-implement.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-50-audit-complete-ready-to-implement-404a98da.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.653627+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-50-complete-skill-optimized.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-50-complete-skill-optimized-3fbbedf2.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.655537+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-52-implementation-deploying-matviews.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-implementation-deploying-matviews-7f8e1834.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.657187+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-52-planning-started.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-planning-started-825d0d96.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.658875+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-53-implementation-started.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-53-implementation-started-d6e3c5b6.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.660755+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-53-merged-dashboard-metrics-investigation-star.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-53-merged-dashboard-metrics-investigation-8bf30b64.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.662360+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-7-browser-based-nba-backfill.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-7-browser-based-nba-backfill-9848a69e.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.664404+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-8-full-retrain-monitoring.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-8-full-retrain-monitoring-44691a40.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.666332+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-8-model-quality-implementation.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-8-model-quality-implementation-b523f5d0.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.668659+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-8-retrain-results-collection.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-8-retrain-results-collection-8d2c8d55.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.670628+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-8-retrain-with-optuna-fix.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-8-retrain-with-optuna-fix-af6747c6.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.672475+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-9-implementation-in-progress.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-9-implementation-in-progress-bd144961.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.674302+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-training-guardrails-and-resume-command.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-training-guardrails-and-resume-command-4822a5b3.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
+
+2026-04-21T14:42:05.676291+00:00
+  operation: ingest
+  agent: manual-checkpoint-reprocess
+  targets:
+    - wiki/sources/copilot-session-checkpoint-vs-code-agents-instructions-and-android-capture-setup.md
+  source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-vs-code-agents-instructions-and-android-capture--a7b54100.md
+  status: success
+  notes: "Refreshed checkpoint source page from durable raw summary"
 ```

@@ -21,6 +21,7 @@ tier: hot
 checkpoint_class: durable-architecture
 retention_mode: retain
 tags: [agents, copilot-session, durable-knowledge, mempalace, labs-wiki, agent-routing, container, workspace-management, homelab, nba-ml-engine, context-engineering, development-workflow, skill-integration, fileback, checkpoint]
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Integrating Agent Skill Routing

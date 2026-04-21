@@ -19,6 +19,7 @@ tier: archive
 tags: [ml-pipeline, copilot-session, artifact-validation, production, homelab, nba-ml, durable-knowledge, stat-exclusion, dashboard, fileback, checkpoint]
 checkpoint_class: project-progress
 retention_mode: compress
+knowledge_state: planned
 ---
 
 # Copilot Session Checkpoint: Sprint 56 No-Retrain Fixes Planning

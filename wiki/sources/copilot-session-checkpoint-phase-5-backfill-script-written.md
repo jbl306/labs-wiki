@@ -18,6 +18,7 @@ tier: archive
 checkpoint_class: project-progress
 retention_mode: compress
 tags: [agents, wiki-curation, copilot-session, durable-knowledge, labs-wiki, backfill-script, homelab, checkpoint-management, quality-normalization, graph, fileback, checkpoint]
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Phase 5 Backfill Script Written

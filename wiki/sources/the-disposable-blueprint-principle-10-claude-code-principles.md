@@ -1,9 +1,9 @@
 ---
 title: "The Disposable Blueprint Principle | 10 Claude Code Principles"
 type: source
-created: 2026-04-08
-last_verified: 2026-04-08
-source_hash: "b2088d113a854b9ba5e94f0d25b563bf94c9d70ad52bbaf1afd6e06cd348b76d"
+created: 2026-04-21
+last_verified: 2026-04-21
+source_hash: "9aa53987a2b8fb6847ae7a1825ded21ea87f8a5ca1af8025a1774cd23102d5c6"
 sources:
   - raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md
 quality_score: 100
@@ -12,24 +12,25 @@ concepts:
 related:
   - "[[The Disposable Blueprint Principle]]"
 tier: hot
-tags: [software-engineering, agentic-workflows, planning, ai-development, version-control, error-reduction]
+knowledge_state: executed
+tags: [structured-artifacts, error-reduction, version-control, agentic-development, planning]
 ---
 
 # The Disposable Blueprint Principle | 10 Claude Code Principles
 
 ## Summary
 
-This article introduces the Disposable Blueprint Principle, a disciplined approach to software development that emphasizes always having a saved, versioned plan artifact before implementation. It explains the cognitive and practical benefits of separating planning from coding, the pitfalls of sunk-cost attachment to code, and the empirical evidence supporting structured artifacts for error reduction and effective handoffs, especially in agentic and AI-assisted workflows.
+This article introduces the Disposable Blueprint Principle, emphasizing the importance of maintaining structured, versioned plan artifacts in agentic and AI-driven software development. It argues that code should be treated as disposable, while the blueprint—the plan—should be preserved, refined, and used as the primary intellectual capital. The principle is supported by empirical studies showing that structured artifacts reduce errors and improve collaboration, and it provides tactical guidance for implementation and common pitfalls.
 
 ## Key Points
 
-- Never implement without a saved, versioned plan artifact; treat code as disposable and the plan as the true intellectual capital.
-- Structured, versioned blueprints drastically reduce errors, facilitate clean handoffs, and enable rapid restarts after failed approaches.
-- Planning and implementation are distinct cognitive modes; separating them improves both quality and agility, especially in agentic workflows.
+- Code is disposable; the blueprint (plan) is the enduring artifact and source of intellectual capital.
+- Structured, versioned plan files enable rapid, clean restarts and reduce sunk-cost attachment.
+- Empirical evidence shows structured artifacts reduce errors and improve agentic handoffs.
 
 ## Concepts Extracted
 
-- **[[The Disposable Blueprint Principle]]** — The Disposable Blueprint Principle is a disciplined software development approach that mandates always having a saved, versioned plan artifact before any implementation begins. It reframes code as a disposable output and the plan (or blueprint) as the core asset, enabling rapid iteration, error reduction, and resilience to context resets, especially in agentic and AI-assisted workflows.
+- **[[The Disposable Blueprint Principle]]** — The Disposable Blueprint Principle is a foundational approach in agentic and AI-driven software development that prioritizes the preservation and versioning of structured plan artifacts over code. It asserts that code is inherently disposable, while the blueprint—the plan detailing goals, constraints, structure, and interfaces—should be maintained, refined, and used as the primary intellectual capital. This principle enables rapid, clean restarts and minimizes sunk-cost attachment, fundamentally changing the calculus of software iteration.
 
 ## Entities Mentioned
 
@@ -37,9 +38,9 @@ No entities mentioned.
 
 ## Notable Quotes
 
-> "Never implement without a saved, versioned plan artifact. And never fall in love with one." — J.D. Forsythe
-> "Code is disposable. The plan is capital." — J.D. Forsythe
-> "Structured plan files are the optimal handoff mechanism between sessions." — J.D. Forsythe
+> "Never implement without a saved, versioned plan artifact; if execution goes off the rails, kill the branch, refine the blueprint, and restart cleanly." — Fact Sheet
+> "Code is an acquaintance, not a spouse. Like them, enjoy them, but do not love them. Love the thing you build, not how you build it." — Section 1: The Sunk Cost
+> "The plan is the artifact that survives everything: context resets, session boundaries, team handoffs, and your own forgetfulness after a weekend away from the code." — Section 2: The Principle
 
 ## Source Details
 

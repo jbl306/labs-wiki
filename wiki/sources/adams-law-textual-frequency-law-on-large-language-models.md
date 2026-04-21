@@ -3,53 +3,54 @@ title: "Adam’s Law: Textual Frequency Law on Large Language Models"
 type: source
 created: 2026-04-21
 last_verified: 2026-04-21
-source_hash: "4ee068b261ce6b20df7021842f1cbae08b0ec5e4124c648f86d6f1e7e50fc275"
+source_hash: "49f4807ade10bcd1f9d2ef67205cc33240d04aebc0d4d53e1a91fa012cb2f5a3"
 sources:
   - raw/2026-04-21-260402176v2pdf.md
 quality_score: 100
 concepts:
-  - textual-frequency-law-tfl
-  - textual-frequency-distillation-tfd
-  - curriculum-textual-frequency-training-ctft
+  - textual-frequency-law
+  - textual-frequency-distillation
+  - curriculum-textual-frequency-training
+  - textual-frequency-paired-dataset
 related:
-  - "[[Textual Frequency Law (TFL)]]"
-  - "[[Textual Frequency Distillation (TFD)]]"
-  - "[[Curriculum Textual Frequency Training (CTFT)]]"
+  - "[[Textual Frequency Paired Dataset]]"
   - "[[Textual Frequency Paired Dataset (TFPD)]]"
   - "[[FaceMind Corporation]]"
   - "[[The Chinese University of Hong Kong]]"
 tier: hot
-tags: [paraphrasing, language-models, fine-tuning, prompt-engineering, curriculum-learning, frequency-analysis]
+knowledge_state: executed
+tags: [frequency-analysis, prompt-engineering, llm-training, dataset, curriculum-learning]
 ---
 
 # Adam’s Law: Textual Frequency Law on Large Language Models
 
 ## Summary
 
-This paper introduces the Textual Frequency Law (TFL), which posits that, for both prompting and fine-tuning large language models (LLMs), higher-frequency textual data—when meaning is held constant—should be preferred over lower-frequency paraphrases. The authors propose a comprehensive framework that includes frequency estimation, frequency distillation, and curriculum training based on sentence-level frequency. Experiments across math reasoning, machine translation, and commonsense reasoning demonstrate that high-frequency inputs consistently yield better LLM performance.
+This paper introduces Adam’s Law, which posits that high-frequency textual data should be preferred for both prompting and fine-tuning large language models (LLMs). The authors propose a three-part framework: Textual Frequency Law (TFL), Textual Frequency Distillation (TFD), and Curriculum Textual Frequency Training (CTFT). Experiments on a custom dataset demonstrate that models perform better with high-frequency paraphrases, and curriculum training based on frequency further improves results.
 
 ## Key Points
 
-- Textual Frequency Law (TFL) argues for prioritizing high-frequency paraphrases in LLM training and inference.
-- Textual Frequency Distillation (TFD) refines frequency estimates by leveraging LLM-generated completions.
-- Curriculum Textual Frequency Training (CTFT) further improves fine-tuning by ordering samples from low to high frequency.
+- Textual Frequency Law (TFL): Prefer high-frequency paraphrases for LLM prompting and fine-tuning.
+- Textual Frequency Distillation (TFD): Enhance frequency estimation by generating story completions with LLMs.
+- Curriculum Textual Frequency Training (CTFT): Fine-tune LLMs in order of increasing sentence-level frequency.
 
 ## Concepts Extracted
 
-- **[[Textual Frequency Law (TFL)]]** — The Textual Frequency Law (TFL) is a principle for large language models (LLMs) stating that, when multiple paraphrases of the same meaning are available, those with higher sentence-level frequency should be preferred for both prompting and fine-tuning. This law is grounded in the observation that LLMs are more likely to have encountered high-frequency expressions during pre-training, making them easier for the models to process and understand.
-- **[[Textual Frequency Distillation (TFD)]]** — Textual Frequency Distillation (TFD) is a method for refining sentence-level frequency estimates by leveraging LLM-generated data. It addresses the challenge that frequency estimates from public corpora may not match the LLM's actual training distribution, especially for closed-source models.
-- **[[Curriculum Textual Frequency Training (CTFT)]]** — Curriculum Textual Frequency Training (CTFT) is a fine-tuning strategy for LLMs that orders training samples by increasing sentence-level frequency. The method is motivated by curriculum learning principles, aiming to expose the model to more diverse (low-frequency) expressions first, then gradually shift to more common (high-frequency) ones.
+- **Textual Frequency Law** — Textual Frequency Law (TFL) is a principle stating that, when meaning is preserved, high-frequency textual data should be preferred for both prompting and fine-tuning large language models. This law is motivated by the observation that LLMs are more likely to have encountered high-frequency expressions during pre-training, making them easier for the models to understand and process.
+- **Textual Frequency Distillation** — Textual Frequency Distillation (TFD) is a method for refining sentence-level frequency estimation by leveraging LLM-generated story completions. It compensates for the lack of access to actual LLM training data by using model outputs to adjust frequency calculations.
+- **Curriculum Textual Frequency Training** — Curriculum Textual Frequency Training (CTFT) is a fine-tuning strategy for LLMs that arranges training data in order of increasing sentence-level frequency. This approach leverages frequency information to optimize learning, extending traditional curriculum learning methods.
+- **[[Textual Frequency Paired Dataset]]** — The Textual Frequency Paired Dataset (TFPD) is a custom dataset created to evaluate the impact of textual frequency on LLM performance. It consists of pairs of paraphrases with identical meaning but varying sentence-level frequency, annotated by experts to ensure semantic equivalence.
 
 ## Entities Mentioned
 
-- **[[Textual Frequency Paired Dataset (TFPD)]]** — The Textual Frequency Paired Dataset (TFPD) is a curated benchmark introduced in this paper to evaluate the impact of sentence-level frequency on LLM performance. It consists of pairs of paraphrases—one high-frequency, one low-frequency—for each original sentence, with human annotation ensuring semantic equivalence.
-- **[[FaceMind Corporation]]** — FaceMind Corporation is one of the organizations affiliated with the authors of this paper. It is involved in research and development in the field of artificial intelligence and large language models.
-- **[[The Chinese University of Hong Kong]]** — The Chinese University of Hong Kong is a major academic institution and a co-affiliation for several authors of this paper. It is recognized for its contributions to computational linguistics and artificial intelligence.
+- **[[Textual Frequency Paired Dataset (TFPD)]]** — TFPD is a custom dataset designed to evaluate the effect of textual frequency on LLM performance. It consists of pairs of paraphrases with identical meaning but varying sentence-level frequency, validated by expert annotators. The dataset covers math reasoning, machine translation, commonsense reasoning, and agentic tool calling.
+- **[[FaceMind Corporation]]** — FaceMind Corporation is a research organization involved in the development and validation of Adam’s Law and the creation of the Textual Frequency Paired Dataset. It collaborates with academic institutions to advance LLM research.
+- **[[The Chinese University of Hong Kong]]** — The Chinese University of Hong Kong is an academic institution collaborating on the research and development of Adam’s Law and the Textual Frequency Paired Dataset. It provides expertise in linguistics and machine learning.
 
 ## Notable Quotes
 
-> "We propose Textual Frequency Law (TFL), which suggests that high-frequency textual data should be preferred for LLMs when conducting prompting and fine-tuning, when the meaning of the data is kept the same." — Hongyuan Adam Lu et al.
-> "Our results suggest that high-frequency paraphrases should be preferred under both prompting and fine-tuning scenarios." — Hongyuan Adam Lu et al.
+> "Frequent textual data should be preferred for LLMs for both prompting and fine-tuning." — Hongyuan Adam Lu et al.
+> "Paraphrasing can lead to semantic drift, which is the reason why human annotation is necessary in this process." — Hongyuan Adam Lu et al.
 
 ## Source Details
 
@@ -57,6 +58,6 @@ This paper introduces the Textual Frequency Law (TFL), which posits that, for bo
 |-------|-------|
 | Original | `raw/2026-04-21-260402176v2pdf.md` |
 | Type | paper |
-| Author | Hongyuan Adam Lu, Z.L., Victor Wei, Zefan Zhang, Zhao Hong, Qiqi Xiang, Bowen Cao, Wai Lam |
-| Date | 2026-04-07 |
+| Author | Hongyuan Adam Lu et al. |
+| Date | Unknown |
 | URL | https://arxiv.org/pdf/2604.02176 |

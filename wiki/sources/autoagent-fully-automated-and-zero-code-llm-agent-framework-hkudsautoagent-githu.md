@@ -3,9 +3,9 @@ title: "AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/Auto
 type: source
 created: 2026-04-21
 last_verified: 2026-04-21
-source_hash: "3070e2621144f4e799800a5732e32a8c07e3ea20b34245b6ac94e4d1d7846c07"
+source_hash: "a751d6ee1708e4f6c5c5f928976201ed5d6c28b55cb51c41b3812e77a9a2bbbc"
 sources:
-  - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
+  - raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
 quality_score: 100
 concepts:
   - natural-language-driven-agent-building
@@ -20,32 +20,32 @@ related:
   - "[[HKUDS]]"
 tier: hot
 knowledge_state: executed
-tags: [no-code, automation, framework, llm, agent]
+tags: [automation, workflow, llm, framework, zero-code, agent, resource-orchestration]
 ---
 
 # AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)
 
 ## Summary
 
-AutoAgent is a fully-automated, zero-code framework for building, customizing, and deploying LLM agents using only natural language. It supports multi-agent orchestration, self-managing workflows, and intelligent resource orchestration, aiming to democratize AI agent development for users without coding expertise. The framework is highly extensible, supports a wide range of LLM providers, and emphasizes ease of use through CLI and planned GUI interfaces.
+AutoAgent is an open-source, fully-automated framework for creating and deploying large language model (LLM) agents using natural language alone. It eliminates the need for manual coding, enabling users of all technical backgrounds to build, customize, and orchestrate agent workflows. The repository provides CLI tools, containerized environments, and flexible integration with multiple LLM providers, supporting both single-agent and collaborative multi-agent systems.
 
 ## Key Points
 
-- Enables creation and deployment of LLM agents and workflows through natural language alone, with no coding required.
-- Features self-managing workflow generation, intelligent resource orchestration, and support for multi-agent systems.
-- Integrates with a wide variety of LLM providers (OpenAI, Anthropic, Deepseek, Gemini, Huggingface, etc.) and supports containerized deployment.
+- Natural language-driven agent creation and workflow orchestration
+- Zero-code customization and deployment for democratized AI development
+- Self-managing workflows, intelligent resource orchestration, and support for multiple LLMs
 
 ## Concepts Extracted
 
-- **[[Natural Language-Driven Agent Building]]** — Natural Language-Driven Agent Building is the process of constructing, customizing, and deploying LLM-powered agents and workflows using conversational or written natural language instructions, rather than code. This paradigm removes technical barriers, enabling users of all backgrounds to harness advanced AI capabilities.
-- **[[Self-Managing Workflow Generation]]** — Self-Managing Workflow Generation refers to the automated creation, optimization, and adaptation of agent workflows based on high-level task descriptions, even when users cannot fully specify implementation details. This enables dynamic, robust, and context-aware orchestration of agent actions.
-- **[[Intelligent Resource Orchestration]]** — Intelligent Resource Orchestration in AutoAgent refers to the controlled and adaptive allocation of computational, agent, and tool resources during agent and workflow generation. It supports iterative self-improvement and enables both single-agent and multi-agent system deployment.
+- **[[Natural Language-Driven Agent Building]]** — Natural Language-Driven Agent Building is a paradigm where users create, configure, and deploy LLM agents and workflows by describing their requirements in plain language, rather than writing code. AutoAgent implements this approach to democratize AI agent development, enabling non-technical users to participate in agentic system design.
+- **[[Self-Managing Workflow Generation]]** — Self-Managing Workflow Generation refers to the dynamic creation, optimization, and adaptation of agent workflows based on high-level task descriptions. AutoAgent enables workflows to evolve automatically, even when users cannot fully specify implementation details, supporting both single-agent and collaborative multi-agent systems.
+- **[[Intelligent Resource Orchestration]]** — Intelligent Resource Orchestration in AutoAgent refers to the controlled generation and management of code, tools, agents, and workflows. It enables iterative self-improvement and supports both single-agent and multi-agent workflow generation, optimizing resource allocation and execution.
 
 ## Entities Mentioned
 
-- **[[AutoAgent]]** — AutoAgent is an open-source, fully-automated, zero-code framework for building, customizing, and deploying LLM-powered agents and workflows using natural language. It supports multi-agent orchestration, self-managing workflows, and intelligent resource allocation, aiming to democratize AI agent development for users without coding expertise.
-- **[[MetaChain]]** — MetaChain was the former name of the AutoAgent project, encompassing its framework, evaluation codes, and CLI mode prior to the v0.2.0 release. The project was renamed to AutoAgent for clarity and broader recognition.
-- **[[HKUDS]]** — HKUDS is the organization or group responsible for developing and maintaining the AutoAgent framework. It is involved in open-source AI research and tool development.
+- **[[AutoAgent]]** — AutoAgent is an open-source framework developed by HKUDS for fully-automated, zero-code creation and deployment of LLM agents and workflows. It supports natural language-driven customization, containerized environments, and flexible integration with multiple LLM providers. The project is highly active, with frequent updates and a large user base.
+- **[[MetaChain]]** — MetaChain was the original name for the AutoAgent project, encompassing the framework, evaluation codes, and CLI mode. The project was renamed to AutoAgent in February 2025 to improve understanding and clarity.
+- **[[HKUDS]]** — HKUDS is the organization responsible for developing AutoAgent and MetaChain. It focuses on agentic frameworks, LLM integration, and open-source AI tools. HKUDS maintains active repositories and fosters community engagement through Slack, Discord, and GitHub.
 
 ## Notable Quotes
 
@@ -56,7 +56,7 @@ AutoAgent is a fully-automated, zero-code framework for building, customizing, a
 
 | Field | Value |
 |-------|-------|
-| Original | `raw/2026-04-12-httpsgithubcomhkudsautoagent.md` |
+| Original | `raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md` |
 | Type | repo |
 | Author | Unknown |
 | Date | Unknown |

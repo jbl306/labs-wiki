@@ -5,6 +5,7 @@ created: 2026-04-16
 last_verified: 2026-04-16
 source_hash: "bbb6e68bdae7ac03d34d678052761e10e7a0cfb96ad83909010ff956538870ed"
 sources:
+  - raw/2026-04-19-6372438pdf.md
   - raw/2026-04-16-251004618v3pdf.md
 quality_score: 100
 concepts:
@@ -78,3 +79,4 @@ ACE is applicable in LLM agent systems requiring multi-turn reasoning, tool use,
 ## Sources
 
 - [[Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models]] — primary source for this concept
+- [[6372438.pdf]] — additional source

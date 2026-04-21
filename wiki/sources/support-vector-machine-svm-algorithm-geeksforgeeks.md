@@ -1,53 +1,50 @@
 ---
 title: "Support Vector Machine (SVM) Algorithm - GeeksforGeeks"
 type: source
-created: 2026-04-08
-last_verified: 2026-04-08
-source_hash: "5380388bec62eebb61d0e40915eb60f05cf82459ab6250e8951020d927eefc0d"
+created: 2026-04-21
+last_verified: 2026-04-21
+source_hash: "afc740175d60aa5e215c7fb57048212d73a4ad3ec2aecb590fdf499b0ddc6575"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
 quality_score: 100
 concepts:
   - support-vector-machine-algorithm
-  - kernel-functions-in-svm
-  - soft-margin-svm
 related:
   - "[[Support Vector Machine Algorithm]]"
-  - "[[Kernel Functions in SVM]]"
-  - "[[Soft Margin SVM]]"
-  - "[[GeeksforGeeks]]"
+  - "[[Scikit-Learn]]"
+  - "[[Support Vector Classifier (SVC)]]"
+  - "[[Breast Cancer Dataset]]"
 tier: hot
-tags: [optimization, robustness, machine-learning, classification, kernel-methods, svm]
+knowledge_state: executed
+tags: [classification, scikit-learn, optimization, machine-learning, kernel-methods, svm]
 ---
 
 # Support Vector Machine (SVM) Algorithm - GeeksforGeeks
 
 ## Summary
 
-This article provides a comprehensive overview of the Support Vector Machine (SVM) algorithm, covering its mathematical foundations, key concepts, types, practical implementation, advantages, and disadvantages. It explains how SVM works for both linear and non-linear classification, the role of kernels, and the optimization problems involved. The article also includes code examples using Scikit-Learn and visual illustrations of SVM decision boundaries.
+This article provides a comprehensive overview of the Support Vector Machine (SVM) algorithm, covering its mathematical formulation, key concepts, types, and practical implementation using scikit-learn. It explains how SVM works for both linearly and non-linearly separable data, discusses the role of kernels, and outlines the advantages and disadvantages of the algorithm.
 
 ## Key Points
 
 - SVM aims to find the optimal hyperplane that maximizes the margin between classes.
-- Kernels enable SVM to handle non-linearly separable data by mapping it to higher-dimensional spaces.
-- Soft margin SVM allows for some misclassification, improving robustness to outliers.
-- The dual problem formulation enables efficient computation and kernel trick application.
-- SVM is powerful for high-dimensional, binary, and multiclass classification but requires careful parameter tuning.
+- Kernel functions enable SVM to handle non-linear classification problems.
+- SVM is robust to outliers and supports both hard and soft margin approaches.
 
 ## Concepts Extracted
 
-- **[[Support Vector Machine Algorithm]]** — Support Vector Machine (SVM) is a supervised learning algorithm used for classification and regression tasks. It seeks to find the optimal hyperplane that separates classes in the feature space, maximizing the margin between them. SVM is renowned for its robustness to outliers and its ability to handle both linear and non-linear classification problems using kernel functions.
-- **[[Kernel Functions in SVM]]** — Kernel functions are mathematical tools used in SVM to map data into higher-dimensional spaces, enabling the algorithm to handle non-linearly separable data. They allow SVM to find linear decision boundaries in transformed spaces without explicitly computing the new coordinates.
-- **[[Soft Margin SVM]]** — Soft margin SVM extends the standard SVM to handle datasets that are not perfectly separable by allowing some misclassification. It introduces slack variables and a regularization parameter to balance margin maximization and classification accuracy.
+- **[[Support Vector Machine Algorithm]]** — Support Vector Machine (SVM) is a supervised learning algorithm used for classification and regression. Its core principle is to find the hyperplane that best separates different classes by maximizing the margin between them, making it highly effective for binary classification and adaptable for non-linear data via kernel functions.
 
 ## Entities Mentioned
 
-- **[[GeeksforGeeks]]** — GeeksforGeeks is a popular online platform offering tutorials, articles, and resources on programming, computer science, and machine learning. It provides comprehensive guides, code examples, and interview preparation materials for learners and professionals.
+- **[[Scikit-Learn]]** — Scikit-learn is a widely used Python machine learning library offering efficient tools for data analysis and modeling. It provides implementations for various algorithms, including SVM, and utilities for dataset loading, model training, and visualization.
+- **[[Support Vector Classifier (SVC)]]** — SVC is a scikit-learn class for training Support Vector Machine models. It supports different kernel functions, regularization, and is used for both binary and multiclass classification.
+- **[[Breast Cancer Dataset]]** — The breast cancer dataset is a collection of patient data with features such as tumor size and texture, used for binary classification (benign vs. malignant).
 
 ## Notable Quotes
 
-> "The main goal of SVM is to maximize the margin between the two classes. The larger the margin the better the model performs on new and unseen data." — GeeksforGeeks
-> "When data is not linearly separable i.e it can't be divided by a straight line, SVM uses a technique called kernels to map the data into a higher-dimensional space where it becomes separable." — GeeksforGeeks
+> "The main goal of SVM is to maximize the margin between the two classes. The larger the margin the better the model performs on new and unseen data." — None
+> "A kernel is a function that maps data points into a higher-dimensional space without explicitly computing the coordinates in that space." — None
 
 ## Source Details
 
@@ -56,5 +53,5 @@ This article provides a comprehensive overview of the Support Vector Machine (SV
 | Original | `raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md` |
 | Type | article |
 | Author | Unknown |
-| Date | 2026-04-06 |
+| Date | Unknown |
 | URL | https://www.geeksforgeeks.org/machine-learning/support-vector-machine-algorithm/ |

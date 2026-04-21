@@ -7,7 +7,7 @@
 1. **Sub-minute freshness** — a decision made at 2:00pm is searchable via `mempalace_search` by 2:01pm.
 2. **Uniform behavior across clients** — VS Code, Copilot CLI, and OpenCode all read the same hot cache and follow the same retrieval ladder.
 3. **Zero additional LLM cost** — no paid API keys beyond Copilot Pro+.
-4. **Graceful degradation** — weekly cron full-sweep catches anything the watcher missed.
+4. **Graceful degradation** — a periodic full-sweep catches anything the watcher missed.
 
 ## Architecture
 
@@ -61,7 +61,7 @@
 
 - **Script:** [scripts/build_hot.py](../scripts/build_hot.py)
 - **Output:** `wiki/hot.md` — **gitignored** per plan Part 5 Q2 proposed-answer (rewritten hourly, too noisy for git).
-- **Daily snapshot:** [scripts/snapshot_hot.py](../scripts/snapshot_hot.py) copies `hot.md` → `wiki/meta/hot-snapshot.md` once a day. The snapshot **is** committed, giving git history of "what was hot" without the hourly churn.
+- **Optional snapshot:** [scripts/snapshot_hot.py](../scripts/snapshot_hot.py) copies `hot.md` → `wiki/meta/hot-snapshot.md` when you want to checkpoint the hot set. The snapshot **is** committed, giving git history of "what was hot" without the hourly churn.
 - **Size target:** ~600-1200 tokens.
 - **Inputs (all free):**
   - `git log` on `wiki/` — last 10 touched pages
@@ -115,10 +115,7 @@ tail -f ~/logs/mempalace-watcher.log
 # 4. Seed hot.md for the first time
 python /home/jbl/projects/labs-wiki/scripts/build_hot.py
 
-# 5. Add the hourly hot.md failsafe cron
-(crontab -l 2>/dev/null; echo "17 * * * * /usr/bin/python3 /home/jbl/projects/labs-wiki/scripts/build_hot.py >> /home/jbl/logs/build-hot.log 2>&1") | crontab -
-
-# 6. Inject the AGENTS.md snippet into every project
+# 5. Inject the AGENTS.md snippet into every project
 bash /home/jbl/projects/labs-wiki/setup.sh --inject-snippet
 ```
 

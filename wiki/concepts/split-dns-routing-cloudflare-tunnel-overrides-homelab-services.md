@@ -5,6 +5,7 @@ created: 2026-04-20
 last_verified: 2026-04-20
 source_hash: "8d4ffe804f00fc1786f05b552df93998c7e6bf7f3b353158464961c4edb4f8a3"
 sources:
+  - raw/2026-04-07-jbl306homelab.md
   - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
 quality_score: 100
 concepts:
@@ -75,3 +76,4 @@ Used in homelab setups where services must be securely accessible via HTTPS both
 ## Sources
 
 - [[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]] — primary source for this concept
+- [[jbl306/homelab]] — additional source

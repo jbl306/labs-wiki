@@ -5,6 +5,7 @@ created: 2026-04-11
 last_verified: 2026-04-11
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
+  - raw/2026-04-07-llm-wiki.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
 quality_score: 100
 concepts:
@@ -61,3 +62,4 @@ Used by team leads and AI agents to verify decisions, assignments, and timelines
 ## Sources
 
 - [[MemPalace GitHub Repository]] — primary source for this concept
+- [[LLM Wiki]] — additional source

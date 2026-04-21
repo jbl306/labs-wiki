@@ -5,6 +5,7 @@ created: 2026-04-10
 last_verified: 2026-04-10
 source_hash: "bd2046c48eb130a120593477f3fc9678dc18e4c8014a3f9bf5361937812db817"
 sources:
+  - raw/2026-04-13-260406231v1pdf.md
   - raw/2026-04-10-180303635v5pdf.md
 quality_score: 100
 concepts:
@@ -47,3 +48,4 @@ No related entities documented yet.
 ## Sources
 
 - [[The Lottery Ticket Hypothesis: Finding Sparse, Trainable Neural Networks]] — where this entity was mentioned
+- [[Hope: A Memory Architecture for Continual Learning with Long Contexts]] — additional source

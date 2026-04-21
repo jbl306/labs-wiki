@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "3a38e39284cc0602ec33af8d22ef0dfb3c2a3a21b23b03f06716e3221ca8b49e"
 sources:
+  - raw/2026-04-07-jbl306homelab.md
   - raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
   - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
@@ -63,3 +64,4 @@ The homelab environment is the target for two custom agents: the homelab-ops age
 - [[Copilot Session Checkpoint: Sprint 11 Evaluation and Report]] — additional source
 - [[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]] — additional source
 - [[Copilot Session Checkpoint: Second Curation Reports]] — additional source
+- [[jbl306/homelab]] — additional source

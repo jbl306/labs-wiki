@@ -5,6 +5,8 @@ created: 2026-04-12
 last_verified: 2026-04-12
 source_hash: "8452c060914e7b5fd5e6c6af1568e8d1f557cb6e9d7082b5cae7e3360aaf7c1d"
 sources:
+  - raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
+  - raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
 quality_score: 100
 concepts:
@@ -48,3 +50,5 @@ MetaChain laid the foundation for AutoAgent's self-developing, fully-automated a
 ## Sources
 
 - [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — where this entity was mentioned
+- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
+- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source

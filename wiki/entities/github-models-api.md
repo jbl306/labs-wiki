@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "1e682ce7421bcaeabd752a7742a3c49d999aeb75bc995c31118f12c24d1a690c"
 sources:
+  - raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
 quality_score: 100
@@ -52,3 +53,4 @@ Central to the auto-ingest pipeline, this API enables LLM-powered extraction of 
 
 - [[Copilot Session Checkpoint: Auto-ingest Pipeline Built and Docs Updated]] — where this entity was mentioned
 - [[Copilot Session Checkpoint: Pipeline Enhancements and Vision Support Deployed]] — additional source
+- [[Copilot Session Checkpoint: URL Followup Pass]] — additional source

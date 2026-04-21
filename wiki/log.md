@@ -2740,4 +2740,115 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
   status: success
   notes: "Auto-ingested 6 pages (2 concepts, 3 entities, 0 synthesis)"
+- timestamp: 2026-04-20T13:28:55+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-graph-tracker-and-depth-review.md
+    - wiki/concepts/graph-aware-checkpoint-tracker-implementation.md
+    - wiki/concepts/synthesis-layer-depth-audit-extraction-bottleneck-analysis.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/wiki-graph-api-graph-builder-py.md
+    - wiki/entities/reports-checkpoint-graph-tracker-md.md
+  source: raw/2026-04-20-copilot-session-graph-tracker-and-depth-review-4445c933.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T17:36:10+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-integrating-agent-skill-routing.md
+    - wiki/concepts/agent-skill-routing-architecture.md
+    - wiki/concepts/worktree-based-subagent-driven-development.md
+    - wiki/concepts/automated-skill-path-generation-containerized-agent-systems.md
+    - wiki/entities/agent-skills-for-context-engineering.md
+    - wiki/entities/update-opencode-skills-paths-py.md
+  source: raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:26:29+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-pilot-worktree-baseline.md
+    - wiki/concepts/worktree-based-baseline-verification-durable-workflow-pilots.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/scripts-auto-ingest-py.md
+  source: raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T18:52:05+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/leworldmodel-stable-end-to-end-joint-embedding-predictive-architecture-from-pixe.md
+    - wiki/concepts/leworldmodel-architecture.md
+    - wiki/concepts/sketched-isotropic-gaussian-regularizer-sigreg.md
+    - wiki/concepts/latent-planning-leworldmodel.md
+    - wiki/entities/leworldmodel.md
+    - wiki/entities/sketched-isotropic-gaussian-regularizer-sigreg.md
+    - wiki/entities/pldm.md
+    - wiki/entities/dino-wm.md
+  source: raw/2026-04-20-260319312v2pdf.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T20:25:07+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-url-followup-pass.md
+    - wiki/concepts/content-root-selection-article-extraction.md
+    - wiki/concepts/image-ranking-extraction-article-content.md
+    - wiki/concepts/validation-run-policy-audit-log-suppression.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/scripts-auto-ingest-py.md
+    - wiki/entities/github-models-api.md
+  source: raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:28:00+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-free-tier-backfill-runner.md
+    - wiki/concepts/free-tier-constrained-backfill-runner-design.md
+    - wiki/concepts/homelab-cron-job-integration-throttled-ingestion.md
+    - wiki/entities/tmp-free-tier-url-backfill-py.md
+  source: raw/2026-04-21-copilot-session-free-tier-backfill-runner-a2d20186.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T01:26:10+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/memento-extending-llm-output-length-via-blockwise-summarization-and-kv-cache-com.md
+    - wiki/concepts/memento-blockwise-summarization-for-llms.md
+    - wiki/entities/memento.md
+    - wiki/entities/memento.md
+    - wiki/entities/openmementos-dataset.md
+    - wiki/entities/microsoft.md
+  source: raw/2026-04-21-httpsgithubcommicrosoftmemento.md
+  status: success
+  notes: "Auto-ingested 6 pages (1 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T02:45:25+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/adams-law-textual-frequency-law-on-large-language-models.md
+    - wiki/concepts/textual-frequency-law-tfl.md
+    - wiki/concepts/textual-frequency-distillation-tfd.md
+    - wiki/concepts/curriculum-textual-frequency-training-ctft.md
+    - wiki/entities/textual-frequency-paired-dataset-tfpd.md
+    - wiki/entities/facemind-corporation.md
+    - wiki/entities/the-chinese-university-of-hong-kong.md
+  source: raw/2026-04-21-260402176v2pdf.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
 ```

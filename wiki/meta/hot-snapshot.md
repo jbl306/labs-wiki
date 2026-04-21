@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-04-20T03:22:29+00:00
+generated: 2026-04-21T03:22:05+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,38 +11,40 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-04-20T03:22:29+00:00
+> Regenerated: 2026-04-21T03:22:05+00:00
 
 ## Recent Wiki Edits
 
-- `2026-04-18` — [[copilot-session-checkpoint-auto-ingest-pipeline-built-and-docs-updated]] (`wiki/sources/copilot-session-checkpoint-auto-ingest-pipeline-built-and-docs-updated.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-building-4-copilot-cli-custom-agents]] (`wiki/sources/copilot-session-checkpoint-building-4-copilot-cli-custom-agents.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-creating-claude-and-labs-wiki-repos]] (`wiki/sources/copilot-session-checkpoint-creating-claude-and-labs-wiki-repos.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-dashboard-alt-line-accuracy-fixes]] (`wiki/sources/copilot-session-checkpoint-dashboard-alt-line-accuracy-fixes.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-dashboard-matviews-implementation-in-progress]] (`wiki/sources/copilot-session-checkpoint-dashboard-matviews-implementation-in-progress.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-data-source-expansion-exploration]] (`wiki/sources/copilot-session-checkpoint-data-source-expansion-exploration.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-fixing-android-share-ingest-api]] (`wiki/sources/copilot-session-checkpoint-fixing-android-share-ingest-api.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-fixing-knightcrawler-populate-cron-and-rd-playback]] (`wiki/sources/copilot-session-checkpoint-fixing-knightcrawler-populate-cron-and-rd-playback.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-fixing-mempalace-timeouts]] (`wiki/sources/copilot-session-checkpoint-fixing-mempalace-timeouts.md`)
-- `2026-04-18` — [[copilot-session-checkpoint-full-labs-wiki-implementation-complete]] (`wiki/sources/copilot-session-checkpoint-full-labs-wiki-implementation-complete.md`)
+- `2026-04-20` — [[agent-memory-ingestion-pipeline]] (`wiki/concepts/agent-memory-ingestion-pipeline.md`)
+- `2026-04-20` — [[agent-memory-retrieval-pipeline]] (`wiki/concepts/agent-memory-retrieval-pipeline.md`)
+- `2026-04-20` — [[palace-memory-architecture]] (`wiki/concepts/palace-memory-architecture.md`)
+- `2026-04-20` — [[agent-memory]] (`wiki/entities/agent-memory.md`)
+- `2026-04-20` — [[cloudflare]] (`wiki/entities/cloudflare.md`)
+- `2026-04-20` — [[durable-object]] (`wiki/entities/durable-object.md`)
+- `2026-04-20` — [[vectorize]] (`wiki/entities/vectorize.md`)
+- `2026-04-20` — [[workers-ai]] (`wiki/entities/workers-ai.md`)
+- `2026-04-20` — [[agents-that-remember-introducing-agent-memory]] (`wiki/sources/agents-that-remember-introducing-agent-memory.md`)
+- `2026-04-20` — [[agent-skill-surface-optimization-multi-tool-ai-project-compatibility]] (`wiki/concepts/agent-skill-surface-optimization-multi-tool-ai-project-compatibility.md`)
 
 ## Recent Sources Captured
 
-- `2026-04-20` — `raw/2026-04-18-copilot-session-phase-5-backfill-script-written-6227b6ae.md`
-- `2026-04-20` — `raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md`
-- `2026-04-20` — `raw/2026-04-20-copilot-session-wiki-audit-followups-92b1089b.md`
-- `2026-04-20` — `raw/2026-04-20-cloudflare-launches-code-mode-mcp-server-to-optimize-token-u.md`
-- `2026-04-20` — `raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md`
-- `2026-04-19` — `raw/2026-04-19-copilot-session-sprint-61-planning-audit-6c5cb258.md`
-- `2026-04-19` — `raw/2026-04-19-copilot-session-sprint-60-pts-feature-planning-abd21993.md`
-- `2026-04-19` — `raw/2026-04-19-6372438pdf.md`
-- `2026-04-18` — `raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md`
-- `2026-04-18` — `raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md`
+- `2026-04-21` — `raw/2026-04-21-260402176v2pdf.md`
+- `2026-04-21` — `raw/2026-04-21-httpsgithubcommicrosoftmemento.md`
+- `2026-04-21` — `raw/2026-04-21-copilot-session-free-tier-backfill-runner-a2d20186.md`
+- `2026-04-20` — `raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md`
+- `2026-04-20` — `raw/2026-04-20-260319312v2pdf.md`
+- `2026-04-20` — `raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md`
+- `2026-04-20` — `raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md`
+- `2026-04-20` — `raw/2026-04-20-copilot-session-graph-tracker-and-depth-review-4445c933.md`
+- `2026-04-20` — `raw/2026-04-20-agents-that-remember-introducing-agent-memory.md`
+- `2026-04-20` — `raw/2026-04-20-proxy-pointer-rag-structure-meets-scale-at-100-accuracy-with.md`
 
 ## Always-Hot Pages (`tier: hot`)
 
 - [[Checkpoint Classifier Module]] → `wiki/entities/checkpoint-classifier-module.md`
 - [[Edge Optimizer]] → `wiki/entities/edge-optimizer.md`
+- [[FaceMind Corporation]] → `wiki/entities/facemind-corporation.md`
+- [[The Chinese University of Hong Kong]] → `wiki/entities/the-chinese-university-of-hong-kong.md`
 - [[Node Version Manager (nvm)]] → `wiki/entities/node-version-manager-nvm.md`
 - [[Claude Code]] → `wiki/entities/claude-code.md`
 - [[AdGuard]] → `wiki/entities/adguard.md`
@@ -51,11 +53,9 @@ ttl_hours: 24
 - [[Hermes Agent]] → `wiki/entities/hermes-agent.md`
 - [[Microsoft]] → `wiki/entities/microsoft.md`
 - [[GitHub Copilot]] → `wiki/entities/github-copilot.md`
+- [[wiki-graph-api/graph_builder.py]] → `wiki/entities/wiki-graph-api-graph-builder-py.md`
 - [[AXI (Agent eXperience Interface)]] → `wiki/entities/axi-agent-experience-interface.md`
 - [[GPT-5]] → `wiki/entities/gpt-5.md`
-- [[Awesome LLM Reasoning Failures Repository]] → `wiki/entities/awesome-llm-reasoning-failures-repository.md`
-- [[Chrome DevTools]] → `wiki/entities/chrome-devtools.md`
-- [[MetaChain]] → `wiki/entities/metachain.md`
 
 ## In-Progress Tasks
 

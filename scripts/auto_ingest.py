@@ -12,8 +12,10 @@ import argparse
 import base64
 import hashlib
 import html
+import io
 import json
 import logging
+import mimetypes
 import os
 import re
 import subprocess
@@ -23,11 +25,15 @@ from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urljoin
+from urllib.parse import urljoin, urlparse
 
 import httpx
 from bs4 import BeautifulSoup
 from openai import OpenAI
+try:
+    from markitdown import MarkItDown
+except ImportError:  # pragma: no cover
+    MarkItDown = None
 
 try:
     from rapidfuzz import fuzz as _rf_fuzz
@@ -57,10 +63,55 @@ GITHUB_MODELS_URL = os.environ.get(
 DEFAULT_MODEL = "gpt-4.1"
 MAX_RETRIES = 3
 URL_FETCH_TIMEOUT = 30
+MAX_DOCUMENT_DOWNLOAD_SIZE = 15 * 1024 * 1024  # 15MB max document download
 MAX_IMAGES = 5  # Max images to process per source for vision
 MAX_IMAGE_SIZE = 5 * 1024 * 1024  # 5MB max per image download
 FETCHED_CONTENT_START = "<!-- fetched-content:start -->"
 FETCHED_CONTENT_END = "<!-- fetched-content:end -->"
+EXTRACTED_CONTENT_START = "<!-- extracted-content:start -->"
+EXTRACTED_CONTENT_END = "<!-- extracted-content:end -->"
+
+MARKITDOWN_FILE_EXTENSIONS = {
+    ".csv",
+    ".docx",
+    ".epub",
+    ".htm",
+    ".html",
+    ".json",
+    ".md",
+    ".pdf",
+    ".pptx",
+    ".rst",
+    ".txt",
+    ".xls",
+    ".xlsx",
+    ".xml",
+}
+MARKITDOWN_BINARY_URL_EXTENSIONS = {
+    ".docx",
+    ".epub",
+    ".pdf",
+    ".pptx",
+    ".xls",
+    ".xlsx",
+}
+MARKITDOWN_BINARY_MIME_TYPES = {
+    "application/epub+zip",
+    "application/pdf",
+    "application/vnd.ms-excel",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+}
+MARKITDOWN_MIME_TO_EXTENSION = {
+    "application/epub+zip": ".epub",
+    "application/pdf": ".pdf",
+    "application/vnd.ms-excel": ".xls",
+    "application/vnd.openxmlformats-officedocument.presentationml.presentation": ".pptx",
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": ".xlsx",
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document": ".docx",
+}
+FILE_ASSET_REFERENCE_RE = re.compile(r"^See\s+`?(raw/assets/[^`\s]+)`?\s*$", re.I)
 
 
 @dataclass(frozen=True)
@@ -80,30 +131,22 @@ def _env_str(*names: str, default: str = "") -> str:
     return default
 
 
-def _fetched_content_pattern() -> re.Pattern[str]:
+def _build_content_pattern(start_marker: str, end_marker: str) -> re.Pattern[str]:
     return re.compile(
-        rf"\n?{re.escape(FETCHED_CONTENT_START)}\n.*?\n{re.escape(FETCHED_CONTENT_END)}\n?",
+        rf"\n?{re.escape(start_marker)}\n.*?\n{re.escape(end_marker)}\n?",
         flags=re.S,
     )
 
 
-def strip_fetched_content_block(body: str) -> str:
-    return re.sub(_fetched_content_pattern(), "\n", body).strip()
-
-
-def extract_manual_notes(body: str, source_url: str | None) -> str:
-    raw_body = strip_fetched_content_block(body)
-    if not raw_body:
-        return ""
-    lines = raw_body.splitlines()
-    if source_url and lines and lines[0].strip() == source_url.strip():
-        lines = lines[1:]
-    return "\n".join(line.rstrip() for line in lines).strip()
-
-
-def read_persisted_fetched_content(body: str) -> tuple[str | None, dict[str, object]]:
+def _read_persisted_content_block(
+    body: str,
+    *,
+    start_marker: str,
+    end_marker: str,
+    section_heading: str,
+) -> tuple[str | None, dict[str, object]]:
     pattern = re.compile(
-        rf"{re.escape(FETCHED_CONTENT_START)}\n(.*?)\n{re.escape(FETCHED_CONTENT_END)}",
+        rf"{re.escape(start_marker)}\n(.*?)\n{re.escape(end_marker)}",
         flags=re.S,
     )
     match = pattern.search(body)
@@ -116,7 +159,7 @@ def read_persisted_fetched_content(body: str) -> tuple[str | None, dict[str, obj
 
     for line in match.group(1).splitlines():
         stripped = line.strip()
-        if stripped == "## Fetched Content":
+        if stripped == section_heading:
             in_text = True
             continue
         if not in_text and stripped.startswith("- "):
@@ -136,6 +179,171 @@ def read_persisted_fetched_content(body: str) -> tuple[str | None, dict[str, obj
 
     text = "\n".join(text_lines).strip()
     return (text or None), metadata
+
+
+def _upsert_content_block(raw_text: str, block: str, pattern: re.Pattern[str]) -> str:
+    cleaned = pattern.sub("\n", raw_text).rstrip()
+    if cleaned:
+        return cleaned + "\n\n" + block
+    return block
+
+
+def _normalized_content_type(content_type: str | None) -> str:
+    if not content_type:
+        return ""
+    return content_type.split(";", 1)[0].strip().lower()
+
+
+def _suffix_from_url(url: str | None) -> str:
+    if not url:
+        return ""
+    return Path(urlparse(url).path).suffix.lower()
+
+
+def _is_meaningful_markdown(text: str) -> bool:
+    cleaned = text.strip()
+    if not cleaned:
+        return False
+    if cleaned.startswith("See `raw/assets/"):
+        return False
+    compressed = re.sub(r"\s+", "", cleaned)
+    return len(compressed) >= 30
+
+
+def _is_markitdown_binary_url(source_url: str, content_type: str | None) -> bool:
+    suffix = _suffix_from_url(source_url) or _guess_extension_from_content_type(content_type)
+    normalized_content_type = _normalized_content_type(content_type)
+    if normalized_content_type.startswith("text/") or normalized_content_type in {
+        "application/json",
+        "application/xml",
+        "text/xml",
+    }:
+        return False
+    return (
+        suffix in MARKITDOWN_BINARY_URL_EXTENSIONS
+        or normalized_content_type in MARKITDOWN_BINARY_MIME_TYPES
+    )
+
+
+def _build_binary_url_placeholder(
+    source_url: str,
+    content_type: str | None,
+    *,
+    reason: str,
+) -> str:
+    suffix = _suffix_from_url(source_url) or _guess_extension_from_content_type(content_type)
+    label = suffix.lstrip(".").upper() if suffix else "DOCUMENT"
+    return f"[{label} document at {source_url} — {reason}]"
+
+
+def _is_binary_url_placeholder(text: str) -> bool:
+    return bool(re.fullmatch(r"\[[A-Z0-9]+ document at .+ — .+\]", text.strip()))
+
+
+def _guess_extension_from_content_type(content_type: str | None) -> str:
+    normalized = _normalized_content_type(content_type)
+    if not normalized:
+        return ""
+    if normalized in MARKITDOWN_MIME_TO_EXTENSION:
+        return MARKITDOWN_MIME_TO_EXTENSION[normalized]
+    guessed = mimetypes.guess_extension(normalized)
+    return (guessed or "").lower()
+
+
+_markitdown_converter: MarkItDown | None = None
+
+
+def get_markitdown_converter() -> MarkItDown | None:
+    global _markitdown_converter
+    if MarkItDown is None:
+        return None
+    if _markitdown_converter is None:
+        _markitdown_converter = MarkItDown()
+    return _markitdown_converter
+
+
+def convert_file_to_markdown(path: Path) -> tuple[str | None, str | None]:
+    """Convert a supported local file to markdown via MarkItDown."""
+    suffix = path.suffix.lower()
+    if suffix not in MARKITDOWN_FILE_EXTENSIONS:
+        return None, None
+
+    converter = get_markitdown_converter()
+    if converter is None:
+        return None, None
+
+    try:
+        result = converter.convert_local(path)
+    except Exception as exc:
+        log.warning("MarkItDown local conversion failed for %s: %s", path.name, exc)
+        return None, None
+
+    text = getattr(result, "text_content", "").strip()
+    if not _is_meaningful_markdown(text):
+        return None, _normalized_content_type(mimetypes.guess_type(path.name)[0])
+    return text, _normalized_content_type(mimetypes.guess_type(path.name)[0])
+
+
+def convert_binary_response_to_markdown(
+    content: bytes,
+    *,
+    source_url: str,
+    content_type: str | None,
+) -> str | None:
+    """Convert a supported binary URL response to markdown via MarkItDown."""
+    if not _is_markitdown_binary_url(source_url, content_type):
+        return None
+
+    suffix = _suffix_from_url(source_url) or _guess_extension_from_content_type(content_type)
+    converter = get_markitdown_converter()
+    if converter is None:
+        return None
+
+    try:
+        result = converter.convert_stream(
+            io.BytesIO(content),
+            file_extension=suffix or None,
+            url=source_url,
+        )
+    except Exception as exc:
+        log.warning("MarkItDown URL conversion failed for %s: %s", source_url, exc)
+        return None
+
+    text = getattr(result, "text_content", "").strip()
+    if not _is_meaningful_markdown(text):
+        return None
+    return text
+
+
+def _fetched_content_pattern() -> re.Pattern[str]:
+    return _build_content_pattern(FETCHED_CONTENT_START, FETCHED_CONTENT_END)
+
+
+def _extracted_content_pattern() -> re.Pattern[str]:
+    return _build_content_pattern(EXTRACTED_CONTENT_START, EXTRACTED_CONTENT_END)
+
+
+def strip_fetched_content_block(body: str) -> str:
+    return re.sub(_fetched_content_pattern(), "\n", body).strip()
+
+
+def extract_manual_notes(body: str, source_url: str | None) -> str:
+    raw_body = strip_fetched_content_block(body)
+    if not raw_body:
+        return ""
+    lines = raw_body.splitlines()
+    if source_url and lines and lines[0].strip() == source_url.strip():
+        lines = lines[1:]
+    return "\n".join(line.rstrip() for line in lines).strip()
+
+
+def read_persisted_fetched_content(body: str) -> tuple[str | None, dict[str, object]]:
+    return _read_persisted_content_block(
+        body,
+        start_marker=FETCHED_CONTENT_START,
+        end_marker=FETCHED_CONTENT_END,
+        section_heading="## Fetched Content",
+    )
 
 
 def build_fetched_content_block(
@@ -164,11 +372,101 @@ def build_fetched_content_block(
 
 
 def upsert_fetched_content_block(raw_text: str, block: str) -> str:
-    pattern = _fetched_content_pattern()
-    cleaned = pattern.sub("\n", raw_text).rstrip()
-    if cleaned:
-        return cleaned + "\n\n" + block
-    return block
+    return _upsert_content_block(raw_text, block, _fetched_content_pattern())
+
+
+def strip_extracted_content_block(body: str) -> str:
+    return re.sub(_extracted_content_pattern(), "\n", body).strip()
+
+
+def read_persisted_extracted_content(body: str) -> tuple[str | None, dict[str, object]]:
+    return _read_persisted_content_block(
+        body,
+        start_marker=EXTRACTED_CONTENT_START,
+        end_marker=EXTRACTED_CONTENT_END,
+        section_heading="## Extracted Content",
+    )
+
+
+def build_extracted_content_block(
+    *,
+    extracted_at: str,
+    asset_path: str,
+    original_filename: str | None,
+    content_type: str | None,
+    text: str,
+) -> str:
+    lines = [
+        EXTRACTED_CONTENT_START,
+        "## Extracted Metadata",
+        f"- extracted_at: {extracted_at}",
+        f"- asset_path: {asset_path}",
+        f"- original_filename: {original_filename or ''}",
+        f"- content_type: {content_type or 'unknown'}",
+        "",
+        "## Extracted Content",
+        text.strip(),
+        EXTRACTED_CONTENT_END,
+    ]
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def upsert_extracted_content_block(raw_text: str, block: str) -> str:
+    return _upsert_content_block(raw_text, block, _extracted_content_pattern())
+
+
+def parse_file_asset_reference(body: str) -> tuple[str | None, str | None]:
+    cleaned = strip_extracted_content_block(body)
+    asset_path: str | None = None
+    original_filename: str | None = None
+
+    for line in cleaned.splitlines():
+        stripped = line.strip()
+        if asset_path is None:
+            match = FILE_ASSET_REFERENCE_RE.match(stripped)
+            if match:
+                asset_path = match.group(1)
+                continue
+        if stripped.lower().startswith("original filename:"):
+            original_filename = stripped.partition(":")[2].strip() or None
+            if asset_path is not None:
+                break
+
+    return asset_path, original_filename
+
+
+def extract_file_manual_notes(body: str) -> str:
+    lines = strip_extracted_content_block(body).splitlines()
+    filtered: list[str] = []
+    skipped_asset = False
+    skipped_original_name = False
+
+    for line in lines:
+        stripped = line.strip()
+        if not skipped_asset and FILE_ASSET_REFERENCE_RE.match(stripped):
+            skipped_asset = True
+            continue
+        if skipped_asset and not skipped_original_name and stripped.lower().startswith("original filename:"):
+            skipped_original_name = True
+            continue
+        filtered.append(line.rstrip())
+
+    return "\n".join(filtered).strip()
+
+
+def build_file_ingest_content(body: str, persisted_text: str | None) -> str:
+    manual_notes = extract_file_manual_notes(body)
+    parts: list[str] = []
+    if persisted_text:
+        parts.append(persisted_text.strip())
+    if manual_notes:
+        if persisted_text:
+            parts.append(f"## Manual Notes\n{manual_notes}")
+        else:
+            parts.append(manual_notes)
+    if parts:
+        return "\n\n".join(parts).strip()
+    return strip_extracted_content_block(body).strip()
 
 
 def build_url_ingest_content(
@@ -197,7 +495,7 @@ def is_meaningful_fetched_body(text: str, source_url: str | None) -> bool:
         return False
     if source_url and cleaned == source_url.strip():
         return False
-    if cleaned.startswith("[PDF document at ") and "content could not be extracted" in cleaned:
+    if _is_binary_url_placeholder(cleaned):
         return False
     compressed = re.sub(r"\s+", "", cleaned)
     return len(compressed) >= 30
@@ -1020,38 +1318,101 @@ def fetch_url_content(url: str) -> UrlFetchResult:
     log.info("Fetching URL content: %s", url)
     headers = {
         "User-Agent": "Mozilla/5.0 (compatible; labs-wiki-bot/1.0)",
-        "Accept": "text/html,text/plain,application/json",
+        "Accept": (
+            "text/html,text/plain,application/json,"
+            "application/pdf,"
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document,"
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,"
+            "application/vnd.ms-excel,"
+            "application/vnd.openxmlformats-officedocument.presentationml.presentation,"
+            "application/epub+zip,"
+            "*/*;q=0.1"
+        ),
     }
-    resp = httpx.get(url, headers=headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT)
-    resp.raise_for_status()
+    with httpx.stream(
+        "GET",
+        url,
+        headers=headers,
+        follow_redirects=True,
+        timeout=URL_FETCH_TIMEOUT,
+    ) as resp:
+        resp.raise_for_status()
+        content_type = resp.headers.get("content-type", "")
+        resolved_url = str(resp.url)
 
-    content_type = resp.headers.get("content-type", "")
+        if _is_markitdown_binary_url(resolved_url, content_type):
+            declared_size = resp.headers.get("content-length", "").strip()
+            if declared_size.isdigit() and int(declared_size) > MAX_DOCUMENT_DOWNLOAD_SIZE:
+                log.warning("Skipping oversized binary URL (content-length=%s): %s", declared_size, resolved_url)
+                return UrlFetchResult(
+                    text=_build_binary_url_placeholder(
+                        resolved_url,
+                        content_type,
+                        reason="content exceeded size limit",
+                    ),
+                    image_urls=[],
+                    resolved_url=resolved_url,
+                    content_type=content_type,
+                )
 
-    # Reject binary formats that can't be meaningfully parsed as text
-    if "application/pdf" in content_type:
-        log.warning("URL returned PDF binary (unsupported): %s", url)
+            document_bytes = bytearray()
+            for chunk in resp.iter_bytes():
+                document_bytes.extend(chunk)
+                if len(document_bytes) > MAX_DOCUMENT_DOWNLOAD_SIZE:
+                    log.warning("Skipping oversized binary URL (%d bytes): %s", len(document_bytes), resolved_url)
+                    return UrlFetchResult(
+                        text=_build_binary_url_placeholder(
+                            resolved_url,
+                            content_type,
+                            reason="content exceeded size limit",
+                        ),
+                        image_urls=[],
+                        resolved_url=resolved_url,
+                        content_type=content_type,
+                    )
+
+            converted_binary = convert_binary_response_to_markdown(
+                bytes(document_bytes),
+                source_url=resolved_url,
+                content_type=content_type,
+            )
+            if converted_binary:
+                log.info("Converted binary URL response via MarkItDown: %s", resolved_url)
+                return UrlFetchResult(
+                    text=converted_binary[:50_000],
+                    image_urls=[],
+                    resolved_url=resolved_url,
+                    content_type=content_type,
+                )
+
+            log.warning("Binary URL could not be converted via MarkItDown: %s", resolved_url)
+            return UrlFetchResult(
+                text=_build_binary_url_placeholder(
+                    resolved_url,
+                    content_type,
+                    reason="content could not be extracted",
+                ),
+                image_urls=[],
+                resolved_url=resolved_url,
+                content_type=content_type,
+            )
+
+        resp.read()
+        if "html" in content_type:
+            raw_html = resp.text
+            return UrlFetchResult(
+                text=normalize_html_document(raw_html),
+                image_urls=extract_image_urls(raw_html, resolved_url),
+                resolved_url=resolved_url,
+                content_type=content_type,
+            )
+
         return UrlFetchResult(
-            text=f"[PDF document at {url} — content could not be extracted]",
+            text=resp.text[:50_000],
             image_urls=[],
-            resolved_url=str(resp.url),
+            resolved_url=resolved_url,
             content_type=content_type,
         )
-
-    if "html" in content_type:
-        raw_html = resp.text
-        return UrlFetchResult(
-            text=normalize_html_document(raw_html),
-            image_urls=extract_image_urls(raw_html, str(resp.url)),
-            resolved_url=str(resp.url),
-            content_type=content_type,
-        )
-
-    return UrlFetchResult(
-        text=resp.text[:50_000],
-        image_urls=[],
-        resolved_url=str(resp.url),
-        content_type=content_type,
-    )
 
 
 def download_images_as_base64(image_urls: list[str], max_count: int = MAX_IMAGES) -> list[str]:
@@ -2305,6 +2666,53 @@ def ingest_raw_source(
     content = body
     image_urls: list[str] = []
     persisted_text: str | None = None
+    if source_type == "file":
+        asset_path_ref, original_filename = parse_file_asset_reference(body)
+        persisted_text, persisted_metadata = read_persisted_extracted_content(body)
+        if not original_filename:
+            original_filename = str(persisted_metadata.get("original_filename") or "").strip() or None
+        should_extract = bool(asset_path_ref) and (force or not persisted_text)
+        if asset_path_ref and should_extract:
+            asset_path = (project_root / asset_path_ref).resolve()
+            try:
+                project_root_resolved = project_root.resolve()
+                asset_path.relative_to(project_root_resolved)
+            except ValueError:
+                log.warning("Skipping out-of-tree asset reference in %s: %s", raw_path.name, asset_path_ref)
+            else:
+                if not asset_path.exists():
+                    log.warning("Referenced asset does not exist for %s: %s", raw_path.name, asset_path)
+                else:
+                    extracted_text, extracted_content_type = convert_file_to_markdown(asset_path)
+                    if extracted_text:
+                        persisted_text = extracted_text.strip()
+                        updated_raw = upsert_extracted_content_block(
+                            raw_path.read_text(),
+                            build_extracted_content_block(
+                                extracted_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                asset_path=asset_path_ref,
+                                original_filename=original_filename,
+                                content_type=extracted_content_type,
+                                text=persisted_text,
+                            ),
+                        )
+                        raw_path.write_text(updated_raw)
+                        body = updated_raw
+                        log.info(
+                            "Persisted %d chars of extracted file content for %s",
+                            len(persisted_text),
+                            raw_path.name,
+                        )
+                    else:
+                        log.info(
+                            "MarkItDown produced no meaningful text for %s (asset: %s)",
+                            raw_path.name,
+                            asset_path.name,
+                        )
+        content = build_file_ingest_content(
+            body=body,
+            persisted_text=persisted_text,
+        )
     if source_type == "url" and source_url:
         persisted_text, persisted_metadata = read_persisted_fetched_content(body)
         should_fetch = refresh_fetch or not persisted_text
@@ -2312,7 +2720,7 @@ def ingest_raw_source(
         try:
             if should_fetch:
                 fetch_result = fetch_url_content(source_url)
-                if is_meaningful_fetched_body(fetch_result.text, source_url):
+                if is_meaningful_fetched_body(fetch_result.text, source_url) or _is_binary_url_placeholder(fetch_result.text):
                     persisted_text = fetch_result.text.strip()
                     image_urls = fetch_result.image_urls
                     persisted_metadata = {

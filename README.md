@@ -81,7 +81,9 @@ See `raw/assets/interesting-paper.pdf`
 EOF
 
 # Sources with status: pending are auto-ingested by the wiki-auto-ingest
-# Docker service. Or process manually:
+# Docker service. Supported document assets (PDF/DOCX/PPTX/XLSX/XLS and
+# similar text-like formats) are converted to markdown and persisted back
+# into raw/ before wiki compilation. Or process manually:
 python3 scripts/auto_ingest.py raw/2025-07-17-interesting-paper.md
 ```
 
@@ -99,7 +101,7 @@ Add sources from anywhere — they're automatically processed into wiki pages:
 | 🐦 Twitter/X | Share tweet URL → fxtwitter API extracts text + images | ⚡ Auto |
 | 🐙 GitHub Repo | Share repo URL → REST API fetches README + metadata | ⚡ Auto |
 
-The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GitHub Models within seconds. It now uses **source-aware model routing**: lightweight text-only sources such as Copilot session checkpoint exports can run on a cheaper text model, standard URLs/repos use the default model, and image-bearing sources are routed to the vision-capable lane. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed only when present. For `type: url` sources, the normalized fetched body is persisted back into a deterministic fetched-content block in `raw/` so later re-ingest can reuse the durable snapshot without a fresh network round-trip.
+The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GitHub Models within seconds. It now uses **source-aware model routing**: lightweight text-only sources such as Copilot session checkpoint exports can run on a cheaper text model, standard URLs/repos use the default model, and image-bearing sources are routed to the vision-capable lane. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed only when present. For `type: url` sources, the normalized fetched body is persisted back into a deterministic fetched-content block in `raw/` so later re-ingest can reuse the durable snapshot without a fresh network round-trip. For `type: file` sources that reference `raw/assets/...`, supported document formats are converted through MarkItDown and persisted back into a deterministic extracted-content block before wiki compilation.
 
 For targeted reruns:
 

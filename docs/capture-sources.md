@@ -12,7 +12,7 @@ The auto-ingest pipeline routes certain URLs through specialized handlers for ri
 |----------|---------|-----------------|
 | **Twitter/X** (`twitter.com`, `x.com`, `t.co`, `vxtwitter`, `fxtwitter`) | fxtwitter API | Tweet text, author, timestamp, media URLs + image analysis via GPT-4.1 vision |
 | **GitHub repos** (`github.com/<owner>/<repo>`) | GitHub REST API | Description, stars, language, topics, README content, file tree |
-| **Other URLs** | HTML fetch | Page content + any embedded images analyzed via GPT-4.1 vision |
+| **Other URLs** | HTML fetch / MarkItDown | HTML pages get structure-aware fetch + image analysis; document binaries such as PDF, DOCX, PPTX, XLSX/XLS, and EPUB are converted to markdown before extraction |
 
 Shortened `t.co` URLs are automatically followed to their destination before handler routing.
 
@@ -74,6 +74,8 @@ pbpaste | wa text "" "Clipboard Capture"
 # Upload a PDF
 waf ~/Downloads/paper.pdf "Research Paper"
 ```
+
+Uploaded files are stored under `raw/assets/`, and the auto-ingest service converts supported document formats to markdown via MarkItDown before generating wiki pages. The converted text is persisted back into the corresponding raw source as a deterministic extracted-content block.
 
 ### Required Environment Variables
 

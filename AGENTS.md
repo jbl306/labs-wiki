@@ -12,12 +12,12 @@ labs-wiki is a personal LLM-powered knowledge wiki based on [Karpathy's LLM Wiki
 ### Three-Layer Architecture
 
 ```
-raw/       → Layer 1: Source documents + durable URL snapshots (inbox)
+raw/       → Layer 1: Source documents + durable URL/file snapshots (inbox)
 wiki/      → Layer 2: LLM-compiled knowledge pages (the artifact)
 AGENTS.md  → Layer 3: Schema, conventions, and workflows (this file)
 ```
 
-- **Layer 1** is your source of truth — agents preserve captured content and may only update `status` plus the deterministic fetched-content block for `type: url` sources
+- **Layer 1** is your source of truth — agents preserve captured content and may only update `status` plus the deterministic fetched-content block for `type: url` sources and deterministic extracted-content block for `type: file` asset-backed sources
 - **Layer 2** is LLM-owned — it creates, updates, and maintains everything here
 - **Layer 3** is co-evolved — you and the LLM refine the schema as patterns emerge
 
@@ -117,6 +117,11 @@ status: pending                 # pending | ingested | failed
 ---
 ```
 
+`type: url` sources may also carry a deterministic `fetched-content` block, and
+`type: file` sources that reference `raw/assets/...` may carry a deterministic
+`extracted-content` block. Those blocks are owned by the automation layer and
+hold the durable markdown body used for wiki compilation.
+
 ### Consolidation Tiers
 
 | Tier | Meaning | Criteria |
@@ -140,12 +145,13 @@ The `wiki-auto-ingest` Docker service handles source processing automatically:
    - **GitHub repos** (github.com/owner/repo) → REST API for metadata + README
    - **GitHub gists** → raw content fetch
    - **HTML pages** → fetch + structure-aware normalization + og:image/img extraction
+   - **Document binaries** (PDF, DOCX, PPTX, XLSX/XLS, EPUB) → MarkItDown conversion to markdown
 3. **Vision processing** — downloads images (tweet photos, og:image), base64-encodes them, sends as multimodal content to GPT-4.1
 4. **LLM extraction** (GitHub Models, source-aware lanes) → structured JSON: concepts, entities, source summary
 5. **Page generation** from templates → source page + concept pages + entity pages
 6. **Cross-referencing** — bidirectional `[[wikilinks]]` between related pages
 7. **Index + log** — rebuilds `wiki/index.md`, appends to `wiki/log.md`
-8. **Raw snapshot update** — URL sources persist a deterministic fetched-content block back into `raw/`
+8. **Raw snapshot update** — URL sources persist a deterministic fetched-content block back into `raw/`; file sources pointing at `raw/assets/...` persist document extraction in a deterministic extracted-content block
 9. **Status update** — marks raw source `status: ingested`
 10. **Notification** — sends ntfy alert on success/failure
 
@@ -172,7 +178,7 @@ For targeted re-processing or when auto-ingest is not running:
 6. Rebuild `wiki/index.md`
 
 **Rules:**
-- Never manually rewrite files in `raw/`; the only automated edits are `status` updates and replacement of the deterministic fetched-content block for `type: url` sources
+- Never manually rewrite files in `raw/`; the only automated edits are `status` updates plus replacement of the deterministic fetched-content block for `type: url` sources and deterministic extracted-content block for `type: file` asset-backed sources
 - Every fact in a wiki page must trace to a source via `sources:` field
 - One raw source may produce multiple wiki pages (concepts, entities)
 - Always update `wiki/log.md` with timestamp, operation, and targets, **unless running in `--validation-run` mode** (review-only reruns suppress log and notification noise)

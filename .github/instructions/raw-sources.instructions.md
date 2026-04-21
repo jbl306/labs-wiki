@@ -9,7 +9,7 @@ Files in `raw/` are the ground truth for the wiki. Preserve them carefully.
 
 - Files in `raw/` must NEVER be manually rewritten after initial creation
 - If a source needs correction, create a new file with today's date
-- The only automated changes allowed are updating `status: pending` → `ingested` or `failed`, plus replacing the deterministic fetched-content block for `type: url` sources
+- The only automated changes allowed are updating `status: pending` → `ingested` or `failed`, plus replacing the deterministic fetched-content block for `type: url` sources and deterministic extracted-content block for `type: file` asset-backed sources
 
 ## Raw Source Frontmatter
 
@@ -37,8 +37,9 @@ status: pending | ingested | failed
 - Raw sources are **automatically processed** by the `wiki-auto-ingest` Docker service
 - The service watches `raw/` and triggers within ~5 seconds of a new file
 - Processing: GPT-4.1 extracts concepts/entities → generates wiki pages → updates index/log
-- **Smart URL handlers**: Twitter/X tweets, GitHub repos, HTML pages with image extraction
+- **Smart URL handlers**: Twitter/X tweets, GitHub repos, HTML pages with image extraction, and document binaries converted via MarkItDown
 - URL sources may gain a deterministic fetched-content block so later re-ingest can reuse the normalized article text without a fresh network fetch
+- File sources that point at `raw/assets/...` may gain a deterministic extracted-content block so later re-ingest can reuse the converted markdown body without re-reading the asset
 - **Vision support**: Charts, diagrams, and text-in-images are analyzed via GPT-4.1 multimodal
 - Manual alternative: `python3 scripts/auto_ingest.py` or `/wiki-ingest` skill
 - Use `status: pending` for unprocessed sources (auto-ingest only picks up pending)

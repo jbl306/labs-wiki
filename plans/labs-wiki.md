@@ -76,7 +76,7 @@ An LLM-maintained Obsidian wiki with 4 installable skills. Key innovations:
 | **Idempotent wizard** | `/second-brain` skill walks through 5-step vault setup | `/wiki-setup` skill — non-destructive initialization |
 | **Multi-agent config gen** | Auto-generates CLAUDE.md, AGENTS.md, .cursor/rules/ | `setup.sh` generates all tool configs from single source |
 | **`qmd` search integration** | Optional fast local markdown search CLI | Add as optional dependency for large wikis |
-| **Web Clipper pipeline** | Obsidian Web Clipper → `raw/` folder auto-ingest | Support URL sources in ingest skill |
+| **Web Clipper pipeline** | Obsidian Web Clipper → `raw/` folder auto-ingest | Support URL sources plus document-backed raw assets in ingest skill |
 | **Skill distribution via npm** | `npx skills add second-brain` | Future: publish skills as npm package |
 | **Sub-organized wiki** | `wiki/sources/`, `wiki/entities/`, `wiki/concepts/`, `wiki/synthesis/` | Adopt subdirectory structure for better navigation |
 

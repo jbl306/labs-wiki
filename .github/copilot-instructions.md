@@ -21,7 +21,7 @@ docs/                 → Architecture, workflows, setup guides
 Sources are processed **automatically** by the `wiki-auto-ingest` Docker sidecar:
 
 - **Watches** `raw/` for new files with `status: pending`
-- **Smart URL handlers**: Twitter/X (fxtwitter API), GitHub repos (REST API + README), HTML pages
+- **Smart URL handlers**: Twitter/X (fxtwitter API), GitHub repos (REST API + README), HTML pages, document binaries converted via MarkItDown
 - **Vision support**: Downloads images → base64 → GPT-4.1 multimodal analysis (charts, diagrams, screenshots)
 - **Model**: GPT-4.1 via GitHub Models API (149 req/min, vision-capable)
 - **Notifications**: ntfy alerts on success/failure
@@ -91,6 +91,6 @@ MemPalace is the persistent memory MCP. Two relevant wings:
 ### Core Rules
 
 - Every wiki fact must trace to a `sources:` entry (provenance)
-- Never manually modify `raw/` files; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources plus the `status` field
+- Never manually modify `raw/` files; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources or deterministic extracted-content block for `type: file` asset-backed sources, plus the `status` field
 - Log all operations to `wiki/log.md`; rebuild `wiki/index.md` after changes
 - Run `python3 scripts/lint_wiki.py` or use `@wiki-lint` to validate

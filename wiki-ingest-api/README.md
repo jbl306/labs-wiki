@@ -1,6 +1,10 @@
 # Wiki Ingest API
 
-FastAPI service for capturing sources into `raw/` from any device.
+FastAPI service for capturing sources into `raw/` from any device. File uploads
+land in `raw/assets/`, and the auto-ingest service converts supported document
+formats (for example PDF, DOCX, PPTX, XLSX/XLS, and EPUB) to markdown before
+wiki compilation, persisting that extraction back into the corresponding raw
+source.
 
 ## Endpoints
 

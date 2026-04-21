@@ -15,7 +15,7 @@ allowed-tools:
 
 Manually process one or more raw sources from `raw/` into wiki pages. Uses a **two-phase pipeline** with hash-based incremental compilation.
 
-> **Primary path:** The `wiki-auto-ingest` Docker sidecar automatically processes pending sources within ~5 seconds using GPT-4.1. It handles Twitter/X, GitHub repos, HTML pages, and images with vision support. Use this skill as a fallback for manual re-processing or quality improvements.
+> **Primary path:** The `wiki-auto-ingest` Docker sidecar automatically processes pending sources within ~5 seconds using GPT-4.1. It handles Twitter/X, GitHub repos, HTML pages, MarkItDown-backed document conversion, and images with vision support. Use this skill as a fallback for manual re-processing or quality improvements.
 
 ## Usage
 
@@ -75,7 +75,7 @@ Use the **Compiler** persona (`agents/compiler.md`).
 
 ## Rules
 
-- Never manually modify files in `raw/`; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources plus the `status` field
+- Never manually modify files in `raw/`; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources or deterministic extracted-content block for `type: file` asset-backed sources, plus the `status` field
 - Always check hash before processing — skip unchanged sources
 - Every wiki page must have valid frontmatter (see AGENTS.md)
 - Every fact must trace to a source via the `sources:` field

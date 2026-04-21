@@ -2431,4 +2431,313 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-16-251004618v3pdf.md
   status: success
   notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T23:16:39+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems.md
+    - wiki/concepts/layered-agentic-architecture-claude-code.md
+    - wiki/concepts/layered-agentic-architecture-claude-code.md
+    - wiki/concepts/context-management-compaction-pipeline-claude-code.md
+    - wiki/entities/claude-code.md
+    - wiki/entities/openclaw.md
+    - wiki/entities/anthropic.md
+  source: raw/2026-04-18-260414228v1pdf.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T23:17:54+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/proxy-pointer-rag-structure-meets-scale-at-100-accuracy-with-smarter-retrieval.md
+    - wiki/concepts/proxy-pointer-rag-architecture.md
+    - wiki/concepts/structure-guided-chunking-breadcrumb-injection.md
+    - wiki/concepts/two-stage-retrieval-structural-llm-re-ranking.md
+    - wiki/entities/proxy-pointer.md
+    - wiki/entities/gemini-flash-lite.md
+    - wiki/entities/faiss.md
+    - wiki/entities/llamaparse.md
+  source: raw/2026-04-20-proxy-pointer-rag-structure-meets-scale-at-100-accuracy-with.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T23:19:27+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/amitshekhariitbhullm-internals-learn-llm-internals-step-by-step.md
+    - wiki/concepts/byte-pair-encoding-bpe-in-large-language-models.md
+    - wiki/concepts/attention-mechanism-in-large-language-models.md
+    - wiki/concepts/kv-cache-and-paged-attention-in-large-language-models.md
+    - wiki/concepts/flash-attention-in-large-language-models.md
+    - wiki/entities/amit-shekhar.md
+    - wiki/entities/outcome-school.md
+    - wiki/entities/llm-internals.md
+  source: raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md
+  status: success
+  notes: "Auto-ingested 8 pages (4 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-20T23:21:39+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/10-claude-code-principles-what-the-research-actually-says.md
+    - wiki/concepts/the-hardening-principle.md
+    - wiki/concepts/the-context-hygiene-principle.md
+    - wiki/concepts/the-living-documentation-principle.md
+    - wiki/concepts/the-token-economy-principle.md
+    - wiki/entities/claude.md
+    - wiki/entities/forge.md
+    - wiki/entities/jig.md
+  source: raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
+  status: success
+  notes: "Auto-ingested 8 pages (4 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:02:27+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/chrome-devtools-mcp-github-repository.md
+    - wiki/concepts/model-context-protocol-mcp-server-for-chrome-devtools.md
+    - wiki/concepts/chrome-devtools-mcp-cli-interface.md
+    - wiki/concepts/design-principles-agentic-coding-tools.md
+    - wiki/entities/chrome-devtools-mcp.md
+  source: raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:03:39+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/artificial-neural-networks-and-its-applications-geeksforgeeks.md
+    - wiki/concepts/artificial-neural-network-architecture.md
+    - wiki/concepts/backpropagation-learning-mechanism.md
+    - wiki/concepts/activation-functions-in-neural-networks.md
+    - wiki/concepts/types-of-artificial-neural-networks.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
+  status: success
+  notes: "Auto-ingested 6 pages (4 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:05:20+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/mempalace-github-repository.md
+    - wiki/concepts/mempalace-memory-system.md
+    - wiki/concepts/closet-index-layer.md
+    - wiki/concepts/source-adapter-plugin-specification.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/chromadb.md
+  source: raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:06:34+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/vision-language-action-vla-models-concepts-progress-applications-and-challenges.md
+    - wiki/concepts/vision-language-action-vla-models.md
+    - wiki/concepts/multimodal-integration-in-vla-models.md
+    - wiki/concepts/tokenization-and-representation-in-vla-models.md
+    - wiki/entities/cliport.md
+    - wiki/entities/rt-2-robotic-transformer-2.md
+    - wiki/entities/gato.md
+  source: raw/2026-04-08-httpsarxivorgpdf250504769.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:07:45+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/introducing-nested-learning-a-new-ml-paradigm-for-continual-learning.md
+    - wiki/concepts/nested-learning-paradigm.md
+    - wiki/concepts/continuum-memory-system.md
+    - wiki/concepts/hope-architecture.md
+    - wiki/entities/hope.md
+    - wiki/entities/titans.md
+    - wiki/entities/google-research.md
+  source: raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:10:03+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-observability-imperative-10-claude-code-principles.md
+    - wiki/concepts/the-observability-imperative.md
+    - wiki/concepts/mast-failure-taxonomy.md
+    - wiki/concepts/structured-artifact-chains.md
+    - wiki/entities/metagpt.md
+    - wiki/entities/mast-failure-taxonomy.md
+    - wiki/entities/anthropic-building-effective-agents-guide.md
+  source: raw/2026-04-08-the-observability-imperative-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T00:28:30+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/autoskills-github-repository.md
+    - wiki/concepts/automated-ai-skill-stack-installation.md
+    - wiki/concepts/supply-chain-security-hardening-for-ai-agent-projects.md
+    - wiki/concepts/universal-agent-schema-agents-md-for-ai-tool-integration.md
+    - wiki/entities/autoskills.md
+    - wiki/entities/skills-sh.md
+    - wiki/entities/claude-code.md
+    - wiki/entities/fendo.md
+  source: raw/2026-04-10-httpsgithubcommidudevautoskills.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T02:06:16+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/tracing-the-thoughts-of-a-large-language-model.md
+    - wiki/concepts/circuit-tracing-in-language-models.md
+    - wiki/concepts/conceptual-universality-in-multilingual-language-models.md
+    - wiki/concepts/faithful-vs-motivated-reasoning-in-language-models.md
+    - wiki/entities/anthropic.md
+    - wiki/entities/claude.md
+    - wiki/entities/claude.md
+  source: raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T03:06:24+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-toolkit-principle-10-claude-code-principles.md
+    - wiki/concepts/the-toolkit-principle.md
+    - wiki/concepts/forge-science-backed-agent-assembly-system.md
+    - wiki/concepts/selective-tool-loading-and-context-hygiene.md
+    - wiki/concepts/skill-design-framework-for-ai-agents.md
+    - wiki/entities/forge.md
+    - wiki/entities/jig.md
+  source: raw/2026-04-08-the-toolkit-principle-10-claude-code-principles.md
+  status: success
+  notes: "Auto-ingested 7 pages (4 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T04:06:23+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/the-lottery-ticket-hypothesis-finding-sparse-trainable-neural-networks.md
+    - wiki/concepts/lottery-ticket-hypothesis.md
+    - wiki/concepts/iterative-pruning-technique.md
+    - wiki/concepts/initialization-sensitivity-in-sparse-neural-networks.md
+    - wiki/entities/jonathan-frankle.md
+    - wiki/entities/michael-carbin.md
+  source: raw/2026-04-10-180303635v5pdf.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T05:06:41+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/autoagent-fully-automated-and-zero-code-llm-agent-framework-hkudsautoagent-githu.md
+    - wiki/concepts/natural-language-driven-agent-building.md
+    - wiki/concepts/self-managing-workflow-generation.md
+    - wiki/concepts/intelligent-resource-orchestration.md
+    - wiki/entities/autoagent.md
+    - wiki/entities/metachain.md
+    - wiki/entities/hkuds.md
+  source: raw/2026-04-12-httpsgithubcomhkudsautoagent.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T06:06:19+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/timesfm-time-series-foundation-model-google-researchtimesfm.md
+    - wiki/concepts/timesfm-model-architecture.md
+    - wiki/concepts/agent-skill-integration-for-time-series-forecasting.md
+    - wiki/concepts/forecastconfig-forecasting-configuration-abstraction.md
+    - wiki/entities/timesfm.md
+    - wiki/entities/google-research.md
+  source: raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 2 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T07:06:24+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/introduction-to-recurrent-neural-networks-geeksforgeeks.md
+    - wiki/concepts/recurrent-neural-network-architecture.md
+    - wiki/concepts/backpropagation-through-time-bptt.md
+    - wiki/concepts/variants-of-recurrent-neural-networks.md
+    - wiki/concepts/variants-of-recurrent-neural-networks.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 6 pages (4 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T08:06:12+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/linear-regression-in-machine-learning-geeksforgeeks.md
+    - wiki/concepts/linear-regression.md
+    - wiki/concepts/gradient-descent-in-linear-regression.md
+    - wiki/concepts/regularization-techniques-in-linear-regression.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T09:06:37+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/logistic-regression-in-machine-learning-geeksforgeeks.md
+    - wiki/concepts/logistic-regression.md
+    - wiki/concepts/sigmoid-function.md
+    - wiki/concepts/maximum-likelihood-estimation-in-logistic-regression.md
+    - wiki/entities/geeksforgeeks.md
+  source: raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T10:06:50+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/large-language-model-reasoning-failures.md
+    - wiki/concepts/taxonomy-of-llm-reasoning-failures.md
+    - wiki/concepts/cognitive-biases-in-large-language-models.md
+    - wiki/concepts/theory-of-mind-in-large-language-models.md
+    - wiki/concepts/fundamental-cognitive-skills-executive-function-failures-llms.md
+    - wiki/entities/awesome-llm-reasoning-failures-repository.md
+    - wiki/entities/peiyang-song.md
+    - wiki/entities/pengrui-han.md
+    - wiki/entities/noah-goodman.md
+  source: raw/2026-04-10-260206176v1pdf.md
+  status: success
+  notes: "Auto-ingested 9 pages (4 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-21T11:06:44+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/axi-agent-experience-interface-kunchenguidaxi-github-repository.md
+    - wiki/concepts/axi-design-principles-for-agent-ergonomic-cli-tools.md
+    - wiki/concepts/toon-token-oriented-object-notation-format.md
+    - wiki/entities/axi-agent-experience-interface.md
+    - wiki/entities/gh-axi.md
+    - wiki/entities/chrome-devtools-axi.md
+  source: raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 3 entities, 0 synthesis)"
 ```

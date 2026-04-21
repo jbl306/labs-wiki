@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "5e880814019e287bffa500ebc398bafcb3aad10f0f27a56c87c53d911dba65c6"
 sources:
+  - raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
   - raw/2026-04-18-260414228v1pdf.md
 quality_score: 100
 concepts:
@@ -84,3 +85,4 @@ Guides the design of agentic coding tools, IDE assistants, and autonomous agent 
 ## Sources
 
 - [[Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems]] — primary source for this concept
+- [[Chrome DevTools MCP GitHub Repository]] — additional source

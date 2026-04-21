@@ -1,53 +1,59 @@
 ---
 title: "The Toolkit Principle | 10 Claude Code Principles"
 type: source
-created: 2026-04-08
-last_verified: 2026-04-08
-source_hash: "db7bbe28e5c6cd6654d03bbd74fe141b54ef9afb68018a4e7d641d5c7c9ab59e"
+created: 2026-04-21
+last_verified: 2026-04-21
+source_hash: "9b4415e18ce02c3994a6765c7b978bee13fc5418aed070f4f02a02a2ccca3db7"
 sources:
   - raw/2026-04-08-the-toolkit-principle-10-claude-code-principles.md
 quality_score: 100
 concepts:
   - the-toolkit-principle
-  - skill-design-framework-for-ai-agents
-  - selective-tool-loading-and-context-hygiene
+  - forge-science-backed-agent-assembly-system
+  - selective-tool-loading-context-hygiene-jig
+  - skill-design-framework-ai-agents
 related:
   - "[[The Toolkit Principle]]"
+  - "[[Forge: Science-Backed Agent Assembly System]]"
   - "[[Skill Design Framework for AI Agents]]"
-  - "[[Selective Tool Loading and Context Hygiene]]"
   - "[[Forge]]"
   - "[[jig]]"
 tier: hot
-tags: [context-hygiene, toolkit-principle, open-source, automation, ai-workflows, skill-design]
+knowledge_state: executed
+tags: [open-source, llm, best-practices, toolkit, agentic-workflows, skill-design, context-hygiene, automation]
 ---
 
 # The Toolkit Principle | 10 Claude Code Principles
 
 ## Summary
 
-This article introduces the Toolkit Principle, the capstone of the '10 Claude Code Principles' series, arguing that encoding knowledge into automated tools is essential for durable, high-quality AI workflows. It details how the open-source tools Forge and jig operationalize research-backed agent design and context management, turning principles into reproducible, auditable, and efficient practice. The article also provides a comprehensive framework for skill design, emphasizing evidence-based methodologies for building robust, specialized AI agents.
+This article introduces the Toolkit Principle, the capstone of the 10 Claude Code Principles series, arguing that encoding research-backed practices into automated tools is essential for durable, high-quality AI agent workflows. It details the design and architecture of Forge (an agent assembly system) and jig (a selective tool loader), showing how these tools operationalize the principles and research findings discussed throughout the series. The article provides a comprehensive, evidence-based framework for skill and agent design, emphasizing automation, context hygiene, and structured deliverables.
 
 ## Key Points
 
-- Knowledge decays without automation; principles must be encoded into tools to ensure consistent application.
-- Forge and jig are open-source systems that operationalize research-backed agent assembly and context hygiene.
-- A detailed, evidence-based framework for skill design is provided, covering vocabulary routing, anti-patterns, structured instructions, and context management.
+- Manual adherence to best practices decays rapidly; encoding principles into tools (the Toolkit Principle) ensures durable, consistent application.
+- Forge is an open-source system for assembling AI agent teams, grounded in research and mapped directly to the nine Claude Code principles.
+- jig is an open-source CLI for selective tool loading, enforcing context hygiene by activating only relevant tools per project session.
+- A detailed, research-backed framework for skill design is provided, covering vocabulary routing, anti-patterns, structured instructions, and more.
+- The article demonstrates how Forge and jig work together to create a closed-loop, science-backed, and auditable agentic workflow.
 
 ## Concepts Extracted
 
-- **[[The Toolkit Principle]]** — The Toolkit Principle asserts that encoding knowledge and best practices into automated tools is essential for ensuring their consistent application and preventing the natural decay that occurs when relying on memory or manual processes. It is the recursive application of the Hardening Principle, extending automation from AI pipelines to the very process of building and managing AI tools themselves.
-- **[[Skill Design Framework for AI Agents]]** — The Skill Design Framework is a comprehensive, research-backed methodology for constructing high-quality, reusable AI agent skills. It emphasizes expert vocabulary, dual-register descriptions, anti-pattern detection, structured instructions, and progressive disclosure to ensure skills are both effective and robust against common failure modes.
-- **[[Selective Tool Loading and Context Hygiene]]** — Selective tool loading is an operationalization of the Context Hygiene Principle, ensuring that only the tools, agents, and skills relevant to a specific task or project are loaded into an AI system's context. This minimizes context drift, reduces token consumption, and maximizes model performance by focusing attention on what matters.
+- **[[The Toolkit Principle]]** — The Toolkit Principle asserts that encoding research-backed practices and principles into automated tools is essential for ensuring durable, consistent, and high-quality workflows in AI agent development. Rather than relying on manual discipline or memory, the principle advocates for transforming best practices into deterministic, reusable, and enforceable components—turning knowledge into lasting capability.
+- **[[Forge: Science-Backed Agent Assembly System]]** — Forge is an open-source system for assembling AI agent teams, designed to operationalize research-backed principles for agent design, review, and workflow management. It encodes the nine Claude Code principles into its architecture, providing meta-skills, infrastructure agents, and a library of domain specialists, all grounded in published research.
+- **Selective Tool Loading and Context Hygiene (jig)** — Selective tool loading, operationalized by the open-source CLI jig, is the practice of activating only the specific tools, agents, and skills needed for a given project session, minimizing context bloat and maximizing model attention on relevant information. This approach enforces context hygiene, reduces silent costs, and ensures reproducible, auditable tool configurations.
+- **[[Skill Design Framework for AI Agents]]** — The Skill Design Framework is an evidence-based methodology for creating high-quality, reusable skills for AI agents. It synthesizes research findings into a set of DOs and DON'Ts, covering vocabulary routing, dual-register descriptions, anti-patterns, structured instructions, examples, progressive disclosure, and more, all mapped to the attention dynamics of large language models.
 
 ## Entities Mentioned
 
-- **[[Forge]]** — Forge is an open-source system for assembling AI agent teams grounded in published research and the 10 Claude Code Principles. It automates the creation of specialized agents, enforces best practices, and manages a library of reusable skills and templates.
-- **[[jig]]** — jig is an open-source CLI tool for selective tool loading and context management in Claude Code environments. It enables users to define per-project profiles specifying which tools, agents, and skills are active, optimizing context hygiene and reproducibility.
+- **[[Forge]]** — Forge is an open-source system for assembling AI agent teams, designed to operationalize research-backed principles for agent design, review, and workflow management. It provides meta-skills for planning, agent creation, skill packaging, and library management, as well as infrastructure agents for validation, context gathering, and review. Forge includes a library of domain specialists and reusable team templates.
+- **[[jig]]** — jig is an open-source CLI tool for selective tool loading in Claude Code and similar agentic environments. It allows users to create per-project profiles that specify which tools, skills, and agents are activated for each session, enforcing context hygiene and reducing unnecessary token consumption.
 
 ## Notable Quotes
 
-> "Knowledge without automation decays. Automation without knowledge is dangerous. The toolkit is where knowledge becomes durable." — J.D. Forsythe
-> "The meta-narrative of this series is straightforward: these articles teach you to harden fuzzy workflows. Forge is what happened when I applied that lesson to my own workflow for building AI tools." — J.D. Forsythe
+> "The Toolkit Principle: encode your principles into tools that enforce them automatically. Knowledge without automation decays. Automation without knowledge is dangerous. The toolkit is where knowledge becomes durable." — jdforsythe
+> "Every fuzzy LLM step that must behave identically every time should become a deterministic tool." — jdforsythe
+> "Deliberate context beats default context every time." — jdforsythe
 
 ## Source Details
 
@@ -55,6 +61,6 @@ This article introduces the Toolkit Principle, the capstone of the '10 Claude Co
 |-------|-------|
 | Original | `raw/2026-04-08-the-toolkit-principle-10-claude-code-principles.md` |
 | Type | article |
-| Author | J.D. Forsythe |
+| Author | jdforsythe |
 | Date | Unknown |
 | URL | https://jdforsythe.github.io/10-principles/principles/toolkit/ |

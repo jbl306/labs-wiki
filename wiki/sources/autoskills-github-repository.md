@@ -1,55 +1,57 @@
 ---
 title: "AutoSkills GitHub Repository"
 type: source
-created: 2026-04-10
-last_verified: 2026-04-10
-source_hash: "dc0945f923f9941ee6eb62e529f5f0be79e0943484843535425876ed4427ac4c"
+created: 2026-04-21
+last_verified: 2026-04-21
+source_hash: "423c7a2ae5c59c2efc5c796bac6d680f59be742da49a3c33d7b5b7e270fdc412"
 sources:
   - raw/2026-04-10-httpsgithubcommidudevautoskills.md
 quality_score: 100
 concepts:
   - automated-ai-skill-stack-installation
   - supply-chain-security-hardening-for-ai-agent-projects
-  - claude-code-skill-summarization
+  - universal-agent-schema-for-ai-tool-integration
 related:
   - "[[Automated AI Skill Stack Installation]]"
   - "[[Supply Chain Security Hardening for AI Agent Projects]]"
-  - "[[Claude Code Skill Summarization]]"
   - "[[AutoSkills]]"
   - "[[skills.sh]]"
   - "[[Claude Code]]"
+  - "[[fendo]]"
 tier: hot
-tags: [skill-stack, cli-tool, ai-agent, automation, claude-code, supply-chain-security]
+knowledge_state: executed
+tags: [automation, supply-chain-security, ai-skills, agent-integration, documentation, cli-tool]
 ---
 
 # AutoSkills GitHub Repository
 
 ## Summary
 
-AutoSkills is a CLI tool that scans a project's tech stack and automatically installs relevant AI agent skills, streamlining agent integration and skill management. It supports a wide range of modern technologies and offers zero-config operation, with special features for Claude Code workflows. The repository emphasizes supply chain security, deterministic installs, and best practices for testing and output handling.
+AutoSkills is a TypeScript-based CLI tool that scans a project's tech stack and automatically installs the most relevant AI agent skills. It leverages skills.sh for skill installation and supports a wide range of modern frontend, backend, mobile, cloud, and media technologies. The tool emphasizes supply chain security, deterministic installs, and seamless integration with Claude Code for agent skill summarization.
 
 ## Key Points
 
-- AutoSkills detects project technologies and installs matching AI agent skills from skills.sh.
-- Supports frontend, backend, mobile, cloud, and media stacks with broad technology coverage.
-- Includes supply chain security hardening, deterministic installs, and specialized output and testing helpers.
+- AutoSkills scans project files to detect technologies and installs matching AI agent skills automatically.
+- It supports a broad spectrum of frameworks, languages, backend systems, cloud providers, and media tools.
+- Supply chain security is enforced via strict dependency pinning, lockfile management, and release age gating.
 
 ## Concepts Extracted
 
-- **[[Automated AI Skill Stack Installation]]** — Automated AI Skill Stack Installation is a process where a tool scans a project's configuration and tech stack, then installs the most relevant AI agent skills without manual intervention. This approach streamlines the integration of AI capabilities into software projects, reducing setup friction and ensuring that the best practices and tools are available for developers.
-- **[[Supply Chain Security Hardening for AI Agent Projects]]** — Supply Chain Security Hardening is a set of practices and rules designed to protect AI agent projects from supply chain attacks and dependency vulnerabilities. It ensures that dependencies are managed securely, builds are deterministic, and contributors follow strict guidelines to minimize risk.
-- **[[Claude Code Skill Summarization]]** — Claude Code Skill Summarization is a process where AutoSkills generates a summary file (CLAUDE.md) listing the installed AI agent skills relevant to Claude Code workflows. This summary provides a quick reference for both human developers and AI agents, facilitating skill discovery and invocation.
+- **[[Automated AI Skill Stack Installation]]** — Automated AI Skill Stack Installation is a process where a tool scans a project's configuration and codebase to detect its technology stack, then installs the most relevant AI agent skills without manual intervention. This approach streamlines the integration of AI capabilities into diverse projects, reducing friction and ensuring best-fit skill selection.
+- **[[Supply Chain Security Hardening for AI Agent Projects]]** — Supply chain security hardening is a set of practices and rules designed to protect AI agent projects from dependency-based attacks and ensure deterministic, reproducible builds. By enforcing strict version pinning, lockfile management, and release age gating, projects reduce the risk of malicious or unstable packages entering the codebase.
+- **Universal Agent Schema for AI Tool Integration** — A Universal Agent Schema is a standardized structure for documenting and integrating AI agent skills within a project. It provides clear rules, testing practices, and output conventions, enabling consistent agent behavior and easier onboarding for contributors and automated tools.
 
 ## Entities Mentioned
 
-- **[[AutoSkills]]** — AutoSkills is a CLI tool that scans a project's tech stack and installs the best matching AI agent skills automatically. It is designed for zero-config operation and supports a wide range of modern technologies, streamlining agent integration and skill management.
-- **[[skills.sh]]** — skills.sh is a registry of AI agent skills used by AutoSkills to match and install relevant capabilities based on a project's tech stack. It provides a curated set of skills for agentic workflows.
-- **[[Claude Code]]** — Claude Code is an agentic coding workflow supported by AutoSkills, which generates summaries of installed skills for use by both human developers and AI agents. It emphasizes best practices and skill discoverability.
+- **[[AutoSkills]]** — AutoSkills is a CLI tool written in TypeScript that automates the detection of a project's technology stack and installs the best matching AI agent skills. It integrates with skills.sh for skill installation and supports a wide range of modern development environments, including frontend, backend, mobile, cloud, and media stacks.
+- **[[skills.sh]]** — skills.sh is a repository and platform for AI agent skills, providing modular skill files that can be installed into projects based on their technology stack. It is leveraged by AutoSkills to automate the installation of relevant agent skills.
+- **[[Claude Code]]** — Claude Code is an agentic coding environment that leverages markdown skill files for agent workflows. AutoSkills integrates with Claude Code by generating a summary file (CLAUDE.md) of installed skills, facilitating agent skill discovery and usage.
+- **[[fendo]]** — fendo is a tool used for supply chain security hardening in AI agent projects. It enforces rules such as version pinning, lockfile management, and release age gating to protect against dependency-based attacks.
 
 ## Notable Quotes
 
 > "One command. Your entire AI skill stack. Installed." — README
-> "Scans your project, detects your tech stack, and installs the best AI agent skills from skills.sh automatically." — README
+> "Never use `^` or `~` in dependency version specifiers. Always pin exact versions." — AGENTS.md
 
 ## Source Details
 

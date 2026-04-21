@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "bed95bb11bf69d800c6655091a905351b08f9bbfd77b74c912c1ee646e703b4f"
 sources:
+  - raw/2026-04-10-httpsgithubcommidudevautoskills.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-full-labs-wiki-implementation-complete-22f8c487.md
 quality_score: 100
 concepts:
@@ -94,3 +95,4 @@ AGENTS.md enables consistent multi-agent coordination in the labs-wiki system, a
 ## Sources
 
 - [[Copilot Session Checkpoint: Full Labs-Wiki Implementation Complete]] — primary source for this concept
+- [[AutoSkills GitHub Repository]] — additional source

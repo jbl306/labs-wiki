@@ -5,6 +5,7 @@ created: 2026-04-08
 last_verified: 2026-04-08
 source_hash: "5f635969f0ddd587b6295138d202654a9ab042a49563b6eeaa3f303248112b44"
 sources:
+  - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
   - raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
 quality_score: 100
 concepts:
@@ -87,3 +88,4 @@ The Living Documentation Principle is essential for any software engineering tea
 ## Sources
 
 - [[The Living Documentation Principle | 10 Claude Code Principles]] — primary source for this concept
+- [[10 Claude Code Principles | What the Research Actually Says]] — additional source

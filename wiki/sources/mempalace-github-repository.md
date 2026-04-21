@@ -1,59 +1,55 @@
 ---
 title: "MemPalace GitHub Repository"
 type: source
-created: 2026-04-11
-last_verified: 2026-04-11
-source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
+created: 2026-04-21
+last_verified: 2026-04-21
+source_hash: "d08a3ffff055c78ea944afe2266f216cbdf096a7a4848a8aaca92dff7205ba1d"
 sources:
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
 quality_score: 100
 concepts:
-  - palace-memory-architecture
-  - aaak-compression-dialect
-  - contradiction-detection-utility
+  - mempalace-memory-system
+  - closet-index-layer
+  - source-adapter-plugin-specification
 related:
-  - "[[Palace Memory Architecture]]"
-  - "[[AAAK Compression Dialect]]"
-  - "[[Contradiction Detection Utility]]"
+  - "[[MemPalace Memory System]]"
+  - "[[Closet Index Layer]]"
+  - "[[Source Adapter Plugin Specification]]"
   - "[[MemPalace]]"
   - "[[ChromaDB]]"
-  - "[[MCP (MemPalace Control Protocol)]]"
 tier: hot
-tags: [ai, llm, knowledge-management, retrieval, compression, memory, open-source]
+knowledge_state: executed
+tags: [semantic-search, privacy, local-first, knowledge-graph, ai-memory, extensibility, retrieval, plugin, adapter, benchmarking]
 ---
 
 # MemPalace GitHub Repository
 
 ## Summary
 
-MemPalace is an open-source, local-first AI memory system that organizes conversations and project data into a navigable structure inspired by the ancient memory palace technique. It achieves state-of-the-art recall on the LongMemEval benchmark by storing raw verbatim exchanges and leveraging semantic search, rather than relying on LLM-driven summarization. The system features a hierarchical architecture (wings, rooms, closets, drawers) and an experimental AAAK compression dialect for efficient token usage.
+MemPalace is a local-first, open-source AI memory system that stores conversation history and project content verbatim, enabling high-recall semantic search without cloud dependencies or API calls. It features a structured, pluggable architecture with a focus on privacy, reproducible benchmarks, and extensibility via adapters and backends. The system achieves state-of-the-art retrieval recall on public benchmarks and provides advanced features such as a knowledge graph, agent diaries, and a robust index/search pipeline.
 
 ## Key Points
 
-- MemPalace stores all user-AI interactions verbatim, avoiding lossy summarization.
-- Its palace-inspired structure (wings, rooms, halls, closets, drawers) enables efficient, context-rich retrieval.
-- Achieves 96.6% recall on LongMemEval in raw mode, outperforming summary-based approaches.
-- AAAK dialect is an experimental, lossy abbreviation system for token compression, not default storage.
-- Runs entirely locally, requiring no cloud or API keys, and is highly adaptable.
+- MemPalace stores all user data verbatim, never summarizing or paraphrasing, and enables scoped semantic search via a structured index (wings, rooms, drawers, closets).
+- The architecture is modular: retrieval backends are pluggable (default ChromaDB), and source adapters are formalized for extensibility and privacy control.
+- Benchmarks show 96.6% R@5 recall on LongMemEval (raw mode, no LLM or cloud required), with hybrid and rerank pipelines reaching up to 99%+; all results are reproducible and methodology is transparent.
 
 ## Concepts Extracted
 
-- **[[Palace Memory Architecture]]** — The Palace Memory Architecture is a hierarchical, spatially-inspired system for organizing AI memory, modeled after the ancient mnemonic technique of the memory palace. It divides user-AI interactions into wings, rooms, halls, closets, and drawers, enabling efficient, context-rich retrieval and navigation of vast conversational histories.
-- **[[AAAK Compression Dialect]]** — AAAK is an experimental, lossy abbreviation system designed to compress repeated entities and relationships in AI memory into fewer tokens. It is readable by any LLM without a decoder and aims to optimize context loading for large-scale, repeated data.
-- **[[Contradiction Detection Utility]]** — Contradiction Detection Utility is a separate tool in MemPalace that checks assertions against stored entity facts, identifying conflicts, stale data, and attribution errors in conversational memory. It enhances reliability by dynamically validating knowledge graph claims.
+- **[[MemPalace Memory System]]** — MemPalace is a local-first AI memory system that stores user data verbatim and enables high-recall, privacy-preserving semantic search. Its architecture is structured around the concepts of wings, rooms, drawers, and closets, supporting pluggable backends and adapters for extensibility.
+- **[[Closet Index Layer]]** — Closets are the index layer in MemPalace, storing compact pointers to verbatim content drawers. They enable fast, scoped semantic search by mapping topics, entities, and quotes to their corresponding content chunks.
+- **[[Source Adapter Plugin Specification]]** — The Source Adapter Plugin Specification (RFC 002) defines a formal contract for integrating new data sources into MemPalace. It enables third-party adapters to provide content for mining and retrieval, supporting extensibility, privacy, and structured metadata.
 
 ## Entities Mentioned
 
-- **[[MemPalace]]** — MemPalace is an open-source, local-first AI memory system designed to organize and retrieve conversational and project data with high fidelity. It employs a palace-inspired hierarchical structure and achieves state-of-the-art recall on the LongMemEval benchmark by storing raw verbatim exchanges and leveraging semantic search. The system is adaptable, runs entirely on the user's machine, and integrates with popular AI tools via MCP.
-- **[[AAAK Compression Dialect]]** — AAAK is an experimental abbreviation system for compressing repeated entities and relationships in AI memory. It is designed for context injection in LLM workflows, trading some fidelity for token efficiency, and is readable by any LLM without a decoder.
-- **[[ChromaDB]]** — ChromaDB is a vector database used by MemPalace for semantic search and storage of raw verbatim exchanges. It enables efficient retrieval of conversational and project data based on similarity and metadata filtering.
-- **[[MCP (MemPalace Control Protocol)]]** — MCP is the protocol/interface that allows AI agents (Claude, ChatGPT, Gemini CLI) to interact with MemPalace, enabling automated mining, searching, and context injection. It exposes 19 tools for AI workflows.
+- **[[MemPalace]]** — MemPalace is an open-source, local-first AI memory system that stores user data verbatim and enables high-recall semantic search. It is designed around a structured architecture (wings, rooms, drawers, closets) and supports pluggable backends, privacy, and extensibility via adapters.
+- **[[ChromaDB]]** — ChromaDB is the default vector-store backend used by MemPalace for semantic search and retrieval. It stores both the index layer (closets) and verbatim content chunks (drawers), supporting fast, scoped queries.
 
 ## Notable Quotes
 
-> "MemPalace takes a different approach: store everything, then make it findable." — README
-> "The architecture (wings, rooms, closets, drawers) is real and useful, even if it's not a magical retrieval boost." — A Note from Milla & Ben
-> "AAAK is a lossy abbreviation dialect for packing repeated entities into fewer tokens at scale." — README
+> "MemPalace stores your conversation history as verbatim text and retrieves it with semantic search. It does not summarize, extract, or paraphrase." — README
+> "100% recall is the design requirement — the target every search path is measured against. Anything less means forgetting, and forgetting means starting over." — AGENTS.md
+> "The only official sources for MemPalace are this GitHub repository, the PyPI package, and the docs site at mempalaceofficial.com. Any other domain — including mempalace.tech — is an impostor and may distribute malware." — README
 
 ## Source Details
 
@@ -61,6 +57,6 @@ MemPalace is an open-source, local-first AI memory system that organizes convers
 |-------|-------|
 | Original | `raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md` |
 | Type | repo |
-| Author | Milla Jovovich & Ben Sigman |
-| Date | 2026-04-07 |
+| Author | Unknown |
+| Date | Unknown |
 | URL | https://github.com/milla-jovovich/mempalace |

@@ -21,6 +21,7 @@ tier: archive
 tags: [copilot-session, agents, homelab, ml-sprint, nba, calibration, nba-ml-engine, durable-knowledge, dashboard, agent-coordination, prediction-filtering, fileback, checkpoint, documentation]
 checkpoint_class: project-progress
 retention_mode: compress
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Sprint 55 Implementation and Deployment

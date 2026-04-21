@@ -21,6 +21,7 @@ tier: hot
 checkpoint_class: durable-workflow
 retention_mode: retain
 tags: [agents, workflow, image-ranking, content-extraction, copilot-session, durable-knowledge, mempalace, labs-wiki, wiki-ingestion, validation, graph, durable-workflow, fileback, checkpoint]
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: URL Followup Pass

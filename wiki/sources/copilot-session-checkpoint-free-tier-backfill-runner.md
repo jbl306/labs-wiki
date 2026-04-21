@@ -18,6 +18,7 @@ tier: hot
 checkpoint_class: durable-workflow
 retention_mode: retain
 tags: [agents, backfill, automation, cron, copilot-session, durable-knowledge, rate-limit, mempalace, labs-wiki, wiki-ingestion, homelab, fileback, checkpoint]
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Free Tier Backfill Runner

@@ -1,8 +1,8 @@
 ---
 title: "Copilot Session Checkpoint: Fixing Android Share Ingest API"
 type: source
-created: 2026-04-18
-last_verified: 2026-04-18
+created: 2026-04-07
+last_verified: 2026-04-21
 source_hash: "c4284a8516fc117385cc15ec1ab8aa86c6b6302f7cc15494065cd9252c71a0f5"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-android-share-ingest-api-bbff237c.md
@@ -17,48 +17,117 @@ related:
   - "[[Auto-Type-Detection in API Ingest Requests]]"
   - "[[HTTP Shortcuts]]"
   - "[[Labs-Wiki Ingest API]]"
+  - "[[Homelab]]"
+  - "[[Labs-Wiki]]"
 tier: hot
-tags: [labs-wiki, Server-Side, Android, fileback, checkpoint, copilot-session, API, homelab, Debugging, HTTP Shortcuts, Ingest, durable-knowledge]
+tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, labs-wiki, Server-Side, Android, API, Debugging, HTTP Shortcuts, Ingest]
 checkpoint_class: durable-debugging
 retention_mode: retain
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Fixing Android Share Ingest API
 
 ## Summary
 
-This session checkpoint documents the debugging and resolution process for a 422 Unprocessable Entity error encountered when sharing URLs from the Android HTTP Shortcuts app to the labs-wiki ingest API. The investigation revealed quirks in the HTTP Shortcuts scripting API's request body handling, leading to server-side improvements including a universal ingest endpoint, auto-type-detection, and enhanced debug logging. Ultimately, the user discovered they had been using the wrong share button, and the original scripting shortcut approach was restored with the backend improvements retained.
+The user reported a 422 Unprocessable Entity error when sharing URLs from Android (HTTP Shortcuts app) to the labs-wiki ingest API. The debugging process involved multiple iterations: adding a form endpoint, then a universal parsing endpoint, adding debug logging, and discovering that HTTP Shortcuts' `sendHttpRequest()` sends empty bodies. The server-side fixes (universal body parsing, auto-type-detection) are deployed and working. The docs were ultimately reverted to the original scripting shortcut approach after the user realized they had been tapping the wrong share button.
 
 ## Key Points
 
-- Initial 422 error caused by HTTP Shortcuts sending empty request bodies, incompatible with JSON Pydantic model expectations.
-- Server-side fix introduced a universal ingest endpoint handling query params, JSON, form-encoded, and raw body formats with auto-type-detection.
-- Debug endpoint and verbose logging were added to diagnose request contents and assist troubleshooting.
-- User error (clicking wrong share button) was the root cause; original scripting shortcut method was restored in docs.
-- Backend improvements remain deployed for robustness and future debugging.
+- Added `/api/ingest/form` endpoint accepting form-encoded data
+- Committed, pushed, rebuilt and redeployed container
+- Rebuilt, redeployed, tested all 5 formats successfully
+- Added `/api/debug` endpoint to dump raw requests
+- Added comprehensive request logging (`INGEST DEBUG`) to the `_parse_ingest_params` function
+- User mentioned they had added "JSON encode" option to the variable
 
-## Concepts Extracted
+## Execution Snapshot
 
-- **[[Universal Ingest Endpoint for Flexible API Request Parsing]]** — A universal ingest endpoint is designed to robustly handle multiple request body formats for an API that ingests shared content. This approach addresses client-side inconsistencies and limitations by sequentially attempting to parse query parameters, JSON bodies, form-encoded data, and raw body content, providing graceful fallback and auto-type detection.
-- **[[HTTP Shortcuts Android App Scripting API Quirks]]** — The HTTP Shortcuts Android app provides scripting capabilities to automate HTTP requests, but its scripting API exhibits a known quirk where the `sendHttpRequest()` function sends empty request bodies for both JSON and form-encoded data. This behavior complicates integration with APIs expecting structured request bodies.
-- **[[Auto-Type-Detection in API Ingest Requests]]** — Auto-type-detection is a server-side heuristic that infers the content type of an ingest request when the explicit `type` field is omitted. It improves usability by reducing required client parameters and handling ambiguous inputs gracefully.
+**Files updated:**
+- `wiki-ingest-api/app.py`: Major refactor — universal ingest handler, debug endpoint, auto-type-detection, request logging
+- `wiki-ingest-api/README.md`: Updated endpoint table (added `/api/ingest/form`)
+- `docs/capture-sources.md`: Reverted to original scripting shortcut docs (net: no change from original)
 
-## Entities Mentioned
+**Commits pushed to main (chronological):**
+- `ac13076` feat(api): add /api/ingest/form endpoint
+- `c0a0d8f` docs: update Android share to use /api/ingest/form
+- `ef7d062` fix(api): universal ingest endpoint — handles any body format
+- `c866964` docs: use query params for HTTP Shortcuts script
+- `f871ed5` fix(api): auto-detect type, simplify Android share
+- `a14b255` docs: revert Android share docs back to scripting shortcut
 
-- **[[HTTP Shortcuts]]** — HTTP Shortcuts is an Android app that allows users to create customizable shortcuts to execute HTTP requests with scripting capabilities. It supports both regular shortcuts and scripting shortcuts, enabling automation of HTTP interactions. However, its scripting API has known limitations, including sending empty request bodies when using `sendHttpRequest()` for JSON or form-encoded data.
-- **[[Labs-Wiki Ingest API]]** — The labs-wiki ingest API is a server-side service that accepts shared content from various clients, including Android apps, for automatic wiki page creation. It originally expected JSON Pydantic model bodies but was enhanced with a universal ingest endpoint to handle multiple input formats and auto-type-detection. It includes debug endpoints and verbose logging to facilitate troubleshooting.
+**Current deployed state:**
+- wiki-ingest-api container is running with all server-side improvements
+- `/api/ingest` and `/api/ingest/form` both use universal parser
+- `/api/debug` endpoint exists for request inspection (no auth needed)
+- Auto-type-detection active (type field now optional)
+- Debug logging active on all ingest requests
+- Docs are back to original scripting shortcut approach
+
+## Technical Details
+
+- **HTTP Shortcuts `sendHttpRequest()` body behavior**: Both JSON and form-encoded bodies arrive as completely empty (`body_len=0`). This is a known quirk of the scripting API. The built-in Regular Shortcut HTTP client may behave differently.
+- **Universal parser priority**: query params → JSON body → form-encoded body → raw body fallback (auto-detects URL vs text)
+- **Auto-type-detection**: If `type` field is omitted, server checks if content starts with `http://` or `https://` → "url", else → "text"
+- **Homelab deployment**: `docker compose --env-file ../.env` is required when running from `compose/` dir. The `.env` lives at `/home/jbl/projects/homelab/.env`, not in `compose/`.
+- **Compose structure**: `compose.wiki.yml` is included from `docker-compose.yml` via `include:`. Services: `wiki-ingest-api` (FastAPI on port 8000) and `wiki-auto-ingest` (file watcher sidecar).
+- **Caddy proxy**: wiki-ingest-api is proxied at `wiki-ingest.jbl-lab.com` through Cloudflare → Caddy. Requests from Caddy arrive from `172.20.1.2`.
+- **Auto-ingest side effect**: Test files written to `raw/` get auto-processed by the wiki-auto-ingest sidecar within seconds, creating wiki pages. Must clean up both `raw/` test files AND any generated `wiki/` pages.
+- **The actual user issue**: User was clicking the wrong share button in Android, not the HTTP Shortcuts share target. The scripting shortcut with `sendHttpRequest()` + JSON body works fine when properly triggered.
+- **Debug endpoint** (`/api/debug`): Still deployed, returns full request dump (method, URL, query params, headers, body). No auth required. Useful for future debugging.
+- **IngestRequest Pydantic model**: Still defined in app.py but no longer used by any endpoint (universal handler reads raw Request). Could be cleaned up.
+
+## Important Files
+
+- `wiki-ingest-api/app.py`
+- Core API server — all ingest endpoints
+- Major changes: universal `_parse_ingest_params()` (lines ~148-232), `_do_ingest()` with auto-type-detection (lines ~235-260), debug endpoint `/api/debug` (lines ~135-147), combined route handler for `/api/ingest` and `/api/ingest/form` (lines ~262-290)
+- Has verbose `INGEST DEBUG` logging on every ingest request
+
+- `docs/capture-sources.md`
+- User-facing docs for all capture channels (CLI, browser, iOS, Android, GitHub Issues, ntfy, direct API)
+- Android section (line ~132) documents Scripting Shortcut with `sendHttpRequest()` + JSON body
+- Currently restored to original version from `ac13076`
+
+- `wiki-ingest-api/README.md`
+- API endpoint reference
+- Updated to include `/api/ingest/form` endpoint in table
+
+- `/home/jbl/projects/homelab/compose/compose.wiki.yml`
+- Docker compose for wiki services (not in labs-wiki repo)
+- References `${WIKI_INGEST_PATH}` from homelab `.env`
+- Two services: `wiki-ingest-api`, `wiki-auto-ingest`
+
+## Next Steps
+
+No pending tasks — user's issue was resolved (wrong share button). All server improvements are deployed and working.
+
+**Potential cleanup if desired:**
+- Remove `/api/debug` endpoint and verbose `INGEST DEBUG` logging once Android share is confirmed working
+- Remove unused `IngestRequest` Pydantic model from app.py (no longer referenced by any endpoint)
+- The `docs/capture-sources.md` still references `YOUR_API_URL` and `YOUR_TOKEN` placeholders in the Android section — could mention the actual URL `wiki-ingest.jbl-lab.com`
+- Update `tasks/lessons.md` with the HTTP Shortcuts debugging lesson
+
+## Related Wiki Pages
+
+- [[Universal Ingest Endpoint for Flexible API Request Parsing]]
+- [[HTTP Shortcuts Android App Scripting API Quirks]]
+- [[Auto-Type-Detection in API Ingest Requests]]
+- [[HTTP Shortcuts]]
+- [[Labs-Wiki Ingest API]]
+- [[Homelab]]
+- [[Labs-Wiki]]
 
 ## Notable Quotes
 
-> ""HTTP Shortcuts `sendHttpRequest()` body behavior: Both JSON and form-encoded bodies arrive as completely empty (`body_len=0`). This is a known quirk of the scripting API."" — Durable Session Summary
-> ""If `type` field is omitted, server checks if content starts with `http://` or `https://` → 'url', else → 'text'"" — Technical Details
+No notable quotes extracted.
 
 ## Source Details
 
 | Field | Value |
 |-------|-------|
 | Original | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-android-share-ingest-api-bbff237c.md` |
-| Type | note |
+| Type | checkpoint |
 | Author | Unknown |
-| Date | 2026-04-18T03:23:51.483387Z |
+| Date | 2026-04-07 |
 | URL | N/A |

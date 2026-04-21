@@ -177,6 +177,12 @@ For targeted re-processing or when auto-ingest is not running:
 5. Append operation to `wiki/log.md`
 6. Rebuild `wiki/index.md`
 
+**Deterministic checkpoint refresh:**
+- For Copilot checkpoint raws that already contain durable structured summaries,
+  prefer `python3 scripts/reprocess_checkpoint_raws.py` when you need to refresh
+  `wiki/sources/copilot-session-checkpoint-*.md` without calling the GitHub
+  Models compile path.
+
 **Rules:**
 - Never manually rewrite files in `raw/`; the only automated edits are `status` updates plus replacement of the deterministic fetched-content block for `type: url` sources and deterministic extracted-content block for `type: file` asset-backed sources
 - Every fact in a wiki page must trace to a source via `sources:` field

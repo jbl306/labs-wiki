@@ -1,8 +1,8 @@
 ---
 title: "Copilot Session Checkpoint: GitHub Crawling and Richer Extraction"
 type: source
-created: 2026-04-18
-last_verified: 2026-04-18
+created: 2026-04-08
+last_verified: 2026-04-21
 source_hash: "e2f4e2c57a91e050124e6a177d9272a75a50ab4d9ee6cb6bb30f2ad73e5652bb"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-github-crawling-and-richer-extraction-a4ef6de5.md
@@ -16,48 +16,125 @@ related:
   - "[[Image Filtering for Vision-Based LLM Extraction]]"
   - "[[Richer Concept Extraction Prompt for LLM Wiki Pages]]"
   - "[[Labs-Wiki]]"
+  - "[[Homelab]]"
+  - "[[Docker]]"
 tier: hot
-tags: [labs-wiki, llm, docker, agents, auto-ingest, fileback, checkpoint, knowledge-wiki, copilot-session, graph, vision-api, homelab, github, durable-knowledge]
-checkpoint_class: durable-architecture
+tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, labs-wiki, graph, agents, llm, docker, auto-ingest, knowledge-wiki, vision-api, github]
+checkpoint_class: durable-debugging
 retention_mode: retain
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: GitHub Crawling and Richer Extraction
 
 ## Summary
 
-This session checkpoint documents enhancements to a personal LLM-powered knowledge wiki's auto-ingest pipeline, focusing on deep GitHub repository crawling, improved image filtering for vision processing, and richer concept extraction for wiki pages. The improvements were deployed in a Docker-based homelab environment, resulting in more comprehensive and higher-quality wiki content.
+The user is building a personal LLM-powered knowledge wiki (labs-wiki) and needed several enhancements to the auto-ingest pipeline: fixing Android share issues (prior session), adding deep GitHub repo crawling, fixing image format filtering for vision processing, and improving LLM extraction quality to produce richer concept pages. All changes were deployed to a Docker-based homelab infrastructure.
 
 ## Key Points
 
-- Implemented deep GitHub repo crawling using Git Trees API with prioritized file fetching and budget-based limits.
-- Fixed private repository access by prioritizing a personal access token with repo scope over the GitHub Models API token.
-- Enhanced image filtering to exclude unsupported SVGs and site chrome images, improving ingestion success with vision API.
-- Rewrote the extraction prompt to produce richer concept pages with multi-paragraph explanations, examples, limitations, and visual descriptions, increasing LLM processing time but improving output quality.
+- Added universal body parsing, auto-type detection, debug endpoint to wiki-ingest-api
+- Server-side improvements remain deployed
+- Confirmed full pipeline worked: raw source captured via Android share → auto-ingest processed → 9 wiki pages created (6 concepts, 2 entities, 1 source)
+- User asked whether wiki should be pushed to GitHub
+- Advised keeping wiki local (it's a living working copy), commit periodically for snapshots
+- Added `_crawl_github_tree()` function using Git Trees API (single request for full tree)
 
-## Concepts Extracted
+## Execution Snapshot
 
-- **[[GitHub Repository Deep Crawling for Wiki Ingestion]]** — Deep crawling of GitHub repositories enables comprehensive ingestion of source files beyond shallow metadata and README files, allowing a personal knowledge wiki to capture detailed architecture and documentation content. This approach uses the Git Trees API to fetch the entire file tree in a single request, followed by selective file content retrieval based on relevance and budget constraints.
-- **[[Image Filtering for Vision-Based LLM Extraction]]** — Image filtering improves the quality and success of vision-based LLM extraction by excluding unsupported or irrelevant image formats such as SVGs and site chrome images (logos, favicons, badges). This prevents ingestion failures and reduces noise in extracted content.
-- **[[Richer Concept Extraction Prompt for LLM Wiki Pages]]** — Enhancing the LLM extraction prompt to demand richer, more detailed concept pages improves the quality and usefulness of generated wiki content. This includes multi-paragraph explanations, specific details, limitations, examples, and visual descriptions, trading off quantity of concepts for depth and clarity.
+**Files updated:**
+- `scripts/auto_ingest.py`: Major enhancements — GitHub tree crawling, SVG/logo image filtering, richer extraction prompt, new concept page fields, 16K max_tokens
+- `wiki-ingest-api/app.py`: (Prior session) Universal ingest handler, debug endpoint, auto-type-detection
+- `/home/jbl/projects/homelab/compose/compose.wiki.yml`: Added `GITHUB_TOKEN=${WIKI_GITHUB_PAT}` env var
 
-## Entities Mentioned
+**Commits pushed to main (this session):**
+- `a3b0ef6` feat(ingest): crawl GitHub repo subdirectories on ingest
+- `d14cef9` fix(ingest): prefer GITHUB_TOKEN over GITHUB_MODELS_TOKEN for repo API
+- `0df677d` fix(ingest): filter SVG and site chrome from vision pipeline
+- `0177987` feat(ingest): deeper extraction — richer concept pages
+- `165e90e` (homelab repo) feat(wiki): add GITHUB_TOKEN for private repo crawling
 
-- **[[Labs-Wiki]]** — Labs-Wiki is a personal knowledge wiki powered by large language models (LLMs) designed to ingest, process, and organize technical and conceptual content. It supports automated ingestion pipelines, including deep GitHub repository crawling, vision-based image processing, and rich concept extraction to generate detailed wiki pages. Labs-Wiki runs in a Docker-based homelab infrastructure and serves as a living working copy of knowledge for the user.
-- **GitHub Trees API** — The GitHub Trees API provides a way to retrieve the entire file tree of a repository in a single request. The endpoint `GET /repos/{owner}/{repo}/git/trees/HEAD?recursive=1` returns a JSON structure listing all files and directories recursively, enabling efficient enumeration of repository contents for tools and automation.
-- **GPT-4.1 Vision API** — GPT-4.1 Vision API is a multimodal extension of the GPT-4 language model that supports image input processing. It accepts images in specific MIME types (PNG, JPEG, WEBP, GIF) and integrates vision capabilities with natural language understanding to enhance content extraction and reasoning.
+**Deployed state:**
+- wiki-auto-ingest container is running with all improvements
+- wiki-ingest-api container unchanged this session (still has prior session's universal parser)
+- ML article successfully re-ingested with richer output (12 pages)
+- Homelab repo fully crawled (18 pages including all docs/)
+
+**Wiki state:**
+- 69 total entries in index.md
+- Several old shallow ML concept pages remain as orphans (e.g., `linear-regression.md` vs new `linear-regression-algorithm.md`) — not cleaned up
+
+## Technical Details
+
+- **GitHub Trees API**: `GET /repos/{owner}/{repo}/git/trees/HEAD?recursive=1` returns full file tree in one request. Individual files fetched via `/repos/{owner}/{repo}/contents/{path}` with `Accept: application/vnd.github.raw+json` header.
+- **Token priority for GitHub API**: `GITHUB_TOKEN` (PAT with repo scope) must be preferred over `GITHUB_MODELS_TOKEN` (GitHub Models API key without repo scope). Private repos return 404 with the Models token.
+- **Crawl budget system**: 30K char budget for tree files, 20K for README, 50K total cap. Priority: docs/ dirs → root files → everything else. Individual files capped at 8K chars.
+- **Vision API format restriction**: GPT-4.1 via GitHub Models only accepts png/jpeg/webp/gif. SVGs cause 400 errors that fail all retries since the same images are sent each time.
+- **Image filtering**: Two layers — URL patterns (skip logo/icon/favicon/badge/avatar/svg) and MIME whitelist (only `_VISION_MIMES = {"image/png", "image/jpeg", "image/webp", "image/gif"}`).
+- **Extraction depth tradeoff**: Richer prompt produces fewer concepts (10 vs 20 from same article) but each is substantially more useful. LLM processing takes ~90s vs ~50s. The 16K max_tokens accommodates this.
+- **File watcher behavior**: `watch_raw.py` uses `on_modified` events from inotify. Files owned by root (created by Docker) need `docker exec touch` to trigger re-processing since host-level `touch` may need sudo.
+- **Orphan page issue**: Re-ingesting with the new prompt creates pages with different slugs (e.g., `linear-regression-algorithm.md` vs `linear-regression.md`). Old pages are not automatically cleaned up.
+- **Homelab deployment**: `docker compose --env-file ../.env` from `compose/` dir. Wiki services defined in `compose.wiki.yml`, included from main `docker-compose.yml`. `.env` at `/home/jbl/projects/homelab/.env`.
+- **og:image still collected from sites**: The first image URL comes from og:image meta tags (not filtered by the logo/icon pattern). The `gfg_200x200-min.png` (GeeksforGeeks favicon) passed because it doesn't match the skip pattern — it's a 200x200 PNG. Could add size-based filtering in the future.
+
+## Important Files
+
+- `scripts/auto_ingest.py`
+- Core auto-ingest pipeline — all extraction, page generation, URL fetching
+- Added: `_crawl_github_tree()` (~lines 130-245), `_should_crawl()`, `_priority_sort_key()`
+- Modified: `SYSTEM_PROMPT` (~lines 527-600) — richer extraction with new fields
+- Modified: `generate_concept_page()` (~lines 754-850) — renders limitations, example, visual sections
+- Modified: `download_images_as_base64()` (~lines 450-480) — MIME whitelist instead of prefix check
+- Modified: HTML handler image collection (~lines 430-440) — skip logo/icon/favicon patterns
+- Modified: GitHub token priority (~line 330) — `GITHUB_TOKEN` before `GITHUB_MODELS_TOKEN`
+- Modified: `max_tokens=16000` (~line 651)
+
+- `scripts/watch_raw.py`
+- File watcher that triggers auto_ingest.py on new/modified raw sources
+- Not modified this session but important for understanding trigger behavior
+
+- `/home/jbl/projects/homelab/compose/compose.wiki.yml`
+- Docker compose for wiki services (not in labs-wiki repo)
+- Added `GITHUB_TOKEN=${WIKI_GITHUB_PAT}` to wiki-auto-ingest environment (~line 52)
+
+- `wiki-ingest-api/app.py`
+- FastAPI capture service — receives sources from Android/browser/CLI
+- Modified in prior session (universal parser, debug endpoint) — not touched this session
+
+- `wiki/index.md`
+- Auto-generated wiki index — currently 69 entries
+- Contains orphan entries from old shallow ML concept pages
+
+## Next Steps
+
+**Potential cleanup/improvements:**
+- **Orphan page cleanup**: Old shallow ML concept pages (e.g., `linear-regression.md`, `decision-trees.md`) still exist alongside new richer versions (`linear-regression-algorithm.md`). Should delete old ones and rebuild index.
+- **og:image filtering**: Small site favicons/logos that come via og:image meta tags still pass through (e.g., gfg_200x200-min.png). Could add minimum dimension check or URL heuristic.
+- **Remove debug endpoint**: `/api/debug` in app.py still deployed (no auth required). Should remove once Android share is confirmed stable.
+- **Remove unused IngestRequest model**: Pydantic model in app.py no longer referenced by any endpoint.
+- **Clean up verbose INGEST DEBUG logging**: Still active in app.py from prior debugging session.
+
+No immediate user request pending — all tasks from this session are complete.
+
+## Related Wiki Pages
+
+- [[GitHub Repository Deep Crawling for Wiki Ingestion]]
+- [[Image Filtering for Vision-Based LLM Extraction]]
+- [[Richer Concept Extraction Prompt for LLM Wiki Pages]]
+- [[Labs-Wiki]]
+- [[Homelab]]
+- [[Docker]]
 
 ## Notable Quotes
 
-> "Richer prompt produces fewer concepts (10 vs 20 from same article) but each is substantially more useful." — Session Summary
-> "Wiki provides 'what and why', code provides 'how exactly' — complementary." — User discussion on code repo inclusion
+No notable quotes extracted.
 
 ## Source Details
 
 | Field | Value |
 |-------|-------|
 | Original | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-github-crawling-and-richer-extraction-a4ef6de5.md` |
-| Type | note |
+| Type | checkpoint |
 | Author | Unknown |
-| Date | 2026-04-18 |
+| Date | 2026-04-08 |
 | URL | N/A |

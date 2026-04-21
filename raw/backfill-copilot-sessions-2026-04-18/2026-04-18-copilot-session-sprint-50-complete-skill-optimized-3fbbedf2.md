@@ -4,7 +4,7 @@ type: text
 captured: 2026-04-18T03:23:51.483387Z
 source: copilot-session-curator
 tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, nba-ml-engine, mempalace, agents, dashboard]
-status: pending
+status: ingested
 ---
 
 # Copilot Session Checkpoint Export

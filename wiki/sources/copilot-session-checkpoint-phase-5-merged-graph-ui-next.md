@@ -16,8 +16,11 @@ related:
   - "[[Full-Corpus Wikilink Cleanup and Lint Resolution]]"
   - "[[Synthesis Batch Runner for Merge Cluster Backlog]]"
   - "[[Durable Copilot Session Checkpoint]]"
-tier: hot
+tier: archive
 tags: [mempalace, checkpoint, agents, nba-ml-engine, wiki, synthesis, labs-wiki, fileback, durable-knowledge, graph, quality, copilot, copilot-session, automation]
+checkpoint_class: project-progress
+retention_mode: compress
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Phase 5 Merged; Graph UI Next

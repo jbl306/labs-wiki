@@ -16,6 +16,7 @@ tier: hot
 checkpoint_class: durable-workflow
 retention_mode: retain
 tags: [agents, worktree, copilot-session, durable-knowledge, artifact-control, pilot, labs-wiki, baseline-verification, repo-rules, graph, durable-workflow, fileback, checkpoint]
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Pilot Worktree Baseline

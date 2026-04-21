@@ -11,10 +11,6 @@ concepts:
   - custom-agents-in-vs-code
 related:
   []
-  []
-  []
-  []
-  []
 tier: hot
 tags: [ai, vs-code, agent, workflow, security, customization]
 ---

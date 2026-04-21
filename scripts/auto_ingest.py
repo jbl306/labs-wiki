@@ -2566,7 +2566,7 @@ def append_log(log_path: Path, entry: dict) -> None:
     block = f"""
 - timestamp: {entry["timestamp"]}
   operation: {entry["operation"]}
-  agent: auto-ingest
+  agent: {entry["agent"]}
   targets:
 {targets_yaml}
   source: {entry["source"]}

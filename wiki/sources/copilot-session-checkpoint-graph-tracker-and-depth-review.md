@@ -19,6 +19,7 @@ tier: hot
 checkpoint_class: durable-architecture
 retention_mode: retain
 tags: [agents, wiki-curation, checkpoint-tracker, copilot-session, durable-knowledge, mempalace, labs-wiki, depth-audit, graph-analysis, durable-architecture, nba-ml-engine, template-design, graph, synthesis-layer, fileback, checkpoint]
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Graph Tracker and Depth Review

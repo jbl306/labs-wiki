@@ -1,8 +1,8 @@
 ---
 title: "Copilot Session Checkpoint: Full Labs-Wiki Implementation Complete"
 type: source
-created: 2026-04-18
-last_verified: 2026-04-18
+created: 2026-04-07
+last_verified: 2026-04-21
 source_hash: "bed95bb11bf69d800c6655091a905351b08f9bbfd77b74c912c1ee646e703b4f"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-full-labs-wiki-implementation-complete-22f8c487.md
@@ -17,47 +17,192 @@ related:
   - "[[Multi-Device Ingestion API for Labs-Wiki]]"
   - "[[Labs-Wiki]]"
   - "[[FastAPI]]"
+  - "[[Homelab]]"
+  - "[[LLM Wiki]]"
 tier: hot
-tags: [labs-wiki, agent-schema, agents, fastapi, fileback, checkpoint, llm-wiki, copilot-session, homelab, knowledge-management, durable-knowledge, multi-device-ingestion]
-checkpoint_class: durable-architecture
+tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, labs-wiki, agents, agent-schema, fastapi, llm-wiki, knowledge-management, multi-device-ingestion]
+checkpoint_class: durable-workflow
 retention_mode: retain
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Full Labs-Wiki Implementation Complete
 
 ## Summary
 
-This document details the comprehensive development and completion of the labs-wiki project, an LLM-powered personal knowledge wiki inspired by Karpathy's LLM Wiki pattern. The project was executed in six phases, covering planning, implementation, validation, and integration with tools like VS Code Copilot, Copilot CLI, and OpenCode, culminating in a fully functional GitHub repository.
+The user is building two public GitHub documentation repos: **claude** (jbl306/claude, completed earlier) and **labs-wiki** (jbl306/labs-wiki). The primary focus has been on labs-wiki — an LLM-powered personal knowledge wiki based on Karpathy's LLM Wiki pattern, optimized for VS Code Copilot, Copilot CLI, and OpenCode. The approach was research-heavy (analyzing top implementations, extracting best features), then plan-driven (detailed phased plan with validation gates), and finally full implementation across 6 phases. The user explicitly requested phase-by-phase implementation with branch-per-phase, commit, test, and validation workflow.
 
 ## Key Points
 
-- The labs-wiki project was planned and implemented in six detailed phases with validation gates at each stage.
-- The architecture includes a three-layer wiki structure with raw immutable sources, LLM-compiled wiki pages, and a universal agent schema.
-- Integration with multiple tools (VS Code Copilot, Copilot CLI, OpenCode) was achieved through a universal schema and shared skill definitions.
-- A FastAPI-based ingestion API supports multi-device source ingestion with security and file handling features.
+- User asked to create a "claude" repo teaching non-technical people about Claude AI
+- Created 22-file documentation repo at /tmp/claude with 14 sections + examples
+- Pushed to https://github.com/jbl306/claude (public)
+- User asked to create "labs-wiki" repo analyzing Karpathy's LLM wiki gist + top 10 implementations
+- Created comprehensive plan with 5 phases, 20 todos
+- Created GitHub repo at https://github.com/jbl306/labs-wiki
 
-## Concepts Extracted
+## Execution Snapshot
 
-- **[[Labs-Wiki Architecture and Implementation]]** — Labs-Wiki is a personal knowledge wiki powered by large language models (LLMs), designed following Karpathy's LLM Wiki pattern. It is optimized for integration with VS Code Copilot, Copilot CLI, and OpenCode, enabling seamless knowledge ingestion, querying, and maintenance. The architecture emphasizes modularity, quality control, and multi-device ingestion.
-- **[[Universal Agent Schema (AGENTS.md) for AI Tool Integration]]** — AGENTS.md is a universal schema file designed to be the authoritative configuration and knowledge constitution for the labs-wiki system. It standardizes conventions, workflows, frontmatter standards, lint rules, quality scoring, and agent personas, enabling seamless interoperability across multiple AI-assisted tools such as VS Code Copilot, Copilot CLI, and OpenCode.
-- **[[Multi-Device Ingestion API for Labs-Wiki]]** — The multi-device ingestion API is a FastAPI-based service designed to centralize and secure knowledge capture from diverse sources including iOS, Android, browsers, CLI tools, and GitHub issues. It supports JSON and multipart file uploads with authentication, sanitization, and notification features to ensure robust and safe ingestion into the labs-wiki system.
+**Files created in ~/projects/labs-wiki/ (45 files, 2967 insertions):**
 
-## Entities Mentioned
+**Root configs:**
+- AGENTS.md — Universal schema (257 lines): conventions, workflows, frontmatter standards, lint rules, quality scoring, agent personas
+- README.md — Architecture diagrams, quickstart, capture channels, skills reference
+- opencode.json — wiki-maintainer + researcher agent definitions
+- .github/copilot-instructions.md — Always-on Copilot instructions (208 lines)
+- .gitignore, LICENSE (MIT), setup.sh
 
-- **[[Labs-Wiki]]** — Labs-Wiki is a personal knowledge wiki project powered by large language models, designed to implement Karpathy's LLM Wiki pattern. It integrates with VS Code Copilot, Copilot CLI, and OpenCode, providing a universal schema and multi-device ingestion capabilities. The project was developed in six phases, including planning, implementation, validation, and documentation, and is hosted publicly on GitHub under the user jbl306.
-- **[[FastAPI]]** — FastAPI is a modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints. It is used in the labs-wiki project to implement the multi-device ingestion API, providing asynchronous request handling, easy authentication integration, and efficient file upload processing.
-- **ntfy.sh** — ntfy.sh is a simple HTTP-based notification service that allows sending push notifications to devices. In the labs-wiki project, ntfy.sh is integrated into the ingestion API to send non-blocking notifications upon successful knowledge capture events, enhancing observability and user awareness.
+**Skills (.github/skills/):**
+- wiki-setup/SKILL.md, wiki-ingest/SKILL.md, wiki-query/SKILL.md
+- wiki-lint/SKILL.md, wiki-update/SKILL.md, wiki-orchestrate/SKILL.md
+- .github/hooks/post-edit.json
+
+**Agent personas (agents/):**
+- researcher.md, compiler.md, curator.md, auditor.md
+
+**Templates (templates/):**
+- source-summary.md, concept-page.md, entity-page.md, synthesis-page.md
+
+**Python scripts (scripts/):**
+- scaffold.py — idempotent directory/file seeding
+- lint_wiki.py — 8 checks, quality scoring 0-100, staleness detection
+- compile_index.py — type-clustered index generation
+- ntfy-wiki-watcher.sh — ntfy → ingest API bridge
+
+**Documentation (docs/):**
+- architecture.md, memory-model.md, workflows.md, obsidian-setup.md, tool-setup.md, capture-sources.md
+
+**Ingestion API (wiki-ingest-api/):**
+- app.py — FastAPI with bearer auth, hash-based frontmatter, ntfy notifications, filename sanitization, 15MB limit
+- Dockerfile, requirements.txt, README.md
+
+**GitHub Actions (.github/workflows/):**
+- ingest-from-issue.yml — label-triggered source capture from issues
+
+**Wiki structure:**
+- wiki/index.md, wiki/log.md (seeded)
+- wiki/{sources,concepts,entities,synthesis}/.gitkeep
+- raw/.gitkeep, raw/assets/.gitkeep
+- .opencode/skills → ../.github/skills (symlink)
+
+**Plan files (pre-existing, not modified this session):**
+- plans/labs-wiki.md — Master plan v3.1 (~745 lines)
+- tasks/progress.md — Progress tracker (304 lines, 33 tasks, 62 tests)
+
+**SQL state:**
+- All 33 todos marked `done` + 3 copilot-instructions todos also `done`
+
+**Current state:**
+- All 6 phases implemented, all validation gates passed
+- Branch merged to main, pushed to https://github.com/jbl306/labs-wiki
+- Repo is fully functional with all planned files
+- No pending work on the implementation itself
+
+## Technical Details
+
+- **VS Code Copilot**: `.github/copilot-instructions.md` (always-on), `.github/skills/*/SKILL.md`, `.github/hooks/*.json`
+- **Copilot CLI**: `AGENTS.md` at root (primary), `.github/skills/`
+- **OpenCode**: `AGENTS.md`, `opencode.json`, `.opencode/skills/` (symlinked to `.github/skills/`)
+- All three tools read AGENTS.md — it's the universal schema ### Wiki Architecture
+- Three layers: `raw/` (immutable sources) → `wiki/` (LLM-compiled) → `AGENTS.md` (schema)
+- Two-phase ingest: Phase 1 extract (hash check + concept extraction) → Phase 2 compile (page generation + cross-refs)
+- Four page types: source (1:1 with raw), concept, entity, synthesis
+- Four sub-directories under wiki/: sources/, concepts/, entities/, synthesis/ ### Frontmatter Standards
+- Wiki pages: title, type, created, last_verified, source_hash, sources, quality_score, concepts, related, tier, tags
+- Raw sources: title, type, captured, source, url, content_hash, tags, status
+- Required wiki fields: title, type, created, sources ### Quality & Staleness
+- 0-100 score: completeness (25) + cross-refs (25) + attribution (25) + recency (25)
+- Staleness threshold: 90 days on last_verified
+- Tiers: hot → established → core → workflow ### Setup.sh Bug Fixed
+- Initial version resolved ROOT_DIR relative to SCRIPT_DIR by going up one level (`cd "$SCRIPT_DIR/.."`)
+- Since setup.sh is at repo root (not inside scripts/), this navigated to the parent directory
+- Fixed by checking if AGENTS.md exists in SCRIPT_DIR to determine if we're at root ### FastAPI App Details
+- Bearer token auth via WIKI_API_TOKEN env var
+- Filename sanitization via regex + Path.name to prevent path traversal
+- 15MB file size limit (checked both via file.size and content length)
+- Hash-based frontmatter generation using SHA-256
+- ntfy notifications on capture (non-blocking, failure doesn't fail ingest)
+- Two endpoints: /api/ingest (JSON), /api/ingest/file (multipart) ### Skill Format
+- agentskills.io YAML frontmatter: name, description, allowed-tools
+- Skills canonical in .github/skills/, symlinked to .opencode/skills/
+- 6 skills: wiki-setup, wiki-ingest, wiki-query, wiki-lint, wiki-update, wiki-orchestrate ### Key References
+- Karpathy gist: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+- rohitg00/agentmemory: 4-tier pipeline, hybrid retrieval, Ebbinghaus decay
+- NicholasSpisak/second-brain: idempotent wizard, sub-organization
+- NicholasSpisak/claude-code-subagents: 76+ YAML agent personas ### User's GitHub
+- Username: jbl306
+- Repos: jbl306/claude (complete), jbl306/labs-wiki (complete) ### User's Homelab
+- Host: beelink-gti13 / 192.168.1.238
+- Already has: ntfy.sh (cloud), Caddy reverse proxy, Docker Compose stacks
+- NTFY_SERVER and NTFY_TOPIC in .env
+- The wiki-ingest-api Docker container hasn't been deployed to the server yet (only code exists)
+
+## Important Files
+
+- ~/projects/labs-wiki/AGENTS.md
+- Universal schema read by all 3 AI tools — the "constitution" of the wiki
+- Created this session: 257 lines covering conventions, 5 workflows, frontmatter standards, lint rules, quality scoring, agent personas, skills reference
+- Key sections: Wiki Conventions, Workflows (ingest/query/lint/update/orchestrate), Index and Log Maintenance, Agent Personas, Skills, Validation Rules
+
+- ~/projects/labs-wiki/.github/copilot-instructions.md
+- Always-on VS Code Copilot context file
+- Created this session: 208 lines, reviewed by superpowers:code-reviewer, 3 issues fixed
+- References AGENTS.md as authoritative, includes capture channels, VS Code tips, superpowers integration
+
+- ~/projects/labs-wiki/wiki-ingest-api/app.py
+- FastAPI capture service — hub for all 6 ingestion channels
+- 206 lines: /health, /api/ingest (JSON), /api/ingest/file (multipart)
+- Bearer auth, SHA-256 hashing, ntfy notifications, filename sanitization, 15MB limit
+
+- ~/projects/labs-wiki/scripts/lint_wiki.py
+- Python lint tool — 8 checks, quality scoring 0-100
+- 205 lines: frontmatter validation, broken wikilinks, orphan detection, staleness, quality scoring
+- Tested: detects broken links (exit 1), stale pages, missing frontmatter
+
+- ~/projects/labs-wiki/plans/labs-wiki.md
+- Master implementation plan v3.1 (~745 lines)
+- Not modified this session — was the reference for all implementation work
+
+- ~/projects/labs-wiki/tasks/progress.md
+- Progress tracker: 25 features, 33 tasks, 62 validation tests
+- Not modified this session (progress tracked in SQL instead)
+- All tasks should now be marked done (only updated in SQL, not in the .md file)
+
+- ~/projects/labs-wiki/setup.sh
+- Bootstrap script: creates .opencode/skills symlink, validates structure
+- Bug fixed: ROOT_DIR resolution when script is at repo root vs inside scripts/
+
+## Next Steps
+
+All implementation is complete. The full 6-phase plan has been implemented, all validation gates passed, and everything is merged and pushed to GitHub.
+
+**Remaining optional work (not explicitly requested):**
+- Update tasks/progress.md to mark all tasks as ✅ Done (currently only tracked in SQL)
+- Deploy wiki-ingest-api to the homelab server (Docker container, compose.wiki.yml not yet created in the homelab repo)
+- Create a .env.example for the labs-wiki repo with placeholder variables
+- The progress.md still shows all tasks as ⬜ Pending — could be updated to reflect completion
+- Could tag a v1.0.0 release on GitHub
+
+## Related Wiki Pages
+
+- [[Labs-Wiki Architecture and Implementation]]
+- [[Universal Agent Schema (AGENTS.md) for AI Tool Integration]]
+- [[Multi-Device Ingestion API for Labs-Wiki]]
+- [[Labs-Wiki]]
+- [[FastAPI]]
+- [[Homelab]]
+- [[LLM Wiki]]
 
 ## Notable Quotes
 
-No notable quotes.
+No notable quotes extracted.
 
 ## Source Details
 
 | Field | Value |
 |-------|-------|
 | Original | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-full-labs-wiki-implementation-complete-22f8c487.md` |
-| Type | note |
+| Type | checkpoint |
 | Author | Unknown |
-| Date | 2026-04-18T03:23:51.483387Z |
+| Date | 2026-04-07 |
 | URL | N/A |

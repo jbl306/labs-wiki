@@ -20,6 +20,9 @@ related:
   - "[[Cloudflare]]"
 tier: hot
 tags: [mempalace, checkpoint, agents, dashboard, labs-wiki, containerization, homelab, fileback, durable-knowledge, copilot-session, media, routing, automation, monitoring]
+checkpoint_class: durable-debugging
+retention_mode: retain
+knowledge_state: validated
 ---
 
 # Copilot Session Checkpoint: Knightcrawler done, routing traced

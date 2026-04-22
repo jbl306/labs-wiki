@@ -396,12 +396,21 @@ Specific real-world uses with enough detail to understand when and why to apply 
 
 ---
 
-#### Synthesis Pages (zero or one): `wiki/synthesis/<slug>.md`
+#### Synthesis Pages (REQUIRED when criteria met): `wiki/synthesis/<slug>.md`
 
-**Only create synthesis pages when:**
-- The raw source clearly bridges 2+ **existing** wiki concepts/entities
-- There's genuine overlap or contrast worth analyzing
-- You can answer a meaningful cross-cutting question
+**You MUST create a synthesis page when ANY of these conditions hold:**
+- You created 2+ new concept pages that share a common theme (e.g. multiple
+  workflow patterns, multiple memory architectures, multiple eval methods)
+- The new entity/concept clearly contrasts with 1+ **existing** wiki page on
+  the same topic (e.g. new memory framework vs. existing one)
+- The raw source explicitly compares 2+ approaches you can name
+
+**Default: if you created ≥2 concepts in the same family, create a synthesis.**
+The previous bar of "only when bridging" was too conservative — synthesis is
+the highest-value page type and should be the rule, not the exception.
+
+Skip ONLY when the source is a single narrow topic with no comparable
+existing page.
 
 **Frontmatter schema:**
 ```yaml
@@ -527,28 +536,26 @@ Append to `wiki/log.md` with this exact format:
   notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis) via copilot-cli-gpt-5.4"
 ```
 
-### Step 7 — KG facts (optional but encouraged)
+### Step 7 — KG facts (REQUIRED for every entity)
 
-For each entity created, add facts to the MemPalace knowledge graph using `mempalace_kg_add`:
+**Do NOT call `mempalace_kg_add` directly.** The auto-ingest container has
+no MCP access. Instead, append one JSON object per fact to:
 
-**Example facts:**
 ```
-subject: "ReasoningBank"
-predicate: "created_by"
-object: "Google Research"
-source_closet: "wiki/entities/reasoningbank.md"
-valid_from: "2026-04-21"
-
-subject: "ReasoningBank"
-predicate: "published_at"
-object: "ICLR 2026"
-source_closet: "wiki/entities/reasoningbank.md"
-
-subject: "ReasoningBank"
-predicate: "implements"
-object: "Memory-Aware Test-Time Scaling"
-source_closet: "wiki/entities/reasoningbank.md"
+wiki/.kg-pending.jsonl
 ```
+
+A host-side replay job drains this file into MemPalace after each ingest.
+
+**Format (one JSON object per line, no trailing comma):**
+```json
+{"subject": "ReasoningBank", "predicate": "created_by", "object": "Google Research", "source_closet": "wiki/entities/reasoningbank.md", "valid_from": "2026-04-21"}
+{"subject": "ReasoningBank", "predicate": "published_at", "object": "ICLR 2026", "source_closet": "wiki/entities/reasoningbank.md"}
+{"subject": "ReasoningBank", "predicate": "implements", "object": "Memory-Aware Test-Time Scaling", "source_closet": "wiki/entities/reasoningbank.md"}
+```
+
+**How to write:** APPEND with `>>` (never overwrite). If the file does not
+exist, create it. Always end each line with a newline.
 
 **Predicates to consider:**
 - `created_by`, `developed_by`, `published_by`
@@ -688,7 +695,7 @@ TODAY: 2026-04-22
 7. **create** wiki/concepts/agent-memory-frameworks.md (deep explanation)
 8. **edit** RAW_PATH frontmatter: status → success
 9. **edit** wiki/log.md: append entry
-10. **mempalace_kg_add** 3 facts about ReasoningBank
+10. **append** wiki/.kg-pending.jsonl with 3 fact lines about ReasoningBank
 11. **Output JSON** with status report
 
 **Result:**

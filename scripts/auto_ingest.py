@@ -2961,6 +2961,161 @@ def send_ntfy(title: str, message: str, tags: str = "books") -> None:
 # ---------------------------------------------------------------------------
 
 
+def _compute_effort_for_raw(fm: dict) -> str:
+    """Default reasoning effort: 'high' for PDFs, 'medium' otherwise.
+
+    PDF detection: source URL contains '/pdf/' (arxiv) or ends with '.pdf'
+    (case-insensitive), or frontmatter type is 'file' with a .pdf extension.
+    Override with the WIKI_INGEST_EFFORT env var.
+    """
+    url = str(fm.get("url") or fm.get("source") or "").lower()
+    if "/pdf/" in url or url.endswith(".pdf"):
+        return "high"
+    if str(fm.get("type", "")).lower() == "file":
+        body_ref = str(fm.get("source") or "").lower()
+        if body_ref.endswith(".pdf"):
+            return "high"
+    return "medium"
+
+
+def replay_pending_kg_facts(project_root: Path) -> int:
+    """Drain wiki/.kg-pending.jsonl into MemPalace, if reachable.
+
+    Two strategies:
+      1. If MEMPALACE_API_URL is set (HTTP endpoint), POST each fact to
+         {url}/kg/add. Used when MemPalace is exposed as an HTTP service.
+      2. Otherwise, if the `mempalace` Python package is importable in the
+         current interpreter, call KnowledgeGraph.add_triple directly. This
+         is the host-side path (auto-ingest container does NOT have the
+         package installed, so this branch is a no-op there).
+
+    Successfully replayed lines are removed; failures stay in the file.
+    Returns the count replayed. No-op (returns 0) if file is missing.
+    """
+    pending_path = project_root / "wiki" / ".kg-pending.jsonl"
+    if not pending_path.exists():
+        return 0
+
+    facts: list[dict] = []
+    raw_lines: list[str] = []
+    for line in pending_path.read_text().splitlines():
+        if not line.strip():
+            continue
+        raw_lines.append(line)
+        try:
+            facts.append(json.loads(line))
+        except json.JSONDecodeError:
+            facts.append({})  # placeholder so indices line up
+
+    if not facts:
+        return 0
+
+    api_url = os.environ.get("MEMPALACE_API_URL", "").rstrip("/")
+    kg = None
+    if not api_url:
+        try:
+            from mempalace.knowledge_graph import KnowledgeGraph  # type: ignore
+            kg = KnowledgeGraph()
+        except ImportError:
+            log.info(
+                "KG facts pending in %s but neither MEMPALACE_API_URL nor "
+                "the `mempalace` package is available; leaving %d line(s) "
+                "for host-side replay (scripts/replay_kg_facts.py).",
+                pending_path, len(facts),
+            )
+            return 0
+
+    replayed = 0
+    remaining: list[str] = []
+    for raw, fact in zip(raw_lines, facts):
+        if not fact or not all(fact.get(k) for k in ("subject", "predicate", "object")):
+            log.warning("KG line missing required fields: %s", raw[:120])
+            remaining.append(raw)
+            continue
+        try:
+            if kg is not None:
+                kg.add_triple(
+                    subject=fact["subject"],
+                    predicate=fact["predicate"],
+                    obj=fact["object"],
+                    source_closet=fact.get("source_closet"),
+                    valid_from=fact.get("valid_from"),
+                )
+            else:
+                with httpx.Client(timeout=10.0) as client:
+                    resp = client.post(f"{api_url}/kg/add", json=fact)
+                    resp.raise_for_status()
+            replayed += 1
+        except Exception as exc:
+            log.warning("KG replay failed for %s: %s", raw[:100], exc)
+            remaining.append(raw)
+
+    if kg is not None:
+        try:
+            kg.close()
+        except Exception:
+            pass
+
+    if remaining:
+        pending_path.write_text("\n".join(remaining) + "\n")
+    else:
+        pending_path.unlink()
+    log.info("KG facts replayed: %d (remaining: %d)", replayed, len(remaining))
+    return replayed
+
+
+def commit_wiki_changes(project_root: Path, title: str, notes: str) -> bool:
+    """Stage and commit wiki/* changes after a successful ingest.
+
+    Returns True when a commit was created, False when there was nothing to
+    commit or git is unavailable. Raises only on subprocess invocation
+    errors that aren't related to "nothing to commit".
+    """
+    git = ["git", "-C", str(project_root), "--no-pager"]
+    # Skip if not a git repo or git missing
+    try:
+        head = subprocess.run(
+            [*git, "rev-parse", "--git-dir"],
+            capture_output=True, text=True, timeout=10,
+        )
+        if head.returncode != 0:
+            log.info("Skipping git commit: not a git repository")
+            return False
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        log.info("Skipping git commit: git unavailable")
+        return False
+
+    # Stage wiki/ + raw/ status updates (raw status changes are part of the
+    # ingest unit of work). Don't touch anything else (e.g. uncommitted
+    # script edits the user is working on).
+    subprocess.run([*git, "add", "wiki/", "raw/"], check=False, timeout=30)
+
+    # Anything to commit?
+    diff = subprocess.run(
+        [*git, "diff", "--cached", "--quiet"],
+        capture_output=True, timeout=10,
+    )
+    if diff.returncode == 0:
+        log.info("git auto-commit: nothing staged")
+        return False
+
+    short_title = (title or "raw source")[:60]
+    short_notes = (notes or "auto-ingest").strip().splitlines()[0][:200]
+    msg = (
+        f"wiki(auto-ingest): {short_title}\n\n{short_notes}\n\n"
+        "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+    )
+    commit = subprocess.run(
+        [*git, "commit", "-m", msg, "--no-verify"],
+        capture_output=True, text=True, timeout=30,
+    )
+    if commit.returncode != 0:
+        log.warning("git commit failed: %s", commit.stderr.strip())
+        return False
+    log.info("git auto-commit: %s", short_title)
+    return True
+
+
 def call_copilot_cli_ingest(
     raw_path: Path,
     project_root: Path,
@@ -3112,22 +3267,26 @@ def ingest_raw_source(
     if backend == "copilot-cli":
         # New Copilot CLI backend
         ingest_model = os.environ.get("WIKI_INGEST_MODEL", model or "gpt-5.4")
-        ingest_effort = os.environ.get("WIKI_INGEST_EFFORT", "xhigh")
-        
+        # Effort routing: env var wins; otherwise PDFs get 'high', everything
+        # else 'medium'. PDFs need extra reasoning for layout + math + abstract
+        # extraction; clean HTML/markdown does not.
+        env_effort = os.environ.get("WIKI_INGEST_EFFORT", "").strip()
+        ingest_effort = env_effort or _compute_effort_for_raw(fm)
+
         log.info(
             "Using copilot-cli backend (model=%s, effort=%s)",
             ingest_model, ingest_effort,
         )
-        
+
         result = call_copilot_cli_ingest(
             raw_path=raw_path,
             project_root=project_root,
             model=ingest_model,
             effort=ingest_effort,
         )
-        
+
         success = result.get("status") in ("success", "partial")
-        
+
         if success:
             # Notify
             if not validation_run:
@@ -3138,9 +3297,23 @@ def ingest_raw_source(
                 )
             # Rebuild index
             rebuild_index(project_root)
+            # Drain KG-pending JSONL into MemPalace (best-effort, non-blocking)
+            try:
+                replay_pending_kg_facts(project_root)
+            except Exception as exc:
+                log.warning("KG replay failed (non-fatal): %s", exc)
+            # Auto-commit wiki changes so on-disk graph + pages stay versioned
+            try:
+                commit_wiki_changes(
+                    project_root,
+                    title=fm.get("title", raw_path.stem),
+                    notes=result.get("notes", ""),
+                )
+            except Exception as exc:
+                log.warning("git auto-commit failed (non-fatal): %s", exc)
         else:
             log.error("Copilot CLI ingest failed: %s", result.get("notes", "Unknown error"))
-        
+
         return success
     
     # Legacy github-models backend (original implementation below)

@@ -29,10 +29,9 @@ Microsoft is a global technology company known for developing software, hardware
 |-------|-------|
 | Type | Organization |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | microsoft |
 | URL | https://www.microsoft.com/ |
 | Status | Active |
-
 ## Relevance
 
 Microsoft's development of LightGBM has advanced the state of gradient boosting, making scalable machine learning accessible to practitioners.

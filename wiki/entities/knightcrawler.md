@@ -34,10 +34,9 @@ KnightCrawler is a media automation stack in the homelab, comprising a Postgres 
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | jbl306 |
+| URL | https://github.com/jbl306/homelab |
 | Status | Active |
-
 ## Relevance
 
 KnightCrawler's performance optimization was a major focus of the session, demonstrating the impact of database indexing and container resource tuning. Its operational health is now reflected in the dashboard and compose files.

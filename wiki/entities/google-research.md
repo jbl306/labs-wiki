@@ -29,11 +29,10 @@ Google Research is the research division of Google, responsible for advancing co
 | Field | Value |
 |-------|-------|
 | Type | Organization |
-| Created | Unknown |
-| Creator | Unknown |
+| Created | 2025-09 |
+| Creator | google-research |
 | URL | https://research.google/ |
 | Status | Active |
-
 ## Relevance
 
 Google Research developed and published the Nested Learning paradigm and the Hope architecture.

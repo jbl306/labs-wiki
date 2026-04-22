@@ -31,10 +31,9 @@ MetaChain is the former name of the AutoAgent project, representing its earlier 
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | HKUDS |
+| URL | https://github.com/HKUDS/AutoAgent |
 | Status | Deprecated |
-
 ## Relevance
 
 MetaChain laid the foundation for AutoAgent's self-developing, fully-automated agent framework, influencing its architecture and design principles.

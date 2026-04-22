@@ -43,10 +43,9 @@ Labs-Wiki is a Karpathy-style LLM Wiki hosted in a homelab, featuring a persiste
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | jbl306 |
+| URL | https://github.com/jbl306/homelab |
 | Status | Active |
-
 ## Relevance
 
 Labs-Wiki serves as the backend for knowledge codification, agent-driven curation, and graph-based exploration. Its structure and workflow are central to the deduplication, agent optimization, and graph UI improvements described in the session.

@@ -1169,10 +1169,36 @@ def fetch_url_content(url: str) -> UrlFetchResult:
                 return fetch_url_content(html_url)
         except Exception:
             pass
-        # Fallback: fetch the abstract page
+        # Fallback: fetch the abstract page directly (NOT via fetch_url_content,
+        # which would re-match this same arxiv branch and recurse infinitely).
         abs_url = f"https://arxiv.org/abs/{paper_id}"
         log.warning("arxiv HTML not available for %s, falling back to abstract", paper_id)
-        return fetch_url_content(abs_url)
+        try:
+            abs_resp = httpx.get(
+                abs_url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; labs-wiki-bot/1.0)"},
+                follow_redirects=True,
+                timeout=URL_FETCH_TIMEOUT,
+            )
+            abs_resp.raise_for_status()
+            soup = BeautifulSoup(abs_resp.text, "html.parser")
+            for tag in soup(["script", "style", "nav", "footer"]):
+                tag.decompose()
+            text = soup.get_text(separator="\n", strip=True)
+            return UrlFetchResult(
+                text=text,
+                image_urls=[],
+                resolved_url=abs_url,
+                content_type=abs_resp.headers.get("content-type"),
+            )
+        except Exception as e:
+            log.warning("arxiv abstract fallback failed for %s: %s", paper_id, e)
+            return UrlFetchResult(
+                text="",
+                image_urls=[],
+                resolved_url=abs_url,
+                content_type=None,
+            )
 
     # --- t.co redirect handler ---
     if re.match(r"https?://t\.co/", url):

@@ -32,10 +32,9 @@ Chrome DevTools MCP is a server and plugin that enables coding agents to control
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | ChromeDevTools |
 | URL | https://github.com/ChromeDevTools/chrome-devtools-mcp |
 | Status | Active |
-
 ## Relevance
 
 It is a critical middleware for agentic coding workflows, providing deep browser automation and inspection capabilities to coding agents and IDEs. Its agent-agnostic design, robust toolset, and token-optimized outputs make it a versatile and reliable solution for browser-based automation and debugging.

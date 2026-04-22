@@ -30,10 +30,9 @@ Puppeteer is a Node.js library that provides a high-level API to control Chrome 
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | ChromeDevTools |
 | URL | https://github.com/puppeteer/puppeteer |
 | Status | Active |
-
 ## Relevance
 
 Puppeteer is integral to Chrome DevTools MCP's automation capabilities, allowing agents to perform browser actions programmatically and reliably.

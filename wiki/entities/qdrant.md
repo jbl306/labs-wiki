@@ -31,10 +31,9 @@ Qdrant is a vector database container running in the homelab, used for efficient
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | jbl306 |
 | URL | https://qdrant.io |
 | Status | Active |
-
 ## Relevance
 
 Qdrant is critical for AI and knowledge workflows, enabling fast vector search and powering MemPalace's backend. Its inclusion in the dashboard and resource tuning highlights its operational importance.

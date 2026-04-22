@@ -29,10 +29,9 @@ CLAUDE.md is a convention file automatically read by Claude Code agents at the s
 |-------|-------|
 | Type | Tool |
 | Created | 2026 |
-| Creator | Unknown |
+| Creator | midudev |
 | URL | https://jdforsythe.github.io/10-principles/principles/living-documentation/ |
 | Status | Active |
-
 ## Relevance
 
 CLAUDE.md is central to agentic workflows, acting as the primary source of operational context for agents. Its structure and freshness directly impact agent behavior, making it a focal point for implementing the Living Documentation Principle.

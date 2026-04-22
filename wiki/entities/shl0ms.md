@@ -30,10 +30,9 @@ SHL0MS is a researcher and co-author of the Autoreason framework, contributing t
 |-------|-------|
 | Type | Person |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | NousResearch |
 | URL | https://github.com/NousResearch/autoreason |
 | Status | Active |
-
 ## Relevance
 
 SHL0MS's contributions are central to the development and validation of Autoreason, providing both theoretical and practical advances in agent-based iterative refinement.

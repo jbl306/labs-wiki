@@ -33,10 +33,9 @@ Amit Shekhar is the founder of Outcome School and the creator of the 'llm-intern
 |-------|-------|
 | Type | Person |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | amitshekhariitbhu |
 | URL | https://x.com/amitiitbhu |
 | Status | Active |
-
 ## Relevance
 
 Amit Shekhar's work is significant for making complex LLM concepts accessible, fostering understanding of tokenization, attention, inference optimization, and related topics. His repository is a valuable resource for those seeking to deepen their knowledge of LLM internals.

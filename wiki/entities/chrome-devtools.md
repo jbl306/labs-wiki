@@ -30,10 +30,9 @@ Chrome DevTools is a suite of developer tools built into the Chrome browser for 
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | ChromeDevTools |
 | URL | https://github.com/ChromeDevTools/devtools-frontend |
 | Status | Active |
-
 ## Relevance
 
 It is the foundation for browser inspection and debugging in Chrome DevTools MCP, providing the APIs for trace recording, network analysis, and console inspection.

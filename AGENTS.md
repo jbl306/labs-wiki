@@ -183,6 +183,17 @@ For targeted re-processing or when auto-ingest is not running:
   `wiki/sources/copilot-session-checkpoint-*.md` without calling the GitHub
   Models compile path.
 
+**Post-Ingest Entity Enrichment:**
+
+After ingesting new sources, run `python3 scripts/enrich_entity_facts.py` to deterministically backfill null/Unknown values in the Key Facts tables of entity pages. The enricher:
+- Parses each `wiki/entities/*.md` and identifies missing values (Created, Creator, URL, Status)
+- Scans linked source pages for frontmatter (source_url, publication date, authors)
+- Applies heuristics: GitHub URLs → Creator field; arxiv IDs → Created date; Google Research blog → Creator = "Google Research"
+- No LLM calls — purely deterministic, stateless enrichment
+- Reports stats: `enriched N entities, M fields filled`
+
+This is useful after manual ingest or when sources already have rich metadata that can be extracted deterministically.
+
 **Rules:**
 - Never manually rewrite files in `raw/`; the only automated edits are `status` updates plus replacement of the deterministic fetched-content block for `type: url` sources and deterministic extracted-content block for `type: file` asset-backed sources
 - Every fact in a wiki page must trace to a source via `sources:` field

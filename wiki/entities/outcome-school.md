@@ -34,9 +34,8 @@ Outcome School is an educational organization founded by Amit Shekhar, dedicated
 | Type | Organization |
 | Created | Unknown |
 | Creator | Amit Shekhar |
-| URL | N/A |
+| URL | https://github.com/amitshekhariitbhu/llm-internals |
 | Status | Active |
-
 ## Relevance
 
 Outcome School is notable for its commitment to demystifying AI and LLM internals, supporting learners and practitioners with practical, easy-to-understand content. Its resources are referenced and maintained in the 'llm-internals' repository.

@@ -32,10 +32,9 @@ OpenMemory was a Docker-based memory stack comprising Qdrant, MCP, and a UI, pre
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | jbl306 |
+| URL | https://github.com/jbl306/homelab |
 | Status | Deprecated |
-
 ## Relevance
 
 OpenMemory's deprecation reflects a migration to more streamlined, local memory protocols (MemPalace). Its removal from documentation and architecture diagrams reduces technical debt and confusion.

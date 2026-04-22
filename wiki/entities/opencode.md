@@ -32,10 +32,9 @@ OpenCode is a code execution and tooling containerized environment used in the h
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | midudev |
+| URL | https://github.com/midudev/autoskills |
 | Status | Active |
-
 ## Relevance
 
 Fixing OpenCode's shell environment and path issues was necessary to restore reliable code execution capabilities in containerized workflows.

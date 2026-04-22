@@ -32,10 +32,9 @@ Cloudflare provides DNS, TLS termination, and tunnel services for the homelab en
 |-------|-------|
 | Type | Tool |
 | Created | 2026 |
-| Creator | Unknown |
+| Creator | midudev |
 | URL | https://blog.cloudflare.com/introducing-agent-memory/ |
 | Status | Active |
-
 ## Relevance
 
 Cloudflare is critical for enabling public HTTPS access to homelab services while allowing the internal proxy (Caddy) to remain HTTP-only. Its DNS and tunnel configuration are key to resolving LAN and public routing issues.

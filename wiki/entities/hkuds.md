@@ -32,10 +32,9 @@ HKUDS is the organization responsible for developing AutoAgent, an open-source L
 |-------|-------|
 | Type | Organization |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | HKUDS |
 | URL | https://github.com/HKUDS/AutoAgent |
 | Status | Active |
-
 ## Relevance
 
 HKUDS drives innovation in agentic AI, providing tools like AutoAgent that democratize agent development and support integration with diverse LLMs and workflows.

@@ -4190,3 +4190,24 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
 - ingest_method: self-synthesis (no LLM)
 - count: 1
   - wiki/sources/llm-wiki.md
+
+- timestamp: 2026-04-22T17:10:00+00:00
+  operation: ingest
+  agent: copilot-cli
+  ingest_method: manual-no-llm
+  targets:
+    - wiki/sources/google-research-reasoningbank-blog.md
+    - wiki/sources/arxiv-reasoningbank-scaling-agent-self-evolving.md
+    - wiki/entities/reasoningbank.md
+    - wiki/entities/synapse.md
+    - wiki/entities/agent-workflow-memory.md
+    - wiki/entities/webarena.md
+    - wiki/entities/swe-bench-verified.md
+    - wiki/concepts/agent-memory-frameworks.md
+    - wiki/concepts/memory-aware-test-time-scaling.md
+  sources:
+    - raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
+    - raw/2026-04-22-250925140v2pdf.md
+  status: success
+  notes: "Manual ingest of 2 failed raws (ReasoningBank blog + arxiv 2509.25140) with web_fetch for arxiv abstract. Created 2 source pages, 5 entity pages (1 primary + 4 supporting), 2 concept pages."
+```

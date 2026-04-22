@@ -34,9 +34,8 @@ Agent Memory is a managed, retrieval-based memory service for AI agents, develop
 | Type | Tool |
 | Created | 2026 |
 | Creator | Cloudflare |
-| URL | N/A |
+| URL | https://arxiv.org/abs/2509.25140 |
 | Status | Active |
-
 ## Relevance
 
 Agent Memory addresses context rot and context window limitations in agent workflows, offering durable, scalable, and exportable memory for production workloads. It integrates with Cloudflare Workers, supports bulk ingestion and direct tool use, and enables memory sharing across agents, people, and tools.

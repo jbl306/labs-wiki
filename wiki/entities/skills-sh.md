@@ -28,10 +28,9 @@ skills.sh is a registry of AI agent skills used by AutoSkills to match and insta
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
+| Creator | midudev |
 | URL | https://skills.sh |
 | Status | Active |
-
 ## Relevance
 
 skills.sh enables AutoSkills to select and install the best matching AI agent skills, supporting rapid integration and best practices.

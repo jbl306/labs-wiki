@@ -33,10 +33,9 @@ A containerization platform used to package and run applications in isolated env
 |-------|-------|
 | Type | Tool |
 | Created | 2026 |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | google-research |
+| URL | https://github.com/google-research/timesfm |
 | Status | Active |
-
 ## Relevance
 
 Enables deployment of the auto-ingest pipeline with all dependencies and configuration isolated, facilitating integration with the homelab environment and other services via Docker Compose.

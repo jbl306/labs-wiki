@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, labs-w
 checkpoint_class: project-progress
 checkpoint_class_rule: "fallback"
 retention_mode: compress
-status: pending
+status: failed
 ---
 
 # Copilot Session Checkpoint Export

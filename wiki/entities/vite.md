@@ -32,10 +32,9 @@ Vite is a modern frontend build tool used to scaffold and build the React 19 + T
 |-------|-------|
 | Type | Tool |
 | Created | 2020 |
-| Creator | Unknown |
+| Creator | kunchenguid |
 | URL | https://vitejs.dev |
 | Status | Active |
-
 ## Relevance
 
 Vite enables efficient development and build workflows for the React dashboard, supporting modern JavaScript and CSS tooling.

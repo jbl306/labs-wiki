@@ -4183,6 +4183,21 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md
   status: success
   notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+
+- timestamp: 2026-04-22T21:30:52Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-21-httpsgithubcommicrosoftmemento.md
+  targets:
+    - wiki/sources/microsoft-memento.md
+    - wiki/entities/memento.md
+    - wiki/entities/openmementos-dataset.md
+    - wiki/entities/vllm-block-masking-overlay.md
+    - wiki/concepts/block-masking-for-llm-kv-cache-compaction.md
+    - wiki/concepts/reasoning-trace-segmentation-and-iterative-summarization.md
+    - wiki/synthesis/training-time-segmentation-vs-inference-time-compaction-in-memento.md
+  status: success
+  notes: "Auto-ingested 7 pages (2 concepts, 3 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```
 
 ## 2026-04-22 — github-source-refresh

@@ -1,53 +1,61 @@
 ---
 title: "Memento"
 type: entity
-created: 2026-04-21
-last_verified: 2026-04-21
-source_hash: "7b344980e889d401d340d2539bd18583a585c26640fe19f36c596d887e647ba2"
+created: 2026-04-22
+last_verified: 2026-04-22
+source_hash: "83e4097d6c8d747e6aa2a78c7a183c40ba512003561361620dedae2faeaa34e2"
 sources:
   - raw/2026-04-21-httpsgithubcommicrosoftmemento.md
-quality_score: 68
 concepts:
-  - memento
+  - memento-blockwise-summarization-for-llms
+  - block-masking-for-llm-kv-cache-compaction
+  - reasoning-trace-segmentation-and-iterative-summarization
 related:
-  - "[[Memento Blockwise Summarization for LLMs]]"
   - "[[microsoft/memento]]"
   - "[[Microsoft]]"
   - "[[OpenMementos Dataset]]"
+  - "[[vLLM Block Masking Overlay]]"
+  - "[[KV Cache and Paged Attention in Large Language Models]]"
 tier: hot
-tags: [llm, tool, memory, summarization]
+tags: [llm, framework, long-context, kv-cache, summarization, microsoft]
 ---
 
 # Memento
 
 ## Overview
 
-Memento is an open-source framework developed by Microsoft for extending the effective output length of large language models. It achieves this by segmenting chain-of-thought reasoning into blocks and generating summaries (mementos) after each block, which allows for selective eviction of context from the model's KV cache. The repository includes a data pipeline for formatting training data and a vLLM overlay for inference with block masking.
+Memento is an open-source framework from Microsoft for extending the effective output length of large language models without increasing the underlying context window. It structures chain-of-thought reasoning into explicit blocks and summaries, then uses those summaries as the durable state that survives after old reasoning blocks are evicted from the KV cache.
+
+What makes Memento notable is that it is not just a prompting trick. The repo combines a training-data pipeline for producing block-and-summary supervision with a patched vLLM runtime that performs cache compaction during inference, which makes the framework a coordinated training-plus-serving design rather than a single algorithmic tweak.
 
 ## Key Facts
 
 | Field | Value |
 |-------|-------|
-| Type | Tool |
-| Created | Unknown |
+| Type | Framework |
+| Created | 2026 |
 | Creator | Microsoft |
 | URL | https://github.com/microsoft/memento |
 | Status | Active |
 
-## Relevance
+## Core Concept
 
-Memento addresses a key limitation of transformer-based LLMs—their fixed context window—by enabling longer, more complex reasoning without increasing model size. Its approach is relevant for research and applications requiring extended context, such as advanced question answering, code generation, and scientific analysis.
+Memento addresses a core transformer limitation: every generated token normally remains part of the active context unless the model reaches the context limit. Memento changes that by asking the model to periodically write a compact summary of its reasoning and then treating that summary as the state that later steps attend to.
 
-## Associated Concepts
+The mechanism depends on two supporting ideas. First, the model has to learn the Memento format itself, which is captured in [[Memento Blockwise Summarization for LLMs]] and supported by [[Reasoning Trace Segmentation and Iterative Summarization]]. Second, the server has to understand those delimiters and compact the KV cache accordingly, which is the job of [[vLLM Block Masking Overlay]] and the broader idea in [[Block Masking for LLM KV Cache Compaction]].
 
-- **[[Memento Blockwise Summarization for LLMs]]** — Implements the blockwise summarization and KV cache compaction protocol.
+## Training and Inference Stack
+
+The `data/` pipeline converts raw chain-of-thought traces into supervised examples with sentence boundaries, scored transitions, dynamic-programming blocks, and judge-refined summaries. The `vllm/` overlay then patches stock vLLM 0.13.x so a served Memento checkpoint can watch for `<|summary_end|>` and evict the completed block from the KV cache.
+
+Together, those two halves let Memento replace "keep every old token forever" with "keep summaries plus whatever recent high-resolution context is still needed." That trade-off is what makes the framework interesting for long-form reasoning workloads such as code generation, scientific explanation, and multi-step analysis.
 
 ## Related Entities
 
-- **[[Microsoft]]** — Creator
-- **vLLM Overlay for Memento** — co-mentioned in source (Tool)
-- **[[OpenMementos Dataset]]** — co-mentioned in source (Dataset)
+- **[[Microsoft]]** — The organization publishing the framework and repository.
+- **[[OpenMementos Dataset]]** — Training data source for teaching models the Memento block+summary protocol.
+- **[[vLLM Block Masking Overlay]]** — Runtime implementation that makes summary-based cache compaction possible.
 
 ## Sources
 
-- [[microsoft/memento]] — where this entity was mentioned
+- [[microsoft/memento]] — primary repository and technical source

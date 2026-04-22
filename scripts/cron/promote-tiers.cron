@@ -1,1 +1,0 @@
-0 5 * * * cd /home/jbl/projects/labs-wiki && /usr/bin/python3 scripts/promote_tiers.py --apply >> /var/log/labs-wiki/promote_tiers.log 2>&1

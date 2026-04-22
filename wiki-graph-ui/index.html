@@ -25,6 +25,12 @@
   </header>
 
   <section>
+    <label for="ask-graph">Ask the graph</label>
+    <input id="ask-graph" type="search" placeholder="Natural-language query (Enter)" autocomplete="off" />
+    <button id="ask-graph-clear" class="secondary hidden" type="button">Clear results</button>
+  </section>
+
+  <section>
     <label for="search">Search</label>
     <input id="search" type="search" placeholder="Filter nodes by title or tag" autocomplete="off" />
   </section>
@@ -76,6 +82,12 @@
 
   <section>
     <button id="clear-filters" class="secondary">Clear filters</button>
+  </section>
+
+  <section id="ask-results" class="hidden">
+    <h3>Ask results</h3>
+    <div class="muted" id="ask-meta"></div>
+    <ol id="ask-results-list"></ol>
   </section>
 
   <section id="node-panel" class="hidden">

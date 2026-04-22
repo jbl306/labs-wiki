@@ -37,6 +37,14 @@ const state = {
   pathEnd: null,     // node id
   pathNodes: new Set(),  // node ids on shortest path
   pathEdges: [],     // [{source, target}] consecutive pairs on path
+  // R14 — NL "ask the graph" results
+  ask: {
+    active: false,
+    nodeIds: new Set(),  // top-K node ids
+    subgraphIds: new Set(),  // top-K + 1-hop neighbours
+    edgeKeys: new Set(),  // pathEdgeKey strings
+    results: [],  // raw response list
+  },
 };
 
 const STALE_DAYS_THRESHOLD = 90;
@@ -382,6 +390,79 @@ function escapeHTML(s) {
   return String(s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
 }
 
+// ---------- "Ask the graph" NL query (R14) --------------------------------
+
+const askEdgeKey = (s, t) => s < t ? `${s}|${t}` : `${t}|${s}`;
+
+function clearAskResults({ redraw = true } = {}) {
+  state.ask = {
+    active: false,
+    nodeIds: new Set(),
+    subgraphIds: new Set(),
+    edgeKeys: new Set(),
+    results: [],
+  };
+  const panel = document.getElementById("ask-results");
+  panel?.classList.add("hidden");
+  document.getElementById("ask-graph-clear")?.classList.add("hidden");
+  if (redraw) draw();
+}
+
+async function runAskGraph(q) {
+  const text = (q || "").trim();
+  if (!text) return;
+  const meta = document.getElementById("ask-meta");
+  const list = document.getElementById("ask-results-list");
+  const panel = document.getElementById("ask-results");
+  panel?.classList.remove("hidden");
+  if (meta) meta.textContent = "querying…";
+  if (list) list.innerHTML = "";
+  try {
+    const res = await fetch(`${API_BASE}/graph/query`, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify({ q: text, k: 10 }),
+    });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    const data = await res.json();
+    if (data.error) {
+      if (meta) meta.textContent = `backend: ${data.backend} — ${data.error}`;
+      return;
+    }
+    const top = data.nodes || [];
+    const subNodes = (data.subgraph && data.subgraph.nodes) || [];
+    const subEdges = (data.subgraph && data.subgraph.edges) || [];
+
+    state.ask.active = true;
+    state.ask.results = top;
+    state.ask.nodeIds = new Set(top.map((n) => n.id));
+    state.ask.subgraphIds = new Set(subNodes.map((n) => n.id));
+    // Always include the top-K themselves in the subgraph set.
+    for (const n of top) state.ask.subgraphIds.add(n.id);
+    state.ask.edgeKeys = new Set(subEdges.map((e) => askEdgeKey(e.source, e.target)));
+
+    if (meta) meta.textContent = `backend: ${data.backend} · top ${top.length} of ${data.k}`;
+    if (list) {
+      list.innerHTML = "";
+      for (const n of top) {
+        const li = document.createElement("li");
+        li.textContent = `${n.title} (${n.page_type}, score ${n.score})`;
+        li.title = n.id;
+        li.addEventListener("click", () => {
+          const local = state.filtered.nodes.find((x) => x.id === n.id);
+          if (local) selectNode(local);
+        });
+        list.appendChild(li);
+      }
+    }
+    document.getElementById("ask-graph-clear")?.classList.remove("hidden");
+    draw();
+  } catch (e) {
+    if (meta) meta.textContent = `error: ${e.message}`;
+  }
+}
+
 function handlePathClick(node) {
   if (!state.pathStart) {
     state.pathStart = node.id;
@@ -440,6 +521,7 @@ function draw() {
     ? new Set(state.pathEdges.map((e) => pathEdgeKey(e.source, e.target)))
     : null;
   const dimNonPath = state.pathMode && state.pathNodes.size > 0;
+  const askActive = state.ask.active && state.ask.subgraphIds.size > 0;
 
   ctx.lineWidth = 0.8 / view.scale;
   for (const e of edges) {
@@ -448,9 +530,12 @@ function draw() {
     if (!a || !b) continue;
     let strokeStyle;
     const isOnPath = pathEdgeSet && pathEdgeSet.has(pathEdgeKey(e.source, e.target));
+    const isAskEdge = askActive && state.ask.edgeKeys.has(pathEdgeKey(e.source, e.target));
     if (isOnPath) {
       strokeStyle = "rgba(94,234,212,0.95)";
-    } else if (dimNonPath) {
+    } else if (isAskEdge) {
+      strokeStyle = "rgba(94,234,212,0.6)";
+    } else if (dimNonPath || askActive) {
       strokeStyle = "rgba(120,130,150,0.06)";
     } else if (state.surprises && e.cross_community) {
       strokeStyle = "rgba(248,113,113,0.85)";
@@ -458,7 +543,7 @@ function draw() {
       strokeStyle = "rgba(120,130,150,0.25)";
     }
     ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = isOnPath ? 2.5 / view.scale : 0.8 / view.scale;
+    ctx.lineWidth = (isOnPath || isAskEdge) ? 2.5 / view.scale : 0.8 / view.scale;
     ctx.beginPath();
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(b.x, b.y);
@@ -470,7 +555,9 @@ function draw() {
   for (const n of visibleNodes) {
     const r = nodeRadius(n);
     const onPath = state.pathNodes.has(n.id);
-    const dimNode = dimNonPath && !onPath;
+    const inAskTop = askActive && state.ask.nodeIds.has(n.id);
+    const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
+    const dimNode = (dimNonPath && !onPath) || (askActive && !inAskSub);
     ctx.globalAlpha = dimNode ? 0.18 : 1.0;
     ctx.fillStyle = colorForCommunity(n.community);
     if (state.highlightedId === n.id) {
@@ -483,7 +570,7 @@ function draw() {
     ctx.beginPath();
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
     ctx.fill();
-    if (onPath) {
+    if (onPath || inAskTop) {
       ctx.strokeStyle = "#5eead4";
       ctx.lineWidth = 2.5 / view.scale;
       ctx.stroke();
@@ -843,6 +930,17 @@ function bindUI() {
     if (state.pathMode) exitPathMode(); else enterPathMode();
   });
   document.getElementById("path-panel-close")?.addEventListener("click", () => exitPathMode());
+  document.getElementById("ask-graph")?.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      runAskGraph(e.target.value);
+    }
+  });
+  document.getElementById("ask-graph-clear")?.addEventListener("click", () => {
+    const el = document.getElementById("ask-graph");
+    if (el) el.value = "";
+    clearAskResults();
+  });
   document.getElementById("node-panel-close").addEventListener("click", () => clearSelection());
 
   // Mobile drawer wiring — these elements are always in the DOM but only

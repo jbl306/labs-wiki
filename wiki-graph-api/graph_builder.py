@@ -32,6 +32,214 @@ from networkx.algorithms.community import greedy_modularity_communities
 log = logging.getLogger("graph_builder")
 
 # ---------------------------------------------------------------------------
+# Embeddings (R14) — optional, resilient
+# ---------------------------------------------------------------------------
+#
+# The NL-query endpoint (POST /graph/query) needs a vector for each node so it
+# can rank by cosine similarity. We compute these once per build and cache them
+# in CACHE_DIR/embeddings.npz keyed by (node_id, content_hash).
+#
+# Backend selection (in priority order):
+#   1. sentence-transformers (MiniLM-L6-v2) — best quality; default in prod.
+#   2. scikit-learn TfidfVectorizer — fully-local fallback; documented in
+#      requirements.txt. Lower fidelity but works offline with no model
+#      download.
+#   3. No-op — returns empty embeddings dict; /graph/query then returns a
+#      structured "embedding backend unavailable" response. Build still
+#      succeeds.
+#
+# All embeddings are stored as plain Python lists of floats on each node
+# (node["embedding"]) so the JSON artifact stays self-describing.
+
+EMBEDDING_FIELD = "embedding"
+EMBEDDING_DIM_DEFAULT = 384  # MiniLM-L6-v2
+
+# Module-level cached model instance to avoid reloading per build.
+_st_model = None
+_tfidf_state: dict[str, Any] = {}
+
+
+def _embedding_text(node: dict[str, Any]) -> str:
+    """Text used to embed a node — title + first 300 chars of summary."""
+    title = node.get("title", "") or ""
+    summary = (node.get("summary", "") or "")[:300]
+    return f"{title} {summary}".strip()
+
+
+def _try_load_sentence_transformers():
+    """Lazy-load sentence-transformers; return (model, dim) or (None, 0)."""
+    global _st_model
+    if _st_model is not None:
+        return _st_model, EMBEDDING_DIM_DEFAULT
+    try:
+        from sentence_transformers import SentenceTransformer  # type: ignore
+    except Exception as e:  # pragma: no cover — depends on host packages
+        log.info("sentence-transformers unavailable (%s); will try TF-IDF", e)
+        return None, 0
+    try:
+        _st_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
+        return _st_model, EMBEDDING_DIM_DEFAULT
+    except Exception as e:  # pragma: no cover — model download/load failure
+        log.warning("sentence-transformers load failed (%s); will try TF-IDF", e)
+        return None, 0
+
+
+def _embed_with_st(texts: list[str]) -> list[list[float]] | None:
+    model, _ = _try_load_sentence_transformers()
+    if model is None:
+        return None
+    try:
+        vecs = model.encode(texts, normalize_embeddings=True, show_progress_bar=False)
+        # vecs is a numpy array; convert to plain list of lists.
+        return [list(map(float, v)) for v in vecs]
+    except Exception as e:  # pragma: no cover
+        log.warning("sentence-transformers encode failed: %s", e)
+        return None
+
+
+def _embed_with_tfidf(texts: list[str]) -> list[list[float]] | None:
+    """Fallback embedding via sklearn TF-IDF (L2-normalised dense vectors)."""
+    try:
+        from sklearn.feature_extraction.text import TfidfVectorizer  # type: ignore
+        from sklearn.preprocessing import normalize  # type: ignore
+    except Exception as e:
+        log.info("sklearn unavailable (%s); embeddings disabled for this build", e)
+        return None
+    try:
+        vec = TfidfVectorizer(max_features=4096, ngram_range=(1, 2), stop_words="english")
+        mat = vec.fit_transform(texts)
+        mat = normalize(mat, norm="l2", axis=1)
+        # Persist the vectorizer in module state so /graph/query can transform
+        # the user's query text the same way at request time.
+        _tfidf_state["vectorizer"] = vec
+        # Densify for storage in node["embedding"].  Corpus is < 1k nodes so
+        # 4096-dim vectors are fine memory-wise (~32MB).
+        dense = mat.toarray()
+        return [list(map(float, row)) for row in dense]
+    except Exception as e:  # pragma: no cover
+        log.warning("TF-IDF embed failed: %s", e)
+        return None
+
+
+def compute_node_embeddings(
+    nodes: list[dict[str, Any]],
+    cache_dir: Path | None,
+) -> tuple[dict[str, list[float]], str]:
+    """Compute or load node embeddings.
+
+    Returns ``({node_id: vector}, backend_name)`` where backend_name is one of
+    ``"sentence-transformers"``, ``"tfidf"``, or ``"none"``. Cache file
+    structure (npz when numpy available, JSON otherwise):
+        ``embeddings.npz`` storing one array per ``"<node_id>::<content_hash>"``
+        key. Stale entries (changed hash) are recomputed; missing entries are
+        recomputed; everything else is loaded as-is.
+    """
+    if not nodes:
+        return {}, "none"
+
+    cache_path = (cache_dir / "embeddings.npz") if cache_dir else None
+    cache_dir and cache_dir.mkdir(parents=True, exist_ok=True)
+
+    cached: dict[str, list[float]] = {}
+    np_mod = None
+    try:
+        import numpy as _np  # type: ignore
+        np_mod = _np
+    except Exception:
+        np_mod = None
+
+    if cache_path and cache_path.exists() and np_mod is not None:
+        try:
+            with np_mod.load(cache_path, allow_pickle=False) as npz:
+                for key in npz.files:
+                    cached[key] = list(map(float, npz[key].tolist()))
+        except Exception as e:
+            log.warning("failed to load embedding cache %s: %s", cache_path, e)
+            cached = {}
+
+    needed_idx: list[int] = []
+    needed_keys: list[str] = []
+    needed_texts: list[str] = []
+    by_id: dict[str, list[float]] = {}
+
+    for i, n in enumerate(nodes):
+        nid = n["id"]
+        h = n.get("content_hash") or ""
+        key = f"{nid}::{h}"
+        if key in cached:
+            by_id[nid] = cached[key]
+        else:
+            needed_idx.append(i)
+            needed_keys.append(key)
+            needed_texts.append(_embedding_text(n))
+
+    backend = "none"
+    if needed_texts:
+        vecs = _embed_with_st(needed_texts)
+        if vecs is not None:
+            backend = "sentence-transformers"
+        else:
+            vecs = _embed_with_tfidf(needed_texts)
+            if vecs is not None:
+                backend = "tfidf"
+        if vecs is None:
+            log.warning("no embedding backend available; /graph/query will be disabled")
+            return by_id, "none"
+        for key, idx, vec in zip(needed_keys, needed_idx, vecs):
+            nid = nodes[idx]["id"]
+            by_id[nid] = vec
+            cached[key] = vec
+    else:
+        # All hits — backend choice is moot; report whichever is available so
+        # /graph/query can still embed the *query* text at request time.
+        backend = "sentence-transformers" if _try_load_sentence_transformers()[0] is not None else (
+            "tfidf" if _tfidf_state.get("vectorizer") is not None else "cached"
+        )
+
+    # Persist updated cache (npz if numpy, else JSON sidecar).
+    if cache_path and cached:
+        try:
+            if np_mod is not None:
+                arrays = {k: np_mod.asarray(v, dtype="float32") for k, v in cached.items()}
+                np_mod.savez_compressed(cache_path, **arrays)
+            else:
+                json_path = cache_path.with_suffix(".json")
+                json_path.write_text(json.dumps(cached))
+        except Exception as e:
+            log.warning("failed to write embedding cache: %s", e)
+
+    return by_id, backend
+
+
+def embed_query(text: str) -> list[float] | None:
+    """Embed an ad-hoc query string using whichever backend is loaded.
+
+    Used by main.py's /graph/query handler. Returns None if no backend is
+    available for the running process.
+    """
+    if not text or not text.strip():
+        return None
+    # Prefer ST if loaded.
+    model, _ = _try_load_sentence_transformers()
+    if model is not None:
+        try:
+            v = model.encode([text], normalize_embeddings=True, show_progress_bar=False)[0]
+            return [float(x) for x in v]
+        except Exception as e:  # pragma: no cover
+            log.warning("ST query embed failed: %s", e)
+    vec = _tfidf_state.get("vectorizer")
+    if vec is not None:
+        try:
+            from sklearn.preprocessing import normalize  # type: ignore
+            mat = vec.transform([text])
+            mat = normalize(mat, norm="l2", axis=1)
+            return [float(x) for x in mat.toarray()[0]]
+        except Exception as e:  # pragma: no cover
+            log.warning("TF-IDF query embed failed: %s", e)
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Parsing
 # ---------------------------------------------------------------------------
 
@@ -598,6 +806,7 @@ def to_node_link(
 ) -> dict[str, Any]:
     nodes = []
     for n, data in g.nodes(data=True):
+        page = pages_by_id.get(n)
         nodes.append(
             {
                 "id": n,
@@ -609,8 +818,12 @@ def to_node_link(
                 "path": data.get("path", ""),
                 "summary": data.get("summary", ""),
                 "last_verified": data.get("last_verified", ""),
+                "checkpoint_class": data.get("checkpoint_class", ""),
+                "retention_mode": data.get("retention_mode", ""),
                 "community": communities.get(n, -1),
                 "degree": g.degree(n),
+                # content_hash drives the embedding cache key (R14).
+                "content_hash": page.content_hash if page else "",
             }
         )
 
@@ -797,6 +1010,16 @@ def build(
 
     pages_by_id = {p.node_id: p for p in pages}
     payload = to_node_link(g, communities, analysis, pages_by_id, stats)
+
+    # R14 — node embeddings for the NL query endpoint. Cached per (id, hash).
+    embeddings, backend = compute_node_embeddings(payload["nodes"], cache_dir)
+    for n in payload["nodes"]:
+        vec = embeddings.get(n["id"])
+        if vec is not None:
+            n[EMBEDDING_FIELD] = vec
+    payload["embedding_backend"] = backend
+    log.info("embeddings: backend=%s vectors=%d", backend, len(embeddings))
+
     payload["build_seconds"] = round(time.time() - t0, 3)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)

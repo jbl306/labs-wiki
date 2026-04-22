@@ -29,11 +29,16 @@ import time
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, Header, HTTPException, Query
+from fastapi import Body, FastAPI, Header, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 
-from graph_builder import build as build_graph_artifact
+from graph_builder import (
+    EMBEDDING_FIELD,
+    build as build_graph_artifact,
+    compute_node_embeddings,
+    embed_query,
+)
 
 log = logging.getLogger("wiki-graph-api")
 
@@ -291,7 +296,134 @@ def graph_checkpoints(
 
 @app.get("/graph/export/json")
 def graph_export_json() -> JSONResponse:
-    return JSONResponse(state.payload)
+    # Embeddings are kept in state.payload for /graph/query but stripped from
+    # the public export to keep the UI download small (R14 — MiniLM dim 384
+    # would otherwise add ~2 MB on a 700-node graph).
+    payload = state.payload
+    nodes = payload.get("nodes", [])
+    if nodes and any(EMBEDDING_FIELD in n for n in nodes):
+        slim_nodes = [
+            {k: v for k, v in n.items() if k != EMBEDDING_FIELD}
+            for n in nodes
+        ]
+        payload = {**payload, "nodes": slim_nodes}
+    return JSONResponse(payload)
+
+
+# ---------------------------------------------------------------------------
+# R14 — POST /graph/query : NL query over node embeddings
+# ---------------------------------------------------------------------------
+
+def _cosine(a: list[float], b: list[float]) -> float:
+    if not a or not b or len(a) != len(b):
+        return 0.0
+    dot = 0.0
+    na = 0.0
+    nb = 0.0
+    for x, y in zip(a, b):
+        dot += x * y
+        na += x * x
+        nb += y * y
+    if na <= 0 or nb <= 0:
+        return 0.0
+    import math
+    return dot / (math.sqrt(na) * math.sqrt(nb))
+
+
+@app.post("/graph/query")
+async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
+    """Embed ``q`` and return the top-K nodes plus their 1-hop subgraph union.
+
+    Body: ``{"q": "<text>", "k": 10}`` (k optional, default 10, capped at 50).
+    Response::
+
+        {
+          "q": "...",
+          "k": 10,
+          "backend": "sentence-transformers" | "tfidf" | "none",
+          "nodes": [<full node records ranked by similarity>],
+          "subgraph": {"nodes": [...], "edges": [...]}
+        }
+
+    If no embedding backend is available (build had ``embedding_backend=none``),
+    the response includes ``"error": "embedding backend unavailable"`` and an
+    empty result set.
+    """
+    q = (payload or {}).get("q", "")
+    if not isinstance(q, str) or not q.strip():
+        raise HTTPException(status_code=400, detail="missing 'q' (non-empty string)")
+    k_raw = (payload or {}).get("k", 10)
+    try:
+        k = max(1, min(int(k_raw), 50))
+    except (TypeError, ValueError):
+        k = 10
+
+    backend = state.payload.get("embedding_backend", "none")
+    qvec = embed_query(q)
+    if qvec is None or backend == "none":
+        return {
+            "q": q,
+            "k": k,
+            "backend": backend,
+            "error": "embedding backend unavailable",
+            "nodes": [],
+            "subgraph": {"nodes": [], "edges": []},
+        }
+
+    scored: list[tuple[float, dict[str, Any]]] = []
+    for n in state.payload.get("nodes", []):
+        vec = n.get(EMBEDDING_FIELD)
+        if not vec:
+            continue
+        s = _cosine(qvec, vec)
+        scored.append((s, n))
+
+    scored.sort(key=lambda r: r[0], reverse=True)
+    top = scored[:k]
+    top_ids = {n["id"] for _, n in top}
+
+    # 1-hop subgraph: union of neighbours of every top-K hit.
+    sub_node_ids: set[str] = set(top_ids)
+    sub_edges: list[dict[str, Any]] = []
+    seen_pairs: set[tuple[str, str]] = set()
+    for nid in list(top_ids):
+        for adj in state.adjacency.get(nid, []):
+            sub_node_ids.add(adj["neighbor"])
+            pair = tuple(sorted((adj["source"], adj["target"])))
+            if pair in seen_pairs:
+                continue
+            seen_pairs.add(pair)
+            sub_edges.append(
+                {
+                    "source": adj["source"],
+                    "target": adj["target"],
+                    "weight": adj.get("weight", 1),
+                    "confidence": adj.get("confidence", "EXTRACTED"),
+                }
+            )
+
+    sub_nodes = [state.nodes_by_id[nid] for nid in sub_node_ids if nid in state.nodes_by_id]
+
+    # Strip embedding vectors from the response — they are only useful server-
+    # side and would balloon the JSON payload (~12kB/node for MiniLM dim 384).
+    def _strip(n: dict[str, Any]) -> dict[str, Any]:
+        if EMBEDDING_FIELD in n:
+            n = {k: v for k, v in n.items() if k != EMBEDDING_FIELD}
+        return n
+
+    return {
+        "q": q,
+        "k": k,
+        "backend": backend,
+        "nodes": [
+            {**_strip(n), "score": round(score, 4)}
+            for score, n in top
+        ],
+        "subgraph": {
+            "nodes": [_strip(n) for n in sub_nodes],
+            "edges": sub_edges,
+        },
+    }
 
 
 @app.get("/events")

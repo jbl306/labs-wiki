@@ -126,6 +126,9 @@ button:disabled { opacity: 0.4; cursor: progress; }
   min-height: 36px;
 }
 #node-neighbors li:hover, #node-neighbors li:active { background: var(--accent-dim); }
+#ask-results ol { padding-left: 18px; margin: 4px 0 0; }
+#ask-results li { margin: 4px 0; cursor: pointer; }
+#ask-results li:hover { color: var(--accent); }
 
 footer { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border); }
 

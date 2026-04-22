@@ -112,31 +112,35 @@ void main() {
   float d = length(uv);
   if (d > 1.0) discard;
 
-  // High-contrast 3-band lighting:
-  //   - bright crisp inner core (fast smoothstep edge so it reads sharp on
-  //     mobile retina even at 2-3px display size)
-  //   - colored mid-band that carries the cluster identity
+  // High-contrast 3-band lighting tuned for richness over plastic shine:
+  //   - bright crisp inner core that *carries* the cluster color
+  //     (only a hint of white) so hubs read as glowing gems, not LEDs
+  //   - colored mid-band that fills the disc with saturated identity
+  //   - soft outer halo for bloom under additive blending
   //   - thin antialiased rim so the disc doesn't blur into background
   float coreMask = 1.0 - smoothstep(0.30, 0.42, d);
   float midMask  = (1.0 - smoothstep(0.42, 0.92, d)) * (1.0 - coreMask);
-  float halo     = pow(max(0.0, 1.0 - d), 2.6) * 0.32;
+  float halo     = pow(max(0.0, 1.0 - d), 2.6) * 0.36;
   float rim      = smoothstep(0.90, 0.98, d) * (1.0 - smoothstep(0.98, 1.0, d));
 
-  // Specular pop biased upper-left so the dot looks lit, not flat.
-  float spec = pow(max(0.0, 1.0 - length(uv - vec2(-0.28, -0.32)) * 1.55), 5.0) * 0.9 * coreMask;
+  // Subtle specular pop biased upper-left. Kept low so colors aren't
+  // overpowered by white — was reading "cheap/plastic" before.
+  float spec = pow(max(0.0, 1.0 - length(uv - vec2(-0.28, -0.32)) * 1.55), 6.0) * 0.35 * coreMask;
 
   // Selection: bright thin ring at d ~ 0.85 (slightly inside the rim).
   float ring = v_selected * smoothstep(0.78, 0.84, d) * (1.0 - smoothstep(0.92, 0.98, d));
 
   vec3 base = v_color.rgb;
-  vec3 hot  = mix(base * 1.55, vec3(1.0), 0.30); // bright tinted core
+  // Brighten the core to ~1.7x the cluster color, with only a faint white
+  // wash (0.12) — preserves hue, keeps things looking *coloured* not bleached.
+  vec3 hot  = mix(base * 1.7, vec3(1.0), 0.12);
   vec3 col  = hot * coreMask
-            + base * (midMask * 1.05 + halo * 0.75)
-            + base * rim * 0.65
-            + vec3(1.0, 1.0, 0.95) * spec
+            + base * (midMask * 1.10 + halo * 0.85)
+            + base * rim * 0.70
+            + vec3(1.0, 0.98, 0.92) * spec
             + vec3(0.95, 0.95, 1.0) * ring * 1.3;
 
-  float a = clamp(coreMask + midMask * 0.85 + halo * 0.6 + rim * 0.55 + ring * 0.95, 0.0, 1.0) * v_alpha;
+  float a = clamp(coreMask + midMask * 0.85 + halo * 0.55 + rim * 0.55 + ring * 0.95, 0.0, 1.0) * v_alpha;
 
   // Premultiplied alpha so overlapping halos add into bloom under
   // gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA).

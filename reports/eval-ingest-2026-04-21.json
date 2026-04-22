@@ -1,0 +1,123 @@
+{
+  "generated": "2026-04-21",
+  "fixtures_file": "tests/eval_fixtures/sources.json",
+  "thresholds": {
+    "concept_count_min_ratio": 1.0,
+    "broken_link_count_max": 0,
+    "date_accuracy_min": 1.0,
+    "entity_completeness_min": 1.0
+  },
+  "totals": {
+    "total": 3,
+    "passed": 3,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fixtures": [
+    {
+      "name": "karpathy-llm-wiki-gist",
+      "raw_md_path": "raw/2026-04-07-llm-wiki.md",
+      "status": "evaluated",
+      "passed": true,
+      "pages_considered": [
+        "wiki/concepts/contradiction-detection-utility.md",
+        "wiki/concepts/karpathy-llm-wiki-pattern.md",
+        "wiki/concepts/llm-wiki-architecture.md",
+        "wiki/concepts/schema-guided-llm-knowledge-base-maintenance.md",
+        "wiki/sources/llm-wiki.md",
+        "wiki/entities/dataview.md",
+        "wiki/entities/marp.md",
+        "wiki/entities/obsidian-web-clipper.md",
+        "wiki/entities/obsidian.md",
+        "wiki/entities/qmd.md",
+        "wiki/synthesis/llm-centric-architectures-operating-systems-vs-persistent-wiki-environments.md",
+        "wiki/synthesis/spatially-organized-memory-vs-llm-maintained-persistent-wiki-long-term-ai-recall.md"
+      ],
+      "scores": {
+        "concept_count": 13,
+        "expected_concepts_matched": [
+          "llm-wiki-pattern",
+          "schema-guided-llm-knowledge-base-maintenance"
+        ],
+        "expected_concepts_missing": [],
+        "concept_min_ratio": 1.0,
+        "broken_link_count": 0,
+        "broken_links": [],
+        "date_accuracy": 1.0,
+        "date_drift_notes": [],
+        "entity_completeness": 1.0,
+        "entity_results": {
+          "karpathy": true
+        },
+        "sources_count": 1,
+        "expected_min_sources": 1
+      }
+    },
+    {
+      "name": "refrag-decoding",
+      "raw_md_path": "raw/2026-04-22-250901092v2pdf.md",
+      "status": "evaluated",
+      "passed": true,
+      "pages_considered": [
+        "wiki/concepts/continual-pre-training-reconstruction-curriculum-learning.md",
+        "wiki/concepts/refrag-decoding-framework.md",
+        "wiki/concepts/selective-compression-via-reinforcement-learning.md",
+        "wiki/sources/refrag-rethinking-rag-based-decoding.md",
+        "wiki/entities/refrag.md"
+      ],
+      "scores": {
+        "concept_count": 4,
+        "expected_concepts_matched": [
+          "refrag-decoding-framework"
+        ],
+        "expected_concepts_missing": [],
+        "concept_min_ratio": 1.0,
+        "broken_link_count": 0,
+        "broken_links": [],
+        "date_accuracy": 1.0,
+        "date_drift_notes": [],
+        "entity_completeness": 1.0,
+        "entity_results": {
+          "refrag": true
+        },
+        "sources_count": 1,
+        "expected_min_sources": 1
+      }
+    },
+    {
+      "name": "copilot-session-checkpoint-fixing-live-graph-taps",
+      "raw_md_path": "raw/2026-04-22-copilot-session-fixing-live-graph-taps-a2ede579.md",
+      "status": "evaluated",
+      "passed": true,
+      "pages_considered": [
+        "wiki/concepts/deployment-packaging-hardening-static-web-assets.md",
+        "wiki/concepts/mobile-friendly-graph-ui-tap-handling.md",
+        "wiki/concepts/systematic-debugging-tdd-ui-regression.md",
+        "wiki/sources/copilot-session-checkpoint-fixing-live-graph-taps.md",
+        "wiki/entities/dockerfile-graph-ui.md",
+        "wiki/entities/interaction-targets-js.md",
+        "wiki/entities/labs-wiki.md",
+        "wiki/entities/pointer-gesture-js.md"
+      ],
+      "scores": {
+        "concept_count": 7,
+        "expected_concepts_matched": [
+          "mobile-friendly-graph-ui-tap-handling"
+        ],
+        "expected_concepts_missing": [],
+        "concept_min_ratio": 1.0,
+        "broken_link_count": 0,
+        "broken_links": [],
+        "date_accuracy": 1.0,
+        "date_drift_notes": [],
+        "entity_completeness": 1.0,
+        "entity_results": {
+          "interaction-targets-js": true,
+          "pointer-gesture-js": true
+        },
+        "sources_count": 1,
+        "expected_min_sources": 1
+      }
+    }
+  ]
+}

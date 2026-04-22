@@ -1022,11 +1022,20 @@ _CRAWL_EXACT = {
     "dockerfile", "makefile", "justfile", "procfile",
     "caddyfile", "gemfile", "rakefile",
     ".env.example", ".gitignore", "license",
+    # Package manifests — explicit so they always rank top.
+    "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt",
+    "package.json", "package-lock.json", "yarn.lock", "pnpm-lock.yaml",
+    "go.mod", "go.sum", "cargo.toml", "cargo.lock",
+    "composer.json", "gemfile.lock", "podfile", "pubspec.yaml",
+    "build.gradle", "settings.gradle", "pom.xml",
+    "docker-compose.yml", "docker-compose.yaml", "compose.yml", "compose.yaml",
 }
 # Directories to prioritise (contents fetched first)
-_PRIORITY_DIRS = ("docs", "doc", "documentation", "guides", "wiki")
+_PRIORITY_DIRS = ("docs", "doc", "documentation", "guides", "wiki", "examples")
+# Names that signal a per-directory README — fetched eagerly.
+_README_NAMES = {"readme.md", "readme.rst", "readme.txt", "readme"}
 # Max individual file size (chars) to include
-_MAX_FILE_CHARS = 8_000
+_MAX_FILE_CHARS = 16_000
 
 
 def _should_crawl(path: str) -> bool:
@@ -1039,16 +1048,20 @@ def _should_crawl(path: str) -> bool:
 
 
 def _priority_sort_key(path: str) -> tuple[int, str]:
-    """Sort key: priority dirs first, then docs, then alphabetical."""
+    """Sort key: manifests/READMEs first, then priority dirs, root files, alpha."""
     lower = path.lower()
+    name = lower.rsplit("/", 1)[-1]
     parts = lower.split("/")
-    # Top-level priority dirs first
-    if any(p in _PRIORITY_DIRS for p in parts):
+    # 0: per-directory READMEs and manifests (fetched eagerly, cheap & dense)
+    if name in _README_NAMES or name in _CRAWL_EXACT:
         return (0, lower)
-    # Root-level files next
-    if "/" not in path:
+    # 1: priority dirs (docs, examples)
+    if any(p in _PRIORITY_DIRS for p in parts):
         return (1, lower)
-    return (2, lower)
+    # 2: root-level files
+    if "/" not in path:
+        return (2, lower)
+    return (3, lower)
 
 
 def _crawl_github_tree(
@@ -1289,16 +1302,116 @@ def fetch_url_content(url: str) -> UrlFetchResult:
         except Exception as e:
             log.warning("GitHub README fetch failed for %s/%s: %s", owner, repo, e)
 
+        # Languages breakdown
+        try:
+            langs_resp = httpx.get(
+                f"https://api.github.com/repos/{owner}/{repo}/languages",
+                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
+            )
+            langs_resp.raise_for_status()
+            langs = langs_resp.json() or {}
+            if langs:
+                total = sum(langs.values()) or 1
+                items = sorted(langs.items(), key=lambda kv: -kv[1])[:8]
+                pretty = ", ".join(
+                    f"{k} {v*100/total:.1f}%" for k, v in items
+                )
+                parts.append(f"Languages: {pretty}\n")
+        except Exception as e:
+            log.debug("GitHub languages fetch failed for %s/%s: %s", owner, repo, e)
+
+        # Latest releases (top 5)
+        try:
+            rel_resp = httpx.get(
+                f"https://api.github.com/repos/{owner}/{repo}/releases?per_page=5",
+                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
+            )
+            rel_resp.raise_for_status()
+            releases = rel_resp.json() or []
+            if releases:
+                parts.append("## Recent Releases\n")
+                for r in releases[:5]:
+                    tag = r.get("tag_name") or r.get("name") or "?"
+                    pub = (r.get("published_at") or "")[:10]
+                    body = (r.get("body") or "").strip().replace("\r\n", "\n")
+                    if len(body) > 600:
+                        body = body[:600] + "…"
+                    parts.append(f"### {tag} ({pub})\n\n{body}\n")
+        except Exception as e:
+            log.debug("GitHub releases fetch failed for %s/%s: %s", owner, repo, e)
+
+        # Recent commits (last 20 on default branch)
+        try:
+            commits_resp = httpx.get(
+                f"https://api.github.com/repos/{owner}/{repo}/commits?per_page=20",
+                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
+            )
+            commits_resp.raise_for_status()
+            commits = commits_resp.json() or []
+            if commits:
+                parts.append("## Recent Commits\n")
+                for c in commits:
+                    sha = (c.get("sha") or "")[:7]
+                    msg_full = (c.get("commit", {}).get("message") or "").splitlines()
+                    msg = msg_full[0] if msg_full else ""
+                    author = (c.get("commit", {}).get("author") or {}).get("name") or "?"
+                    date = ((c.get("commit", {}).get("author") or {}).get("date") or "")[:10]
+                    parts.append(f"- {date} {sha} {author}: {msg}")
+                parts.append("")
+        except Exception as e:
+            log.debug("GitHub commits fetch failed for %s/%s: %s", owner, repo, e)
+
+        # Open issues (top 10)
+        try:
+            issues_resp = httpx.get(
+                f"https://api.github.com/repos/{owner}/{repo}/issues"
+                "?state=open&per_page=10&sort=updated",
+                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
+            )
+            issues_resp.raise_for_status()
+            raw_issues = issues_resp.json() or []
+            issues = [i for i in raw_issues if not i.get("pull_request")]
+            if issues:
+                parts.append("## Open Issues (top 10)\n")
+                for i in issues[:10]:
+                    parts.append(
+                        f"- #{i.get('number')} {i.get('title')} "
+                        f"(by {(i.get('user') or {}).get('login','?')})"
+                    )
+                parts.append("")
+        except Exception as e:
+            log.debug("GitHub issues fetch failed for %s/%s: %s", owner, repo, e)
+
+        # Recently merged PRs (top 10)
+        try:
+            prs_resp = httpx.get(
+                f"https://api.github.com/repos/{owner}/{repo}/pulls"
+                "?state=closed&per_page=20&sort=updated&direction=desc",
+                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
+            )
+            prs_resp.raise_for_status()
+            prs = [p for p in (prs_resp.json() or []) if p.get("merged_at")]
+            if prs:
+                parts.append("## Recently Merged PRs (top 10)\n")
+                for p in prs[:10]:
+                    parts.append(
+                        f"- #{p.get('number')} {p.get('title')} "
+                        f"(merged {(p.get('merged_at') or '')[:10]})"
+                    )
+                parts.append("")
+        except Exception as e:
+            log.debug("GitHub PRs fetch failed for %s/%s: %s", owner, repo, e)
+
         # Crawl repo tree for additional files
         try:
             parts.extend(
-                _crawl_github_tree(owner, repo, gh_headers, budget=30_000)
+                _crawl_github_tree(owner, repo, gh_headers, budget=80_000)
             )
         except Exception as e:
             log.warning("GitHub tree crawl failed for %s/%s: %s", owner, repo, e)
 
         return UrlFetchResult(
-            text="\n".join(parts)[:50_000],
+            text="\n".join(parts)[:140_000],
             image_urls=[],
             resolved_url=url,
             content_type="application/vnd.github+json",

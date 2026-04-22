@@ -1,19 +1,20 @@
 ---
-title: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
+title: https://github.com/ChromeDevTools/chrome-devtools-mcp
 type: url
-captured: 2026-04-13T13:30:02.023885+00:00
+captured: 2026-04-13 13:30:02.023885+00:00
 source: android-share
-url: "https://github.com/ChromeDevTools/chrome-devtools-mcp"
-content_hash: "sha256:379642deb53f3714eb4d3fd4bf685ddf06e1f2efdb0931fbf030395fd0d38ada"
+url: https://github.com/ChromeDevTools/chrome-devtools-mcp
+content_hash: sha256:97cd1189cf5c5518fa51e91df8636c5a3b0dcf5cb13889497c80fbdb8eeedb99
 tags: []
 status: ingested
+last_refreshed: '2026-04-22T02:45:04+00:00'
 ---
 
 https://github.com/ChromeDevTools/chrome-devtools-mcp
 
 <!-- fetched-content:start -->
 ## Fetched Metadata
-- fetched_at: 2026-04-21T00:01:02+00:00
+- fetched_at: 2026-04-22T02:45:04+00:00
 - source_url: https://github.com/ChromeDevTools/chrome-devtools-mcp
 - resolved_url: https://github.com/ChromeDevTools/chrome-devtools-mcp
 - content_type: application/vnd.github+json
@@ -22,7 +23,7 @@ https://github.com/ChromeDevTools/chrome-devtools-mcp
 ## Fetched Content
 Repository: ChromeDevTools/chrome-devtools-mcp
 Description: Chrome DevTools for coding agents
-Stars: 36414
+Stars: 36605
 Language: TypeScript
 Topics: browser, chrome, chrome-devtools, debugging, devtools, mcp, mcp-server, puppeteer
 
@@ -541,6 +542,12 @@ If you run into any issues, checkout our [troubleshooting guide](./docs/troubles
   - [`list_console_messages`](docs/tool-reference.md#list_console_messages)
   - [`take_screenshot`](docs/tool-reference.md#take_screenshot)
   - [`take_snapshot`](docs/tool-reference.md#take_snapshot)
+- **Extensions** (5 tools)
+  - [`install_extension`](docs/tool-reference.md#install_extension)
+  - [`list_extensions`](docs/tool-reference.md#list_extensions)
+  - [`reload_extension`](docs/tool-reference.md#reload_extension)
+  - [`trigger_extension_action`](docs/tool-reference.md#trigger_extension_action)
+  - [`uninstall_extension`](docs/tool-reference.md#uninstall_extension)
 - **Memory** (1 tools)
   - [`take_memory_snapshot`](docs/tool-reference.md#take_memory_snapshot)
 
@@ -566,20 +573,1015 @@ The Chrome DevTools MCP server supports the following configuration option:
   - **Type:** string
 
 - **`--wsHeaders`/ `--ws-headers`**
-  Custom headers for WebSocket connection in JSON format (e.g., '{"Authorization":"Bearer token"}'). Only works with --wsEndpoint.
-  - **Type:** string
+  Custom headers for WebSocket connection in 
+Languages: TypeScript 95.0%, JavaScript 5.0%, HTML 0.0%
 
-- **`--headless`**
-  Whether to run in headless (no UI) mode.
-  - **Type:** boolean
-  - **Default:** `false`
+## Recent Releases
 
-- **`--executablePath`/ `--executable-path`, `-e`**
-  Path to custom Chrome executable.
-  - **Type:** string
+### chrome-devtools-mcp-v0.22.0 (2026-04-21)
 
-- **`--isolated`**
-  If specified, creates a tempor
+## [0.22.0](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.21.0...chrome-devtools-mcp-v0.22.0) (2026-04-21)
+
+
+### 🎉 Features
+
+* add update notification to both binaries ([#1783](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1783)) ([e01e333](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/e01e33355e85c3b38e7aba6aceff57271b99a830))
+* auto handle dialogs during script evaluation  ([#1839](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1839)) ([da33cb5](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/da33…
+
+### chrome-devtools-mcp-v0.21.0 (2026-04-01)
+
+## [0.21.0](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.20.3...chrome-devtools-mcp-v0.21.0) (2026-04-01)
+
+
+### 🎉 Features
+
+* add a skill for detecting memory leaks using take_memory_snapshot tool ([#1162](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1162)) ([d19a235](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/d19a2350f975ec2fbf8ee61b35163a48c0146c32))
+
+
+### 🛠️ Fixes
+
+* **cli:** avoid defaulting to isolated when userDataDir is provided ([#1258](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1258)) ([73e1e24…
+
+### chrome-devtools-mcp-v0.20.3 (2026-03-20)
+
+## [0.20.3](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.20.2...chrome-devtools-mcp-v0.20.3) (2026-03-20)
+
+
+### 🛠️ Fixes
+
+* mark categoryExtensions flag mutually exclusive with autoConnect ([#1202](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1202)) ([8c2a7fc](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/8c2a7fc21ead6091567e85608f7916c001ccc7db)), closes [#1072](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1072)
+
+
+### ⚡ Performance
+
+* **memory:** release old navigation request in NetworkCollector ([#1200](h…
+
+### chrome-devtools-mcp-v0.20.2 (2026-03-18)
+
+## [0.20.2](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.20.1...chrome-devtools-mcp-v0.20.2) (2026-03-18)
+
+
+### 📄 Documentation
+
+* add troubleshooting for Claude Code plugin HTTPS clone failures ([#1195](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1195)) ([d082ca4](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/d082ca4ecd35a023d09f9c1ff949d5fb0c3fb069))
+
+### chrome-devtools-mcp-v0.20.1 (2026-03-17)
+
+## [0.20.1](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.20.0...chrome-devtools-mcp-v0.20.1) (2026-03-16)
+
+
+### 🛠️ Fixes
+
+* update VS Code manual installation powershell command ([#1151](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1151)) ([6c64a5b](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/6c64a5b543714796b25a12dc6f2be7a1e683e8bd))
+
+
+### ⚡ Performance
+
+* use CDP to find open DevTools pages. ([#1150](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1150)) ([94de19c](https://github.com/ChromeDevTools/chrome-d…
+
+## Recent Commits
+
+- 2026-04-21 a1612be Nicholas Roscino: test: refactor tests to reduce duplication (#1926)
+- 2026-04-21 42be7c3 Alex Rudenko: docs: clarify resource limitations around the number of tabs (#1927)
+- 2026-04-21 b53752d Wolfgang Beyer: chore: move resolveCdpElementId (#1923)
+- 2026-04-21 f0da776 browser-automation-bot: chore(main): release chrome-devtools-mcp 0.22.0 (#1884)
+- 2026-04-21 76ab9fa Alex Rudenko: docs: clarify tools included into CLI (#1925)
+- 2026-04-21 3ff21cf Nicholas Roscino: feat: support Chrome extensions debugging (#1922)
+- 2026-04-21 86ffd58 Nicholas Roscino: test: add test for console log from content script (#1920)
+- 2026-04-20 57648b7 Alex Rudenko: chore(deps): update lh (#1913)
+- 2026-04-20 9211c6b Nikolay Vitkov: chore(memory): expose a tool for getting the inital data. (#1909)
+- 2026-04-20 ec895f1 Nicholas Roscino: refactor: use puppeteer Extension API (#1911)
+- 2026-04-20 562c308 dependabot[bot]: chore(deps-dev): bump the dev-dependencies group with 2 updates (#1907)
+- 2026-04-20 3a24d71 Mukunda Rao Katta: test: save WebP responses with the right extension (#1901)
+- 2026-04-20 e3a5f6b Cocoon-Break: fix(cli): correct WebP MIME type check in handleResponse ('webp' → 'image/webp') (#1899)
+- 2026-04-20 0f29acf Alex Rudenko: chore: fix viewport eval (#1888)
+- 2026-04-20 da33cb5 Nikolay Vitkov: feat: auto handle dialogs during script evaluation  (#1839)
+- 2026-04-20 0ed086e Nikolay Vitkov: chore: remove code around Audits setup (#1893)
+- 2026-04-17 0a6aaa5 yulunz: chore: generate a json file for flag usage metrics (#1881)
+- 2026-04-17 0331f6a Nikolay Vitkov: chore: implement memory snapshot information (#1874)
+- 2026-04-17 ea57e86 Asish Kumar: fix: ignore unmapped PerformanceIssue events (#1852)
+- 2026-04-17 2f458c1 Nikolay Vitkov: fix(network): trailing data in Network redirect chain (#1880)
+
+## Open Issues (top 10)
+
+- #1912 Unable to read the Google Sheet Web Page (by maxsxu)
+- #1921 Browser hangs / crashes when MCP connects to Chrome with many tabs (by jabagawee)
+- #1775 Feature: Add evaluate_script_file tool to evaluate JavaScript files from the local filesystem (by achideal)
+
+## Recently Merged PRs (top 10)
+
+- #1926 test: refactor tests to reduce duplication (merged 2026-04-21)
+- #1927 docs: clarify resource limitations around the number of tabs (merged 2026-04-21)
+- #1923 chore: move resolveCdpElementId (merged 2026-04-21)
+- #1884 chore(main): release chrome-devtools-mcp 0.22.0 (merged 2026-04-21)
+- #1925 docs: clarify tools included into CLI (merged 2026-04-21)
+- #1922 feat: support Chrome extensions debugging (merged 2026-04-21)
+- #1920 test: add test for console log from content script (merged 2026-04-21)
+- #1913 chore(deps): update lh (merged 2026-04-20)
+- #1909 chore(memory): expose a tool for getting the inital data. (merged 2026-04-20)
+- #1022 feat: add pageId routing for parallel multi-agent workflows (merged 2026-02-26)
+
+
+## File: .gitignore
+
+```
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+trace.json
+trace.json.gz
+
+# Diagnostic reports (https://nodejs.org/api/report.html)
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Directory for instrumented libs generated by jscoverage/JSCover
+lib-cov
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
+.grunt
+
+# Bower dependency directory (https://bower.io/)
+bower_components
+
+# node-waf configuration
+.lock-wscript
+
+# Compiled binary addons (https://nodejs.org/api/addons.html)
+build/Release
+
+# Dependency directories
+node_modules/
+jspm_packages/
+
+# Snowpack dependency directory (https://snowpack.dev/)
+web_modules/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+out
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+# Comment in the public line in if your project uses Gatsby and not Next.js
+# https://nextjs.org/blog/next-9-1#public-directory-support
+# public
+
+# vuepress build output
+.vuepress/dist
+
+# vuepress v2.x temp and cache directory
+.temp
+.cache
+
+# vitepress build output
+**/.vitepress/dist
+
+# vitepress cache directory
+**/.vitepress/cache
+
+# Docusaurus cache and generated files
+.docusaurus
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Stores VSCode specific settings
+.vscode
+!.vscode/*.template.json
+!.vscode/extensions.json
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Build output directory
+build/
+
+log.txt
+
+.DS_Store
+```
+
+
+## File: LICENSE
+
+```
+
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+      "License" shall mean the terms and conditions for use, reproduction,
+      and distribution as defined by Sections 1 through 9 of this document.
+
+      "Licensor" shall mean the copyright owner or entity authorized by
+      the copyright owner that is granting the License.
+
+      "Legal Entity" shall mean the union of the acting entity and all
+      other entities that control, are controlled by, or are under common
+      control with that entity. For the purposes of this definition,
+      "control" means (i) the power, direct or indirect, to cause the
+      direction or management of such entity, whether by contract or
+      otherwise, or (ii) ownership of fifty percent (50%) or more of the
+      outstanding shares, or (iii) beneficial ownership of such entity.
+
+      "You" (or "Your") shall mean an individual or Legal Entity
+      exercising permissions granted by this License.
+
+      "Source" form shall mean the preferred form for making modifications,
+      including but not limited to software source code, documentation
+      source, and configuration files.
+
+      "Object" form shall mean any form resulting from mechanical
+      transformation or translation of a Source form, including but
+      not limited to compiled object code, generated documentation,
+      and conversions to other media types.
+
+      "Work" shall mean the work of authorship, whether in Source or
+      Object form, made available under the License, as indicated by a
+      copyright notice that is included in or attached to the work
+      (an example is provided in the Appendix below).
+
+      "Derivative Works" shall mean any work, whether in Source or Object
+      form, that is based on (or derived from) the Work and for which the
+      editorial revisions, annotations, elaborations, or other modifications
+      represent, as a whole, an original work of authorship. For the purposes
+      of this License, Derivative Works shall not include works that remain
+      separable from, or merely link (or bind by name) to the interfaces of,
+      the Work and Derivative Works thereof.
+
+      "Contribution" shall mean any work of authorship, including
+      the original version of the Work and any modifications or additions
+      to that Work or Derivative Works thereof, that is intentionally
+      submitted to Licensor for inclusion in the Work by the copyright owner
+      or by an individual or Legal Entity authorized to submit on behalf of
+      the copyright owner. For the purposes of this definition, "submitted"
+      means any form of electronic, verbal, or written communication sent
+      to the Licensor or its representatives, including but not limited to
+      communication on electronic mailing lists, source code control systems,
+      and issue tracking systems that are managed by, or on behalf of, the
+      Licensor for the purpose of discussing and improving the Work, but
+      excluding communication that is conspicuously marked or otherwise
+      designated in writing by the copyright owner as "Not a Contribution."
+
+      "Contributor" shall mean Licensor and any individual or Legal Entity
+      on behalf of whom a Contribution has been received by Licensor and
+      subsequently incorporated within the Work.
+
+   2. Grant of Copyright License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      copyright license to reproduce, prepare Derivative Works of,
+      publicly display, publicly perform, sublicense, and distribute the
+      Work and such Derivative Works in Source or Object form.
+
+   3. Grant of Patent License. Subject to the terms and conditions of
+      this License, each Contributor hereby grants to You a perpetual,
+      worldwide, non-exclusive, no-charge, royalty-free, irrevocable
+      (except as stated in this section) patent license to make, have made,
+      use, offer to sell, sell, import, and otherwise transfer the Work,
+      where such license applies only to those patent claims licensable
+      by such Contributor that are necessarily infringed by their
+      Contribution(s) alone or by combination of their Contribution(s)
+      with the Work to which such Contribution(s) was submitted. If You
+      institute patent litigation against any entity (including a
+      cross-claim or counterclaim in a lawsuit) alleging that the Work
+      or a Contribution incorporated within the Work constitutes direct
+      or contributory patent infringement, then any patent licenses
+      granted to You under this License for that Work shall terminate
+      as of the date such litigation is filed.
+
+   4. Redistribution. You may reproduce and distribute copies of the
+      Work or Derivative Works thereof in any medium, with or without
+      modifications, and in Source or Object form, provided that You
+      meet the following conditions:
+
+      (a) You must give any other recipients of the Work or
+          Derivative Works a copy of this License; and
+
+      (b) You must cause any modified files to carry prominent notices
+          stating that You changed the files; and
+
+      (c) You must retain, in the Source form of any Derivative Works
+          that You distribute, all copyright, patent, trademark, and
+          attribution notices from the Source form of the Work,
+          excluding those notices that do not pertain to any part of
+          the Derivative Works; and
+
+      (d) If the Work includes a "NOTICE" text file as part of its
+          distribution, then any Derivative Works that You distribute must
+          include a readable copy of the attribution notices contained
+          within such NOTICE file, excluding those notices that do not
+          pertain to any part of the Derivative Works, in at least one
+          of the following places: within a NOTICE text file distributed
+          as part of the Derivative Works; within the Source form or
+          documentation, if provided along with the Derivative Works; or,
+          within a display generated by the Derivative Works, if and
+          wherever such third-party notices normally appear. The contents
+          of the NOTICE file are for informational purposes only and
+          do not modify the License. You may add Your own attribution
+          notices within Derivative Works that You distribute, alongside
+          or as an addendum to the NOTICE text from the Work, provided
+          that such additional attribution notices cannot be construed
+          as modifying the License.
+
+      You may add Your own copyright statement to Your modifications and
+      may provide additional or different license terms and conditions
+      for use, reproduction, or distribution of Your modifications, or
+      for any such Derivative Works as a whole, provided Your use,
+      reproduction, and distribution of the Work otherwise complies with
+      the conditions stated in this License.
+
+   5. Submission of Contributions. Unless You explicitly state otherwise,
+      any Contribution intentionally submitted for inclusion in the Work
+      by You to the Licensor shall be under the terms and conditions of
+      this License, without any additional terms or conditions.
+      Notwithstanding the above, nothing herein shall supersede or modify
+      the terms of any separate license agreement you may have executed
+      with Licensor regarding such Contributions.
+
+   6. Trademarks. This License does not grant permission to use the trade
+      names, trademarks, service marks, or product names of the Licensor,
+      except as required for reasonable and customary use in describing the
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+```
+
+
+## File: package-lock.json
+
+```
+{
+  "name": "chrome-devtools-mcp",
+  "version": "0.22.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "chrome-devtools-mcp",
+      "version": "0.22.0",
+      "license": "Apache-2.0",
+      "bin": {
+        "chrome-devtools": "build/src/bin/chrome-devtools.js",
+        "chrome-devtools-mcp": "build/src/bin/chrome-devtools-mcp.js"
+      },
+      "devDependencies": {
+        "@eslint/js": "^9.35.0",
+        "@google/genai": "^1.37.0",
+        "@modelcontextprotocol/sdk": "1.29.0",
+        "@rollup/plugin-commonjs": "^29.0.0",
+        "@rollup/plugin-json": "^6.1.0",
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "@stylistic/eslint-plugin": "^5.4.0",
+        "@types/debug": "^4.1.12",
+        "@types/filesystem": "^0.0.36",
+        "@types/node": "^25.0.0",
+        "@types/semver": "^7.7.1",
+        "@types/sinon": "^21.0.0",
+        "@types/yargs": "^17.0.33",
+        "@typescript-eslint/eslint-plugin": "^8.43.0",
+        "@typescript-eslint/parser": "^8.43.0",
+        "chrome-devtools-frontend": "1.0.1613625",
+        "core-js": "3.49.0",
+        "debug": "4.4.3",
+        "eslint": "^9.35.0",
+        "eslint-import-resolver-typescript": "^4.4.4",
+        "eslint-plugin-import": "^2.32.0",
+        "globals": "^17.0.0",
+        "lighthouse": "13.1.0",
+        "prettier": "^3.6.2",
+        "puppeteer": "24.42.0",
+        "rollup": "4.60.2",
+        "rollup-plugin-cleanup": "^3.2.1",
+        "rollup-plugin-license": "^3.6.0",
+        "semver": "^7.7.4",
+        "sinon": "^21.0.0",
+        "tiktoken": "^1.0.22",
+        "typescript": "^6.0.2",
+        "typescript-eslint": "^8.43.0",
+        "yargs": "18.0.0"
+      },
+      "engines": {
+        "node": "^20.19.0 || ^22.12.0 || >=23"
+      }
+    },
+    "node_modules/@babel/code-frame": {
+      "version": "7.27.1",
+      "resolved": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.27.1.tgz",
+      "integrity": "sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@babel/helper-validator-identifier": "^7.27.1",
+        "js-tokens": "^4.0.0",
+        "picocolors": "^1.1.1"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/helper-validator-identifier": {
+      "version": "7.27.1",
+      "resolved": "https://registry.npmjs.org/@babel/helper-validator-identifier/-/helper-validator-identifier-7.27.1.tgz",
+      "integrity": "sha512-D2hP9eA+Sqx1kBZgzxZh0y1trbuU+JoDkiEwqhQ36nodYqJwyEIhPSdMNd7lOm/4io72luTPWH20Yda0xOuUow==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@emnapi/core": {
+      "version": "1.5.0",
+      "resolved": "https://registry.npmjs.org/@emnapi/core/-/core-1.5.0.tgz",
+      "integrity": "sha512-sbP8GzB1WDzacS8fgNPpHlp6C9VZe+SJP3F90W9rLemaQj2PzIuTEl1qDOYQf58YIpyjViI24y9aPWCjEzY2cg==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "@emnapi/wasi-threads": "1.1.0",
+        "tslib": "^2.4.0"
+      }
+    },
+    "node_modules/@emnapi/runtime": {
+      "version": "1.5.0",
+      "resolved": "https://registry.npmjs.org/@emnapi/runtime/-/runtime-1.5.0.tgz",
+      "integrity": "sha512-97/BJ3iXHww3djw6hYIfErCZFee7qCtrneuLa20UXFCOTCfBM2cvQHjWJ2EG0s0MtdNwInarqCTz35i4wWXHsQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "tslib": "^2.4.0"
+      }
+    },
+    "node_modules/@emnapi/wasi-threads": {
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/@emnapi/wasi-threads/-/wasi-threads-1.1.0.tgz",
+      "integrity": "sha512-WI0DdZ8xFSbgMjR1sFsKABJ/C5OnRrjT06JXbZKexJGrDuPTzZdDYfFlsgcCXCyf+suG5QU2e/y1Wo2V/OapLQ==",
+      "dev": true,
+      "license": "MIT",
+      "optional": true,
+      "dependencies": {
+        "tslib": "^2.4.0"
+      }
+    },
+    "node_modules/@eslint-community/eslint-utils": {
+      "version": "4.9.1",
+      "resolved": "https://registry.npmjs.org/@eslint-community/eslint-utils/-/eslint-utils-4.9.1.tgz",
+      "integrity": "sha512-phrYmNiYppR7znFEdqgfWHXR6NCkZEK7hwWDHZUjit/2/U0r6XvkDl0SYnoM51Hq7FhCGdLDT6zxCCOY1hexsQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "eslint-visitor-keys": "^3.4.3"
+      },
+      "engines": {
+        "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/eslint"
+      },
+      "peerDependencies": {
+        "eslint": "^6.0.0 || ^7.0.0 || >=8.0.0"
+      }
+    },
+    "node_modules/@eslint-community/eslint-utils/node_modules/eslint-visitor-keys": {
+      "version": "3.4.3",
+      "resolved": "https://registry.npmjs.org/eslint-visitor-keys/-/eslint-visitor-keys-3.4.3.tgz",
+      "integrity": "sha512-wpc+LXeiyiisxPlEkUzU6svyS1frIO3Mgxj1fdy7Pm8Ygzguax2N3Fa/D/ag1WqbOprdI+uY6wMUl8/a2G+iag==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "engines": {
+        "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/eslint"
+      }
+    },
+    "node_modules/@eslint-community/regexpp": {
+      "version": "4.12.2",
+      "resolved": "https://registry.npmjs.org/@eslint-community/regexpp/-/regexpp-4.12.2.tgz",
+      "integrity": "sha512-EriSTlt5OC9/7SXkRSCAhfSxxoSUgBm33OH+IkwbdpgoqsSsUg7y3uh+IICI/Qg4BBWr3U2i39RpmycbxMq4ew==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": "^12.0.0 || ^14.0.0 || >=16.0.0"
+      }
+    },
+    "node_modules/@eslint/config-array": {
+      "version": "0.21.2",
+      "resolved": "https://registry.npmjs.org/@eslint/config-array/-/config-array-0.21.2.tgz",
+      "integrity": "sha512-nJl2KGTlrf9GjLimgIru+V/mzgSK0ABCDQRvxw5BjURL7WfH5uoWmizbH7QB6MmnMBd8cIC9uceWnezL1VZWWw==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "@eslint/object-schema": "^2.1.7",
+        "debug": "^4.3.1",
+        "minimatch": "^3.1.5"
+      },
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      }
+    },
+    "node_modules/@eslint/config-array/node_modules/brace-expansion": {
+      "version": "1.1.13",
+      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.13.tgz",
+      "integrity": "sha512-9ZLprWS6EENmhEOpjCYW2c8VkmOvckIJZfkr7rBW6dObmfgJ/L1GpSYW5Hpo9lDz4D1+n0Ckz8rU7FwHDQiG/w==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "balanced-match": "^1.0.0",
+        "concat-map": "0.0.1"
+      }
+    },
+    "node_modules/@eslint/config-array/node_modules/minimatch": {
+      "version": "3.1.5",
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-3.1.5.tgz",
+      "integrity": "sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "brace-expansion": "^1.1.7"
+      },
+      "engines": {
+        "node": "*"
+      }
+    },
+    "node_modules/@eslint/config-helpers": {
+      "version": "0.4.2",
+      "resolved": "https://registry.npmjs.org/@eslint/config-helpers/-/config-helpers-0.4.2.tgz",
+      "integrity": "sha512-gBrxN88gOIf3R7ja5K9slwNayVcZgK6SOUORm2uBzTeIEfeVaIhOpCtTox3P6R7o2jLFwLFTLnC7kU/RGcYEgw==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "@eslint/core": "^0.17.0"
+      },
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      }
+    },
+    "node_modules/@eslint/core": {
+      "version": "0.17.0",
+      "resolved": "https://registry.npmjs.org/@eslint/core/-/core-0.17.0.tgz",
+      "integrity": "sha512-yL/sLrpmtDaFEiUj1osRP4TI2MDz1AddJL+jZ7KSqvBuliN4xqYY54IfdN8qD8Toa6g1iloph1fxQNkjOxrrpQ==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "@types/json-schema": "^7.0.15"
+      },
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      }
+    },
+    "node_modules/@eslint/eslintrc": {
+      "version": "3.3.5",
+      "resolved": "https://registry.npmjs.org/@eslint/eslintrc/-/eslintrc-3.3.5.tgz",
+      "integrity": "sha512-4IlJx0X0qftVsN5E+/vGujTRIFtwuLbNsVUe7TO6zYPDR1O6nFwvwhIKEKSrl6dZchmYBITazxKoUYOjdtjlRg==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "ajv": "^6.14.0",
+        "debug": "^4.3.2",
+        "espree": "^10.0.1",
+        "globals": "^14.0.0",
+        "ignore": "^5.2.0",
+        "import-fresh": "^3.2.1",
+        "js-yaml": "^4.1.1",
+        "minimatch": "^3.1.5",
+        "strip-json-comments": "^3.1.1"
+      },
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      },
+      "funding": {
+        "url": "https://opencollective.com/eslint"
+      }
+    },
+    "node_modules/@eslint/eslintrc/node_modules/brace-expansion": {
+      "version": "1.1.13",
+      "resolved": "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.13.tgz",
+      "integrity": "sha512-9ZLprWS6EENmhEOpjCYW2c8VkmOvckIJZfkr7rBW6dObmfgJ/L1GpSYW5Hpo9lDz4D1+n0Ckz8rU7FwHDQiG/w==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "balanced-match": "^1.0.0",
+        "concat-map": "0.0.1"
+      }
+    },
+    "node_modules/@eslint/eslintrc/node_modules/globals": {
+      "version": "14.0.0",
+      "resolved": "https://registry.npmjs.org/globals/-/globals-14.0.0.tgz",
+      "integrity": "sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=18"
+      },
+      "funding": {
+        "url": "https://github.com/sponsors/sindresorhus"
+      }
+    },
+    "node_modules/@eslint/eslintrc/node_modules/ignore": {
+      "version": "5.3.2",
+      "resolved": "https://registry.npmjs.org/ignore/-/ignore-5.3.2.tgz",
+      "integrity": "sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">= 4"
+      }
+    },
+    "node_modules/@eslint/eslintrc/node_modules/minimatch": {
+      "version": "3.1.5",
+      "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-3.1.5.tgz",
+      "integrity": "sha512-VgjWUsnnT6n+NUk6eZq77zeFdpW2LWDzP6zFGrCbHXiYNul5Dzqk2HHQ5uFH2DNW5Xbp8+jVzaeNt94ssEEl4w==",
+      "dev": true,
+      "license": "ISC",
+      "dependencies": {
+        "brace-expansion": "^1.1.7"
+      },
+      "engines": {
+        "node": "*"
+      }
+    },
+    "node_modules/@eslint/js": {
+      "version": "9.39.4",
+      "resolved": "https://registry.npmjs.org/@eslint/js/-/js-9.39.4.tgz",
+      "integrity": "sha512-nE7DEIchvtiFTwBw4Lfbu59PG+kCofhjsKaCWzxTpt4lfRjRMqG6uMBzKXuEcyXhOHoUp9riAm7/aWYGhXZ9cw==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      },
+      "funding": {
+        "url": "https://eslint.org/donate"
+      }
+    },
+    "node_modules/@eslint/object-schema": {
+      "version": "2.1.7",
+      "resolved": "https://registry.npmjs.org/@eslint/object-schema/-/object-schema-2.1.7.tgz",
+      "integrity": "sha512-VtAOaymWVfZcmZbp6E2mympDIHvyjXs/12LqWYjVw6qjrfF+VK+fyG33kChz3nnK+SU5/NeHOqrTEHS8sXO3OA==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      }
+    },
+    "node_modules/@eslint/plugin-kit": {
+      "version": "0.4.1",
+      "resolved": "https://registry.npmjs.org/@eslint/plugin-kit/-/plugin-kit-0.4.1.tgz",
+      "integrity": "sha512-43/qtrDUokr7LJqoF2c3+RInu/t4zfrpYdoSDfYyhg52rwLV6TnOvdG4fXm7IkSB3wErkcmJS9iEhjVtOSEjjA==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "@eslint/core": "^0.17.0",
+        "levn": "^0.4.1"
+      },
+      "engines": {
+        "node": "^18.18.0 || ^20.9.0 || >=21.1.0"
+      }
+    },
+    "node_modules/@formatjs/ecma402-abstract": {
+      "version": "2.3.6",
+      "resolved": "https://registry.npmjs.org/@formatjs/ecma402-abstract/-/ecma402-abstract-2.3.6.tgz",
+      "integrity": "sha512-HJnTFeRM2kVFVr5gr5kH1XP6K0JcJtE7Lzvtr3FS/so5f1kpsqqqxy5JF+FRaO6H2qmcMfAUIox7AJteieRtVw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@formatjs/fast-memoize": "2.2.7",
+        "@formatjs/intl-localematcher": "0.6.2",
+        "decimal.js": "^10.4.3",
+        "tslib": "^2.8.0"
+      }
+    },
+    "node_modules/@formatjs/fast-memoize": {
+      "version": "2.2.7",
+      "resolved": "https://registry.npmjs.org/@formatjs/fast-memoize/-/fast-memoize-2.2.7.tgz",
+      "integrity": "sha512-Yabmi9nSvyOMrlSeGGWDiH7rf3a7sIwplbvo/dlz9WCIjzIQAfy1RMf4S0X3yG724n5Ghu2GmEl5NJIV6O9sZQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "tslib": "^2.8.0"
+      }
+    },
+    "node_modules/@formatjs/icu-messageformat-parser": {
+      "version": "2.11.4",
+      "resolved": "https://registry.npmjs.org/@formatjs/icu-messageformat-parser/-/icu-messageformat-parser-2.11.4.tgz",
+      "integrity": "sha512-7kR78cRrPNB4fjGFZg3Rmj5aah8rQj9KPzuLsmcSn4ipLXQvC04keycTI1F7kJYDwIXtT2+7IDEto842CfZBtw==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@formatjs/ecma402-abstract": "2.3.6",
+        "@formatjs/icu-skeleton-parser": "1.8.16",
+        "tslib": "^2.8.0"
+      }
+    },
+    "node_modules/@formatjs/icu-skeleton-parser": {
+      "version": "1.8.16",
+      "resolved": "https://registry.npmjs.org/@formatjs/icu-skeleton-parser/-/icu-skeleton-parser-1.8.16.tgz",
+      "integrity": "sha512-H13E9Xl+PxBd8D5/6TVUluSpxGNvFSlN/b3coUp0e0JpuWXXnQDiavIpY3NnvSp4xhEMoXyyBvVfdFX8jglOHQ==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "@formatjs/ecma402-abstract": "2.3.6",
+        "tslib": "^2.8.0"
+      }
+    },
+    "node_modules/@formatjs/intl-localematcher": {
+      "version": "0.6.2",
+      "resolved": "https://registry.npmjs.org/@formatjs/intl-localematcher/-/intl-localematcher-0.6.2.tgz",
+      "integrity": "sha512-XOMO2Hupl0wdd172Y06h6kLpBz6Dv+J4okPLl4LPtzbr8f66WbIoy4ev98EBuZ6ZK4h5ydTN6XneT4QVpD7cdA==",
+      "dev": true,
+      "license": "MIT",
+      "dependencies": {
+        "tslib": "^2.8.0"
+      }
+    },
+    "node_modules/@google/genai": {
+      "version": "1.50.1",
+      "resolved": "https://registry.npmjs.org/@google/genai/-/genai-1.50.1.tgz",
+      "integrity": "sha512-YbkX7H9+1Pt8wOt7DDREy8XSoiL6fRDzZQRyaVBarFf8MR3zHGqVdvM4cLbDXqPhxqvegZShgfxb8kw9C7YhAQ==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "dependencies": {
+        "google-auth-library": "^10.3.0",
+        "p-retry": "^4.6.2",
+        "protobufjs": "^7.5.4",
+        "ws": "^8.18.0"
+      },
+      "engines": {
+        "node": ">=20.0.0"
+      },
+      "peerDependencies": {
+        "@modelcontextprotocol/sdk": "^1.25.2"
+      },
+      "peerDependenciesMeta": {
+        "@modelcontextprotocol/sdk": {
+          "optional": true
+        }
+      }
+    },
+    "node_modules/@hono/node-server": {
+      "version": "1.19.13",
+      "resolved": "https://registry.npmjs.org/@hono/node-server/-/node-server-1.19.13.tgz",
+      "integrity": "sha512-TsQLe4i2gvoTtrHje625ngThGBySOgSK3Xo2XRYOdqGN1teR8+I7vchQC46uLJi8OF62YTYA3AhSpumtkhsaKQ==",
+      "dev": true,
+      "license": "MIT",
+      "engines": {
+        "node": ">=18.14.1"
+      },
+      "peerDependencies": {
+        "hono": "^4"
+      }
+    },
+    "node_modules/@humanfs/core": {
+      "version": "0.19.1",
+      "resolved": "https://registry.npmjs.org/@humanfs/core/-/core-0.19.1.tgz",
+      "integrity": "sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==",
+      "dev": true,
+      "license": "Apache-2.0",
+      "engines": {
+        "node": ">=18.18.0"
+      }
+    },
+    "node_modules/@humanfs/node": {
+      "version": "0.16.7",
+      "resolved": "https://registry.npmjs.org/@humanfs/node/-/node-0.16.7.tgz",
+      "integrity": "sha512-/zUx+yOsIrG4Y43Eh2peDeKCxlRt/gET6aHfaKpu
+```
+
+
+## File: package.json
+
+```
+{
+  "name": "chrome-devtools-mcp",
+  "version": "0.22.0",
+  "description": "MCP server for Chrome DevTools",
+  "type": "module",
+  "bin": {
+    "chrome-devtools-mcp": "./build/src/bin/chrome-devtools-mcp.js",
+    "chrome-devtools": "./build/src/bin/chrome-devtools.js"
+  },
+  "main": "./build/src/index.js",
+  "scripts": {
+    "cli:generate": "node --experimental-strip-types scripts/generate-cli.ts",
+    "clean": "node -e \"require('fs').rmSync('build', {recursive: true, force: true})\"",
+    "bundle": "npm run clean && npm run build && rollup -c rollup.config.mjs && node -e \"require('fs').rmSync('build/node_modules', {recursive: true, force: true})\" && node --experimental-strip-types scripts/append-lighthouse-notices.ts",
+    "build": "tsc && node --experimental-strip-types --no-warnings=ExperimentalWarning scripts/post-build.ts",
+    "typecheck": "tsc --noEmit",
+    "format": "eslint --cache --fix . && prettier --write --cache .",
+    "check-format": "eslint --cache . && prettier --check --cache .;",
+    "gen": "npm run build && npm run docs:generate && npm run cli:generate && npm run update-tool-call-metrics && npm run update-flag-usage-metrics && npm run format",
+    "docs:generate": "node --experimental-strip-types scripts/generate-docs.ts",
+    "start": "npm run build && node build/src/index.js",
+    "start-debug": "DEBUG=mcp:* DEBUG_COLORS=false npm run build && node build/src/index.js",
+    "test": "npm run build && node scripts/test.mjs",
+    "test:no-build": "node scripts/test.mjs",
+    "test:only": "npm run build && node scripts/test.mjs --test-only",
+    "test:update-snapshots": "npm run build && node scripts/test.mjs --test-update-snapshots",
+    "prepare": "node --experimental-strip-types scripts/prepare.ts",
+    "verify-server-json-version": "node --experimental-strip-types scripts/verify-server-json-version.ts",
+    "update-lighthouse": "node --experimental-strip-types scripts/update-lighthouse.ts",
+    "update-tool-call-metrics": "node --experimental-strip-types scripts/update_tool_call_metrics.ts",
+    "update-flag-usage-metrics": "node --experimental-strip-types scripts/update_flag_usage_metrics.ts",
+    "verify-npm-package": "node scripts/verify-npm-package.mjs",
+    "eval": "npm run build && node --experimental-strip-types scripts/eval_gemini.ts",
+    "count-tokens": "node --experimental-strip-types scripts/count_tokens.ts"
+  },
+  "files": [
+    "build/src",
+    "LICENSE",
+    "!*.tsbuildinfo"
+  ],
+  "repository": "ChromeDevTools/chrome-devtools-mcp",
+  "author": "Google LLC",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/ChromeDevTools/chrome-devtools-mcp/issues"
+  },
+  "homepage": "https://github.com/ChromeDevTools/chrome-devtools-mcp#readme",
+  "mcpName": "io.github.ChromeDevTools/chrome-devtools-mcp",
+  "devDependencies": {
+    "@eslint/js": "^9.35.0",
+    "@google/genai": "^1.37.0",
+    "@modelcontextprotocol/sdk": "1.29.0",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-json": "^6.1.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@stylistic/eslint-plugin": "^5.4.0",
+    "@types/debug": "^4.1.12",
+    "@types/filesystem": "^0.0.36",
+    "@types/node": "^25.0.0",
+    "@types/semver": "^7.7.1",
+    "@types/sinon": "^21.0.0",
+    "@types/yargs": "^17.0.33",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
+    "chrome-devtools-frontend": "1.0.1613625",
+    "core-js": "3.49.0",
+    "debug": "4.4.3",
+    "eslint": "^9.35.0",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "globals": "^17.0.0",
+    "lighthouse": "13.1.0",
+    "prettier": "^3.6.2",
+    "puppeteer": "24.42.0",
+    "rollup": "4.60.2",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "rollup-plugin-license": "^3.6.0",
+    "semver": "^7.7.4",
+    "sinon": "^21.0.0",
+    "tiktoken": "^1.0.22",
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.43.0",
+    "yargs": "18.0.0"
+  },
+  "engines": {
+    "node": "^20.19.0 || ^22.12.0 || >=23"
+  }
+}
+
+```
+
 
 ## File: docs/cli.md
 
@@ -621,7 +1623,8 @@ chrome-devtools stop
 
 ## Command Usage
 
-The CLI supports all tools available in the [Tool reference](./tool-reference.md).
+The CLI only supports tools available in the MCP server without additional arguments (see [Tool reference](./tool-reference.md)).
+Thus, `--categoryExtensions` tools are currently not available in the CLI.
 
 ```sh
 chrome-devtools <tool> [arguments] [flags]
@@ -834,6 +1837,12 @@ Apply them with nuance.
   - [`list_console_messages`](#list_console_messages)
   - [`take_screenshot`](#take_screenshot)
   - [`take_snapshot`](#take_snapshot)
+- **[Extensions](#extensions)** (5 tools)
+  - [`install_extension`](#install_extension)
+  - [`list_extensions`](#list_extensions)
+  - [`reload_extension`](#reload_extension)
+  - [`trigger_extension_action`](#trigger_extension_action)
+  - [`uninstall_extension`](#uninstall_extension)
 - **[Memory](#memory)** (1 tools)
   - [`take_memory_snapshot`](#take_memory_snapshot)
 
@@ -1022,7 +2031,169 @@ Apply them with nuance.
 
 - **colorScheme** (enum: "dark", "light", "auto") _(optional)_: [`Emulate`](#emulate) the dark or the light mode. Set to "auto" to reset to the default.
 - **cpuThrottlingRate** (number) _(optional)_: Represents the CPU slowdown factor. Omit or set the rate to 1 to disable throttling
-- **geolocation** (string) _(optional)_: Geolocation (`&lt;latitude&gt;x&lt;longitude&gt;`) to [`emulate`](#emulate). L
+- **geolocation** (string) _(optional)_: Geolocation (`&lt;latitude&gt;x&lt;longitude&gt;`) to [`emulate`](#emulate). Latitude between -90 and 90. Longitude between -180 and 180. Omit to clear the geolocation override.
+- **networkConditions** (enum: "Offline", "Slow 3G", "Fast 3G", "Slow 4G", "Fast 4G") _(optional)_: Throttle network. Omit to disable throttling.
+- **userAgent** (string) _(optional)_: User agent to [`emulate`](#emulate). Set to empty string to clear the user agent override.
+- **viewport** (string) _(optional)_: [`Emulate`](#emulate) device viewports '&lt;width&gt;x&lt;height&gt;x&lt;devicePixelRatio&gt;[,mobile][,touch][,landscape]'. 'touch' and 'mobile' to [`emulate`](#emulate) mobile devices. 'landscape' to [`emulate`](#emulate) landscape mode.
+
+---
+
+### `resize_page`
+
+**Description:** Resizes the selected page's window so that the page has specified dimension
+
+**Parameters:**
+
+- **height** (number) **(required)**: Page height
+- **width** (number) **(required)**: Page width
+
+---
+
+## Performance
+
+### `performance_analyze_insight`
+
+**Description:** Provides more detailed information on a specific Performance Insight of an insight set that was highlighted in the results of a trace recording.
+
+**Parameters:**
+
+- **insightName** (string) **(required)**: The name of the Insight you want more information on. For example: "DocumentLatency" or "LCPBreakdown"
+- **insightSetId** (string) **(required)**: The id for the specific insight set. Only use the ids given in the "Available insight sets" list.
+
+---
+
+### `performance_start_trace`
+
+**Description:** Start a performance trace on the selected webpage. Use to find frontend performance issues, Core Web Vitals (LCP, INP, CLS), and improve page load speed.
+
+**Parameters:**
+
+- **autoStop** (boolean) _(optional)_: Determines if the trace recording should be automatically stopped.
+- **filePath** (string) _(optional)_: The absolute file path, or a file path relative to the current working directory, to save the raw trace data. For example, trace.json.gz (compressed) or trace.json (uncompressed).
+- **reload** (boolean) _(optional)_: Determines if, once tracing has started, the current selected page should be automatically reloaded. Navigate the page to the right URL using the [`navigate_page`](#navigate_page) tool BEFORE starting the trace if reload or autoStop is set to true.
+
+---
+
+### `performance_stop_trace`
+
+**Description:** Stop the active performance trace recording on the selected webpage.
+
+**Parameters:**
+
+- **filePath** (string) _(optional)_: The absolute file path, or a file path relative to the current working directory, to save the raw trace data. For example, trace.json.gz (compressed) or trace.json (uncompressed).
+
+---
+
+## Network
+
+### `get_network_request`
+
+**Description:** Gets a network request by an optional reqid, if omitted returns the currently selected request in the DevTools Network panel.
+
+**Parameters:**
+
+- **reqid** (number) _(optional)_: The reqid of the network request. If omitted returns the currently selected request in the DevTools Network panel.
+- **requestFilePath** (string) _(optional)_: The absolute or relative path to a .network-request file to save the request body to. If omitted, the body is returned inline.
+- **responseFilePath** (string) _(optional)_: The absolute or relative path to a .network-response file to save the response body to. If omitted, the body is returned inline.
+
+---
+
+### `list_network_requests`
+
+**Description:** List all requests for the currently selected page since the last navigation.
+
+**Parameters:**
+
+- **includePreservedRequests** (boolean) _(optional)_: Set to true to return the preserved requests over the last 3 navigations.
+- **pageIdx** (integer) _(optional)_: Page number to return (0-based). When omitted, returns the first page.
+- **pageSize** (integer) _(optional)_: Maximum number of requests to return. When omitted, returns all requests.
+- **resourceTypes** (array) _(optional)_: Filter requests to only return requests of the specified resource types. When omitted or empty, returns all requests.
+
+---
+
+## Debugging
+
+### `evaluate_script`
+
+**Description:** Evaluate a JavaScript function inside the currently selected page. Returns the response as JSON,
+so returned values have to be JSON-serializable.
+
+**Parameters:**
+
+- **function** (string) **(required)**: A JavaScript function declaration to be executed by the tool in the currently selected page.
+  Example without arguments: `() => {
+  return document.title
+}` or `async () => {
+  return await fetch("example.com")
+}`.
+  Example with arguments: `(el) => {
+  return el.innerText;
+}`
+
+- **args** (array) _(optional)_: An optional list of arguments to pass to the function.
+- **dialogAction** (string) _(optional)_: Handle dialogs while execution. "accept", "dismiss", or string for response of window.prompt. Defaults to accept.
+
+---
+
+### `get_console_message`
+
+**Description:** Gets a console message by its ID. You can get all messages by calling [`list_console_messages`](#list_console_messages).
+
+**Parameters:**
+
+- **msgid** (number) **(required)**: The msgid of a console message on the page from the listed console messages
+
+---
+
+### `lighthouse_audit`
+
+**Description:** Get Lighthouse score and reports for accessibility, SEO and best practices. This excludes performance. For performance audits, run [`performance_start_trace`](#performance_start_trace)
+
+**Parameters:**
+
+- **device** (enum: "desktop", "mobile") _(optional)_: Device to [`emulate`](#emulate).
+- **mode** (enum: "navigation", "snapshot") _(optional)_: "navigation" reloads &amp; audits. "snapshot" analyzes current state.
+- **outputDirPath** (string) _(optional)_: Directory for reports. If omitted, uses temporary files.
+
+---
+
+### `list_console_messages`
+
+**Description:** List all console messages for the currently selected page since the last navigation.
+
+**Parameters:**
+
+- **includePreservedMessages** (boolean) _(optional)_: Set to true to return the preserved messages over the last 3 navigations.
+- **pageIdx** (integer) _(optional)_: Page number to return (0-based). When omitted, returns the first page.
+- **pageSize** (integer) _(optional)_: Maximum number of messages to return. When omitted, returns all messages.
+- **types** (array) _(optional)_: Filter messages to only return messages of the specified resource types. When omitted or empty, returns all messages.
+
+---
+
+### `take_screenshot`
+
+**Description:** Take a screenshot of the page or element.
+
+**Parameters:**
+
+- **filePath** (string) _(optional)_: The absolute path, or a path relative to the current working directory, to save the screenshot to instead of attaching it to the response.
+- **format** (enum: "png", "jpeg", "webp") _(optional)_: Type of format to save the screenshot as. Default is "png"
+- **fullPage** (boolean) _(optional)_: If set to true takes a screenshot of the full page instead of the currently visible viewport. Incompatible with uid.
+- **quality** (number) _(optional)_: Compression quality for JPEG and WebP formats (0-100). Higher values mean better quality but larger file sizes. Ignored for PNG format.
+- **uid** (string) _(optional)_: The uid of an element on the page from the page content snapshot. If omitted, takes a page screenshot.
+
+---
+
+### `take_snapshot`
+
+**Description:** Take a text snapshot of the currently selected page based on the a11y tree. The snapshot lists page elements along with a unique
+identifier (uid). Always use the latest snapshot. Prefer taking a snapshot over taking a screenshot. The snapshot indicates the element selected
+in the DevTools Elements panel (if any).
+
+**Parameters:**
+
+- **filePath** (string) _(optional)_: The absolute path, or a path relative to the current working directory, to save the snapshot to instead of attaching it to the response.
+- **verbose** (boo
 ```
 
 
@@ -1207,163 +2378,12 @@ If you are using the `--autoConnect` flag and tools like `list_pages`, `new_page
 3. You have allowed the remote debugging connection prompt in the browser.
 4. There is no other MCP server or tool trying to connect to the same debugging port.
 
-```
+> [!IMPORTANT]
+> In Chrome versions up to 149, connection issues may be caused by frozen or unloaded tabs.
+> Chrome DevTools MCP forces all tabs to be loaded, so ensure your system has sufficient resources.
+> It is currently not recommended to use Chrome DevTools MCP with browser instances running hundreds of tabs.
+> See [Issue #1921](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1921) for more details.
 
-
-## File: .gitignore
-
-```
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
-
-trace.json
-trace.json.gz
-
-# Diagnostic reports (https://nodejs.org/api/report.html)
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
-
-# Directory for instrumented libs generated by jscoverage/JSCover
-lib-cov
-
-# Coverage directory used by tools like istanbul
-coverage
-*.lcov
-
-# nyc test coverage
-.nyc_output
-
-# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
-
-# node-waf configuration
-.lock-wscript
-
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
-
-# Dependency directories
-node_modules/
-jspm_packages/
-
-# Snowpack dependency directory (https://snowpack.dev/)
-web_modules/
-
-# TypeScript cache
-*.tsbuildinfo
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional stylelint cache
-.stylelintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variable files
-.env
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-
-# parcel-bundler cache (https://parceljs.org/)
-.cache
-.parcel-cache
-
-# Next.js build output
-.next
-out
-
-# Nuxt.js build / generate output
-.nuxt
-dist
-
-# Gatsby files
-.cache/
-# Comment in the public line in if your project uses Gatsby and not Next.js
-# https://nextjs.org/blog/next-9-1#public-directory-support
-# public
-
-# vuepress build output
-.vuepress/dist
-
-# vuepress v2.x temp and cache directory
-.temp
-.cache
-
-# vitepress build output
-**/.vitepress/dist
-
-# vitepress cache directory
-**/.vitepress/cache
-
-# Docusaurus cache and generated files
-.docusaurus
-
-# Serverless directories
-.serverless/
-
-# FuseBox cache
-.fusebox/
-
-# DynamoDB Local files
-.dynamodb/
-
-# TernJS port file
-.tern-port
-
-# Stores VSCode versions used for testing VSCode extensions
-.vscode-test
-
-# Stores VSCode specific settings
-.vscode
-!.vscode/*.template.json
-!.vscode/extensions.json
-
-# yarn v2
-.yarn/cache
-.yarn/unplugged
-.yarn/build-state.yml
-.yarn/install-state.gz
-.pnp.*
-
-# Build output directory
-build/
-
-log.txt
-
-.DS_Store
 ```
 
 
@@ -1386,7 +2406,7 @@ log.txt
 
 ```
 {
-  ".": "0.21.0"
+  ".": "0.22.0"
 }
 
 ```
@@ -1396,6 +2416,45 @@ log.txt
 
 ```
 # Changelog
+
+## [0.22.0](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.21.0...chrome-devtools-mcp-v0.22.0) (2026-04-21)
+
+
+### 🎉 Features
+
+* add update notification to both binaries ([#1783](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1783)) ([e01e333](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/e01e33355e85c3b38e7aba6aceff57271b99a830))
+* auto handle dialogs during script evaluation  ([#1839](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1839)) ([da33cb5](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/da33cb5b957fb87bbbab67e4c1521535065881f1))
+* ensure extensions for file outputs ([#1867](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1867)) ([e7a0d50](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/e7a0d509778578ceb8ba357f5857a86f95cfb533))
+* experimental click_at(x,y) tool ([#1788](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1788)) ([c4f5471](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/c4f54710d9d7c3d1167628e5135b4cf92beaec45))
+* support Chrome extensions debugging ([#1922](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1922)) ([3ff21cf](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/3ff21cf30dae19a6af85d836b1b55314f53ff401))
+* support DevTools header redactions as an option ([#1848](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1848)) ([5c398c4](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/5c398c4e7ce17facf62316fb1b617c39daa461ef))
+* **webmcp:** Add experimental tool to execute WebMCP tool ([#1873](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1873)) ([0aff266](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/0aff266111408acfbce39e231c23ce866d0f26c0))
+* **webmcp:** Add experimental tool to list WebMCP tools page exposes ([#1845](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1845)) ([f97b573](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/f97b573d70ec670df8bb2b42167e08681f3b488e))
+
+
+### 🛠️ Fixes
+
+* avoid showing update notification for local builds ([#1889](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1889)) ([3f0cf10](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/3f0cf1068ba35d81c800a81fc6272acaff715b41)), closes [#1886](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1886)
+* **cli:** correct WebP MIME type check in handleResponse ('webp' → 'image/webp') ([#1899](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1899)) ([e3a5f6b](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/e3a5f6bb69f0dc4e626146d5b4165af97bad8fe4)), closes [#1898](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1898)
+* ignore unmapped PerformanceIssue events ([#1852](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1852)) ([ea57e86](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/ea57e863f8b5b48a210c7a2fccd552f5824a7a96))
+* **network:** trailing data in Network redirect chain ([#1880](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1880)) ([2f458c1](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/2f458c11ebbb4b8061e8e4375346e5449b222281))
+* remove double space in navigate error message ([#1847](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1847)) ([429e0ca](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/429e0ca7b82568de1c0fab27dacb439b3898965c))
+
+
+### 📄 Documentation
+
+* clarify tools included into CLI ([#1925](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1925)) ([76ab9fa](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/76ab9fa5643dfa6eb93fcb50fe747a948e9a9d63))
+* document network response and request extensions ([#1887](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1887)) ([796d6f2](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/796d6f2e242065de1e2cf27f729d66bc71676299))
+* fix skill and reference documentation issues ([#1249](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1249)) ([9236834](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/92368345dd62fce0a65a1081f80c23790edbf7d1))
+* Include Mistral Vibe setup in README ([#1801](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1801)) ([582c9e0](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/582c9e01e9a5ca1b9bb9e4b816662008430aaf2d))
+* Rename project and enhance README content ([#1856](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1856)) ([c066488](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/c0664883a5eb6a3e23bb0a48ea348e5cdab052f2))
+* update the README on installing as a VS code agent plugin  ([#1796](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1796)) ([1b5dcae](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/1b5dcae2a03a9de8c29c9f25a4d04cdfbad416a7))
+
+
+### 🏗️ Refactor
+
+* move waitForEventsAfterAction to McpPage ([#1780](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1780)) ([c7c8f50](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/c7c8f50f802643fd90bd9d0419acfb1bb8dd58ad))
+* use puppeteer Extension API ([#1911](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1911)) ([ec895f1](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/ec895f195aa21b36c1bf4373184f281b181ea3e9))
 
 ## [0.21.0](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.20.3...chrome-devtools-mcp-v0.21.0) (2026-04-01)
 
@@ -1457,5 +2516,63 @@ log.txt
 
 * use CDP to find open DevTools pages. ([#1150](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1150)) ([94de19c](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/94de19cdcdae9e31d0962b273ce352dc248eb5a8))
 
-## [0.20.0](h
+## [0.20.0](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.19.0...chrome-devtools-mcp-v0.20.0) (2026-03-11)
+
+
+### 🎉 Features
+
+* experimental `chrome-devtools` CLI ([#1100](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1100)) ([1ac574e](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/1ac574e7154948e86e414e5149fb975a190d5bb0))
+
+
+### 📄 Documentation
+
+* fix typo ([#1155](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1155)) ([b59cabc](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/b59cabcc1d59802ffd7d9667040188e46192357d))
+* fix typos and improve phrasing ([#1130](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1130)) ([70d4f36](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/70d4f365dc619a5743e697c30800f7065bc6227d))
+* revise contribution process and add release process ([#1134](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1134)) ([d7d26a1](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/d7d26a103b840e2feb7cb9af6a242edda94f1ddf))
+* **troubleshooting:** add symptom for missing tools due to read-only mode ([#1148](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1148)) ([57e7d51](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/57e7d51e8ca1e2ee325a9e7a9c64c033acbe6d6a))
+* Update troubleshooting for MCP server connection errors ([#1017](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1017)) ([00f9c31](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/00f9c3108ab9caefca57998439052c728298920b))
+
+
+### 🏗️ Refactor
+
+* move main files ([#1120](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1120)) ([c2d8009](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/c2d8009ff75f76bce1ec4cf79c2467b50d81725e))
+
+## [0.19.0](https://github.com/ChromeDevTools/chrome-devtools-mcp/compare/chrome-devtools-mcp-v0.18.1...chrome-devtools-mcp-v0.19.0) (2026-03-05)
+
+
+### 🎉 Features
+
+* add pageId routing for parallel multi-agent workflows ([#1022](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1022)) ([caf601a](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/caf601a32832bb87cfac801a6bbeacb87508412f)), closes [#1019](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1019)
+* Add skill which helps with onboarding of the mcp server ([#1083](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1083)) ([7273f16](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/7273f16ec08f6d5b46a2693b0ad4d559086ded89))
+* integrate Lighthouse audits ([#831](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/831)) ([dfdac26](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/dfdac2648e560d756a8711ad3bb1fa470be8e7c9))
+
+
+### 🛠️ Fixes
+
+* improve error messages around --auto-connect ([#1075](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1075)) ([bcb852d](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/bcb852dd2e440b0005f4a9ad270a1a7998767907))
+* improve tool descriptions ([#965](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/965)) ([bdbbc84](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/bdbbc84c125bdd48f4be48aa476bec0323de611c))
+* repair broken markdown and extract snippets in a11y-debugging skill ([#1096](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1096)) ([adac7c5](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/adac7c537ee304f324c5e7284fb363396d1773f5))
+* simplify emulation and script tools ([#1073](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1073)) ([e51ba47](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/e51ba4720338951e621585b77efc6a0e07678d99))
+* simplify focus state management ([#1063](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1063)) ([f763da2](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/f763da24a10e27605c0a5069853ce7c92974eec2))
+* tweak lighthouse description ([#1112](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1112)) ([5538180](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/55381804ae7ffa8a1e5933b621a9b8390b3000ff))
+
+
+### 📄 Documentation
+
+* Adapt a11y skill to utilize Lighthouse ([#1054](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1054)) ([21634e6](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/21634e660c346e469ae62116b1824538f51567dd))
+* add feature release checklist to CONTRIBUTING.md ([#1118](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1118)) ([0378457](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/03784577ffb6e238bcb2d637bff9ad759723ea7b))
+* fix typo in README regarding slim mode ([#1093](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1093)) ([92f2c7b](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/92f2c7b48b56a6b1d6ac7c9e2f2e92beb26bcf62))
+
+
+### 🏗️ Refactor
+
+* clean up more of the context getters ([#1062](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1062)) ([9628dab](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/9628dabcb4d39f0b94d152a0fc419e049246a29d))
+* consistently use McpPage in tools ([#1057](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1057)) ([302e5a0](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/302e5a04191ba0558e3c79f1486d01d5eb0f6896))
+* improve type safety for page scoped tools ([#1051](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1051)) ([5f694c6](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/5f694c60ffd21f8b022554c92b2ad4cbdb457375))
+* make cdp resolvers use McpPage ([#1060](https://github.com/ChromeDevTools/chrome-devtools-mcp/issues/1060)) ([d6c06c5](https://github.com/ChromeDevTools/chrome-devtools-mcp/commit/d6c06c56a7b8e4968318adc9fc7c820ace9f5bd9))
+* move dialog handling to McpPage ([#1059](https://github.com/ChromeDevTools/
+```
+
+
+(… 204 more files omitted due to size limit)
 <!-- fetched-content:end -->

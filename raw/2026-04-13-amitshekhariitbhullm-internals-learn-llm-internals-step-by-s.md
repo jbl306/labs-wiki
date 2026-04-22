@@ -1,19 +1,21 @@
 ---
-title: "amitshekhariitbhu/llm-internals: Learn LLM internals step by step - from tokenization to attention to inference optimization."
+title: 'amitshekhariitbhu/llm-internals: Learn LLM internals step by step - from tokenization
+  to attention to inference optimization.'
 type: url
-captured: 2026-04-13T16:33:58.346896+00:00
+captured: 2026-04-13 16:33:58.346896+00:00
 source: android-share
-url: "https://github.com/amitshekhariitbhu/llm-internals"
-content_hash: "sha256:af8f0fa615b7d555813d44ad57f2e81168e3621dd2375b79b9952e95455f2b99"
+url: https://github.com/amitshekhariitbhu/llm-internals
+content_hash: sha256:891ca4dfd5e2d5be2dfffe03ddb33bfa19ec320d89363f9c0d7bae719c9c58e8
 tags: []
 status: ingested
+last_refreshed: '2026-04-22T02:45:00+00:00'
 ---
 
 https://github.com/amitshekhariitbhu/llm-internals
 
 <!-- fetched-content:start -->
 ## Fetched Metadata
-- fetched_at: 2026-04-20T23:17:55+00:00
+- fetched_at: 2026-04-22T02:45:00+00:00
 - source_url: https://github.com/amitshekhariitbhu/llm-internals
 - resolved_url: https://github.com/amitshekhariitbhu/llm-internals
 - content_type: application/vnd.github+json
@@ -22,7 +24,7 @@ https://github.com/amitshekhariitbhu/llm-internals
 ## Fetched Content
 Repository: amitshekhariitbhu/llm-internals
 Description: Learn LLM internals step by step - from tokenization to attention to inference optimization.
-Stars: 588
+Stars: 605
 Language: None
 Topics: attention-is-all-you-need, attention-mechanism, large-language-models, learn-llm, llm, llm-internals
 
@@ -349,6 +351,19 @@ Let's get started: [Harness Engineering in AI](https://outcomeschool.com/blog/ha
    limitations under the License.
 ```
 
+## Recent Commits
+
+- 2026-04-20 82141f0 AMIT SHEKHAR: Add section on Cross-Entropy Loss to README
+- 2026-04-14 5f11e4a AMIT SHEKHAR: Update README.md
+- 2026-04-13 8f3c019 AMIT SHEKHAR: Add section on Feed-Forward Networks in LLMs
+- 2026-04-12 1bb5239 AMIT SHEKHAR: Update README.md
+- 2026-04-12 a7d11e2 AMIT SHEKHAR: Initialize README with blog topics on AI
+- 2026-04-12 22b6737 AMIT SHEKHAR: Add files via upload
+- 2026-04-12 8284c47 AMIT SHEKHAR: Configure .gitattributes for Markdown files
+- 2026-04-12 7e807b6 AMIT SHEKHAR: Add files via upload
+- 2026-04-12 59096f5 AMIT SHEKHAR: Create banner.png
+- 2026-04-12 5d7141f AMIT SHEKHAR: Initial commit
+
 
 ## File: LICENSE
 
@@ -493,6 +508,67 @@ Let's get started: [Harness Engineering in AI](https://outcomeschool.com/blog/ha
    6. Trademarks. This License does not grant permission to use the trade
       names, trademarks, service marks, or product names of the Licensor,
       except as required for reasonable and customary use in describing the
-      origin of the Work and reproducing th
+      origin of the Work and reproducing the content of the NOTICE file.
+
+   7. Disclaimer of Warranty. Unless required by applicable law or
+      agreed to in writing, Licensor provides the Work (and each
+      Contributor provides its Contributions) on an "AS IS" BASIS,
+      WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or
+      implied, including, without limitation, any warranties or conditions
+      of TITLE, NON-INFRINGEMENT, MERCHANTABILITY, or FITNESS FOR A
+      PARTICULAR PURPOSE. You are solely responsible for determining the
+      appropriateness of using or redistributing the Work and assume any
+      risks associated with Your exercise of permissions under this License.
+
+   8. Limitation of Liability. In no event and under no legal theory,
+      whether in tort (including negligence), contract, or otherwise,
+      unless required by applicable law (such as deliberate and grossly
+      negligent acts) or agreed to in writing, shall any Contributor be
+      liable to You for damages, including any direct, indirect, special,
+      incidental, or consequential damages of any character arising as a
+      result of this License or out of the use or inability to use the
+      Work (including but not limited to damages for loss of goodwill,
+      work stoppage, computer failure or malfunction, or any and all
+      other commercial damages or losses), even if such Contributor
+      has been advised of the possibility of such damages.
+
+   9. Accepting Warranty or Additional Liability. While redistributing
+      the Work or Derivative Works thereof, You may choose to offer,
+      and charge a fee for, acceptance of support, warranty, indemnity,
+      or other liability obligations and/or rights consistent with this
+      License. However, in accepting such obligations, You may act only
+      on Your own behalf and on Your sole responsibility, not on behalf
+      of any other Contributor, and only if You agree to indemnify,
+      defend, and hold each Contributor harmless for any liability
+      incurred by, or claims asserted against, such Contributor by reason
+      of your accepting any such warranty or additional liability.
+
+   END OF TERMS AND CONDITIONS
+
+   APPENDIX: How to apply the Apache License to your work.
+
+      To apply the Apache License to your work, attach the following
+      boilerplate notice, with the fields enclosed by brackets "[]"
+      replaced with your own identifying information. (Don't include
+      the brackets!)  The text should be enclosed in the appropriate
+      comment syntax for the file format. We also recommend that a
+      file or class name and description of purpose be included on the
+      same "printed page" as the copyright notice for easier
+      identification within third-party archives.
+
+   Copyright [yyyy] [name of copyright owner]
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+
 ```
 <!-- fetched-content:end -->

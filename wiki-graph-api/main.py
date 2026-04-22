@@ -205,6 +205,65 @@ def graph_node(node_id: str) -> dict[str, Any]:
     return node
 
 
+@app.get("/graph/page-content/{node_id:path}")
+def graph_page_content(node_id: str) -> dict[str, Any]:
+    """Return wiki page markdown body and parsed frontmatter for a node.
+
+    Used by the graph UI to render wiki content on click. node_id is the
+    wiki-relative path without the .md suffix (matches the node id format
+    in the graph export, e.g. ``concepts/foo`` or ``sources/bar``).
+    """
+    node = state.nodes_by_id.get(node_id)
+    if not node:
+        raise HTTPException(status_code=404, detail=f"unknown node {node_id}")
+
+    # Resolve to a real file inside WIKI_PATH; refuse path traversal.
+    rel = node_id.lstrip("/")
+    if not rel.endswith(".md"):
+        rel = f"{rel}.md"
+    file_path = (WIKI_PATH / rel).resolve()
+    try:
+        file_path.relative_to(WIKI_PATH.resolve())
+    except ValueError:
+        raise HTTPException(status_code=400, detail="invalid node path")
+    if not file_path.is_file():
+        raise HTTPException(status_code=404, detail=f"file missing: {rel}")
+
+    text = file_path.read_text(encoding="utf-8", errors="replace")
+    frontmatter: dict[str, Any] = {}
+    body = text
+    if text.startswith("---\n"):
+        end = text.find("\n---\n", 4)
+        if end != -1:
+            fm_raw = text[4:end]
+            body = text[end + 5 :].lstrip("\n")
+            try:
+                import yaml  # type: ignore
+                parsed = yaml.safe_load(fm_raw) or {}
+                if isinstance(parsed, dict):
+                    frontmatter = parsed
+            except Exception:
+                frontmatter = {"_raw": fm_raw}
+
+    return {
+        "node_id": node_id,
+        "path": rel,
+        "title": frontmatter.get("title") or node.get("title") or node_id,
+        "frontmatter": frontmatter,
+        "body_md": body,
+        "node": {
+            "page_type": node.get("page_type"),
+            "tier": node.get("tier"),
+            "degree": node.get("degree"),
+            "community": node.get("community"),
+            "summary": node.get("summary"),
+            "tags": node.get("tags"),
+            "last_verified": node.get("last_verified"),
+            "quality_score": node.get("quality_score"),
+        },
+    }
+
+
 @app.get("/graph/neighbors/{node_id:path}")
 def graph_neighbors(
     node_id: str,

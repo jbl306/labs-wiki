@@ -92,12 +92,11 @@ async function initWebgl() {
   host.removeAttribute("hidden");
   const canvasEl = document.getElementById("graph");
   if (canvasEl) canvasEl.style.display = "none";
-  // The canvas-only zoom buttons (in/out) drive view.scale which is unused
-  // in webgl mode. Hide them; webgl handles wheel/pinch natively.
+  // The canvas-only zoom buttons drive view.scale in 2D mode. In webgl
+  // mode we keep them visible too — their click handlers route through
+  // gpuRenderer.zoomBy() so users still get +/- buttons.
   const viewControls = document.getElementById("view-controls");
   if (viewControls) {
-    viewControls.querySelector("#zoom-in")?.setAttribute("hidden", "");
-    viewControls.querySelector("#zoom-out")?.setAttribute("hidden", "");
     viewControls.querySelector("#zoom-fit")?.removeAttribute("hidden");
     viewControls.querySelector("#zoom-level")?.setAttribute("hidden", "");
   }
@@ -129,6 +128,9 @@ async function initWebgl() {
       console.warn("label overlay init failed:", e);
       gpuLabels = null;
     }
+    // Debug hooks for headless tests + manual console inspection.
+    window.__pwCam = () => gpuRenderer.getCamera();
+    window.__pwNodes = () => gpuRenderer.getNodes();
     return gpuRenderer;
   } catch (e) {
     console.error("webgl renderer failed, falling back to canvas:", e);
@@ -1253,8 +1255,14 @@ function bindUI() {
     applyFilters();
   });
   document.getElementById("rebuild-btn").addEventListener("click", () => loadGraph());
-  document.getElementById("zoom-in").addEventListener("click", () => setScale(view.scale * ZOOM_STEP));
-  document.getElementById("zoom-out").addEventListener("click", () => setScale(view.scale / ZOOM_STEP));
+  document.getElementById("zoom-in").addEventListener("click", () => {
+    if (USE_WEBGL && gpuRenderer) gpuRenderer.zoomBy(1.5);
+    else setScale(view.scale * ZOOM_STEP);
+  });
+  document.getElementById("zoom-out").addEventListener("click", () => {
+    if (USE_WEBGL && gpuRenderer) gpuRenderer.zoomBy(1 / 1.5);
+    else setScale(view.scale / ZOOM_STEP);
+  });
   document.getElementById("zoom-fit").addEventListener("click", () => fitViewToNodes());
   document.getElementById("path-mode-toggle")?.addEventListener("click", () => {
     if (state.pathMode) exitPathMode(); else enterPathMode();

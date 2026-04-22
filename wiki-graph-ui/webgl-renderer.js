@@ -470,6 +470,11 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
 
   // ---------- Camera -----------------------------------------------------
 
+  // Cached graph bbox — computed during fit(). Used by clampCamera() so
+  // the user can never pan into the void: we allow the centre to roam
+  // up to 0.6 viewport-widths beyond the trimmed bbox.
+  let bbox = null; // { minX, maxX, minY, maxY }
+
   function fit() {
     if (!nodes.length || !viewW || !viewH) return;
     // Percentile-trimmed bbox so a handful of disconnected outliers don't
@@ -494,6 +499,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     const hi = Math.min(valid - 1, Math.ceil(valid * 0.97));
     const minX = sortedX[lo], maxX = sortedX[hi];
     const minY = sortedY[lo], maxY = sortedY[hi];
+    bbox = { minX, maxX, minY, maxY };
     const w = Math.max(maxX - minX, 1);
     const h = Math.max(maxY - minY, 1);
     const padding = 0.10;
@@ -504,6 +510,29 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     cam.y = (minY + maxY) / 2;
     needsRedraw = true;
     schedule();
+  }
+
+  // Keep the camera centre within bbox + a half-viewport's-worth of slack
+  // on every side. This makes "fling the graph off-screen" impossible —
+  // even at the edge of legal pan, ~50% of the bbox is still visible.
+  function clampCamera() {
+    if (!bbox) return;
+    const halfW = (viewW || 0) / (2 * cam.scale);
+    const halfH = (viewH || 0) / (2 * cam.scale);
+    const slackX = (bbox.maxX - bbox.minX) * 0.15 + halfW * 0.5;
+    const slackY = (bbox.maxY - bbox.minY) * 0.15 + halfH * 0.5;
+    if (cam.x < bbox.minX - slackX) cam.x = bbox.minX - slackX;
+    if (cam.x > bbox.maxX + slackX) cam.x = bbox.maxX + slackX;
+    if (cam.y < bbox.minY - slackY) cam.y = bbox.minY - slackY;
+    if (cam.y > bbox.maxY + slackY) cam.y = bbox.maxY + slackY;
+  }
+
+  // Programmatic zoom around the screen centre — used by the +/-/Fit
+  // buttons in the toolbar. Smooth-ish via a single rAF (instant feel,
+  // no animation loop needed at this size).
+  function zoomBy(factor) {
+    if (!viewW || !viewH) return;
+    zoomAt(cam.scale * factor, viewW / 2, viewH / 2);
   }
 
   function focusNode(id) {
@@ -518,10 +547,12 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
 
   // ---------- Hit-test (click) -------------------------------------------
 
-  function pickAt(screenX, screenY) {
+  function pickAt(screenX, screenY, fat) {
     const [wx, wy] = screenToWorld(screenX, screenY);
-    // Search bins covering a small radius in world units.
-    const r = 24 / cam.scale; // ~24px in world coords
+    // Search bins covering a small radius in world units. On touch we use
+    // a fatter pick radius (~36 px) so a finger tap doesn't have to land
+    // on the 3-px-radius dot exactly. Mouse stays sharp.
+    const r = (fat ? 36 : 24) / cam.scale;
     const cx = Math.floor(wx / BIN), cy = Math.floor(wy / BIN);
     const span = Math.max(1, Math.ceil(r / BIN));
     let best = -1, bestDist = r * r;
@@ -560,6 +591,12 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   let prevPinchDist = 0;
   let prevPinchMidX = 0, prevPinchMidY = 0;
   let pressX = 0, pressY = 0, moved = false;
+  let pressType = "mouse"; // "mouse" | "touch" | "pen"
+
+  // Tap slop: fingers jitter much more than a mouse cursor on press-release,
+  // so what counts as a "drag" must be larger for touch. 4 px is correct
+  // for a mouse, ~12 px for fingers (matches Material/Cosmograph defaults).
+  function tapSlop() { return pressType === "mouse" ? 4 : 12; }
 
   function snapshotPinch() {
     const pts = Array.from(pointers.values());
@@ -576,6 +613,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     }
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     pressX = e.clientX; pressY = e.clientY; moved = false;
+    pressType = e.pointerType || "mouse";
     if (pointers.size >= 2) {
       pinching = true;
       dragging = false;
@@ -607,6 +645,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
         const factor = dist / prevPinchDist;
         if (factor !== 1) zoomAt(cam.scale * factor, midX, midY);
       }
+      clampCamera();
       prevPinchDist = dist;
       prevPinchMidX = midX;
       prevPinchMidY = midY;
@@ -624,9 +663,10 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       const dx = e.clientX - prevX;
       const dy = e.clientY - prevY;
       ptr.prevX = e.clientX; ptr.prevY = e.clientY;
-      if (Math.hypot(e.clientX - pressX, e.clientY - pressY) > 4) moved = true;
+      if (Math.hypot(e.clientX - pressX, e.clientY - pressY) > tapSlop()) moved = true;
       cam.x -= dx / cam.scale;
       cam.y -= dy / cam.scale;
+      clampCamera();
       needsRedraw = true;
       schedule();
     }
@@ -655,7 +695,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
         const rect = canvas.getBoundingClientRect();
         const px = e.clientX - rect.left;
         const py = e.clientY - rect.top;
-        const node = pickAt(px, py);
+        const node = pickAt(px, py, pressType !== "mouse");
         if (node) onPointClick && onPointClick(node);
         else onBackgroundClick && onBackgroundClick();
       }
@@ -672,6 +712,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     const [wx2, wy2] = screenToWorld(anchorX, anchorY);
     cam.x += wx - wx2;
     cam.y += wy - wy2;
+    clampCamera();
     needsRedraw = true;
     schedule();
   }
@@ -751,6 +792,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     setSelectedNodes,
     focusNode,
     fit,
+    zoomBy,
     render,
     destroy,
     getCamera,

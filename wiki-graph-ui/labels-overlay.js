@@ -192,10 +192,12 @@ export function createLabelOverlay({ container, renderer }) {
     }
 
     // Budget grows with zoom so wide views stay sparse, zoomed-in views show
-    // detail. Tuned conservatively.
+    // detail. Tighter on small screens so labels don't carpet the canvas.
+    const isSmall = (cam.viewW || 0) < 760;
     const zoomFactor = Math.min(4, Math.max(0.3, cam.scale));
-    let budget = Math.round(22 * Math.pow(zoomFactor / 0.5, 0.9));
-    budget = Math.max(14, Math.min(180, budget));
+    const baseBudget = isSmall ? 10 : 22;
+    let budget = Math.round(baseBudget * Math.pow(zoomFactor / 0.5, 0.9));
+    budget = Math.max(isSmall ? 6 : 14, Math.min(isSmall ? 80 : 180, budget));
 
     const candidates = [];
     for (const n of nodes) {
@@ -256,11 +258,13 @@ export function createLabelOverlay({ container, renderer }) {
         entry.h = Math.ceil(r.height) || 16;
         entry._needsMeasure = false;
       }
-      // Position label below node by a small offset proportional to size.
+      // Position label below the node, beyond the bloomy halo. The halo
+      // visible diameter ≈ 2.4× the dot radius for hub nodes, so we push
+      // labels by `r * 1.6 + 8` to keep them clear of the node sprite.
       const deg = Math.max(1, c.node.degree || 1);
       const r = Math.min(16, 3 + Math.log2(deg + 1) * 2.4);
       const labelX = Math.round(c.sx - entry.w / 2);
-      const labelY = Math.round(c.sy + r * 0.6 + 4);
+      const labelY = Math.round(c.sy + r * 1.6 + 8);
       const rect = { x: labelX - 2, y: labelY - 2, w: entry.w + 4, h: entry.h + 4 };
       if (!c.pinned && intersects(rect)) continue;
       add(rect);

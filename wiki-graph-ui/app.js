@@ -1,8 +1,9 @@
 // Minimal labs-wiki graph viewer.
 // Two renderers ship in this image:
 //   - "canvas":  the R1-R19 zero-dependency Canvas + Fruchterman-Reingold path
-//   - "cosmos":  WebGL via @cosmos.gl/graph (R15 — handles 1500+ nodes, gives
-//                organized clusters via GPU force layout)
+//   - "webgl":   custom WebGL2 renderer with glow shader (default).
+//                Uses server-precomputed x/y from /graph/export/json — zero JS
+//                simulation, no drift. See webgl-renderer.js.
 // Pick at runtime via ?renderer=canvas in the URL or by editing config.js.
 // Everything below the renderer abstraction (filters, BFS path mode, NL ask,
 // checkpoint health, side panel, R12-R19 features) is renderer-agnostic.
@@ -24,12 +25,12 @@ const API_BASE = (cfg.apiBase && !cfg.apiBase.includes("__API_BASE__"))
 const RENDERER = (() => {
   try {
     const u = new URLSearchParams(window.location.search).get("renderer");
-    if (u === "canvas" || u === "cosmos") return u;
+    if (u === "canvas" || u === "webgl") return u;
   } catch (_) {}
-  return cfg.renderer === "canvas" ? "canvas" : "cosmos";
+  return cfg.renderer === "canvas" ? "canvas" : "webgl";
 })();
-const USE_COSMOS = RENDERER === "cosmos";
-let cosmos = null; // populated in initCosmos() if USE_COSMOS
+const USE_WEBGL = RENDERER === "webgl";
+let gpuRenderer = null; // populated in initWebgl() if USE_WEBGL
 
 const state = {
   graph: null,
@@ -80,18 +81,17 @@ const CHECKPOINT_DEFAULT_COLOR = "#9ca3af"; // gray fallback
 const STALE_DAYS_THRESHOLD = 90;
 const STALE_MS_THRESHOLD = STALE_DAYS_THRESHOLD * 24 * 60 * 60 * 1000;
 
-// ---------- Cosmograph (cosmos.gl) renderer wiring ------------------------
-// initCosmos() is called from loadGraph() once on first successful fetch.
-async function initCosmos() {
-  if (cosmos) return cosmos;
+// ---------- WebGL2 renderer wiring ---------------------------------------
+// initWebgl() is called from loadGraph() once on first successful fetch.
+async function initWebgl() {
+  if (gpuRenderer) return gpuRenderer;
   const host = document.getElementById("graph-cosmos");
   if (!host) return null;
   host.removeAttribute("hidden");
   const canvasEl = document.getElementById("graph");
   if (canvasEl) canvasEl.style.display = "none";
-  // The canvas-only view-controls (zoom in/out/fit) and label rendering are
-  // not wired up for cosmos yet; leave them visible so users can still use
-  // path/health toggles, but hide pan/zoom buttons (cosmos has its own).
+  // The canvas-only zoom buttons (in/out) drive view.scale which is unused
+  // in webgl mode. Hide them; webgl handles wheel/pinch natively.
   const viewControls = document.getElementById("view-controls");
   if (viewControls) {
     viewControls.querySelector("#zoom-in")?.setAttribute("hidden", "");
@@ -100,12 +100,11 @@ async function initCosmos() {
     viewControls.querySelector("#zoom-level")?.setAttribute("hidden", "");
   }
   try {
-    const mod = await import("./cosmos-renderer.js?v=__BUILD_ID__");
-    cosmos = mod.createCosmosRenderer({
+    const mod = await import("./webgl-renderer.js?v=__BUILD_ID__");
+    gpuRenderer = mod.createWebglRenderer({
       container: host,
       onPointClick: (node) => {
         if (state.pathMode) {
-          // Path-mode click handling lives in handlePathClick.
           handlePathClick(node);
         } else {
           selectNode(node);
@@ -115,30 +114,30 @@ async function initCosmos() {
         if (!state.pathMode) clearSelection();
       },
     });
-    return cosmos;
+    return gpuRenderer;
   } catch (e) {
-    console.error("cosmos renderer failed, falling back to canvas:", e);
-    cosmos = null;
+    console.error("webgl renderer failed, falling back to canvas:", e);
+    gpuRenderer = null;
     if (canvasEl) canvasEl.style.display = "";
     host.setAttribute("hidden", "");
     return null;
   }
 }
 
-function syncCosmosStyle() {
-  if (!cosmos) return;
+function syncGpuStyle() {
+  if (!gpuRenderer) return;
   const healthActive = state.health.active;
   const askActive = state.ask.active && state.ask.subgraphIds.size > 0;
   const dimNonPath = state.pathMode && state.pathNodes.size > 0;
-  cosmos.syncStyle({
+  gpuRenderer.syncStyle({
     colorOf: (n) => healthActive
       ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
       : colorForCommunity(n.community),
     sizeOf: (n) => {
-      // Degree-scaled with a generous floor so even leaves register as
-      // soft-edge dots (the antialiased disc reads as a halo at this size).
+      // Degree-scaled with generous floor so leaves still register as soft
+      // halos under the glow shader. Hubs read as bright blooms.
       const deg = Math.max(1, n.degree || 1);
-      return Math.max(6, Math.min(28, 5 + Math.log2(deg + 1) * 3.4));
+      return Math.max(8, Math.min(46, 7 + Math.log2(deg + 1) * 5.2));
     },
     dimOf: (n) => {
       const onPath = state.pathNodes.has(n.id);
@@ -146,13 +145,12 @@ function syncCosmosStyle() {
       return (dimNonPath && !onPath) || (askActive && !inAskSub);
     },
   });
-  cosmos.render();
-  // Keep selection ring in sync with current highlight / path / ask set.
+  // Selection ring sync.
   const sel = new Set();
   if (state.highlightedId) sel.add(state.highlightedId);
   for (const id of state.pathNodes) sel.add(id);
   if (askActive) for (const id of state.ask.nodeIds) sel.add(id);
-  cosmos.setSelectedNodes(sel);
+  gpuRenderer.setSelectedNodes(sel);
 }
 
 function isNodeStale(node, now = Date.now()) {
@@ -238,10 +236,10 @@ function applyFilters() {
   }
 
   state.filtered = { nodes, edges };
-  if (USE_COSMOS) {
+  if (USE_WEBGL) {
     // Cosmograph owns layout — no FR loop needed. Sync data, then re-style.
-    cosmos && cosmos.syncData(nodes, edges);
-    syncCosmosStyle();
+    gpuRenderer && gpuRenderer.syncData(nodes, edges);
+    syncGpuStyle();
     return;
   }
   positionNodes(state.filtered.nodes, state.filtered.edges);
@@ -334,7 +332,7 @@ function nodeRadius(node) {
 }
 
 function resize() {
-  if (USE_COSMOS) return; // cosmos manages its own canvas sizing
+  if (USE_WEBGL) return; // webgl renderer manages its own canvas sizing
   const dpr = window.devicePixelRatio || 1;
   canvas.width = canvas.clientWidth * dpr;
   canvas.height = canvas.clientHeight * dpr;
@@ -388,7 +386,7 @@ function pathRoundedRect(x, y, width, height, radius) {
 }
 
 function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.clientHeight / 2) {
-  if (USE_COSMOS) return;
+  if (USE_WEBGL) return;
   const worldPoint = screenToWorld(anchorX, anchorY);
   const clampedScale = clampScale(nextScale);
   view.scale = clampedScale;
@@ -399,7 +397,7 @@ function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.
 }
 
 function fitViewToNodes(nodes = state.filtered.nodes) {
-  if (USE_COSMOS) { cosmos && cosmos.fit(); return; }
+  if (USE_WEBGL) { gpuRenderer && gpuRenderer.fit(); return; }
   if (!nodes.length || !canvas.clientWidth || !canvas.clientHeight) return;
 
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -430,7 +428,7 @@ function fitViewToNodes(nodes = state.filtered.nodes) {
 }
 
 function centerNodeInView(node) {
-  if (USE_COSMOS) { cosmos && cosmos.focusNode(node.id); return; }
+  if (USE_WEBGL) { gpuRenderer && gpuRenderer.focusNode(node.id); return; }
   const targetX = canvas.clientWidth / 2;
   const targetY = isCoarsePointer ? canvas.clientHeight * 0.3 : canvas.clientHeight / 2;
   view.tx = targetX - canvas.clientWidth / 2 - node.x * view.scale;
@@ -734,7 +732,7 @@ function handlePathClick(node) {
 }
 
 function draw() {
-  if (USE_COSMOS) { syncCosmosStyle(); return; }
+  if (USE_WEBGL) { syncGpuStyle(); return; }
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
   const { nodes, edges } = state.filtered;
   state.visibleNodes = [];
@@ -916,7 +914,7 @@ function pinchDistance() {
 }
 
 canvas.addEventListener("pointerdown", (e) => {
-  if (USE_COSMOS) return;
+  if (USE_WEBGL) return;
   canvas.setPointerCapture(e.pointerId);
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
   pointerDownAt = performance.now();
@@ -936,7 +934,7 @@ canvas.addEventListener("pointerdown", (e) => {
 });
 
 canvas.addEventListener("pointermove", (e) => {
-  if (USE_COSMOS) return;
+  if (USE_WEBGL) return;
   if (!activePointers.has(e.pointerId)) return;
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
@@ -979,7 +977,7 @@ canvas.addEventListener("pointermove", (e) => {
 });
 
 function endPointer(e) {
-  if (USE_COSMOS) return;
+  if (USE_WEBGL) return;
   if (!activePointers.has(e.pointerId)) return;
   activePointers.delete(e.pointerId);
 
@@ -1006,7 +1004,7 @@ canvas.addEventListener("pointerup", endPointer);
 canvas.addEventListener("pointercancel", endPointer);
 
 canvas.addEventListener("wheel", (e) => {
-  if (USE_COSMOS) return;
+  if (USE_WEBGL) return;
   e.preventDefault();
   const factor = Math.exp(-e.deltaY * 0.001);
   const rect = canvas.getBoundingClientRect();
@@ -1131,7 +1129,7 @@ async function loadGraph() {
   document.getElementById("connection-state").textContent = "loading graph…";
   try {
     state.graph = await fetchJSON("/graph/export/json");
-    if (USE_COSMOS) await initCosmos();
+    if (USE_WEBGL) await initWebgl();
     populateTypes();
     populateCommunities();
     updateStats();

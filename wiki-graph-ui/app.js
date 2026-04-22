@@ -4,6 +4,8 @@
 // nginx, with zero build step. If node counts grow past a few thousand, swap
 // the renderer for @cosmograph/cosmograph per Phase G3.
 
+import { buildLabelTargets, pickNodeAtScreenPoint } from "./interaction-targets.js";
+
 const cfg = window.__WIKI_GRAPH_CONFIG || {};
 // If apiBase is literally the placeholder (image built but entrypoint didn't
 // run), fall back to same-origin — the UI still works when served from the
@@ -21,6 +23,8 @@ const state = {
   tierFilter: "",
   surprises: false,
   communityColors: new Map(),
+  visibleNodes: [],
+  labelTargets: [],
 };
 
 async function fetchJSON(path) {
@@ -135,16 +139,8 @@ function updateZoomLevel() {
   if (label) label.textContent = `${Math.round(view.scale * 100)}%`;
 }
 
-function lerp(start, end, amount) {
-  return start + (end - start) * amount;
-}
-
 function nodeRadius(node) {
   return Math.max(3, 3 + Math.log2(1 + node.degree) * 2);
-}
-
-function zoomProgress() {
-  return Math.max(0, Math.min(1, (view.scale - 0.55) / 2.75));
 }
 
 function resize() {
@@ -200,15 +196,6 @@ function pathRoundedRect(x, y, width, height, radius) {
   ctx.closePath();
 }
 
-function rectOverlaps(a, b, padding = 0) {
-  return !(
-    a.x + a.w + padding < b.x ||
-    b.x + b.w + padding < a.x ||
-    a.y + a.h + padding < b.y ||
-    b.y + b.h + padding < a.y
-  );
-}
-
 function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.clientHeight / 2) {
   const worldPoint = screenToWorld(anchorX, anchorY);
   const clampedScale = clampScale(nextScale);
@@ -259,6 +246,8 @@ function centerNodeInView(node) {
 function draw() {
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
   const { nodes, edges } = state.filtered;
+  state.visibleNodes = [];
+  state.labelTargets = [];
   if (!nodes.length) return;
 
   const cx = canvas.clientWidth / 2;
@@ -266,6 +255,7 @@ function draw() {
   const bounds = visibleWorldBounds();
   const viewportPadding = 160 / view.scale;
   const visibleNodes = nodes.filter((node) => isNodeVisible(node, bounds, viewportPadding));
+  state.visibleNodes = visibleNodes;
   const visibleIds = new Set(visibleNodes.map((node) => node.id));
   const nodeById = new Map(nodes.map((node) => [node.id, node]));
 
@@ -313,60 +303,30 @@ function draw() {
   // reveals more context without needing to tap every single node.
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  const zoomT = zoomProgress();
-  const labelDegreeThreshold = view.scale >= 1.8 ? 0 : view.scale >= 1.05 ? 2 : 5;
-  const labelMaxChars = view.scale >= 2.1 ? 56 : view.scale >= 1.4 ? 42 : 32;
-  const maxLabels = view.scale >= 2.3 ? 150 : view.scale >= 1.35 ? 95 : 40;
-  const occupiedLabelRects = [];
-  const labelCandidates = visibleNodes
-    .filter((node) => node.degree >= labelDegreeThreshold || state.highlightedId === node.id)
-    .sort((a, b) => {
-      const aHighlighted = state.highlightedId === a.id ? 1 : 0;
-      const bHighlighted = state.highlightedId === b.id ? 1 : 0;
-      return bHighlighted - aHighlighted || b.degree - a.degree;
-    });
+  state.labelTargets = buildLabelTargets({
+    nodes: visibleNodes,
+    highlightedId: state.highlightedId,
+    canvasSize: { width: canvas.clientWidth, height: canvas.clientHeight },
+    view,
+    nodeRadius,
+    measureText(label, fontWorldPx) {
+      ctx.font = `${fontWorldPx}px sans-serif`;
+      return ctx.measureText(label).width;
+    },
+  });
 
-  for (const n of labelCandidates) {
-    const highlighted = state.highlightedId === n.id;
-    if (!highlighted && occupiedLabelRects.length >= maxLabels) break;
-
-    const label = n.title.slice(0, labelMaxChars);
-    const screenFontPx = highlighted
-      ? Math.round(lerp(13, 21, zoomT))
-      : Math.round(lerp(10, 18, zoomT));
-    const fontWorldPx = screenFontPx / view.scale;
-    const padX = (highlighted ? 8 : 6) / view.scale;
-    const padY = (highlighted ? 5 : 4) / view.scale;
-    const chipRadius = 10 / view.scale;
-    const offsetY = (highlighted ? 11 : 8) / view.scale;
-
+  for (const target of state.labelTargets) {
+    const { node, label, highlighted, fontWorldPx, chipRadius, worldRect } = target;
     ctx.font = `${fontWorldPx}px sans-serif`;
-    const metrics = ctx.measureText(label);
-    const labelWidth = metrics.width + padX * 2;
-    const labelHeight = fontWorldPx + padY * 2;
-    const x = n.x - labelWidth / 2;
-    const y = n.y - nodeRadius(n) - labelHeight - offsetY;
-    const screenRect = {
-      x: cx + view.tx + x * view.scale,
-      y: cy + view.ty + y * view.scale,
-      w: labelWidth * view.scale,
-      h: labelHeight * view.scale,
-    };
-
-    if (!highlighted && occupiedLabelRects.some((rect) => rectOverlaps(rect, screenRect, 6))) {
-      continue;
-    }
-    occupiedLabelRects.push(screenRect);
-
     ctx.fillStyle = highlighted ? "rgba(11,13,18,0.92)" : "rgba(11,13,18,0.76)";
     ctx.strokeStyle = highlighted ? "#5eead4" : "rgba(120,130,150,0.35)";
     ctx.lineWidth = (highlighted ? 1.5 : 1) / view.scale;
-    pathRoundedRect(x, y, labelWidth, labelHeight, chipRadius);
+    pathRoundedRect(worldRect.x, worldRect.y, worldRect.w, worldRect.h, chipRadius);
     ctx.fill();
     ctx.stroke();
 
     ctx.fillStyle = highlighted ? "#f8fafc" : "#e5e7eb";
-    ctx.fillText(label, n.x, y + labelHeight / 2);
+    ctx.fillText(label, node.x, worldRect.y + worldRect.h / 2);
   }
 
   ctx.restore();
@@ -503,20 +463,16 @@ function handleTap(clientX, clientY) {
   const rect = canvas.getBoundingClientRect();
   const px = clientX - rect.left;
   const py = clientY - rect.top;
-  const { x: wx, y: wy } = screenToWorld(px, py);
-
-  // On touch devices the visible "finger area" is bigger than a mouse cursor,
-  // so widen the hit radius substantially to make small nodes tappable.
-  const slopMul = isCoarsePointer ? 16 : 4;
-
-  let hit = null;
-  let best = Infinity;
-  for (const n of state.filtered.nodes) {
-    const dx = n.x - wx, dy = n.y - wy;
-    const d2 = dx * dx + dy * dy;
-    const r = nodeRadius(n);
-    if (d2 < r * r * slopMul && d2 < best) { best = d2; hit = n; }
-  }
+  const hit = pickNodeAtScreenPoint({
+    screenX: px,
+    screenY: py,
+    nodes: state.visibleNodes.length ? state.visibleNodes : state.filtered.nodes,
+    labelTargets: state.labelTargets,
+    canvasSize: { width: canvas.clientWidth, height: canvas.clientHeight },
+    view,
+    nodeRadius,
+    isCoarsePointer,
+  });
   if (hit) {
     selectNode(hit);
   } else if (state.highlightedId) {

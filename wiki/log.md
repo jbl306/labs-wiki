@@ -4252,4 +4252,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/concepts/agentic-ai-evaluation-software-engineering.md
   status: success
   notes: "Auto-ingested 4 pages (2 concepts, 1 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-22T19:05:18Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-copilot-cli-container-fixes.md
+    - wiki/entities/dockerfile-auto-ingest.md
+    - wiki/concepts/copilot-cli-backend-wiki-ingestion.md
+    - wiki/concepts/writable-home-cache-bootstrapping-containerized-cli-tools.md
+    - wiki/synthesis/copilot-cli-vs-github-models-api-wiki-ingestion.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

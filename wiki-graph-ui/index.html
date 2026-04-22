@@ -90,22 +90,6 @@
     <ol id="ask-results-list"></ol>
   </section>
 
-  <section id="node-panel" class="hidden">
-    <div class="node-panel-head">
-      <div class="node-panel-copy">
-        <h2 id="node-title"></h2>
-        <div class="muted" id="node-meta"></div>
-      </div>
-      <button id="node-panel-close" class="icon-btn node-panel-close" aria-label="Close node details">
-        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.88 18.29 9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.3-6.3z"/></svg>
-      </button>
-    </div>
-    <p id="node-summary"></p>
-    <div id="node-content" class="node-content"></div>
-    <h3>Neighbors</h3>
-    <ul id="node-neighbors"></ul>
-  </section>
-
   <section id="checkpoint-detail" class="hidden">
     <h3>Checkpoint disagreement</h3>
     <div id="checkpoint-detail-body" class="muted">Click a ringed node to inspect.</div>
@@ -116,6 +100,26 @@
     <div class="muted" id="connection-state">connecting…</div>
   </footer>
 </aside>
+
+<!-- Node detail panel lives at the body root, not inside <aside>. The
+     sidebar uses transform: translateX() on mobile, which creates a
+     containing block for any descendant position:fixed and would push
+     the panel off-screen with the sidebar. -->
+<section id="node-panel" class="hidden">
+  <div class="node-panel-head">
+    <div class="node-panel-copy">
+      <h2 id="node-title"></h2>
+      <div class="muted" id="node-meta"></div>
+    </div>
+    <button id="node-panel-close" class="icon-btn node-panel-close" aria-label="Close node details">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.88 18.29 9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.3-6.3z"/></svg>
+    </button>
+  </div>
+  <p id="node-summary"></p>
+  <div id="node-content" class="node-content"></div>
+  <h3>Neighbors</h3>
+  <ul id="node-neighbors"></ul>
+</section>
 
 <main id="canvas-host">
   <canvas id="graph"></canvas>

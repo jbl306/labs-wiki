@@ -4096,4 +4096,20 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-22-copilot-session-labs-wiki-full-review-report-b585f2e1.md
   status: success
   notes: "Auto-ingested 8 pages (4 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-22T01:27:13+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-fixing-live-graph-taps.md
+    - wiki/concepts/mobile-friendly-graph-ui-tap-handling.md
+    - wiki/concepts/systematic-debugging-tdd-ui-regression.md
+    - wiki/concepts/deployment-packaging-hardening-static-web-assets.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/interaction-targets-js.md
+    - wiki/entities/pointer-gesture-js.md
+    - wiki/entities/dockerfile-graph-ui.md
+  source: raw/2026-04-22-copilot-session-fixing-live-graph-taps-a2ede579.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
 ```

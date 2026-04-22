@@ -112,16 +112,31 @@ void main() {
   float d = length(uv);
   if (d > 1.0) discard;
 
-  // Tight core (pow=4) + wide halo (pow=1.5) — overlapping halos brighten.
-  float fall = 1.0 - smoothstep(0.0, 1.0, d);
-  float core = pow(fall, 4.0);
-  float halo = pow(fall, 1.5) * 0.55;
+  // High-contrast 3-band lighting:
+  //   - bright crisp inner core (fast smoothstep edge so it reads sharp on
+  //     mobile retina even at 2-3px display size)
+  //   - colored mid-band that carries the cluster identity
+  //   - thin antialiased rim so the disc doesn't blur into background
+  float coreMask = 1.0 - smoothstep(0.30, 0.42, d);
+  float midMask  = (1.0 - smoothstep(0.42, 0.92, d)) * (1.0 - coreMask);
+  float halo     = pow(max(0.0, 1.0 - d), 2.6) * 0.32;
+  float rim      = smoothstep(0.90, 0.98, d) * (1.0 - smoothstep(0.98, 1.0, d));
 
-  // Selection ring: bright thin annulus near r ~ 0.85.
+  // Specular pop biased upper-left so the dot looks lit, not flat.
+  float spec = pow(max(0.0, 1.0 - length(uv - vec2(-0.28, -0.32)) * 1.55), 5.0) * 0.9 * coreMask;
+
+  // Selection: bright thin ring at d ~ 0.85 (slightly inside the rim).
   float ring = v_selected * smoothstep(0.78, 0.84, d) * (1.0 - smoothstep(0.92, 0.98, d));
 
-  vec3 col = v_color.rgb * (core * 1.4 + halo * 0.8) + vec3(0.95, 0.95, 1.0) * ring * 1.2;
-  float a = clamp((core + halo * 0.65 + ring * 0.9) * v_alpha, 0.0, 1.0);
+  vec3 base = v_color.rgb;
+  vec3 hot  = mix(base * 1.55, vec3(1.0), 0.30); // bright tinted core
+  vec3 col  = hot * coreMask
+            + base * (midMask * 1.05 + halo * 0.75)
+            + base * rim * 0.65
+            + vec3(1.0, 1.0, 0.95) * spec
+            + vec3(0.95, 0.95, 1.0) * ring * 1.3;
+
+  float a = clamp(coreMask + midMask * 0.85 + halo * 0.6 + rim * 0.55 + ring * 0.95, 0.0, 1.0) * v_alpha;
 
   // Premultiplied alpha so overlapping halos add into bloom under
   // gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA).
@@ -243,6 +258,31 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       if (!arr) { arr = []; bins.set(k, arr); }
       arr.push(i);
     }
+  }
+
+  // ---------- Transform observers ----------------------------------------
+  // DOM overlays (label layer, tooltips) need to know when the camera moves
+  // so they can reposition themselves. We notify after every successful draw.
+  const transformObservers = new Set();
+  function onTransform(cb) {
+    transformObservers.add(cb);
+    return () => transformObservers.delete(cb);
+  }
+  function notifyTransform() {
+    for (const cb of transformObservers) {
+      try { cb(getCamera()); } catch (e) { /* swallow */ }
+    }
+  }
+  function getCamera() {
+    return {
+      x: cam.x,
+      y: cam.y,
+      scale: cam.scale,
+      viewW,
+      viewH,
+      worldToScreen,
+      screenToWorld,
+    };
   }
 
   // ---------- Resize / matrix --------------------------------------------
@@ -631,6 +671,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     }
 
     gl.bindVertexArray(null);
+    notifyTransform();
   }
 
   function render() {
@@ -640,6 +681,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
 
   function destroy() {
     ro.disconnect();
+    transformObservers.clear();
     canvas.remove();
   }
 
@@ -654,5 +696,8 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     fit,
     render,
     destroy,
+    getCamera,
+    onTransform,
+    getNodes: () => nodes,
   };
 }

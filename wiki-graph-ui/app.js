@@ -13,6 +13,7 @@ import {
   hasPointerMovedEnough,
   shouldUseCoarsePointerTapSlop,
 } from "./pointer-gesture.js?v=__BUILD_ID__";
+import { renderMarkdown } from "./markdown.js?v=__BUILD_ID__";
 
 const cfg = window.__WIKI_GRAPH_CONFIG || {};
 // If apiBase is literally the placeholder (image built but entrypoint didn't
@@ -31,6 +32,7 @@ const RENDERER = (() => {
 })();
 const USE_WEBGL = RENDERER === "webgl";
 let gpuRenderer = null; // populated in initWebgl() if USE_WEBGL
+let gpuLabels = null;   // adaptive HTML label overlay (webgl mode only)
 
 const state = {
   graph: null,
@@ -114,6 +116,19 @@ async function initWebgl() {
         if (!state.pathMode) clearSelection();
       },
     });
+    // Adaptive HTML label overlay over the canvas.
+    try {
+      const lblMod = await import("./labels-overlay.js?v=__BUILD_ID__");
+      gpuLabels = lblMod.createLabelOverlay({ container: host, renderer: gpuRenderer });
+      gpuLabels.setOnLabelClick((node) => {
+        if (state.pathMode) handlePathClick(node);
+        else selectNode(node);
+      });
+      gpuRenderer.onTransform((cam) => gpuLabels.layout(cam));
+    } catch (e) {
+      console.warn("label overlay init failed:", e);
+      gpuLabels = null;
+    }
     return gpuRenderer;
   } catch (e) {
     console.error("webgl renderer failed, falling back to canvas:", e);
@@ -151,6 +166,13 @@ function syncGpuStyle() {
   for (const id of state.pathNodes) sel.add(id);
   if (askActive) for (const id of state.ask.nodeIds) sel.add(id);
   gpuRenderer.setSelectedNodes(sel);
+  if (gpuLabels) {
+    // Pin labels for everything the user is currently focused on so they
+    // never disappear under collision pressure.
+    gpuLabels.setPinned(sel);
+    const cam = gpuRenderer.getCamera();
+    if (cam) gpuLabels.layout(cam);
+  }
 }
 
 function isNodeStale(node, now = Date.now()) {
@@ -240,6 +262,11 @@ function applyFilters() {
     // Cosmograph owns layout — no FR loop needed. Sync data, then re-style.
     gpuRenderer && gpuRenderer.syncData(nodes, edges);
     syncGpuStyle();
+    if (gpuLabels) {
+      gpuLabels.setNodes(nodes);
+      const cam = gpuRenderer && gpuRenderer.getCamera();
+      if (cam) gpuLabels.layout(cam);
+    }
     return;
   }
   positionNodes(state.filtered.nodes, state.filtered.edges);
@@ -1046,6 +1073,39 @@ async function showNodePanel(node) {
   document.getElementById("node-meta").textContent =
     `${node.page_type || "page"} · tier=${node.tier || "—"} · degree=${node.degree} · community=${node.community}`;
   document.getElementById("node-summary").textContent = node.summary || "";
+
+  // R20 — fetch + render the page body so users can review the wiki content
+  // inline without leaving the graph. Wikilinks navigate within the graph.
+  const contentEl = document.getElementById("node-content");
+  if (contentEl) {
+    contentEl.innerHTML = "<div class='muted'>loading page…</div>";
+    fetchJSON(`/graph/page/${encodeURIComponent(node.id)}`)
+      .then((data) => {
+        contentEl.innerHTML = renderMarkdown(data.body || "");
+        // Intercept wikilink clicks → navigate within the graph if we know
+        // the target; otherwise just fall through (no-op href="#").
+        contentEl.querySelectorAll("a.wikilink").forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const target = a.dataset.target || "";
+            const candidates = state.graph.nodes.filter((n) =>
+              n.title === target ||
+              n.id === target ||
+              n.id.endsWith("/" + target + ".md") ||
+              n.id.endsWith("/" + target.toLowerCase().replace(/\s+/g, "-") + ".md")
+            );
+            if (candidates.length) {
+              const local = state.filtered.nodes.find((x) => x.id === candidates[0].id);
+              if (local) selectNode(local);
+            }
+          });
+        });
+      })
+      .catch((e) => {
+        contentEl.innerHTML = `<div class='muted'>page unavailable: ${e.message}</div>`;
+      });
+  }
+
   const ul = document.getElementById("node-neighbors");
   ul.innerHTML = "<li class='muted'>loading…</li>";
   try {

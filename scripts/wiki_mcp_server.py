@@ -2,27 +2,64 @@
 """
 Wiki MCP Server — exposes labs-wiki as searchable tools for all AI agents.
 
-Provides three tools:
-  - wiki_search: Full-text search across wiki pages
-  - wiki_read:   Read a specific wiki page by name or path
-  - wiki_list:   List all wiki pages from the index
+Provides three local file-system tools plus six wiki-graph-api proxies:
+
+  Local (read wiki/ directly):
+    - wiki_search:               full-text search across wiki pages
+    - wiki_read:                 read a specific wiki page by name or path
+    - wiki_list:                 list all wiki pages from the index
+
+  Graph (HTTP → wiki-graph-api, base URL via WIKI_GRAPH_API_BASE_URL,
+  default http://localhost:8765):
+    - wiki_graph_neighbors:      depth-N neighbours of a node
+    - wiki_graph_shortest_path:  undirected BFS path between two nodes
+    - wiki_graph_communities:    community summary
+    - wiki_graph_god_nodes:      top-degree load-bearing nodes
+    - wiki_graph_surprises:      cross-community edges
+    - wiki_graph_query:          NL semantic query (R14 endpoint)
 
 Transport: stdio (works with VS Code Copilot, Copilot CLI, OpenCode)
 """
 
 from __future__ import annotations
 
+import json
 import os
 import re
 from pathlib import Path
 
+import httpx
 from mcp.server.fastmcp import FastMCP
 
 WIKI_ROOT = Path(os.environ.get("WIKI_ROOT", Path(__file__).parent.parent))
 WIKI_DIR = WIKI_ROOT / "wiki"
 INDEX_PATH = WIKI_DIR / "index.md"
 
+GRAPH_API_BASE = os.environ.get("WIKI_GRAPH_API_BASE_URL", "http://localhost:8765").rstrip("/")
+GRAPH_API_TIMEOUT = float(os.environ.get("WIKI_GRAPH_API_TIMEOUT", "10"))
+
 mcp = FastMCP("labs-wiki")
+
+
+def _graph_get(path: str, params: dict[str, object] | None = None) -> dict | list:
+    """GET wiki-graph-api endpoint and return parsed JSON or raise."""
+    url = f"{GRAPH_API_BASE}{path}"
+    with httpx.Client(timeout=GRAPH_API_TIMEOUT) as client:
+        resp = client.get(url, params=params)
+        resp.raise_for_status()
+        return resp.json()
+
+
+def _graph_post(path: str, body: dict) -> dict | list:
+    url = f"{GRAPH_API_BASE}{path}"
+    with httpx.Client(timeout=GRAPH_API_TIMEOUT) as client:
+        resp = client.post(url, json=body)
+        resp.raise_for_status()
+        return resp.json()
+
+
+def _graph_error(action: str, exc: Exception) -> str:
+    return f"wiki-graph-api {action} failed against {GRAPH_API_BASE}: {exc}"
 
 
 def _find_pages() -> list[Path]:
@@ -204,6 +241,104 @@ def wiki_read(page: str) -> str:
         )
 
     return f'Page "{page}" not found. Use wiki_list to see available pages.'
+
+
+# ---------------------------------------------------------------------------
+# R16 — Graph tools (HTTP proxy to wiki-graph-api)
+# ---------------------------------------------------------------------------
+
+@mcp.tool()
+def wiki_graph_neighbors(node_id: str, depth: int = 1) -> str:
+    """Return the depth-N neighbours of a graph node as JSON.
+
+    Uses GET /graph/neighbors/{node_id}?depth=N on wiki-graph-api.
+    Args:
+        node_id: Full node id, e.g. ``concepts/attention-mechanisms``.
+        depth:   Hops to expand (default 1, capped server-side).
+    """
+    try:
+        data = _graph_get(
+            f"/graph/neighbors/{node_id}",
+            params={"depth": depth},
+        )
+    except Exception as e:
+        return _graph_error("neighbors", e)
+    return json.dumps(data, indent=2)
+
+
+@mcp.tool()
+def wiki_graph_shortest_path(a: str, b: str) -> str:
+    """Undirected BFS shortest path between two graph nodes.
+
+    Uses GET /graph/shortest_path?a=...&b=... on wiki-graph-api.
+    Returns ``{"path": [...], "length": N}`` (length=-1 if unreachable).
+    """
+    try:
+        data = _graph_get("/graph/shortest_path", params={"a": a, "b": b})
+    except Exception as e:
+        return _graph_error("shortest_path", e)
+    return json.dumps(data, indent=2)
+
+
+@mcp.tool()
+def wiki_graph_communities(limit: int = 10) -> str:
+    """Top-N detected communities (size-ranked) in the wiki graph.
+
+    Uses GET /graph/communities. ``limit`` truncates client-side.
+    """
+    try:
+        data = _graph_get("/graph/communities")
+    except Exception as e:
+        return _graph_error("communities", e)
+    items = data.get("communities", []) if isinstance(data, dict) else data
+    return json.dumps(items[: max(1, limit)], indent=2)
+
+
+@mcp.tool()
+def wiki_graph_god_nodes(limit: int = 10) -> str:
+    """Highest-degree 'god nodes' — load-bearing entities/concepts.
+
+    Uses GET /graph/god-nodes. ``limit`` truncates the response client-side.
+    """
+    try:
+        data = _graph_get("/graph/god-nodes")
+    except Exception as e:
+        return _graph_error("god_nodes", e)
+    items = data.get("god_nodes", []) if isinstance(data, dict) else data
+    return json.dumps(items[: max(1, limit)], indent=2)
+
+
+@mcp.tool()
+def wiki_graph_surprises(limit: int = 10) -> str:
+    """Top cross-community edges — unexpected bridges between clusters.
+
+    Uses GET /graph/surprises. ``limit`` truncates client-side.
+    """
+    try:
+        data = _graph_get("/graph/surprises")
+    except Exception as e:
+        return _graph_error("surprises", e)
+    items = data.get("surprises", []) if isinstance(data, dict) else data
+    return json.dumps(items[: max(1, limit)], indent=2)
+
+
+@mcp.tool()
+def wiki_graph_query(q: str, k: int = 10) -> str:
+    """Semantic NL query over the wiki graph (R14 endpoint).
+
+    Uses POST /graph/query{q,k}. Returns the top-K matching nodes plus the
+    union of their 1-hop neighbourhoods. Embedding backend is reported in
+    ``backend`` (one of sentence-transformers, tfidf, none).
+
+    Args:
+        q: Natural-language question (e.g. "how do we score checkpoint health?").
+        k: Number of top matches to return (default 10).
+    """
+    try:
+        data = _graph_post("/graph/query", {"q": q, "k": k})
+    except Exception as e:
+        return _graph_error("query", e)
+    return json.dumps(data, indent=2)
 
 
 if __name__ == "__main__":

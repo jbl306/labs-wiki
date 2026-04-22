@@ -248,6 +248,47 @@ def graph_communities() -> dict[str, Any]:
     return {"communities": state.payload.get("communities", [])}
 
 
+@app.get("/graph/shortest_path")
+def graph_shortest_path(
+    a: str = Query(..., description="source node id"),
+    b: str = Query(..., description="target node id"),
+) -> dict[str, Any]:
+    """Undirected BFS shortest path between two node ids (R16).
+
+    Returns ``{"path": [<node ids>], "length": <edge count>}`` where ``length``
+    is 0 when ``a == b`` and -1 (with empty path) when no path exists.
+    """
+    if a not in state.nodes_by_id:
+        raise HTTPException(status_code=404, detail=f"unknown node {a}")
+    if b not in state.nodes_by_id:
+        raise HTTPException(status_code=404, detail=f"unknown node {b}")
+    if a == b:
+        return {"path": [a], "length": 0}
+
+    prev: dict[str, str | None] = {a: None}
+    queue: list[str] = [a]
+    while queue:
+        cur = queue.pop(0)
+        if cur == b:
+            break
+        for edge in state.adjacency.get(cur, []):
+            nb = edge["neighbor"]
+            if nb not in prev:
+                prev[nb] = cur
+                queue.append(nb)
+
+    if b not in prev:
+        return {"path": [], "length": -1, "source": a, "target": b}
+
+    path: list[str] = []
+    n: str | None = b
+    while n is not None:
+        path.append(n)
+        n = prev[n]
+    path.reverse()
+    return {"path": path, "length": len(path) - 1, "source": a, "target": b}
+
+
 @app.get("/graph/god-nodes")
 def graph_god_nodes(limit: int = Query(15, ge=1, le=100)) -> dict[str, Any]:
     return {"god_nodes": state.payload.get("god_nodes", [])[:limit]}

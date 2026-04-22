@@ -4,11 +4,11 @@
 // nginx, with zero build step. If node counts grow past a few thousand, swap
 // the renderer for @cosmograph/cosmograph per Phase G3.
 
-import { buildLabelTargets, pickNodeAtScreenPoint } from "./interaction-targets.js";
+import { buildLabelTargets, pickNodeAtScreenPoint } from "./interaction-targets.js?v=__BUILD_ID__";
 import {
   hasPointerMovedEnough,
   shouldUseCoarsePointerTapSlop,
-} from "./pointer-gesture.js";
+} from "./pointer-gesture.js?v=__BUILD_ID__";
 
 const cfg = window.__WIKI_GRAPH_CONFIG || {};
 // If apiBase is literally the placeholder (image built but entrypoint didn't

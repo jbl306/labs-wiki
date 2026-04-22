@@ -4278,4 +4278,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md
   status: success
   notes: "Auto-ingested 7 pages (4 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4; reused the existing ACE source page and refreshed related concept pages"
+- timestamp: 2026-04-22T21:31:00Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-wiki-ingest-4-fix-implementation.md
+    - wiki/entities/scripts-replay-kg-facts-py.md
+    - wiki/concepts/jsonl-sidecar-kg-fact-replay-containerized-ingest.md
+    - wiki/concepts/automatic-git-commits-after-successful-wiki-ingest.md
+    - wiki/synthesis/hardening-unattended-wiki-ingest-pipelines.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

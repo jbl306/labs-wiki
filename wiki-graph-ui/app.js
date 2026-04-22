@@ -91,44 +91,6 @@ function colorForCommunity(community) {
   return color;
 }
 
-// Offscreen halo-sprite cache. We render each unique node fill colour once
-// into a small radial-gradient sprite, then drawImage it for every node —
-// this gives the graph a soft, premium "glow" without the per-node cost of
-// canvas shadowBlur (which is ~40× slower at 700 nodes).
-const _haloSpriteCache = new Map();
-const HALO_SPRITE_SIZE = 64;
-function getHaloSprite(color) {
-  if (_haloSpriteCache.has(color)) return _haloSpriteCache.get(color);
-  const sprite = document.createElement("canvas");
-  sprite.width = sprite.height = HALO_SPRITE_SIZE;
-  const sctx = sprite.getContext("2d");
-  const c = HALO_SPRITE_SIZE / 2;
-  const grad = sctx.createRadialGradient(c, c, 0, c, c, c);
-  // Bright core fades to fully-transparent edge — the colour itself defines
-  // the halo tint so each cluster glows in its own hue.
-  grad.addColorStop(0.00, _withAlpha(color, 0.95));
-  grad.addColorStop(0.35, _withAlpha(color, 0.55));
-  grad.addColorStop(0.70, _withAlpha(color, 0.18));
-  grad.addColorStop(1.00, _withAlpha(color, 0.0));
-  sctx.fillStyle = grad;
-  sctx.fillRect(0, 0, HALO_SPRITE_SIZE, HALO_SPRITE_SIZE);
-  _haloSpriteCache.set(color, sprite);
-  return sprite;
-}
-
-// Helper: turn an `hsl(h s% l%)` or `#rrggbb` colour into the same colour
-// with a custom alpha. Falls back to the input string if we don't recognise it.
-function _withAlpha(color, alpha) {
-  const hslMatch = color.match(/^hsl\(\s*([\d.]+)\s+([\d.]+)%\s+([\d.]+)%\s*\)$/);
-  if (hslMatch) return `hsla(${hslMatch[1]}, ${hslMatch[2]}%, ${hslMatch[3]}%, ${alpha})`;
-  const hexMatch = color.match(/^#([0-9a-f]{6})$/i);
-  if (hexMatch) {
-    const n = parseInt(hexMatch[1], 16);
-    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`;
-  }
-  return color;
-}
-
 function applyFilters() {
   if (!state.graph) return;
   const q = state.search.trim().toLowerCase();
@@ -701,29 +663,6 @@ function draw() {
 
   // Nodes
   const healthActive = state.health.active;
-  // Pre-compute halo radius factor in screen-space terms — the sprite is a
-  // soft falloff so we can draw it generously without it looking heavy.
-  const haloFactor = 2.6;
-  // Use additive-style blending for the halo pass so overlapping cluster
-  // glows enrich one another instead of muddying.
-  ctx.save();
-  ctx.globalCompositeOperation = "lighter";
-  for (const n of visibleNodes) {
-    const r = nodeRadius(n);
-    const onPath = state.pathNodes.has(n.id);
-    const inAskTop = askActive && state.ask.nodeIds.has(n.id);
-    const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
-    const dimNode = (dimNonPath && !onPath) || (askActive && !inAskSub);
-    if (dimNode) continue;
-    const fillColor = healthActive
-      ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
-      : colorForCommunity(n.community);
-    const haloR = r * haloFactor;
-    const sprite = getHaloSprite(fillColor);
-    ctx.drawImage(sprite, n.x - haloR, n.y - haloR, haloR * 2, haloR * 2);
-  }
-  ctx.restore();
-
   for (const n of visibleNodes) {
     const r = nodeRadius(n);
     const onPath = state.pathNodes.has(n.id);
@@ -743,33 +682,16 @@ function draw() {
       ctx.fill();
       ctx.fillStyle = fillColor;
     }
-    // Solid disc — slightly inset thin dark outline to crisp the edge
-    // against the halo so nodes still read as discrete points.
     ctx.beginPath();
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
     ctx.fill();
-    ctx.lineWidth = 0.6 / view.scale;
-    ctx.strokeStyle = "rgba(8,10,14,0.55)";
-    ctx.stroke();
-    // Specular highlight — a tiny off-centre white arc gives each node a
-    // subtle 3D quality, the visual cue most people read as "polished".
-    if (!dimNode) {
-      ctx.beginPath();
-      ctx.fillStyle = "rgba(255,255,255,0.55)";
-      ctx.arc(n.x - r * 0.32, n.y - r * 0.32, r * 0.28, 0, Math.PI * 2);
-      ctx.fill();
-    }
     if (onPath || inAskTop) {
       ctx.strokeStyle = "#5eead4";
       ctx.lineWidth = 2.5 / view.scale;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
       ctx.stroke();
     } else if (state.highlightedId === n.id) {
       ctx.strokeStyle = "#5eead4";
       ctx.lineWidth = 2 / view.scale;
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
       ctx.stroke();
     }
     // R17 — red disagreement ring.

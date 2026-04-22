@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "0d00571e1a11d12750325c022a3b97a46c74d5fb0673137705fab87e70ff12ea"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-17-tests-and-skill-conversion-6d9a2330.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

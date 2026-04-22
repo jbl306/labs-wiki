@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "7d3d52a1d3ee7ec60a8a961500ba692b7abcad812b647e46c6e056aea9857392"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-vs-code-agents-instructions-and-android-capture--a7b54100.md
-quality_score: 58
+quality_score: 66
 concepts:
   []
 related:

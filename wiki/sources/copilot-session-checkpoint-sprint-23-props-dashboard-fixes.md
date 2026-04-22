@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "fa1e59bcaa931fd7ea6b20b8dee62a77b76c4d294e36980cc4331bf90d27a7a1"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-23-props-dashboard-fixes-92176283.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

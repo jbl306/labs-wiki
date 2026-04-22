@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "bda088556b526d765495b4eb44e9e07a7a9a83c274765d5b943d5a42aa248499"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md
-quality_score: 55
+quality_score: 63
 concepts:
   - dashboard-chart-strategy-and-data-driven-refinement
 related:

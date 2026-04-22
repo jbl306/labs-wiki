@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "f7f84608a56ca95ea16b47740648af8c3fa8d4783f1503e8d3a6c45e0d21b558"
 sources:
   - raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md
-quality_score: 77
+quality_score: 81
 concepts:
   - checkpoint-curation-phases-copilot-session-promotion
   - heuristic-based-classification-session-checkpoints

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "03d988584217262eb8eb01ccefed4aa0a11ef1326c47c68c640cf64f0d308ed8"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-18-ge-integration-and-credential-purge-ebee2aa1.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

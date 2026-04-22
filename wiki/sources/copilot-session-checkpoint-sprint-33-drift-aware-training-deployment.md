@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "2878f9d1fa72660dbca59d0abc116cc81750e551a5b01554fbd73896db63611f"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-33-drift-aware-training-deployment-4459476a.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

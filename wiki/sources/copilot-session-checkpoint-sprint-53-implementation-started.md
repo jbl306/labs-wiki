@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "4057e782b655b2331dede64768a964c65529eba48ad58a7e9b24c98ea4135665"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-53-implementation-started-d6e3c5b6.md
-quality_score: 57
+quality_score: 65
 concepts:
   []
 related:

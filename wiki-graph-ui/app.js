@@ -134,7 +134,12 @@ function syncCosmosStyle() {
     colorOf: (n) => healthActive
       ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
       : colorForCommunity(n.community),
-    sizeOf: (n) => Math.max(2, Math.min(12, 2 + Math.log2((n.degree || 1) + 1) * 1.6)),
+    sizeOf: (n) => {
+      // Degree-scaled with a generous floor so even leaves register as
+      // soft-edge dots (the antialiased disc reads as a halo at this size).
+      const deg = Math.max(1, n.degree || 1);
+      return Math.max(6, Math.min(28, 5 + Math.log2(deg + 1) * 3.4));
+    },
     dimOf: (n) => {
       const onPath = state.pathNodes.has(n.id);
       const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
@@ -165,11 +170,41 @@ async function fetchJSON(path) {
   return res.json();
 }
 
+// Curated 16-stop neon-on-dark palette inspired by Gephi/Cosmograph showcases
+// and the Karpathy llm-graph aesthetic — high saturation, mid-high lightness,
+// hue-cycled so adjacent communities read as distinct under WebGL antialiasing.
+// Each entry is `hsl(h s% l%)` so cosmos-renderer's parseColor handles it.
+const COMMUNITY_PALETTE = [
+  "hsl(190 95% 62%)", // cyan
+  "hsl(285 88% 70%)", // violet
+  "hsl(48 100% 62%)", // amber
+  "hsl(330 92% 68%)", // magenta-pink
+  "hsl(155 80% 56%)", // mint
+  "hsl(15 92% 64%)",  // coral
+  "hsl(220 95% 70%)", // azure
+  "hsl(95 78% 60%)",  // lime
+  "hsl(270 90% 72%)", // lavender
+  "hsl(35 100% 60%)", // tangerine
+  "hsl(175 88% 55%)", // teal
+  "hsl(310 88% 70%)", // orchid
+  "hsl(75 85% 60%)",  // chartreuse
+  "hsl(205 95% 66%)", // sky
+  "hsl(355 90% 68%)", // rose
+  "hsl(125 75% 58%)", // emerald
+];
+
 function colorForCommunity(community) {
   if (state.communityColors.has(community)) return state.communityColors.get(community);
-  // Evenly spaced hues; golden-angle skip keeps adjacent communities visually distinct.
-  const hue = (community * 137.508) % 360;
-  const color = `hsl(${hue} 65% 58%)`;
+  const safe = Number.isFinite(community) ? community : 0;
+  // Stable bucket into the curated palette; falls back to golden-angle HSL
+  // for very high community ids so we never collide visually for neighbours.
+  let color;
+  if (safe >= 0 && safe < COMMUNITY_PALETTE.length) {
+    color = COMMUNITY_PALETTE[safe];
+  } else {
+    const hue = (safe * 137.508) % 360;
+    color = `hsl(${hue} 88% 64%)`;
+  }
   state.communityColors.set(community, color);
   return color;
 }

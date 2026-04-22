@@ -1,18 +1,23 @@
 // Adaptive HTML label overlay for the WebGL graph renderer.
 //
-// Why HTML and not in-shader text: text in WebGL is hard to do well (atlases,
-// kerning, AA). The browser's native text rasteriser is faster, sharper, and
-// re-uses our existing CSS theme. A few hundred absolutely-positioned divs
-// over a canvas is essentially free.
-//
-// Strategy:
-//   1. Pick candidates by importance (degree, plus pinned: highlighted,
-//      hovered, selected).
-//   2. Show progressively more labels as zoom increases.
-//   3. Greedy collision avoidance in screen space — sort by importance,
-//      claim a bounding box, skip later labels that intersect a claimed box.
-//   4. Re-layout on every transform notification (rAF-throttled internally
-//      by the renderer's draw loop).
+// Architecture:
+//   - Two nested <div>s. The outer (#webgl-labels) is layered over the
+//     canvas and CSS-transformed to follow the camera *during* gestures
+//     so labels move pixel-perfect with the GPU without any per-label
+//     work. The inner (.webgl-label-stage) holds the actual labels with
+//     their absolute positions in the **last laid-out screen frame**.
+//   - On gesture start we snapshot cam0 (x0, y0, scale0). On every
+//     transform during the gesture we compute the affine that maps
+//     "where the labels were drawn" to "where they should appear now"
+//     and apply it as a single CSS `transform: translate3d() scale()`
+//     on the stage. Cheap. Smooth. No flash.
+//   - When the gesture ends we re-layout once (positions become exact
+//     in the new screen frame) and reset the stage transform to identity.
+//   - Steady-state (no gesture) layout is throttled to ~25 Hz with a
+//     trailing schedule.
+//   - Font-size scales mildly with zoom so labels grow when you zoom in
+//     and shrink when you zoom out — but capped so they never become
+//     illegible or oversized.
 
 export function createLabelOverlay({ container, renderer }) {
   const layer = document.createElement("div");
@@ -25,40 +30,57 @@ export function createLabelOverlay({ container, renderer }) {
     "contain:strict",
     "z-index:5",
   ].join(";");
+
+  const stage = document.createElement("div");
+  stage.className = "webgl-label-stage";
+  stage.style.cssText = [
+    "position:absolute",
+    "inset:0",
+    "pointer-events:none",
+    "transform-origin:0 0",
+    "will-change:transform",
+  ].join(";");
+  layer.appendChild(stage);
   container.appendChild(layer);
 
   // node id -> { el, w, h }
   const cache = new Map();
   let nodes = [];
-  let pinned = new Set(); // ids that must always render (selected/highlighted)
+  let pinned = new Set();
   let onLabelClick = null;
 
-  // ---------- Perf: throttle + interaction-aware --------------------------
-  // Two failure modes we must avoid on mobile:
-  //   1. Re-laying out 700 candidates + DOM transform writes on every
-  //      animation frame during a pinch -> 60 Hz of jank.
-  //   2. Labels visually lagging behind the GPU during gestures (since
-  //      we're DOM-positioned, not in the same draw call as the canvas).
-  // Fix: hide the label layer entirely while the user is actively
-  // interacting (pinch/drag/wheel), and throttle steady-state layout to
-  // ~25 Hz. This restores buttery pinch performance and labels snap back
-  // crisply once the gesture settles.
+  // Snapshot of the camera *at the time labels were last laid out*.
+  // The stage transform is computed against this so labels can ride along
+  // with the camera without per-label work.
+  let layoutCam = null;
+  // Snapshot of the camera at the start of the *current* gesture. Used
+  // to keep transforms numerically stable across long gestures.
+  let gestureCam = null;
+
+  // Interaction tracking — drives both the gesture-transform behaviour
+  // and the throttled-layout behaviour.
   let activePointers = 0;
   let interacting = false;
   let settleTimer = null;
   let lastLayoutTs = 0;
   let pendingCam = null;
   let pendingTimer = null;
-  const LAYOUT_INTERVAL_MS = 40; // ~25 Hz cap
-  const SETTLE_MS = 140;         // grace period after gesture ends
+  const LAYOUT_INTERVAL_MS = 60;
+  const SETTLE_MS = 120;
 
   function setInteracting(on) {
     if (interacting === on) return;
     interacting = on;
-    layer.classList.toggle("interacting", on);
-    if (!on && pendingCam) {
-      // Layout once with the freshest camera now that the gesture stopped.
-      const cam = pendingCam;
+    if (on) {
+      // Snapshot the camera so subsequent transforms during this gesture
+      // are computed relative to a stable origin.
+      gestureCam = renderer.getCamera();
+    } else {
+      // Reset stage to identity and force a fresh layout in the new
+      // screen frame.
+      stage.style.transform = "";
+      gestureCam = null;
+      const cam = pendingCam || renderer.getCamera();
       pendingCam = null;
       runLayout(cam);
     }
@@ -70,31 +92,24 @@ export function createLabelOverlay({ container, renderer }) {
     settleTimer = setTimeout(() => setInteracting(false), SETTLE_MS);
   }
 
-  // Track gestures on the container so any pointer/wheel inside the graph
-  // host triggers the "interacting" state.
-  container.addEventListener("pointerdown", (e) => {
+  // We listen on the container so any gesture inside the graph host (touch,
+  // mouse, wheel) triggers gesture mode. passive:true so we never fight the
+  // canvas's own pointer handlers.
+  container.addEventListener("pointerdown", () => {
     activePointers += 1;
     bumpInteraction();
   }, { passive: true });
   const releasePointer = () => {
     activePointers = Math.max(0, activePointers - 1);
-    if (activePointers === 0) bumpInteraction(); // start the settle timer
+    if (activePointers === 0) bumpInteraction();
   };
   container.addEventListener("pointerup", releasePointer, { passive: true });
   container.addEventListener("pointercancel", releasePointer, { passive: true });
   container.addEventListener("wheel", () => bumpInteraction(), { passive: true });
 
-  function setNodes(newNodes) {
-    nodes = newNodes || [];
-  }
-
-  function setPinned(idSet) {
-    pinned = idSet ? new Set(idSet) : new Set();
-  }
-
-  function setOnLabelClick(cb) {
-    onLabelClick = cb;
-  }
+  function setNodes(newNodes) { nodes = newNodes || []; }
+  function setPinned(idSet) { pinned = idSet ? new Set(idSet) : new Set(); }
+  function setOnLabelClick(cb) { onLabelClick = cb; }
 
   function makeEl(node) {
     const el = document.createElement("button");
@@ -107,9 +122,7 @@ export function createLabelOverlay({ container, renderer }) {
       e.stopPropagation();
       if (onLabelClick) onLabelClick(node);
     });
-    layer.appendChild(el);
-    // Measure once. Subsequent style/zoom changes don't change the box much
-    // because we don't scale font with zoom — labels stay readable.
+    stage.appendChild(el);
     const r = el.getBoundingClientRect();
     return { el, w: Math.ceil(r.width) || 60, h: Math.ceil(r.height) || 16 };
   }
@@ -123,15 +136,17 @@ export function createLabelOverlay({ container, renderer }) {
     return entry;
   }
 
-  // Public layout entry — throttled + interaction-aware. Renderer fires this
-  // on every notifyTransform() (roughly every drawn frame).
+  // The renderer fires this every drawn frame. During an active gesture we
+  // *do not* re-layout; we just transform the stage to ride along with the
+  // camera. On settle we'll do a real layout once.
   function layout(cam) {
     if (!cam || !nodes.length) return;
-    // While the user is actively gesturing, drop layout work entirely and
-    // keep the label layer hidden via CSS. We just remember the latest
-    // camera so we can lay out once on settle.
     if (interacting) {
       pendingCam = cam;
+      applyGestureTransform(cam);
+      // Camera is still moving — push the settle deadline out.
+      if (settleTimer) clearTimeout(settleTimer);
+      settleTimer = setTimeout(() => setInteracting(false), SETTLE_MS);
       return;
     }
     const now = performance.now();
@@ -140,8 +155,6 @@ export function createLabelOverlay({ container, renderer }) {
       runLayout(cam);
       return;
     }
-    // Schedule a trailing layout so the final frame after a wheel/pan is
-    // always fresh, even if the renderer stops issuing transform events.
     pendingCam = cam;
     if (pendingTimer) return;
     pendingTimer = setTimeout(() => {
@@ -152,40 +165,56 @@ export function createLabelOverlay({ container, renderer }) {
     }, LAYOUT_INTERVAL_MS - since);
   }
 
+  // Compute and apply the affine that maps the snapshot frame (when labels
+  // were last laid out) to the current camera. Single CSS transform = GPU.
+  function applyGestureTransform(cam) {
+    if (!layoutCam) return;
+    const W = cam.viewW || layoutCam.viewW;
+    const H = cam.viewH || layoutCam.viewH;
+    const k = cam.scale / layoutCam.scale;
+    const tx = (W / 2) * (1 - k) + cam.scale * (layoutCam.x - cam.x);
+    const ty = (H / 2) * (1 - k) + cam.scale * (layoutCam.y - cam.y);
+    stage.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${k})`;
+  }
+
   function runLayout(cam) {
     lastLayoutTs = performance.now();
+    layoutCam = { x: cam.x, y: cam.y, scale: cam.scale, viewW: cam.viewW, viewH: cam.viewH };
+    stage.style.transform = ""; // identity in the new frame
     const W = cam.viewW, H = cam.viewH;
 
-    // How many labels to show scales with zoom. At wide-zoom we want only the
-    // hubs visible; as the user zooms in we relax the budget.
-    // scale ~ 0.4 = wide; scale ~ 4 = tight.
-    const zoomFactor = Math.min(4, Math.max(0.3, cam.scale));
-    const baseBudget = 28;
-    let budget = Math.round(baseBudget * Math.pow(zoomFactor / 0.5, 0.85));
-    budget = Math.max(20, Math.min(220, budget));
+    // Font scales mildly with zoom. clamp prevents either extreme.
+    const fontPx = Math.max(9, Math.min(20, 10 + Math.log2(Math.max(0.35, cam.scale)) * 2.2));
+    if (stage.style.fontSize !== fontPx + "px") {
+      stage.style.fontSize = fontPx + "px";
+      // Font-size change invalidates cached widths.
+      for (const entry of cache.values()) entry._needsMeasure = true;
+    }
 
-    // Build candidate list. Importance = degree, with a big boost for pinned.
+    // Budget grows with zoom so wide views stay sparse, zoomed-in views show
+    // detail. Tuned conservatively.
+    const zoomFactor = Math.min(4, Math.max(0.3, cam.scale));
+    let budget = Math.round(22 * Math.pow(zoomFactor / 0.5, 0.9));
+    budget = Math.max(14, Math.min(180, budget));
+
     const candidates = [];
     for (const n of nodes) {
       const sx = (n.x - cam.x) * cam.scale + W / 2;
       const sy = (n.y - cam.y) * cam.scale + H / 2;
-      // Cull off-screen with a small margin.
+      // Cull off-screen.
       if (sx < -120 || sx > W + 120 || sy < -40 || sy > H + 40) continue;
       const isPinned = pinned.has(n.id);
-      // Importance: pinned nodes always sort first.
       const imp = (isPinned ? 1e9 : 0) + (n.degree || 0) + (n.tier === "core" ? 5 : 0);
       candidates.push({ node: n, sx, sy, imp, pinned: isPinned });
     }
     candidates.sort((a, b) => b.imp - a.imp);
 
-    // Greedy collision: walk in importance order, claim screen rects.
-    const claimed = []; // rects {x,y,w,h}
-    const visible = new Set();
-
-    // Spatial buckets for O(N) collision check.
+    // Spatial-bucket greedy collision avoidance.
     const BUCKET = 96;
     const buckets = new Map();
-    function bucketKey(bx, by) { return bx + "," + by; }
+    const visible = new Set();
+
+    function key(bx, by) { return bx + "," + by; }
     function intersects(rect) {
       const minBx = Math.floor(rect.x / BUCKET);
       const maxBx = Math.floor((rect.x + rect.w) / BUCKET);
@@ -193,7 +222,7 @@ export function createLabelOverlay({ container, renderer }) {
       const maxBy = Math.floor((rect.y + rect.h) / BUCKET);
       for (let bx = minBx; bx <= maxBx; bx++) {
         for (let by = minBy; by <= maxBy; by++) {
-          const arr = buckets.get(bucketKey(bx, by));
+          const arr = buckets.get(key(bx, by));
           if (!arr) continue;
           for (const r of arr) {
             if (rect.x < r.x + r.w && rect.x + rect.w > r.x &&
@@ -203,14 +232,14 @@ export function createLabelOverlay({ container, renderer }) {
       }
       return false;
     }
-    function addToBuckets(rect) {
+    function add(rect) {
       const minBx = Math.floor(rect.x / BUCKET);
       const maxBx = Math.floor((rect.x + rect.w) / BUCKET);
       const minBy = Math.floor(rect.y / BUCKET);
       const maxBy = Math.floor((rect.y + rect.h) / BUCKET);
       for (let bx = minBx; bx <= maxBx; bx++) {
         for (let by = minBy; by <= maxBy; by++) {
-          const k = bucketKey(bx, by);
+          const k = key(bx, by);
           let arr = buckets.get(k);
           if (!arr) { arr = []; buckets.set(k, arr); }
           arr.push(rect);
@@ -221,25 +250,26 @@ export function createLabelOverlay({ container, renderer }) {
     for (const c of candidates) {
       if (visible.size >= budget && !c.pinned) break;
       const entry = getEl(c.node);
-      // Position label below node by a small offset proportional to the
-      // node's rendered radius (approx).
+      if (entry._needsMeasure) {
+        const r = entry.el.getBoundingClientRect();
+        entry.w = Math.ceil(r.width) || 60;
+        entry.h = Math.ceil(r.height) || 16;
+        entry._needsMeasure = false;
+      }
+      // Position label below node by a small offset proportional to size.
       const deg = Math.max(1, c.node.degree || 1);
-      const r = Math.min(28, 4.5 + Math.log2(deg + 1) * 3.2);
-      // Center horizontally on node, sit below the glow.
+      const r = Math.min(16, 3 + Math.log2(deg + 1) * 2.4);
       const labelX = Math.round(c.sx - entry.w / 2);
-      const labelY = Math.round(c.sy + r * 0.55 + 4);
+      const labelY = Math.round(c.sy + r * 0.6 + 4);
       const rect = { x: labelX - 2, y: labelY - 2, w: entry.w + 4, h: entry.h + 4 };
       if (!c.pinned && intersects(rect)) continue;
-      addToBuckets(rect);
-      claimed.push(rect);
+      add(rect);
       visible.add(c.node.id);
-      entry.x = labelX; entry.y = labelY;
       entry.el.style.transform = `translate3d(${labelX}px, ${labelY}px, 0)`;
       entry.el.classList.toggle("pinned", c.pinned);
       entry.el.classList.remove("hidden");
     }
 
-    // Hide everything we didn't claim this frame.
     for (const [id, entry] of cache) {
       if (!visible.has(id)) entry.el.classList.add("hidden");
     }

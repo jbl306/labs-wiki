@@ -149,11 +149,12 @@ function syncGpuStyle() {
       ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
       : colorForCommunity(n.community),
     sizeOf: (n) => {
-      // Tighter range — large nodes were reading as "busy" at fit-zoom on
-      // a 700-node graph. Leaves stay punchy, hubs still dominate but
-      // don't bloom into one another.
+      // Aggressive tightening — at fit-zoom the previous range still bloomed
+      // into mush. New range puts hubs at ~16px and leaves at ~3-4px
+      // (multiplied by DPR for the actual gl_PointSize). Cluster structure
+      // reads cleanly without overlapping halos.
       const deg = Math.max(1, n.degree || 1);
-      return Math.max(5, Math.min(28, 4.5 + Math.log2(deg + 1) * 3.2));
+      return Math.max(3, Math.min(16, 3 + Math.log2(deg + 1) * 2.4));
     },
     dimOf: (n) => {
       const onPath = state.pathNodes.has(n.id);
@@ -1089,7 +1090,7 @@ async function showNodePanel(node) {
   const contentEl = document.getElementById("node-content");
   if (contentEl) {
     contentEl.innerHTML = "<div class='muted'>loading page…</div>";
-    fetchJSON(`/graph/page/${encodePathId(node.id)}`)
+    fetchJSON(`/graph/page/${encodePathId(node.id)}?_=${Date.now()}`)
       .then((data) => {
         contentEl.innerHTML = renderMarkdown(data.body || "");
         // Intercept wikilink clicks → navigate within the graph if we know

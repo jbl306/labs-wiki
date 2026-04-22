@@ -339,8 +339,8 @@ body.sidebar-open #sidebar-backdrop {
 }
 
 /* ---------- WebGL adaptive label overlay ---------- */
-#webgl-labels { font-family: inherit; transition: opacity 0.12s ease-out; }
-#webgl-labels.interacting { opacity: 0; pointer-events: none; }
+#webgl-labels { font-family: inherit; }
+.webgl-label-stage { will-change: transform; }
 .webgl-label {
   position: absolute;
   top: 0;

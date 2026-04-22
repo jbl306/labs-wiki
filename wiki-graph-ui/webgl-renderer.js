@@ -541,47 +541,89 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   }
 
   // ---------- Pointer / wheel handlers -----------------------------------
+  //
+  // Multi-touch model:
+  //   - One pointer down  → drag-pan.
+  //   - Two pointers down → pinch-zoom *and* two-finger pan, both
+  //     applied incrementally on every move based on the delta from the
+  //     previous frame's midpoint + distance. This is what users expect
+  //     from "real" pinch on phones (Google Maps, Cosmograph, etc).
+  //
+  // We deliberately do NOT call setPointerCapture for touch pointers —
+  // capture has been observed to drop the second pointer's events on
+  // some Android Chrome / iOS Safari builds. Mouse pointers still get
+  // capture so drags off-canvas keep working.
 
   const pointers = new Map();
   let dragging = false;
-  let pinchStartDist = 0;
-  let pinchStartScale = 0;
+  let pinching = false;
+  let prevPinchDist = 0;
+  let prevPinchMidX = 0, prevPinchMidY = 0;
   let pressX = 0, pressY = 0, moved = false;
 
+  function snapshotPinch() {
+    const pts = Array.from(pointers.values());
+    if (pts.length < 2) return;
+    const rect = canvas.getBoundingClientRect();
+    prevPinchDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+    prevPinchMidX = (pts[0].x + pts[1].x) / 2 - rect.left;
+    prevPinchMidY = (pts[0].y + pts[1].y) / 2 - rect.top;
+  }
+
   canvas.addEventListener("pointerdown", (e) => {
-    canvas.setPointerCapture(e.pointerId);
+    if (e.pointerType === "mouse") {
+      try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
+    }
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
     pressX = e.clientX; pressY = e.clientY; moved = false;
-    if (pointers.size === 2) {
-      const pts = Array.from(pointers.values());
-      pinchStartDist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-      pinchStartScale = cam.scale;
+    if (pointers.size >= 2) {
+      pinching = true;
+      dragging = false;
+      snapshotPinch();
     } else if (pointers.size === 1) {
       dragging = true;
+      pinching = false;
       canvas.style.cursor = "grabbing";
     }
   });
 
   canvas.addEventListener("pointermove", (e) => {
-    const prev = pointers.get(e.pointerId);
-    if (!prev) return;
+    if (!pointers.has(e.pointerId)) return;
     pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
-    if (pointers.size === 2 && pinchStartDist > 0) {
+    if (pinching && pointers.size >= 2) {
       const pts = Array.from(pointers.values());
-      const d = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
-      const factor = d / pinchStartDist;
       const rect = canvas.getBoundingClientRect();
+      const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
       const midX = (pts[0].x + pts[1].x) / 2 - rect.left;
       const midY = (pts[0].y + pts[1].y) / 2 - rect.top;
-      zoomAt(pinchStartScale * factor, midX, midY);
+      // Pan first (in screen px → world units).
+      const dx = midX - prevPinchMidX;
+      const dy = midY - prevPinchMidY;
+      cam.x -= dx / cam.scale;
+      cam.y -= dy / cam.scale;
+      // Then zoom around the new midpoint.
+      if (prevPinchDist > 0 && dist > 0) {
+        const factor = dist / prevPinchDist;
+        if (factor !== 1) zoomAt(cam.scale * factor, midX, midY);
+      }
+      prevPinchDist = dist;
+      prevPinchMidX = midX;
+      prevPinchMidY = midY;
+      needsRedraw = true;
+      schedule();
       moved = true;
       return;
     }
 
-    if (dragging) {
-      const dx = e.clientX - prev.x;
-      const dy = e.clientY - prev.y;
+    if (dragging && pointers.size === 1) {
+      // Pan with one finger / mouse.
+      const ptr = pointers.get(e.pointerId);
+      const prevX = ptr.prevX != null ? ptr.prevX : pressX;
+      const prevY = ptr.prevY != null ? ptr.prevY : pressY;
+      const dx = e.clientX - prevX;
+      const dy = e.clientY - prevY;
+      ptr.prevX = e.clientX; ptr.prevY = e.clientY;
       if (Math.hypot(e.clientX - pressX, e.clientY - pressY) > 4) moved = true;
       cam.x -= dx / cam.scale;
       cam.y -= dy / cam.scale;
@@ -593,7 +635,18 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   function endPointer(e) {
     if (!pointers.has(e.pointerId)) return;
     pointers.delete(e.pointerId);
-    if (pointers.size < 2) pinchStartDist = 0;
+    if (pointers.size < 2) {
+      pinching = false;
+      // If one finger remains after a pinch, transition cleanly into a drag.
+      if (pointers.size === 1) {
+        dragging = true;
+        // Reset the remaining pointer's prev so the first move after lift
+        // doesn't compute a giant delta.
+        const id = pointers.keys().next().value;
+        const p = pointers.get(id);
+        p.prevX = p.x; p.prevY = p.y;
+      }
+    }
     if (pointers.size === 0) {
       dragging = false;
       canvas.style.cursor = "grab";

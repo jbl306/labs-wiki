@@ -6,7 +6,7 @@ last_verified: 2026-04-16
 source_hash: "bbb6e68bdae7ac03d34d678052761e10e7a0cfb96ad83909010ff956538870ed"
 sources:
   - raw/2026-04-16-251004618v3pdf.md
-quality_score: 100
+quality_score: 60
 concepts:
   - ace-agentic-context-engineering
 related:

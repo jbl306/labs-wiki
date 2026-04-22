@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "9087cb7649f7304dd2917525af12c2fd1f436fd5b0eb12bcf0b6c9787bb8f3f4"
 sources:
   - raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
-quality_score: 100
+quality_score: 56
 concepts:
   - homelab-media-domain-routing-lan-public-https-diagnostics
 related:

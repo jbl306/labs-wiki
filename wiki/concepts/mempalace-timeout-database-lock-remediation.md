@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "a716e4e1098fa35ca80ab5e3920f8aeee1fcf2d55f18c8c6f320366f1f598a74"
 sources:
   - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
-quality_score: 100
+quality_score: 59
 concepts:
   - mempalace-timeout-database-lock-remediation
 related:

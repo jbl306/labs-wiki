@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "358108ea4d82e3accc5cb671afd3dec27dfb9c5dae571d0970c1b790078c615e"
 sources:
   - raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
-quality_score: 100
+quality_score: 72
 concepts:
   - agent-skill-routing-architecture
 related:

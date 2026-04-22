@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "9abff5d56824e0f4fae96781e1391fb0dbad2aaf59efa4bd9dfe557ce4eed23d"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-12-complete-and-skills-installed-48a02b58.md
-quality_score: 100
+quality_score: 53
 concepts:
   - feature-group-tuning-via-configuration-flags
 related:

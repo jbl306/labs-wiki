@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "49f4807ade10bcd1f9d2ef67205cc33240d04aebc0d4d53e1a91fa012cb2f5a3"
 sources:
   - raw/2026-04-21-260402176v2pdf.md
-quality_score: 100
+quality_score: 61
 concepts:
   - textual-frequency-paired-dataset
 related:

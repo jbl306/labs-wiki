@@ -23,7 +23,7 @@ sources:
   - raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
   - raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
-quality_score: 100
+quality_score: 95
 concepts:
   - nba-ml-engine
 related:

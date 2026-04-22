@@ -7,7 +7,7 @@ source_hash: "64f3d7794fd5e8567333444aa2dcf2ae76e118f9bf78cb15eb014a7029e90e95"
 sources:
   - raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
   - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
-quality_score: 100
+quality_score: 81
 concepts:
   - linear-regression
 related:

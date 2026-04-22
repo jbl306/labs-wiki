@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "f746baf27768533a8c0ad9df802594ecb61e45933c725a7cf5ef4e92306fadc3"
 sources:
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 64
 concepts:
   - progressive-disclosure-context-loading
 related:

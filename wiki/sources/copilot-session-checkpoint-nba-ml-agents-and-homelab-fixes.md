@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "5d62c5ec9d154108bd891ed92b71cf061018b412b20cfcfc2b686c64b646c9e9"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
-quality_score: 100
+quality_score: 90
 concepts:
   - nba-ml-specialized-prediction-agents
   - sprint-workflow-integration-for-ai-agents

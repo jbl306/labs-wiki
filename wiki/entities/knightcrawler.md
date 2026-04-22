@@ -10,7 +10,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
   - raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md
-quality_score: 100
+quality_score: 81
 concepts:
   - knightcrawler
 related:

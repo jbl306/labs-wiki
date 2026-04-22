@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "915cc659ae6d5fa84f05a134f6e919e43f7907eedbdf24ee04aca81684538af7"
 sources:
   - raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 83
 concepts:
   - the-token-economy-principle
 related:

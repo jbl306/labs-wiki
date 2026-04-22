@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "9f4a8dfdf1194cb257374f76181b6d2349a5df514f2b0126309d332953863586"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-7-browser-based-nba-backfill-9848a69e.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

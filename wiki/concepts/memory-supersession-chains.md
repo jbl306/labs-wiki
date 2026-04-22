@@ -7,7 +7,7 @@ source_hash: "d91b38ada9d4efe004c00599e1912104a61ce1104675de55ba02a3cfa6ad1e70"
 sources:
   - raw/2026-04-19-6372438pdf.md
   - raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
-quality_score: 100
+quality_score: 84
 concepts:
   - memory-supersession-chains
 related:

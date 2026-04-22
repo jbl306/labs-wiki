@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "9b4415e18ce02c3994a6765c7b978bee13fc5418aed070f4f02a02a2ccca3db7"
 sources:
   - raw/2026-04-08-the-toolkit-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 67
 concepts:
   - forge-science-backed-agent-assembly-system
 related:

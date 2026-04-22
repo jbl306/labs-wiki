@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "324daa285e976baea036210eb4125132af003da4f31d0f3546a28f8205f51aba"
 sources:
   - raw/2026-04-20-proxy-pointer-rag-structure-meets-scale-at-100-accuracy-with.md
-quality_score: 100
+quality_score: 86
 concepts:
   - proxy-pointer-rag-architecture
   - structure-guided-chunking-breadcrumb-injection

@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "e3e47d55fb1d0008f60d9a2e427faad4b28e2a2e353601179a533125dc59d19e"
 sources:
   - raw/2026-04-18-copilot-session-sprint-56-no-retrain-fixes-planning-895454cb.md
-quality_score: 100
+quality_score: 69
 concepts:
   - pra-composite-prediction
 related:

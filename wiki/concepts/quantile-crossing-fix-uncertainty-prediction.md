@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "1a8605793607a924fae33927ca1c4abc23aa36d89dbda589fb5634f468d8ae67"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
-quality_score: 100
+quality_score: 53
 concepts:
   - quantile-crossing-fix-uncertainty-prediction
 related:

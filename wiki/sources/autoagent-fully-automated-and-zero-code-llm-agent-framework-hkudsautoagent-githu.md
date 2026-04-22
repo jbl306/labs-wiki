@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "a751d6ee1708e4f6c5c5f928976201ed5d6c28b55cb51c41b3812e77a9a2bbbc"
 sources:
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
-quality_score: 100
+quality_score: 66
 concepts:
   - natural-language-driven-agent-building
   - self-managing-workflow-generation

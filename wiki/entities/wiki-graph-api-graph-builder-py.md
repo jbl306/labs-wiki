@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "c73306469d0b021d04941005a920130ac9f2aca5d4f041c255bcf45d387eb9f0"
 sources:
   - raw/2026-04-20-copilot-session-graph-tracker-and-depth-review-4445c933.md
-quality_score: 100
+quality_score: 42
 concepts:
   - wiki-graph-api-graph-builder-py
 related:

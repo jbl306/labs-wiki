@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "aa0a9fb971c2616e13c747864ac64e29a813db353a4b28896b78d03b5dff3a2a"
 sources:
   - raw/2026-04-18-copilot-session-phase-5-backfill-script-written-6227b6ae.md
-quality_score: 100
+quality_score: 62
 concepts:
   - backfill-script-copilot-session-checkpoint-curation
 related:

@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-observability-imperative-10-claude-code-principles.md
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 85
 concepts:
   - mast-failure-taxonomy
 related:

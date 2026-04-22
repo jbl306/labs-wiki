@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "f581888e6d5d340a258d9e4474796b81713527cd5bca16d76ee11ce47fb1283d"
 sources:
   - raw/2026-04-08-the-observability-imperative-10-claude-code-principles.md
-quality_score: 100
+quality_score: 86
 concepts:
   - the-observability-imperative
   - mast-failure-taxonomy

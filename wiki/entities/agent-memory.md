@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "6d3926b294fd189631a5b0192148c2460f4f4d037b2814c551620137e4a5fae8"
 sources:
   - raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
-quality_score: 100
+quality_score: 81
 concepts:
   - agent-memory
 related:

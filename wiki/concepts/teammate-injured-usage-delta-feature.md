@@ -6,7 +6,7 @@ last_verified: 2026-04-19
 source_hash: "d9cea72e0198e7d3d24aa2f2351ac17ebe1246338b49cf42f47130ad7dc14949"
 sources:
   - raw/2026-04-19-copilot-session-sprint-60-pts-feature-planning-abd21993.md
-quality_score: 100
+quality_score: 64
 concepts:
   - teammate-injured-usage-delta-feature
 related:

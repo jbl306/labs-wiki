@@ -19,7 +19,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
   - raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
-quality_score: 100
+quality_score: 75
 concepts:
   - auto-ingest-pipeline-for-wiki-markdown-processing
   - durable-copilot-session-checkpoint-promotion

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "d08068fb45e100d60f932162eb36a897a7cc3ce1d57ed489379266aea9366d7d"
 sources:
   - raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
-quality_score: 100
+quality_score: 80
 concepts:
   - model-context-protocol-mcp-server-for-chrome-devtools
   - chrome-devtools-mcp-cli-interface

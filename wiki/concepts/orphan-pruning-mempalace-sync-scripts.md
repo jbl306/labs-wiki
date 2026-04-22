@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "6d9e0eba162a694001ac48a61830fb7a5d3740b481f8691d5ba2c7bd6a7488d2"
 sources:
   - raw/2026-04-20-copilot-session-wiki-audit-followups-92b1089b.md
-quality_score: 100
+quality_score: 59
 concepts:
   - orphan-pruning-mempalace-sync-scripts
 related:

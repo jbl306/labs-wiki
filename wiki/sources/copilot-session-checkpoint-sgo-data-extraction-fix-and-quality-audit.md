@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "f5369b2de503515b0170a7d6c7a6ed15870125c0336cf70152cfa7db68adcca2"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sgo-data-extraction-fix-and-quality-audit-76644cc8.md
-quality_score: 100
+quality_score: 84
 concepts:
   - sportsgameodds-sgo-api-data-extraction-challenges-and-fixes
 related:

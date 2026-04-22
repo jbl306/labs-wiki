@@ -7,7 +7,7 @@ source_hash: "8d4ffe804f00fc1786f05b552df93998c7e6bf7f3b353158464961c4edb4f8a3"
 sources:
   - raw/2026-04-07-jbl306homelab.md
   - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
-quality_score: 100
+quality_score: 64
 concepts:
   - split-dns-routing-cloudflare-tunnel-overrides-homelab-services
 related:

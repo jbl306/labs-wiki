@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "6a0eb190ea7a53207f0c316c728aee4c8fa5fc528ed9cf9f639330214478cff3"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-50-audit-complete-ready-to-implement-404a98da.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

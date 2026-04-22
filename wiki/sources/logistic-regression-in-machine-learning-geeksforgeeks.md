@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "7ca58af92bf8c94064cc769227e97a5ba4f27469f68211688db2de2bf2a15ae6"
 sources:
   - raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md
-quality_score: 100
+quality_score: 83
 concepts:
   - logistic-regression
   - sigmoid-function

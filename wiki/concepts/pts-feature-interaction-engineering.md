@@ -6,7 +6,7 @@ last_verified: 2026-04-19
 source_hash: "1802936d1c3943c4f998038fc1d70bd57065648d6c678c845a0d02f69f44107b"
 sources:
   - raw/2026-04-19-copilot-session-sprint-61-planning-audit-6c5cb258.md
-quality_score: 100
+quality_score: 67
 concepts:
   - pts-feature-interaction-engineering
 related:

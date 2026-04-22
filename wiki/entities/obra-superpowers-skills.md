@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "a91441178b56106907798420bc2275beaedfb061aeaf034fb63296c7614e06f9"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
-quality_score: 100
+quality_score: 46
 concepts:
   - obra-superpowers-skills
 related:

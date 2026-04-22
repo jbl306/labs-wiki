@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "e7275fa833e5a7d37c42ebe57ee2b1da6ef9871243ade9a1891b01c5cd7da154"
 sources:
   - raw/2026-04-21-httpsgithubcommicrosoftmemento.md
-quality_score: 100
+quality_score: 63
 concepts:
   - memento-blockwise-summarization-for-llms
 related:

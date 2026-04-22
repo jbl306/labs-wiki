@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
   - raw/2026-04-10-httpsgithubcommidudevautoskills.md
-quality_score: 100
+quality_score: 64
 concepts:
   - natural-language-driven-agent-building
   - automated-ai-skill-stack-installation

@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "1e682ce7421bcaeabd752a7742a3c49d999aeb75bc995c31118f12c24d1a690c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
-quality_score: 100
+quality_score: 65
 concepts:
   - python-watchdog-library
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-10
 source_hash: "0d1874945b0424f95de28979ad06c589dab76f705f4a985fdbd1b79f293f0226"
 sources:
   - raw/2026-04-10-260206176v1pdf.md
-quality_score: 100
+quality_score: 72
 concepts:
   - theory-of-mind-in-large-language-models
 related:

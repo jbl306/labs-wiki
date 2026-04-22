@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "4ee068b261ce6b20df7021842f1cbae08b0ec5e4124c648f86d6f1e7e50fc275"
 sources:
   - raw/2026-04-21-260402176v2pdf.md
-quality_score: 100
+quality_score: 65
 concepts:
   - curriculum-textual-frequency-training-ctft
 related:

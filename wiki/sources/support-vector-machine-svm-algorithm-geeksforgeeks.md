@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "afc740175d60aa5e215c7fb57048212d73a4ad3ec2aecb590fdf499b0ddc6575"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
-quality_score: 100
+quality_score: 83
 concepts:
   - support-vector-machine-algorithm
 related:

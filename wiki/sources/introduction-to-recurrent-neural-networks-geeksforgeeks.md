@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "37d849ef82dbcac691ede5e572b4c9a27b0d221d5a9106082afe42d17035b161"
 sources:
   - raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md
-quality_score: 100
+quality_score: 83
 concepts:
   - recurrent-neural-network-architecture
   - backpropagation-through-time-bptt

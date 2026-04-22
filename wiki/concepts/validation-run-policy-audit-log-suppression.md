@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "e5b02c64f03eff41baf89ddea2376fb47d6f03914f6c1c7d77afb1833f4012b2"
 sources:
   - raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
-quality_score: 100
+quality_score: 59
 concepts:
   - validation-run-policy-audit-log-suppression
 related:

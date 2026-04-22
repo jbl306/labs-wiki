@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "5e880814019e287bffa500ebc398bafcb3aad10f0f27a56c87c53d911dba65c6"
 sources:
   - raw/2026-04-18-260414228v1pdf.md
-quality_score: 100
+quality_score: 56
 concepts:
   - context-management-compaction-pipeline-claude-code
 related:

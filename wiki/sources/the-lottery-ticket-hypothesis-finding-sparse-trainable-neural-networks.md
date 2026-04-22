@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "7dd02169701823b1b12a81026d3d1f736d244060a385045aebe0b8bcec1e1809"
 sources:
   - raw/2026-04-10-180303635v5pdf.md
-quality_score: 100
+quality_score: 86
 concepts:
   - lottery-ticket-hypothesis
   - iterative-pruning-technique

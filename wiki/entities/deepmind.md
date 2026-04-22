@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "f6933d2a95acf0b4917f8621a07e5686d09e25f2c5e930389f1d70533135e80c"
 sources:
   - raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 56
 concepts:
   - deepmind
 related:

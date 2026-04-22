@@ -7,7 +7,7 @@ source_hash: "8068cff7cb6d79c87388b9b9408f59c8234c6cee6ef3847d205df8a8b7b53210"
 sources:
   - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 100
+quality_score: 84
 concepts:
   - decision-tree-algorithm
 related:

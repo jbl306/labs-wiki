@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "d57ad480214e3490dbc8ee6afd514a97ba2f1789612676f0d5048939d70f2c44"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-training-guardrails-and-resume-command-4822a5b3.md
-quality_score: 100
+quality_score: 57
 concepts:
   []
 related:

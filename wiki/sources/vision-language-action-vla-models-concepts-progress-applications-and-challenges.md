@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "a4e06e1d925f1612228746698586d9c95f5b1f53a14aefe2385e14b354b4870d"
 sources:
   - raw/2026-04-08-httpsarxivorgpdf250504769.md
-quality_score: 100
+quality_score: 86
 concepts:
   - vision-language-action-vla-models
   - multimodal-integration-vla-models

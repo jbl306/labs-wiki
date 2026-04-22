@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "72fa1070a2f27b8e6cbf8d572afb6676f9c39333ee58819acb6b2287c2606f8b"
 sources:
   - raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 74
 concepts:
   - the-hardening-principle
 related:

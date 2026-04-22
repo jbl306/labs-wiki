@@ -17,7 +17,7 @@ sources:
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
   - raw/2026-04-18-copilot-session-sprint-59-shap-coverage-implementation-9a231f70.md
   - raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
-quality_score: 100
+quality_score: 75
 concepts:
   - parallel-agent-coordination
   - calibration-leakage-mitigation

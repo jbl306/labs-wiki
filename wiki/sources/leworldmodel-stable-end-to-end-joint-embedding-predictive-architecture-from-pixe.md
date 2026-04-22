@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "dbe880f9912188cd26d152ae99593297fed0011190420927082c774d79faa155"
 sources:
   - raw/2026-04-20-260319312v2pdf.md
-quality_score: 100
+quality_score: 66
 concepts:
   - leworldmodel-architecture
   - sketched-isotropic-gaussian-regularizer-sigreg

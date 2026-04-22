@@ -13,7 +13,7 @@ sources:
   - raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
   - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
-quality_score: 100
+quality_score: 92
 concepts:
   - claude
 related:

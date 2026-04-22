@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 100
+quality_score: 64
 concepts:
   - knn
   - decision-tree

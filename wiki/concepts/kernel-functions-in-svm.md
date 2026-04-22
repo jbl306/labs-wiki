@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "5380388bec62eebb61d0e40915eb60f05cf82459ab6250e8951020d927eefc0d"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
-quality_score: 100
+quality_score: 56
 concepts:
   - kernel-functions-in-svm
 related:

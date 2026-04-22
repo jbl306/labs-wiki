@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "365fe96608b681a1c37b8436d06193e1a0e32c2dba1eb483408c799dbdf928e0"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-planning-started-825d0d96.md
-quality_score: 100
+quality_score: 64
 concepts:
   []
 related:

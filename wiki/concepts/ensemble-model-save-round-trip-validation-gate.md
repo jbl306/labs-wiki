@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "665c60129067f8fba29792521cb202b0e0ab91fc22982f1f58081019b034c549"
 sources:
   - raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
-quality_score: 100
+quality_score: 79
 concepts:
   - ensemble-model-save-round-trip-validation-gate
 related:

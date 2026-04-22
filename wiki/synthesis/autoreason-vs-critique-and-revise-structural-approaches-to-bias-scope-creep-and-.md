@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
   - raw/2026-04-10-260206176v1pdf.md
-quality_score: 100
+quality_score: 67
 concepts:
   - critique-and-revise
   - autoreason

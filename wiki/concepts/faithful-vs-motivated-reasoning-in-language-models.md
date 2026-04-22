@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "37dca25e4ed5998ae5f1377fbae32da1d785a06990c5f9e00b16c9ac74c66bd1"
 sources:
   - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
-quality_score: 100
+quality_score: 79
 concepts:
   - faithful-vs-motivated-reasoning-in-language-models
 related:

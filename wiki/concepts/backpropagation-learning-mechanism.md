@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "a546b121d7a032f9ebb620e52bd2c2a1427df51957e793d404c2ea7f2ad8dcb4"
 sources:
   - raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
-quality_score: 100
+quality_score: 63
 concepts:
   - backpropagation-learning-mechanism
 related:

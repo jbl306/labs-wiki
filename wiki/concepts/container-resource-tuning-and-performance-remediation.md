@@ -7,7 +7,7 @@ source_hash: "b86ec7cb4abcfbce82b0a9b160fefa2aa57af2722acf67653163c263a5b39884"
 sources:
   - raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md
   - raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md
-quality_score: 100
+quality_score: 84
 concepts:
   - container-resource-tuning-and-performance-remediation
 related:

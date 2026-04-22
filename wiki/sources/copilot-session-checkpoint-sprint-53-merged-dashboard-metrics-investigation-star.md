@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "55dd1dea67f03640d1127850f3c1c316b4eda128f6b37ab2ffcf6fc865151457"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-53-merged-dashboard-metrics-investigation-8bf30b64.md
-quality_score: 100
+quality_score: 57
 concepts:
   []
 related:

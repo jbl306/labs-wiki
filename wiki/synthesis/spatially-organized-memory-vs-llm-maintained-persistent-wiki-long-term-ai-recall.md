@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
   - raw/2026-04-07-llm-wiki.md
-quality_score: 100
+quality_score: 64
 concepts:
   - llm-wiki-architecture
   - palace-memory-architecture

@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "50ae0a25a9509f94ffb1846a82d1f7e75e047e8b67587ac7f4cf9ff980b5a63b"
 sources:
   - raw/2026-04-08-principal-component-analysis-pca-geeksforgeeks.md
-quality_score: 100
+quality_score: 75
 concepts:
   - principal-component-analysis
 related:

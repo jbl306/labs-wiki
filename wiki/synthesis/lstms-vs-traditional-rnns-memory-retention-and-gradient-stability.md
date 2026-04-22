@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
   - raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md
-quality_score: 100
+quality_score: 64
 concepts:
   - recurrent-neural-network-architecture
   - long-short-term-memory-lstm

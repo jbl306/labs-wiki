@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "7b344980e889d401d340d2539bd18583a585c26640fe19f36c596d887e647ba2"
 sources:
   - raw/2026-04-21-httpsgithubcommicrosoftmemento.md
-quality_score: 100
+quality_score: 65
 concepts:
   - openmementos-dataset
 related:

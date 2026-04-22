@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "3b8f3f5bf18a470b6b8c086dbe24c89c1770ad4369359a4451bdfc3af49181f5"
 sources:
   - raw/2026-04-08-the-observability-imperative-10-claude-code-principles.md
-quality_score: 100
+quality_score: 59
 concepts:
   - metagpt
 related:

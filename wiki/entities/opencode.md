@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
-quality_score: 100
+quality_score: 80
 concepts:
   - opencode
 related:

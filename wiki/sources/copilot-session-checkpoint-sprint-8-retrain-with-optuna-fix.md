@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "427a1145e8e5db01facd53a9da2ebde876a2c02445db3e73361f29ea2c4241e1"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-8-retrain-with-optuna-fix-af6747c6.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

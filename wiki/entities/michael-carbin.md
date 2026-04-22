@@ -7,7 +7,7 @@ source_hash: "bd2046c48eb130a120593477f3fc9678dc18e4c8014a3f9bf5361937812db817"
 sources:
   - raw/2026-04-13-260406231v1pdf.md
   - raw/2026-04-10-180303635v5pdf.md
-quality_score: 100
+quality_score: 62
 concepts:
   - michael-carbin
 related:

@@ -17,7 +17,7 @@ sources:
   - raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md
   - raw/2026-04-17-watcher-e2e-validation.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
-quality_score: 100
+quality_score: 95
 concepts:
   - mempalace
 related:

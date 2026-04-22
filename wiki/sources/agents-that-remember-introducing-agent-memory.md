@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "ff2f3f0e50ba800ba4152364d06f58e56c64b711b9e147a7fd61c9a75dfb1a8a"
 sources:
   - raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
-quality_score: 100
+quality_score: 90
 concepts:
   - agent-memory-ingestion-pipeline
   - agent-memory-retrieval-pipeline

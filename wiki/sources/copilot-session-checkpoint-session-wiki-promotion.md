@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "c65fce884e028922d59862433952d95e905dc7bcd8639c99bbaa0493de3d3fbb"
 sources:
   - raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
-quality_score: 100
+quality_score: 87
 concepts:
   - durable-copilot-session-checkpoint-promotion
   - source-aware-model-routing-wiki-ingestion-pipelines

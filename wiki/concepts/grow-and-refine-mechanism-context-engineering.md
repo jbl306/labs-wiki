@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "83c9cdca1302f9efb955a68be212646ad704d1515c2ad4b8861dd91793f19396"
 sources:
   - raw/2026-04-16-251004618v3pdf.md
-quality_score: 100
+quality_score: 56
 concepts:
   - grow-and-refine-mechanism-context-engineering
 related:

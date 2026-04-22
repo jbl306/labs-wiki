@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "4151721dc98741561c5f6eb8988fad98a0a940976d625c40cbe1587b62bb2a6f"
 sources:
   - raw/2026-04-18-copilot-session-sprint-55-planning-and-exploration-be98e3c5.md
-quality_score: 100
+quality_score: 56
 concepts:
   - context-aware-imputation-ml-pipelines
 related:

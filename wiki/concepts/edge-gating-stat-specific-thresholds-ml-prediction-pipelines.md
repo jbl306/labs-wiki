@@ -7,7 +7,7 @@ source_hash: "f8d0a04a06d081eb78a648694aa8e0e839423db4ece7d887aafeef2087fa93fe"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-retrained-models-deploying-improvements-59ba9a6c.md
   - raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md
-quality_score: 100
+quality_score: 64
 concepts:
   - edge-gating-stat-specific-thresholds-ml-prediction-pipelines
 related:

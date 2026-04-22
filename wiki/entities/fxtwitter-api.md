@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "ef21462a91cbbb64334e1aea7918a68cdf91d2b793139ef7974986c7deb8ef39"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
-quality_score: 100
+quality_score: 74
 concepts:
   - fxtwitter-api
 related:

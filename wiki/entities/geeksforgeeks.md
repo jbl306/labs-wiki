@@ -21,7 +21,7 @@ sources:
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
   - raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
   - raw/2026-04-08-apriori-algorithm-geeksforgeeks.md
-quality_score: 100
+quality_score: 95
 concepts:
   - geeksforgeeks
 related:

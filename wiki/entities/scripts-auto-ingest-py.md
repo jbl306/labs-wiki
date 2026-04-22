@@ -7,7 +7,7 @@ source_hash: "58f7e891b3f357ec9e293d8dfe365b373ec7a7fbe3eba4e22a93947cc4d024c4"
 sources:
   - raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
   - raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md
-quality_score: 100
+quality_score: 47
 concepts:
   - scripts-auto-ingest-py
 related:

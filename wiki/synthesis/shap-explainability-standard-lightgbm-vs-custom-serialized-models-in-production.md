@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
   - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
-quality_score: 100
+quality_score: 64
 concepts:
   - lightgbm-feature-importance-and-shap-values
   - shap-analysis-bug-root-cause-and-remediation

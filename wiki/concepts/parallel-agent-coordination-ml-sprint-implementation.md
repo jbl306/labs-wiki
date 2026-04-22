@@ -7,7 +7,7 @@ source_hash: "f8d0a04a06d081eb78a648694aa8e0e839423db4ece7d887aafeef2087fa93fe"
 sources:
   - raw/2026-04-18-copilot-session-sprint-55-planning-and-exploration-be98e3c5.md
   - raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md
-quality_score: 100
+quality_score: 64
 concepts:
   - parallel-agent-coordination-ml-sprint-implementation
 related:

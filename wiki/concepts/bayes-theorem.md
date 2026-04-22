@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "7f88957808ce58eefae33d9edfda055fb6c6a809b340111b3d89f3c73a7e3b49"
 sources:
   - raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
-quality_score: 100
+quality_score: 64
 concepts:
   - bayes-theorem
 related:

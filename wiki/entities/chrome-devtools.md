@@ -6,7 +6,7 @@ last_verified: 2026-04-13
 source_hash: "c4e8332bb539477ec966d1695a93bae4bf06a12c0a260303fe393c7f68646500"
 sources:
   - raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
-quality_score: 100
+quality_score: 61
 concepts:
   - chrome-devtools
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "786733073c1e32c179de95fa73dc53d2c42bf66081006c43690fb4201f59e003"
 sources:
   - raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
-quality_score: 100
+quality_score: 86
 concepts:
   - artificial-neural-network-architecture
   - backpropagation-learning-mechanism

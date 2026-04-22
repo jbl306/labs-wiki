@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "c4284a8516fc117385cc15ec1ab8aa86c6b6302f7cc15494065cd9252c71a0f5"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-android-share-ingest-api-bbff237c.md
-quality_score: 100
+quality_score: 72
 concepts:
   - http-shortcuts-android-app-scripting-api-quirks
 related:

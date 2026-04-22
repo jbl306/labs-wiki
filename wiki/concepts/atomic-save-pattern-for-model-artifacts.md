@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "924e132f95d9fa94650d78f540b91683d2ddb7c4f20d9fb9d776cf74f1885c5a"
 sources:
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
-quality_score: 100
+quality_score: 56
 concepts:
   - atomic-save-pattern-for-model-artifacts
 related:

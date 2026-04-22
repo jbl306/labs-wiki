@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "ffde63a096f69c53f35e3e18b31bf69c28aa146571d441566ec26bba004c63d9"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
-quality_score: 100
+quality_score: 90
 concepts:
   - knightcrawler-populate-files-cron-job
   - real-debrid-instantavailability-api-playback-issues

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "2770380bae93c0904afb7c4a75ef624686ada74d9cdbacc49e9643375baa6ced"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
-quality_score: 100
+quality_score: 90
 concepts:
   - mempalace-architecture-memory-system
   - comparison-mempalace-labs-wiki-openmemory

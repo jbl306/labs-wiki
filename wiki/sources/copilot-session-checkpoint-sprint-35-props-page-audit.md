@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "eaf81287307bc2630200ead492f9b804e648a3171ee694aed464bc2ffda519a6"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-35-props-page-audit-a5db365f.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

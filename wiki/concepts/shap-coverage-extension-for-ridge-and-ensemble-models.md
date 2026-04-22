@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "8e3ec5b24e92a02a9a1b03fb00f1bdd35fbc8dbe8d7723b1a284751ce576ff29"
 sources:
   - raw/2026-04-18-copilot-session-sprint-59-shap-coverage-implementation-9a231f70.md
-quality_score: 100
+quality_score: 75
 concepts:
   - shap-coverage-extension-for-ridge-and-ensemble-models
 related:

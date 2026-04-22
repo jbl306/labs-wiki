@@ -7,7 +7,7 @@ source_hash: "7bf8bbb0c432057091205c5fe544f18bb53336cae63d1397730656c15195deab"
 sources:
   - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
   - raw/2026-04-17-watcher-e2e-validation.md
-quality_score: 100
+quality_score: 66
 concepts:
   - mempalace-watcher
 related:

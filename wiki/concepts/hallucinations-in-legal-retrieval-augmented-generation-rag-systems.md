@@ -6,7 +6,7 @@ last_verified: 2026-04-14
 source_hash: "cadfe2e008d4403953eb8679d92e13f0b203acb6a7f5888596db0a48d535fdff"
 sources:
   - raw/2026-04-14-legal_rag_hallucinationspdf.md
-quality_score: 100
+quality_score: 69
 concepts:
   - hallucinations-in-legal-retrieval-augmented-generation-rag-systems
 related:

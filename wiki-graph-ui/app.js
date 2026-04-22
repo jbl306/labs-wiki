@@ -114,6 +114,16 @@ function positionNodes(nodes, edges) {
   const k = Math.sqrt((W * H) / Math.max(nodes.length, 1)) * 0.8;
 
   const byId = new Map(nodes.map((n) => [n.id, n]));
+
+  // R15 — when the server precomputed spring_layout (every node has x/y on
+  // arrival from /graph/export/json), skip the full Fruchterman-Reingold loop.
+  // Only the velocity scratch fields are reset, then we run a brief 5-iter
+  // settle pass so any newly-filtered subset relaxes minor overlaps without
+  // throwing away the global structure.
+  const allPrecomputed = nodes.length > 0 && nodes.every(
+    (n) => Number.isFinite(n.x) && Number.isFinite(n.y) && n.__server_layout !== false,
+  );
+
   for (const n of nodes) {
     if (n.x == null || n.y == null) {
       n.x = Math.random() * W - W / 2;
@@ -122,8 +132,8 @@ function positionNodes(nodes, edges) {
     n.vx = 0; n.vy = 0;
   }
 
-  const ITER = 120;
-  let t = W / 10;
+  const ITER = allPrecomputed ? 5 : 120;
+  let t = (allPrecomputed ? W / 80 : W / 10);
   for (let it = 0; it < ITER; it++) {
     // Repulsive
     for (let i = 0; i < nodes.length; i++) {

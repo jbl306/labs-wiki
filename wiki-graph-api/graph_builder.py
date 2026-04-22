@@ -558,6 +558,32 @@ def build_graph(pages: list[Page]) -> nx.Graph:
     return g
 
 
+def compute_layout(g: nx.Graph, scale: float = 1000.0) -> dict[str, tuple[float, float]]:
+    """Run NetworkX spring_layout (deterministic seed) and scale to [-S, S].
+
+    Used by R15 — UI skips its FR loop when every node already has x/y from
+    the server. ``seed=42`` and ``iterations=120`` keep the layout stable
+    across rebuilds so the UI doesn't 'jump' on every refresh.
+    """
+    if g.number_of_nodes() == 0:
+        return {}
+    raw = nx.spring_layout(g, seed=42, k=None, iterations=120, weight="weight")
+    if not raw:
+        return {}
+    xs = [p[0] for p in raw.values()]
+    ys = [p[1] for p in raw.values()]
+    min_x, max_x = min(xs), max(xs)
+    min_y, max_y = min(ys), max(ys)
+    rng_x = (max_x - min_x) or 1.0
+    rng_y = (max_y - min_y) or 1.0
+    out: dict[str, tuple[float, float]] = {}
+    for nid, (x, y) in raw.items():
+        nx_pos = ((x - min_x) / rng_x) * 2 * scale - scale
+        ny_pos = ((y - min_y) / rng_y) * 2 * scale - scale
+        out[nid] = (round(nx_pos, 3), round(ny_pos, 3))
+    return out
+
+
 def detect_communities(g: nx.Graph) -> dict[str, int]:
     """Run greedy modularity; return {node_id: community_index}."""
     if g.number_of_nodes() == 0:
@@ -1010,6 +1036,15 @@ def build(
 
     pages_by_id = {p.node_id: p for p in pages}
     payload = to_node_link(g, communities, analysis, pages_by_id, stats)
+
+    # R15 — precompute spring_layout server-side so the UI doesn't have to
+    # run its expensive FR loop on every load.
+    layout = compute_layout(g)
+    for n in payload["nodes"]:
+        pos = layout.get(n["id"])
+        if pos is not None:
+            n["x"], n["y"] = pos
+    payload["layout_precomputed"] = bool(layout)
 
     # R14 — node embeddings for the NL query endpoint. Cached per (id, hash).
     embeddings, backend = compute_node_embeddings(payload["nodes"], cache_dir)

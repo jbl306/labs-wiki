@@ -359,7 +359,7 @@
 ## Entities
 
 - [[AAAK Compression Dialect]] — AAAK Compression Dialect (T:hot, score: 65)
-- [[ACE (Agentic Context Engineering)]] — ACE (Agentic Context Engineering) (T:hot, score: 60)
+- [[ACE (Agentic Context Engineering)]] — ACE (Agentic Context Engineering) (T:hot, score: 86)
 - [[AXI (Agent eXperience Interface)]] — AXI (Agent eXperience Interface) (T:hot, score: 68)
 - [[AdGuard]] — AdGuard (T:hot, score: 74)
 - [[Ada002]] — Ada002 (T:hot, score: 55)
@@ -550,7 +550,7 @@
 - [[10 Claude Code Principles | What the Research Actually Says]] — 10 Claude Code Principles | What the Research Actually Says (T:hot, score: 86)
 - [[6372438.pdf]] — 6372438.pdf (T:hot, score: 73)
 - [[Adam’s Law: Textual Frequency Law on Large Language Models]] — Adam’s Law: Textual Frequency Law on Large Language Models (T:hot, score: 83)
-- [[Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models]] — Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models (T:hot, score: 86)
+- [[Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models]] — Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models (T:hot, score: 78)
 - [[Agents that remember: introducing Agent Memory]] — Agents that remember: introducing Agent Memory (T:hot, score: 90)
 - [[Apriori Algorithm - GeeksforGeeks]] — Apriori Algorithm - GeeksforGeeks (T:hot, score: 77)
 - [[Artificial Neural Networks and its Applications - GeeksforGeeks]] — Artificial Neural Networks and its Applications - GeeksforGeeks (T:hot, score: 86)
@@ -720,6 +720,7 @@
 
 ## Synthesis
 
+- [[ACE Context Adaptation Failure Modes and Countermeasures]] — ACE Context Adaptation Failure Modes and Countermeasures (T:hot)
 - [[AdaBoost vs Random Forests: Ensemble Learning Approaches and Practical Trade-offs]] — AdaBoost vs Random Forests: Ensemble Learning Approaches and Practical Trade-offs (T:hot, score: 69)
 - [[AdaBoost vs. Standalone Decision Trees: Performance and Limitations]] — AdaBoost vs. Standalone Decision Trees: Performance and Limitations (T:hot, score: 64)
 - [[Autoreason vs. Critique-and-Revise: Structural Approaches to Bias, Scope Creep, and Restraint in Iterative Agentic Workflows]] — Autoreason vs. Critique-and-Revise: Structural Approaches to Bias, Scope Creep, and Restraint in Iterative Agentic Wo... (T:hot, score: 67)

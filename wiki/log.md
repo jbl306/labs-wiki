@@ -4264,4 +4264,18 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/copilot-cli-vs-github-models-api-wiki-ingestion.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-22T19:21:31Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-test-pdf-arxiv-2510-04618.md
+  targets:
+    - wiki/sources/agentic-context-engineering-evolving-contexts-for-self-improving-language-models.md
+    - wiki/entities/ace-agentic-context-engineering.md
+    - wiki/concepts/agentic-context-engineering-ace.md
+    - wiki/concepts/brevity-bias-context-collapse-llm-context-adaptation.md
+    - wiki/concepts/incremental-delta-updates.md
+    - wiki/concepts/grow-and-refine-mechanism-context-engineering.md
+    - wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md
+  status: success
+  notes: "Auto-ingested 7 pages (4 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4; reused the existing ACE source page and refreshed related concept pages"
 ```

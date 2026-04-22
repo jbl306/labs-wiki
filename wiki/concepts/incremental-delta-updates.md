@@ -2,15 +2,15 @@
 title: "Incremental Delta Updates"
 type: concept
 created: 2026-04-20
-last_verified: 2026-04-20
-source_hash: "477e5dbd4d13659cf31de2992a6be546df5c474c80638069dbeef4368ec4bba0"
+last_verified: 2026-04-22
+source_hash: "sha256:d1f1d7139d7de1aefe1f74a2a9e53e1ac4d3103bf532c94ad72ad02286b452fd"
 sources:
   - raw/2026-04-16-251004618v3pdf.md
+  - raw/2026-04-22-test-pdf-arxiv-2510-04618.md
 quality_score: 56
-concepts:
-  - incremental-delta-updates
 related:
-  - "[[Agentic Context Engineering (ACE)]]"
+  - "[[ACE (Agentic Context Engineering)]]"
+  - "[[Grow-and-Refine Mechanism in Context Engineering]]"
   - "[[Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models]]"
 tier: hot
 tags: [context-adaptation, incremental-update, llm, memory, prompt-engineering]
@@ -54,10 +54,10 @@ A delta update in ACE might append a new troubleshooting bullet ([ts-00003]) or 
 
 Figure 3 (screenshot): Shows ACE-generated playbook with itemized bullets for strategies, code snippets, and troubleshooting, each with unique identifiers.
 
-## Relationship to Other Concepts
+## Related Concepts
 
-- **[[Agentic Context Engineering (ACE)]]** — Incremental delta updates are a core mechanism in ACE's modular workflow.
-- **Grow-and-Refine** — Delta updates are periodically refined to control redundancy and maintain relevance.
+- **[[ACE (Agentic Context Engineering)]]** — incremental delta updates are the main mechanism ACE uses to accumulate knowledge without destructive rewrites.
+- **[[Grow-and-Refine Mechanism in Context Engineering]]** — grow-and-refine is the cleanup layer that keeps delta-driven growth compact and relevant.
 
 ## Practical Applications
 

@@ -2,15 +2,15 @@
 title: "Grow-and-Refine Mechanism in Context Engineering"
 type: concept
 created: 2026-04-20
-last_verified: 2026-04-20
-source_hash: "83c9cdca1302f9efb955a68be212646ad704d1515c2ad4b8861dd91793f19396"
+last_verified: 2026-04-22
+source_hash: "sha256:d1f1d7139d7de1aefe1f74a2a9e53e1ac4d3103bf532c94ad72ad02286b452fd"
 sources:
   - raw/2026-04-16-251004618v3pdf.md
+  - raw/2026-04-22-test-pdf-arxiv-2510-04618.md
 quality_score: 56
-concepts:
-  - grow-and-refine-mechanism-context-engineering
 related:
-  - "[[Agentic Context Engineering (ACE)]]"
+  - "[[ACE (Agentic Context Engineering)]]"
+  - "[[Incremental Delta Updates]]"
   - "[[Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models]]"
 tier: hot
 tags: [context-adaptation, refinement, memory-system, redundancy-control]
@@ -48,10 +48,10 @@ After several adaptation steps, ACE appends new troubleshooting bullets for auth
 
 Figure 3 (from the source) illustrates itemized bullets with identifiers and metadata, showing how new entries are appended and existing ones refined.
 
-## Relationship to Other Concepts
+## Related Concepts
 
-- **Incremental Delta Updates in Context Engineering** — Grow-and-refine complements incremental delta updates by controlling redundancy.
-- **[[Agentic Context Engineering (ACE)]]** — Grow-and-refine is a key mechanism in ACE's workflow.
+- **[[Incremental Delta Updates]]** — grow-and-refine complements local delta edits by removing redundancy and controlling playbook size.
+- **[[ACE (Agentic Context Engineering)]]** — grow-and-refine is the consolidation layer that keeps ACE's evolving context usable over long adaptation runs.
 
 ## Practical Applications
 

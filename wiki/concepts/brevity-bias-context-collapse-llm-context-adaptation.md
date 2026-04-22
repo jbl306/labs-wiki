@@ -2,14 +2,16 @@
 title: "Brevity Bias and Context Collapse in LLM Context Adaptation"
 type: concept
 created: 2026-04-20
-last_verified: 2026-04-20
-source_hash: "477e5dbd4d13659cf31de2992a6be546df5c474c80638069dbeef4368ec4bba0"
+last_verified: 2026-04-22
+source_hash: "sha256:d1f1d7139d7de1aefe1f74a2a9e53e1ac4d3103bf532c94ad72ad02286b452fd"
 sources:
   - raw/2026-04-16-251004618v3pdf.md
+  - raw/2026-04-22-test-pdf-arxiv-2510-04618.md
 quality_score: 53
-concepts:
-  - brevity-bias-context-collapse-llm-context-adaptation
 related:
+  - "[[ACE (Agentic Context Engineering)]]"
+  - "[[Incremental Delta Updates]]"
+  - "[[Grow-and-Refine Mechanism in Context Engineering]]"
   - "[[Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models]]"
 tier: hot
 tags: [context-adaptation, llm-agents, prompt-optimization, knowledge-preservation, failure-modes]
@@ -49,9 +51,11 @@ In prompt optimization for unit test generation, iterative methods repeatedly pr
 
 Figure 2 (from the paper) shows a chart with context length and accuracy over adaptation steps. A sharp drop in both metrics occurs after monolithic rewriting, visually illustrating context collapse. Figure 3 shows an ACE-generated context rich with domain-specific insights, contrasting with collapsed, terse summaries.
 
-## Relationship to Other Concepts
+## Related Concepts
 
-- **Agentic Context Engineering (ACE) Framework** — ACE is designed to prevent brevity bias and context collapse through structured, incremental updates.
+- **[[ACE (Agentic Context Engineering)]]** — ACE is the framework introduced to counter these failure modes with structured generation, reflection, and curation.
+- **[[Incremental Delta Updates]]** — localized updates prevent the abrupt information loss that typically causes collapse.
+- **[[Grow-and-Refine Mechanism in Context Engineering]]** — refinement controls redundancy without forcing a destructive full rewrite.
 
 ## Practical Applications
 

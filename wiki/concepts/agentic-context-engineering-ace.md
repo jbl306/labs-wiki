@@ -2,15 +2,18 @@
 title: "Agentic Context Engineering (ACE)"
 type: concept
 created: 2026-04-16
-last_verified: 2026-04-16
-source_hash: "bbb6e68bdae7ac03d34d678052761e10e7a0cfb96ad83909010ff956538870ed"
+last_verified: 2026-04-22
+source_hash: "sha256:d1f1d7139d7de1aefe1f74a2a9e53e1ac4d3103bf532c94ad72ad02286b452fd"
 sources:
   - raw/2026-04-19-6372438pdf.md
   - raw/2026-04-16-251004618v3pdf.md
+  - raw/2026-04-22-test-pdf-arxiv-2510-04618.md
 quality_score: 81
-concepts:
-  - agentic-context-engineering-ace
 related:
+  - "[[ACE (Agentic Context Engineering)]]"
+  - "[[Brevity Bias and Context Collapse in LLM Context Adaptation]]"
+  - "[[Incremental Delta Updates]]"
+  - "[[Grow-and-Refine Mechanism in Context Engineering]]"
   - "[[Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models]]"
 tier: hot
 tags: [context-adaptation, llm-agents, memory, self-improving-systems, incremental-update, modular-framework]
@@ -66,11 +69,12 @@ context.append(bullet)
 
 Figure 4 in the paper depicts the ACE framework as a flow diagram with three components: Generator, Reflector, and Curator. Arrows indicate the flow of reasoning trajectories, feedback, and context updates. Figure 3 shows an ACE-generated context for AppWorld, illustrating detailed, domain-specific insights and code snippets organized as itemized bullets.
 
-## Relationship to Other Concepts
+## Related Concepts
 
-- **Dynamic Cheatsheet** — ACE builds on the agentic design of Dynamic Cheatsheet, extending itemized memory entries with structured roles and incremental updates.
-- **Context Adaptation** — ACE is a specialized framework for context adaptation, addressing its limitations with modular workflows and incremental updates.
-- **Agent Memory** — ACE's itemized bullets are analogous to memory entries in agent memory frameworks, but with enhanced metadata and refinement.
+- **[[Brevity Bias and Context Collapse in LLM Context Adaptation]]** — ACE is designed to prevent these two failure modes by preserving detailed knowledge instead of repeatedly compressing it.
+- **[[Incremental Delta Updates]]** — localized bullet-level edits are the main mechanism ACE uses to keep contexts stable and extensible.
+- **[[Grow-and-Refine Mechanism in Context Engineering]]** — this complements delta updates by pruning redundancy and controlling context growth over time.
+- **Agent Memory** — ACE's itemized bullets behave like memory entries, but with stronger curation, metadata, and refinement loops.
 
 ## Practical Applications
 

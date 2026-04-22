@@ -1,9 +1,9 @@
-<!-- Auto-generated daily snapshot of wiki/hot.md. The live cache is gitignored; this file is its committed history. -->
+<!-- Auto-generated snapshot of wiki/hot.md. The live cache is gitignored; this file is its committed history. -->
 
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-04-21T03:22:05+00:00
+generated: 2026-04-22T03:22:05+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,36 +11,37 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-04-21T03:22:05+00:00
+> Regenerated: 2026-04-22T03:22:05+00:00
 
 ## Recent Wiki Edits
 
-- `2026-04-20` — [[agent-memory-ingestion-pipeline]] (`wiki/concepts/agent-memory-ingestion-pipeline.md`)
-- `2026-04-20` — [[agent-memory-retrieval-pipeline]] (`wiki/concepts/agent-memory-retrieval-pipeline.md`)
-- `2026-04-20` — [[palace-memory-architecture]] (`wiki/concepts/palace-memory-architecture.md`)
-- `2026-04-20` — [[agent-memory]] (`wiki/entities/agent-memory.md`)
-- `2026-04-20` — [[cloudflare]] (`wiki/entities/cloudflare.md`)
-- `2026-04-20` — [[durable-object]] (`wiki/entities/durable-object.md`)
-- `2026-04-20` — [[vectorize]] (`wiki/entities/vectorize.md`)
-- `2026-04-20` — [[workers-ai]] (`wiki/entities/workers-ai.md`)
-- `2026-04-20` — [[agents-that-remember-introducing-agent-memory]] (`wiki/sources/agents-that-remember-introducing-agent-memory.md`)
-- `2026-04-20` — [[agent-skill-surface-optimization-multi-tool-ai-project-compatibility]] (`wiki/concepts/agent-skill-surface-optimization-multi-tool-ai-project-compatibility.md`)
+- `2026-04-21` — [[self-synthesizing-checkpoint-cluster-synthesis]] (`wiki/concepts/self-synthesizing-checkpoint-cluster-synthesis.md`)
+- `2026-04-21` — [[auto-ingest-py]] (`wiki/entities/auto-ingest-py.md`)
+- `2026-04-21` — [[backfill-checkpoint-cluster-synthesis-py]] (`wiki/entities/backfill-checkpoint-cluster-synthesis-py.md`)
+- `2026-04-21` — [[write-synth-py]] (`wiki/entities/write-synth-py.md`)
+- `2026-04-21` — [[amitshekhariitbhu-llm-internals]] (`wiki/sources/amitshekhariitbhu-llm-internals.md`)
+- `2026-04-21` — [[bigskysoftware-htmx]] (`wiki/sources/bigskysoftware-htmx.md`)
+- `2026-04-21` — [[chromedevtools-chrome-devtools-mcp]] (`wiki/sources/chromedevtools-chrome-devtools-mcp.md`)
+- `2026-04-21` — [[copilot-session-checkpoint-self-synthesizing-r4-checkpoint-clusters]] (`wiki/sources/copilot-session-checkpoint-self-synthesizing-r4-checkpoint-clusters.md`)
+- `2026-04-21` — [[google-research-timesfm]] (`wiki/sources/google-research-timesfm.md`)
+- `2026-04-21` — [[hkuds-autoagent]] (`wiki/sources/hkuds-autoagent.md`)
 
 ## Recent Sources Captured
 
-- `2026-04-21` — `raw/2026-04-21-260402176v2pdf.md`
-- `2026-04-21` — `raw/2026-04-21-httpsgithubcommicrosoftmemento.md`
-- `2026-04-21` — `raw/2026-04-21-copilot-session-free-tier-backfill-runner-a2d20186.md`
-- `2026-04-20` — `raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md`
-- `2026-04-20` — `raw/2026-04-20-260319312v2pdf.md`
-- `2026-04-20` — `raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md`
-- `2026-04-20` — `raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md`
-- `2026-04-20` — `raw/2026-04-20-copilot-session-graph-tracker-and-depth-review-4445c933.md`
-- `2026-04-20` — `raw/2026-04-20-agents-that-remember-introducing-agent-memory.md`
-- `2026-04-20` — `raw/2026-04-20-proxy-pointer-rag-structure-meets-scale-at-100-accuracy-with.md`
+- `2026-04-22` — `raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md`
+- `2026-04-22` — `raw/2026-04-22-copilot-session-self-synthesizing-r4-checkpoint-clusters-fc158a39.md`
+- `2026-04-22` — `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md`
+- `2026-04-22` — `raw/2026-04-21-httpsgithubcommicrosoftmemento.md`
+- `2026-04-22` — `raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md`
+- `2026-04-22` — `raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md`
+- `2026-04-22` — `raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md`
+- `2026-04-22` — `raw/2026-04-12-httpsgithubcomhkudsautoagent.md`
+- `2026-04-22` — `raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md`
+- `2026-04-22` — `raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md`
 
 ## Always-Hot Pages (`tier: hot`)
 
+- [[Dockerfile.graph-ui]] → `wiki/entities/dockerfile-graph-ui.md`
 - [[Checkpoint Classifier Module]] → `wiki/entities/checkpoint-classifier-module.md`
 - [[Edge Optimizer]] → `wiki/entities/edge-optimizer.md`
 - [[FaceMind Corporation]] → `wiki/entities/facemind-corporation.md`
@@ -48,14 +49,13 @@ ttl_hours: 24
 - [[Node Version Manager (nvm)]] → `wiki/entities/node-version-manager-nvm.md`
 - [[Claude Code]] → `wiki/entities/claude-code.md`
 - [[AdGuard]] → `wiki/entities/adguard.md`
+- [[Agentic Context Engineering (ACE)]] → `wiki/entities/agentic-context-engineering-ace.md`
 - [[Qdrant]] → `wiki/entities/qdrant.md`
+- [[DecisionTreeClassifier]] → `wiki/entities/decisiontreeclassifier.md`
+- [[Breast Cancer Dataset]] → `wiki/entities/breast-cancer-dataset.md`
 - [[TimesFM]] → `wiki/entities/timesfm.md`
 - [[Hermes Agent]] → `wiki/entities/hermes-agent.md`
 - [[Microsoft]] → `wiki/entities/microsoft.md`
-- [[GitHub Copilot]] → `wiki/entities/github-copilot.md`
-- [[wiki-graph-api/graph_builder.py]] → `wiki/entities/wiki-graph-api-graph-builder-py.md`
-- [[AXI (Agent eXperience Interface)]] → `wiki/entities/axi-agent-experience-interface.md`
-- [[GPT-5]] → `wiki/entities/gpt-5.md`
 
 ## In-Progress Tasks
 

@@ -139,6 +139,13 @@ main#canvas-host { position: relative; background: #05070a; }
   display: block;
   touch-action: none; /* Let our pointer handlers own pan/pinch. */
 }
+#graph-cosmos {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+#graph-cosmos[hidden] { display: none; }
+#graph-cosmos canvas { display: block; }
 
 .legend {
   position: absolute;

@@ -205,6 +205,46 @@ def graph_node(node_id: str) -> dict[str, Any]:
     return node
 
 
+@app.get("/graph/page/{node_id:path}")
+def graph_page(node_id: str) -> dict[str, Any]:
+    """Return the raw markdown body of a wiki page for in-graph preview.
+
+    The node's `path` field is trusted because it was populated by the graph
+    builder from filesystem walks under WIKI_PATH. We still resolve it
+    relative to WIKI_PATH and verify the resolved path stays inside the
+    wiki root before reading, defending against a poisoned graph.json.
+    """
+    node = state.nodes_by_id.get(node_id)
+    if not node:
+        raise HTTPException(status_code=404, detail=f"unknown node {node_id}")
+    rel = (node.get("path") or "").strip()
+    if not rel:
+        raise HTTPException(status_code=404, detail="node has no path")
+    try:
+        target = (WIKI_PATH / rel).resolve()
+        wiki_root = WIKI_PATH.resolve()
+        target.relative_to(wiki_root)
+    except (ValueError, OSError):
+        raise HTTPException(status_code=400, detail="invalid path")
+    if not target.is_file():
+        raise HTTPException(status_code=404, detail="page file missing")
+    try:
+        body = target.read_text(encoding="utf-8", errors="replace")
+    except OSError as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    return {
+        "id": node_id,
+        "title": node.get("title", ""),
+        "path": rel,
+        "page_type": node.get("page_type", ""),
+        "tier": node.get("tier", ""),
+        "tags": node.get("tags", []),
+        "last_verified": node.get("last_verified", ""),
+        "body": body,
+        "bytes": len(body),
+    }
+
+
 @app.get("/graph/neighbors/{node_id:path}")
 def graph_neighbors(
     node_id: str,

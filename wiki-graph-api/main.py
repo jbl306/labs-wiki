@@ -414,6 +414,103 @@ def graph_checkpoint_tracker() -> dict[str, Any]:
     return payload
 
 
+# ---------------------------------------------------------------------------
+# R19 — /graph/health (data-quality observability; distinct from /health)
+# ---------------------------------------------------------------------------
+
+def _percentile(values: list[float], pct: float) -> float:
+    if not values:
+        return 0.0
+    s = sorted(values)
+    if len(s) == 1:
+        return float(s[0])
+    rank = (pct / 100.0) * (len(s) - 1)
+    low = int(rank)
+    high = min(low + 1, len(s) - 1)
+    frac = rank - low
+    return float(s[low] + (s[high] - s[low]) * frac)
+
+
+@app.get("/graph/health")
+def graph_health() -> dict[str, Any]:
+    """Data-quality snapshot of the loaded graph (R19).
+
+    Independent of /health (liveness). Surfaces signals the wiki team uses
+    to decide whether to trigger ingest, dedupe, or curation passes.
+    """
+    nodes = state.payload.get("nodes", [])
+    edges = state.payload.get("edges", [])
+    node_ids = set(state.nodes_by_id.keys())
+
+    orphan_count = sum(1 for n in nodes if int(n.get("degree", 0)) == 0)
+    # Builder filters dangling edges already; recheck defensively.
+    broken_link_count = sum(
+        1 for e in edges if e.get("source") not in node_ids or e.get("target") not in node_ids
+    )
+
+    # Dedupe candidates — Stream A's scripts/dedupe_concepts.py may write a
+    # JSON sidecar next to its markdown report. Optional; fall back to 0.
+    dedupe_count = 0
+    dedupe_note: str | None = None
+    dedupe_path = WIKI_PATH.parent / "reports" / "dedupe-candidates-latest.json"
+    if dedupe_path.exists():
+        try:
+            data = json.loads(dedupe_path.read_text())
+            if isinstance(data, list):
+                dedupe_count = len(data)
+            elif isinstance(data, dict):
+                dedupe_count = int(data.get("candidate_count", len(data.get("candidates", []))))
+        except Exception as e:
+            dedupe_note = f"failed to read {dedupe_path}: {e}"
+    else:
+        dedupe_note = "run scripts/dedupe_concepts.py"
+
+    qs = [float(n.get("quality_score", 0.0)) for n in nodes if "quality_score" in n]
+    avg_quality = round(sum(qs) / len(qs), 4) if qs else 0.0
+
+    tier_keys = ("hot", "established", "core", "archive", "workflow")
+    tier_distribution: dict[str, int] = {k: 0 for k in tier_keys}
+    for n in nodes:
+        tier = (n.get("tier") or "").strip().lower()
+        if tier in tier_distribution:
+            tier_distribution[tier] += 1
+        elif tier:
+            tier_distribution.setdefault("other", 0)
+            tier_distribution["other"] += 1
+
+    now_ts = time.time()
+    fallback_ts = float(state.payload.get("generated_at") or now_ts)
+    hot_ages_days: list[float] = []
+    for n in nodes:
+        if (n.get("tier") or "").strip().lower() != "hot":
+            continue
+        lv = (n.get("last_verified") or "").strip()
+        when_ts: float | None = None
+        if lv:
+            for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S"):
+                try:
+                    when_ts = time.mktime(time.strptime(lv[: len(time.strftime(fmt))], fmt))
+                    break
+                except (ValueError, OverflowError):
+                    continue
+        if when_ts is None:
+            when_ts = fallback_ts
+        hot_ages_days.append(max(0.0, (now_ts - when_ts) / 86400.0))
+
+    return {
+        "orphan_count": orphan_count,
+        "broken_link_count": broken_link_count,
+        "broken_link_note": "builder filters dangling edges; field kept for stable schema",
+        "dedupe_candidate_count": dedupe_count,
+        "dedupe_note": dedupe_note,
+        "avg_quality_score": avg_quality,
+        "tier_distribution": tier_distribution,
+        "hot_age_p50_days": round(_percentile(hot_ages_days, 50), 2),
+        "hot_age_p95_days": round(_percentile(hot_ages_days, 95), 2),
+        "hot_node_count": len(hot_ages_days),
+    }
+
+
 @app.get("/graph/god-nodes")
 def graph_god_nodes(limit: int = Query(15, ge=1, le=100)) -> dict[str, Any]:
     return {"god_nodes": state.payload.get("god_nodes", [])[:limit]}

@@ -25,6 +25,7 @@ import asyncio
 import json
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from typing import Any
@@ -46,6 +47,15 @@ WIKI_PATH = Path(os.environ.get("WIKI_PATH", "/app/wiki"))
 CACHE_DIR = Path(os.environ.get("CACHE_DIR", "/data/cache"))
 GRAPH_PATH = Path(os.environ.get("GRAPH_PATH", "/data/graph.json"))
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
+# R17 — checkpoint tracker markdown path. The graph builder writes this on
+# every rebuild via reports/checkpoint-graph-tracker.md (relative to repo
+# root). The default resolves the repo root from WIKI_PATH's parent.
+TRACKER_PATH = Path(
+    os.environ.get(
+        "CHECKPOINT_TRACKER_PATH",
+        str(WIKI_PATH.parent / "reports" / "checkpoint-graph-tracker.md"),
+    )
+)
 
 
 class GraphState:
@@ -287,6 +297,121 @@ def graph_shortest_path(
         n = prev[n]
     path.reverse()
     return {"path": path, "length": len(path) - 1, "source": a, "target": b}
+
+
+# ---------------------------------------------------------------------------
+# R17 — Checkpoint tracker (parses reports/checkpoint-graph-tracker.md)
+# ---------------------------------------------------------------------------
+
+# In-memory cache keyed by file mtime so successive callers don't re-parse.
+_tracker_cache: dict[str, Any] = {"mtime": 0.0, "payload": None}
+
+
+def _parse_tracker(md_text: str) -> dict[str, Any]:
+    """Convert the auto-generated checkpoint-graph-tracker.md into JSON.
+
+    Looks for the two key tables ('Disagreement detail' and 'Merge-signal
+    checkpoints') and emits one row dict per table line. Header parsing is
+    intentionally tolerant — column order in the markdown is the source of
+    truth so we read the first header row of each table to learn keys.
+    """
+    lines = md_text.splitlines()
+    sections: dict[str, list[str]] = {}
+    current: str | None = None
+    for line in lines:
+        if line.startswith("## "):
+            current = line[3:].strip()
+            sections[current] = []
+        elif current is not None:
+            sections[current].append(line)
+
+    def _parse_table(block: list[str]) -> list[dict[str, str]]:
+        rows: list[dict[str, str]] = []
+        header: list[str] | None = None
+        for raw in block:
+            stripped = raw.strip()
+            if not stripped.startswith("|"):
+                if header is not None:
+                    break  # table ended
+                continue
+            cells = [c.strip() for c in stripped.strip("|").split("|")]
+            # Skip alignment rows like | --- | --- |.
+            if all(set(c) <= set("-: ") and c for c in cells):
+                continue
+            if header is None:
+                header = [c.lower().replace(" ", "_").replace("(", "").replace(")", "")
+                          for c in cells]
+                continue
+            if len(cells) < len(header):
+                cells += [""] * (len(header) - len(cells))
+            rows.append(dict(zip(header, cells)))
+        return rows
+
+    disagreements = _parse_table(sections.get("Disagreement detail", []))
+    merge_signal = _parse_table(sections.get("Merge-signal checkpoints", []))
+
+    # Pull the summary counts via simple regex; keeps the response useful even
+    # when the raw tables are empty.
+    counts: dict[str, int] = {}
+    for line in sections.get("Graph recommendation counts", []):
+        m = re.match(r"\|\s*`(\w+)`\s*\|\s*(\d+)\s*\|", line)
+        if m:
+            counts[m.group(1)] = int(m.group(2))
+
+    breakdown: dict[str, int] = {}
+    for line in sections.get("Disagreement summary", []):
+        m = re.match(r"\|\s*`([^`]+)`\s*\|\s*(\d+)\s*\|", line)
+        if m:
+            breakdown[m.group(1)] = int(m.group(2))
+
+    return {
+        "recommendation_counts": counts,
+        "disagreement_breakdown": breakdown,
+        "disagreements": disagreements,
+        "merge_signal": merge_signal,
+        "disagreement_count": len(disagreements),
+        "merge_signal_count": len(merge_signal),
+    }
+
+
+@app.get("/graph/checkpoint-tracker")
+def graph_checkpoint_tracker() -> dict[str, Any]:
+    """Parsed JSON view of reports/checkpoint-graph-tracker.md (R17).
+
+    Cached in memory by file mtime so repeated polls from the UI are cheap.
+    Returns ``{"available": false, ...}`` when the markdown report is missing
+    (e.g. fresh deploy with no graph build yet).
+    """
+    if not TRACKER_PATH.exists():
+        return {
+            "available": False,
+            "path": str(TRACKER_PATH),
+            "disagreements": [],
+            "merge_signal": [],
+        }
+    try:
+        mtime = TRACKER_PATH.stat().st_mtime
+    except OSError as e:
+        return {"available": False, "error": str(e), "disagreements": [], "merge_signal": []}
+
+    if _tracker_cache["payload"] is not None and _tracker_cache["mtime"] == mtime:
+        return _tracker_cache["payload"]
+
+    try:
+        md = TRACKER_PATH.read_text()
+        parsed = _parse_tracker(md)
+    except Exception as e:
+        return {"available": False, "error": str(e), "disagreements": [], "merge_signal": []}
+
+    payload = {
+        "available": True,
+        "path": str(TRACKER_PATH),
+        "mtime": mtime,
+        **parsed,
+    }
+    _tracker_cache["payload"] = payload
+    _tracker_cache["mtime"] = mtime
+    return payload
 
 
 @app.get("/graph/god-nodes")

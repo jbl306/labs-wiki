@@ -45,7 +45,24 @@ const state = {
     edgeKeys: new Set(),  // pathEdgeKey strings
     results: [],  // raw response list
   },
+  // R17 — checkpoint health overlay
+  health: {
+    active: false,
+    disagreements: [],          // raw rows from /graph/checkpoint-tracker
+    disagreeNodeIds: new Set(), // node ids with current!=recommended
+    rowsByNodeId: new Map(),    // node id → tracker row (for the side panel)
+  },
 };
+
+// R17 — fixed color palette per checkpoint_class for the health overlay.
+const CHECKPOINT_CLASS_COLORS = {
+  planning: "#3b82f6",   // blue
+  executed: "#f59e0b",   // amber
+  validated: "#22c55e",  // green
+  recurring: "#a855f7",  // purple
+  incident: "#ef4444",   // red
+};
+const CHECKPOINT_DEFAULT_COLOR = "#9ca3af"; // gray fallback
 
 const STALE_DAYS_THRESHOLD = 90;
 const STALE_MS_THRESHOLD = STALE_DAYS_THRESHOLD * 24 * 60 * 60 * 1000;
@@ -473,6 +490,89 @@ async function runAskGraph(q) {
   }
 }
 
+// ---------- Checkpoint health overlay (R17) -------------------------------
+
+// Match a tracker row to a graph node id. The tracker reports paths relative
+// to wiki/, e.g. "sources/foo.md"; node ids in the graph are stored as
+// "<dir>/<slug>" (no .md extension). Normalise on both sides before compare.
+function trackerPathToNodeId(p) {
+  if (!p) return "";
+  // Strip surrounding backticks (markdown code spans), the .md extension,
+  // and any leading/trailing whitespace.
+  return String(p).replace(/^`|`$/g, "").trim().replace(/\.md$/i, "");
+}
+
+async function loadCheckpointTracker() {
+  try {
+    const data = await fetchJSON("/graph/checkpoint-tracker");
+    if (!data || !data.available) {
+      state.health.disagreements = [];
+      state.health.disagreeNodeIds = new Set();
+      state.health.rowsByNodeId = new Map();
+      return;
+    }
+    const rows = data.disagreements || [];
+    state.health.disagreements = rows;
+    const ids = new Set();
+    const byId = new Map();
+    for (const row of rows) {
+      const nid = trackerPathToNodeId(row.path);
+      if (!nid) continue;
+      ids.add(nid);
+      byId.set(nid, row);
+    }
+    state.health.disagreeNodeIds = ids;
+    state.health.rowsByNodeId = byId;
+  } catch (e) {
+    state.health.disagreements = [];
+    state.health.disagreeNodeIds = new Set();
+    state.health.rowsByNodeId = new Map();
+  }
+}
+
+function enterCheckpointHealth() {
+  state.health.active = true;
+  document.getElementById("checkpoint-health-toggle")?.setAttribute("aria-pressed", "true");
+  // Lazy-load the tracker the first time we enter the overlay.
+  if (!state.health.disagreements.length) {
+    loadCheckpointTracker().then(() => draw());
+  }
+  draw();
+}
+function exitCheckpointHealth() {
+  state.health.active = false;
+  document.getElementById("checkpoint-health-toggle")?.setAttribute("aria-pressed", "false");
+  document.getElementById("checkpoint-detail")?.classList.add("hidden");
+  draw();
+}
+function showCheckpointDetail(node) {
+  const row = state.health.rowsByNodeId.get(node.id);
+  const panel = document.getElementById("checkpoint-detail");
+  const body = document.getElementById("checkpoint-detail-body");
+  if (!panel || !body) return;
+  if (!row) {
+    panel.classList.add("hidden");
+    return;
+  }
+  panel.classList.remove("hidden");
+  const fields = [
+    ["Title", row.title],
+    ["Class", row.class],
+    ["Retention (current)", row.retention],
+    ["Heuristic rec", row.heuristic_rec],
+    ["Graph rec (recommended)", row.graph_rec],
+    ["Tier", row.tier],
+    ["Degree", row.degree],
+    ["Concept neighbours", row.concept_nb],
+    ["Synthesis neighbours", row.synth_nb],
+    ["Path", row.path],
+  ];
+  body.innerHTML = fields
+    .filter(([, v]) => v != null && v !== "")
+    .map(([k, v]) => `<div><span class='muted'>${escapeHTML(k)}:</span> ${escapeHTML(String(v))}</div>`)
+    .join("");
+}
+
 function handlePathClick(node) {
   if (!state.pathStart) {
     state.pathStart = node.id;
@@ -562,6 +662,7 @@ function draw() {
   ctx.lineWidth = 0.8 / view.scale;
 
   // Nodes
+  const healthActive = state.health.active;
   for (const n of visibleNodes) {
     const r = nodeRadius(n);
     const onPath = state.pathNodes.has(n.id);
@@ -569,13 +670,17 @@ function draw() {
     const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
     const dimNode = (dimNonPath && !onPath) || (askActive && !inAskSub);
     ctx.globalAlpha = dimNode ? 0.18 : 1.0;
-    ctx.fillStyle = colorForCommunity(n.community);
+    // R17 — checkpoint-health colors override community palette.
+    const fillColor = healthActive
+      ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
+      : colorForCommunity(n.community);
+    ctx.fillStyle = fillColor;
     if (state.highlightedId === n.id) {
       ctx.fillStyle = "rgba(94,234,212,0.18)";
       ctx.beginPath();
       ctx.arc(n.x, n.y, r + 9 / view.scale, 0, Math.PI * 2);
       ctx.fill();
-      ctx.fillStyle = colorForCommunity(n.community);
+      ctx.fillStyle = fillColor;
     }
     ctx.beginPath();
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
@@ -587,6 +692,14 @@ function draw() {
     } else if (state.highlightedId === n.id) {
       ctx.strokeStyle = "#5eead4";
       ctx.lineWidth = 2 / view.scale;
+      ctx.stroke();
+    }
+    // R17 — red disagreement ring.
+    if (healthActive && state.health.disagreeNodeIds.has(n.id)) {
+      ctx.strokeStyle = "#ef4444";
+      ctx.lineWidth = 2.5 / view.scale;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, r + 4 / view.scale, 0, Math.PI * 2);
       ctx.stroke();
     }
     ctx.globalAlpha = 1.0;
@@ -644,6 +757,10 @@ function selectNode(node) {
   state.highlightedId = node.id;
   centerNodeInView(node);
   showNodePanel(node);
+  // R17 — when health overlay is active, show disagreement detail too.
+  if (state.health.active && state.health.disagreeNodeIds.has(node.id)) {
+    showCheckpointDetail(node);
+  }
   draw();
 }
 
@@ -950,6 +1067,9 @@ function bindUI() {
     const el = document.getElementById("ask-graph");
     if (el) el.value = "";
     clearAskResults();
+  });
+  document.getElementById("checkpoint-health-toggle")?.addEventListener("click", () => {
+    if (state.health.active) exitCheckpointHealth(); else enterCheckpointHealth();
   });
   document.getElementById("node-panel-close").addEventListener("click", () => clearSelection());
 

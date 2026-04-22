@@ -105,6 +105,11 @@
     <ul id="node-neighbors"></ul>
   </section>
 
+  <section id="checkpoint-detail" class="hidden">
+    <h3>Checkpoint disagreement</h3>
+    <div id="checkpoint-detail-body" class="muted">Click a ringed node to inspect.</div>
+  </section>
+
   <footer>
     <button id="rebuild-btn" class="secondary">Reload graph</button>
     <div class="muted" id="connection-state">connecting…</div>
@@ -119,6 +124,7 @@
     <button id="zoom-out" class="icon-btn" aria-label="Zoom out">−</button>
     <button id="zoom-fit" class="icon-btn view-fit-btn" aria-label="Fit graph to viewport">Fit</button>
     <button id="path-mode-toggle" class="icon-btn view-fit-btn" aria-label="Toggle path mode" aria-pressed="false">Path</button>
+    <button id="checkpoint-health-toggle" class="icon-btn view-fit-btn" aria-label="Toggle checkpoint health view" aria-pressed="false">Health</button>
   </div>
   <div id="path-panel" class="hidden" aria-live="polite">
     <div class="path-panel-head">

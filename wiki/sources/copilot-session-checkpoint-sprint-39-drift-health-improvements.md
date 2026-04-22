@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "f65e1c0ec67512da2be15f52e70c6a0a4771e9b8ab40fe397e0e0e22a3632ca0"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-39-drift-health-improvements-f8461728.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

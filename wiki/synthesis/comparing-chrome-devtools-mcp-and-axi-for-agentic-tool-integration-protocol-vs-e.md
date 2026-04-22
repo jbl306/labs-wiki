@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
   - raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
-quality_score: 100
+quality_score: 67
 concepts:
   - chrome-devtools-mcp
   - axi

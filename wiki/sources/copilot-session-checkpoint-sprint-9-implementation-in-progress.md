@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "3cd99045b7f6ea1b4a219223947aed4f41d4f97210946d8b35a6c86540a5cca7"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-9-implementation-in-progress-bd144961.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

@@ -7,7 +7,7 @@ source_hash: "26f254b5e6c65170bfc0d1bbf80f2de1aafe3266407d54a0e3243b0e1600d156"
 sources:
   - raw/2026-04-07-llm-wiki.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-creating-claude-and-labs-wiki-repos-cccb14d5.md
-quality_score: 100
+quality_score: 83
 concepts:
   - karpathy-llm-wiki-pattern
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "0b4ca1a6668a37f0034808e00b1b05c0b3c1e2f03f82902ed4971e8256ec3179"
 sources:
   - raw/2026-04-07-custom-agents-in-vs-code.md
-quality_score: 100
+quality_score: 80
 concepts:
   - custom-agents-in-vs-code
   - agent-handoffs-in-vs-code

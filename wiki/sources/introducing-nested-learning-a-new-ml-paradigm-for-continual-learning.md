@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "a71b924cc5a8b4f304c95393793c911fb97751112b1ba8040229d1e4eb6484f9"
 sources:
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
-quality_score: 100
+quality_score: 86
 concepts:
   - nested-learning-paradigm
   - continuum-memory-system

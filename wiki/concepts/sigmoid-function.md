@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "cc9f0a06fdc1e5b2ca1a3d132d3204277ea1fcf5c85d34f4c17c99e0570d79e5"
 sources:
   - raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md
-quality_score: 100
+quality_score: 64
 concepts:
   - sigmoid-function
 related:

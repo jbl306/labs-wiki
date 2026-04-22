@@ -13,16 +13,16 @@ These features define the minimum viable wiki. Nothing ships without all 10 comp
 
 | # | Feature | Phase | Status | Validated |
 |---|---------|-------|--------|-----------|
-| 1 | Three-layer architecture (`raw/` → `wiki/` → schema) | P1 | ⬜ Pending | ⬜ |
-| 2 | Hash-based incremental compilation (SHA-256 in frontmatter) | P2 | ⬜ Pending | ⬜ |
-| 3 | Two-phase ingest pipeline (extract → compile) | P2 | ⬜ Pending | ⬜ |
-| 4 | Structured audit log (`log.md` with YAML entries) | P2 | ⬜ Pending | ⬜ |
-| 5 | Index with summaries (`index.md` — LLM-navigable) | P2 | ⬜ Pending | ⬜ |
-| 6 | Health lint system (orphans, broken links, stale pages) | P2 | ⬜ Pending | ⬜ |
-| 7 | Wikilink cross-references (`[[concept]]`) | P2 | ⬜ Pending | ⬜ |
-| 8 | Portable Agent Skills (SKILL.md + YAML frontmatter) | P2 | ⬜ Pending | ⬜ |
-| 9 | Provenance tracking (`sources:` in frontmatter) | P2 | ⬜ Pending | ⬜ |
-| 10 | Staleness detection (`source_hash` + `last_verified`) | P2 | ⬜ Pending | ⬜ |
+| 1 | Three-layer architecture (`raw/` → `wiki/` → schema) | P1 | ✅ Done | ✅ |
+| 2 | Hash-based incremental compilation (SHA-256 in frontmatter) | P2 | ✅ Done | ✅ |
+| 3 | Two-phase ingest pipeline (extract → compile) | P2 | ✅ Done | ✅ |
+| 4 | Structured audit log (`log.md` with YAML entries) | P2 | ✅ Done | ✅ |
+| 5 | Index with summaries (`index.md` — LLM-navigable) | P2 | ✅ Done | ✅ |
+| 6 | Health lint system (orphans, broken links, stale pages) | P2 | ✅ Done | ✅ |
+| 7 | Wikilink cross-references (`[[concept]]`) | P2 | ✅ Done | ✅ |
+| 8 | Portable Agent Skills (SKILL.md + YAML frontmatter) | P2 | ✅ Done | ✅ |
+| 9 | Provenance tracking (`sources:` in frontmatter) | P2 | ✅ Done | ✅ |
+| 10 | Staleness detection (`source_hash` + `last_verified`) | P2 | ✅ Done | ✅ |
 
 ### Tier 2: Enhanced (Should-Have)
 
@@ -30,14 +30,14 @@ These features elevate from functional to polished. Target for v1.0 release.
 
 | # | Feature | Phase | Status | Validated |
 |---|---------|-------|--------|-----------|
-| 11 | Idempotent setup wizard (`/wiki-setup` skill) | P2 | ⬜ Pending | ⬜ |
-| 12 | Sub-organized wiki (`sources/`, `concepts/`, `entities/`, `synthesis/`) | P1 | ⬜ Pending | ⬜ |
-| 13 | Multi-tool bootstrap (`setup.sh` — symlinks + configs) | P3 | ⬜ Pending | ⬜ |
-| 14 | Agent personas (`researcher`, `compiler`, `curator`, `auditor`) | P1 | ⬜ Pending | ⬜ |
-| 15 | Orchestrator meta-skill (`/wiki-orchestrate`) | P2 | ⬜ Pending | ⬜ |
-| 16 | Quality scoring (0-100 per page via lint) | P2 | ⬜ Pending | ⬜ |
-| 17 | Context cost optimization (topic clustering in index) | P3 | ⬜ Pending | ⬜ |
-| 18 | Hook-driven automation (post-edit triggers) | P2 | ⬜ Pending | ⬜ |
+| 11 | Idempotent setup wizard (`/wiki-setup` skill) | P2 | ✅ Done | ✅ |
+| 12 | Sub-organized wiki (`sources/`, `concepts/`, `entities/`, `synthesis/`) | P1 | ✅ Done | ✅ |
+| 13 | Multi-tool bootstrap (`setup.sh` — symlinks + configs) | P3 | ✅ Done | ✅ |
+| 14 | Agent personas (eight-agent set in `.github/agents/`) | P1 | ✅ Done | ✅ |
+| 15 | Orchestrator meta-skill (`/wiki-orchestrate`) | P2 | ✅ Done | ✅ |
+| 16 | Quality scoring (0-100 per page via lint) | P2 | 🟡 In progress (R3 reworking rubric) | 🟡 |
+| 17 | Context cost optimization (topic clustering in index) | P3 | ✅ Done | ✅ |
+| 18 | Hook-driven automation (post-edit triggers) | P2 | ✅ Done | ✅ |
 
 ### Tier 3: Advanced (Nice-to-Have)
 
@@ -45,9 +45,9 @@ Post-v1.0 enhancements. Build only after Tiers 1-2 are solid.
 
 | # | Feature | Phase | Status | Validated |
 |---|---------|-------|--------|-----------|
-| 19 | Freshness decay (Ebbinghaus-inspired, 90-day flag) | P3 | ⬜ Pending | ⬜ |
-| 20 | Consolidation tiers (hot → established → core → workflow) | P3 | ⬜ Pending | ⬜ |
-| 21 | Hybrid retrieval (BM25 → vector when wiki > 100 pages) | P3 | ⬜ Pending | ⬜ |
+| 19 | Freshness decay (Ebbinghaus-inspired, 90-day flag) | P3 | 🟡 In progress | 🟡 |
+| 20 | Consolidation tiers (hot → established → core → workflow) | P3 | 🟡 In progress (R7 promotion cron landed; rubric pending) | 🟡 |
+| 21 | Hybrid retrieval (BM25 → vector when wiki > 100 pages) | P3 | 🟡 In progress | 🟡 |
 | 22 | Web/URL extraction (ingest from URLs, not just files) | P5 | ⬜ Pending | ⬜ |
 | 23 | Obsidian integration (graph view, Dataview, vault config) | P4 | ⬜ Pending | ⬜ |
 | 24 | OpenMemory MCP bridge (connect to homelab memory service) | P5 | ⬜ Pending | ⬜ |
@@ -302,3 +302,33 @@ These end-to-end tests verify the system works as an integrated whole.
 - **Validation gates are blocking:** Do not start a dependent phase until its prerequisite gate passes.
 - **Test commands are executable:** Copy-paste from this doc into terminal. All use standard tools (grep, python3, curl, docker).
 - **Status key:** ⬜ Pending → 🔄 In Progress → ✅ Done → 🚫 Blocked (with reason in Notes).
+
+---
+
+## R1–R19 implementation progress
+
+Tracker mirroring the SQL `recs` table for the full-review remediation work.
+All entries start at 🟡 In progress; flip to ✅ Done as each commit lands and
+verification passes. Source: `reports/full-review-2026-04-21.md`.
+
+| ID | Recommendation | Owner stream | Status |
+|----|---------------|--------------|--------|
+| R1 | Semantic dedupe in ingest path | A | 🟡 In progress |
+| R2 | One-shot dedupe sweep on existing corpus | A | 🟡 In progress |
+| R3 | Replace binary quality rubric | A | 🟡 In progress |
+| R4 | Restart synthesis backfill, all communities | A | 🟡 In progress |
+| R5 | Demote synthesis-by-checkpoint pattern | A | 🟡 In progress |
+| R6 | Graph-tracker triage agent + skill | B | 🟡 In progress |
+| R7 | Tier promotion cron | B | 🟡 In progress |
+| R8 | Reconcile persona docs | B | 🟡 In progress |
+| R9 | `tasks/lessons.md` write hook | B | 🟡 In progress |
+| R10 | Update `tasks/progress.md` | B | 🟡 In progress |
+| R11 | "Update only" ingest guardrail | A | 🟡 In progress |
+| R12 | Ship missing graph-UI filter set | C | 🟡 In progress |
+| R13 | Path mode in graph UI | C | 🟡 In progress |
+| R14 | NL query endpoint + UI box | C | 🟡 In progress |
+| R15 | Cosmograph or server-precomputed layout | C | 🟡 In progress |
+| R16 | Expose graph as MCP tools | C | 🟡 In progress |
+| R17 | Checkpoint-health graph view | C | 🟡 In progress |
+| R18 | End-to-end ingest evaluation harness | A | 🟡 In progress |
+| R19 | Wiki growth as a metric (`/graph/health`) | C | 🟡 In progress |

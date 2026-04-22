@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "bff0b0f421b55beffd831da1c894810318ec80394979b2edd88a06d25997218e"
 sources:
   - raw/2026-04-08-apriori-algorithm-geeksforgeeks.md
-quality_score: 100
+quality_score: 77
 concepts:
   - apriori-algorithm
   - association-rule-mining-metrics

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "8186437032a3c317d7b19348be2a69b1889127fab58fe30e9128286e4cc400a0"
 sources:
   - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
-quality_score: 100
+quality_score: 86
 concepts:
   - circuit-tracing-in-language-models
   - conceptual-universality-in-multilingual-language-models

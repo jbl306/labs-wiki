@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "27cec2b0cffbc21273436407fb7f0d8419b0d567f35c1607c8074be77d4bcd74"
 sources:
   - raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
-quality_score: 100
+quality_score: 76
 concepts:
   - k-nearest-neighbor-algorithm
 related:

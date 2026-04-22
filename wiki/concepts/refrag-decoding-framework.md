@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "e977787aa3bf4258d848bcffeb1d351a97dd2ac862ebcbcb87b914ba073277ad"
 sources:
   - raw/2026-04-22-250901092v2pdf.md
-quality_score: 100
+quality_score: 69
 concepts:
   - refrag-decoding-framework
 related:

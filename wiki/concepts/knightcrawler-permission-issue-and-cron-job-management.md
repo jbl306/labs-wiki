@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "94a3f24d84af863c5b7181b6b3955f897bb5554330e966d2f452d23543e6b2f4"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-homelab-monitoring-and-knightcrawler-fixes-a62133b0.md
-quality_score: 100
+quality_score: 67
 concepts:
   - knightcrawler-permission-issue-and-cron-job-management
 related:

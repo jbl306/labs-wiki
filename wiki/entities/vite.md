@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "8fde9c682fa2180a86ed53a5cd3c3e4eb8b2053c8c9f3aa44cb67b6ca8eba25c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
-quality_score: 100
+quality_score: 78
 concepts:
   - vite
 related:

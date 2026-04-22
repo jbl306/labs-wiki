@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "1eac7fe76c3637bfa1d1d1a92c55ff288d83a85387ce16fa76e63a714f700bdb"
 sources:
   - raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md
-quality_score: 100
+quality_score: 86
 concepts:
   - byte-pair-encoding-bpe-in-large-language-models
   - attention-mechanism-in-large-language-models

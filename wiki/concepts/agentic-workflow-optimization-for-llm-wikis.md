@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "499ac65895e3b4c5dbf581d0dac3942433dcc90dd7be66960430f78040b8df5a"
 sources:
   - raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
-quality_score: 100
+quality_score: 66
 concepts:
   - agentic-workflow-optimization-for-llm-wikis
 related:

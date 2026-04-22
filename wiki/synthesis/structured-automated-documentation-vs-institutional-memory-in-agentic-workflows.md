@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 80
 concepts:
   - living-documentation-principle
   - institutional-memory-principle

@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "fd5b7a6c3fae63e621e59fee798207458f17c0fc39c355c03a293767e3f9b609"
 sources:
   - raw/2026-04-18-260414228v1pdf.md
-quality_score: 100
+quality_score: 86
 concepts:
   - agentic-loop-architecture-claude-code
   - layered-agentic-architecture-claude-code

@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
   - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
-quality_score: 100
+quality_score: 67
 concepts:
   - adaboost
   - xgboost

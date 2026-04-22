@@ -42,6 +42,13 @@ except ImportError:  # pragma: no cover
     _rf_fuzz = None
     _FUZZ_AVAILABLE = False
 
+# Semantic-dedupe deps are loaded lazily — see _get_sentence_transformer().
+# When unavailable, semantic dedupe degrades to the rapidfuzz token_set_ratio
+# path, which is the same fallback `find_fuzzy_match` already uses.
+_ST_MODEL = None
+_ST_AVAILABLE: bool | None = None  # tri-state: None=unprobed, True/False=known
+_ST_NUMPY = None
+
 from checkpoint_classifier import (
     COMPRESS,
     RETAIN,
@@ -1509,6 +1516,211 @@ def find_fuzzy_match(
     return None
 
 
+# ---------------------------------------------------------------------------
+# Semantic dedupe (R1) — embed proposed concept against existing concept
+# titles + leading bodies, route to update flow on cosine ≥ threshold.
+# ---------------------------------------------------------------------------
+
+SEMANTIC_DEDUPE_THRESHOLD = 0.82
+SEMANTIC_BODY_CHARS = 500
+SEMANTIC_CACHE_REL = ".cache/concept_embeddings.json"
+SEMANTIC_MODEL_NAME = "all-MiniLM-L6-v2"
+
+
+def is_dedupe_disabled() -> bool:
+    return os.environ.get("WIKI_INGEST_DEDUPE_DISABLE", "").strip() == "1"
+
+
+def is_update_only_mode() -> bool:
+    return os.environ.get("WIKI_INGEST_UPDATE_ONLY", "").strip() == "1"
+
+
+def _get_sentence_transformer():
+    """Lazily load sentence-transformers + numpy. Returns (model, np) or (None, None)."""
+    global _ST_MODEL, _ST_AVAILABLE, _ST_NUMPY
+    if _ST_AVAILABLE is False:
+        return None, None
+    if _ST_MODEL is not None and _ST_NUMPY is not None:
+        return _ST_MODEL, _ST_NUMPY
+    try:
+        from sentence_transformers import SentenceTransformer  # type: ignore
+        import numpy as _np  # type: ignore
+        _ST_MODEL = SentenceTransformer(SEMANTIC_MODEL_NAME)
+        _ST_NUMPY = _np
+        _ST_AVAILABLE = True
+        log.info("Semantic dedupe: loaded %s", SEMANTIC_MODEL_NAME)
+        return _ST_MODEL, _ST_NUMPY
+    except Exception as exc:  # pragma: no cover — env-dependent
+        _ST_AVAILABLE = False
+        log.info(
+            "Semantic dedupe: sentence-transformers unavailable (%s); "
+            "falling back to rapidfuzz token_set_ratio.",
+            exc.__class__.__name__,
+        )
+        return None, None
+
+
+def _semantic_cache_path(project_root: Path) -> Path:
+    return project_root / SEMANTIC_CACHE_REL
+
+
+def _load_semantic_cache(project_root: Path) -> dict:
+    p = _semantic_cache_path(project_root)
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text())
+    except Exception:
+        return {}
+
+
+def _save_semantic_cache(project_root: Path, cache: dict) -> None:
+    p = _semantic_cache_path(project_root)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        p.write_text(json.dumps(cache))
+    except OSError as exc:  # pragma: no cover
+        log.warning("Could not write semantic cache: %s", exc)
+
+
+def _embed_text(text: str):
+    """Return a numpy embedding or None if model unavailable."""
+    model, np = _get_sentence_transformer()
+    if model is None:
+        return None
+    vec = model.encode([text], normalize_embeddings=True)
+    return np.asarray(vec[0], dtype="float32")
+
+
+def _build_concept_corpus(
+    cat_dir: Path,
+    project_root: Path,
+    cache: dict,
+) -> list[tuple[Path, str, object]]:
+    """Return [(path, title, embedding|None)] for every existing page in cat_dir.
+
+    Embeddings are cached by slug + body sha. Cache is updated in-place.
+    """
+    model, np = _get_sentence_transformer()
+    corpus: list[tuple[Path, str, object]] = []
+    if not cat_dir.exists():
+        return corpus
+    for page in cat_dir.glob("*.md"):
+        if page.name in ("index.md", "log.md", ".gitkeep"):
+            continue
+        try:
+            fm, body = parse_frontmatter(page)
+        except Exception:
+            continue
+        title = str(fm.get("title") or page.stem.replace("-", " ").title())
+        leading = (body or "")[:SEMANTIC_BODY_CHARS]
+        sha = hashlib.sha256(f"{title}\n{leading}".encode()).hexdigest()
+        slug = page.stem
+        cached = cache.get(slug)
+        emb = None
+        if model is not None:
+            if cached and cached.get("sha") == sha and cached.get("embedding"):
+                emb = np.asarray(cached["embedding"], dtype="float32")
+            else:
+                vec = _embed_text(f"{title}\n{leading}")
+                if vec is not None:
+                    emb = vec
+                    cache[slug] = {
+                        "title": title,
+                        "sha": sha,
+                        "embedding": vec.tolist(),
+                    }
+        corpus.append((page, title, emb))
+    return corpus
+
+
+def find_semantic_match(
+    new_title: str,
+    new_body: str,
+    category: str,
+    wiki_dir: Path,
+    project_root: Path,
+    threshold: float = SEMANTIC_DEDUPE_THRESHOLD,
+) -> tuple[Path | None, float, str]:
+    """Find an existing page semantically equivalent to the proposed concept.
+
+    Returns (path, score, method) where method ∈ {"embedding","rapidfuzz","none"}.
+    On miss, returns (None, best_score, method).
+    """
+    if is_dedupe_disabled() or not new_title:
+        return None, 0.0, "none"
+    cat_dir = wiki_dir / category
+    if not cat_dir.exists():
+        return None, 0.0, "none"
+
+    cache = _load_semantic_cache(project_root)
+    model, np = _get_sentence_transformer()
+    leading = (new_body or "")[:SEMANTIC_BODY_CHARS]
+    query_text = f"{new_title}\n{leading}"
+
+    corpus = _build_concept_corpus(cat_dir, project_root, cache)
+
+    if model is not None:
+        # Persist any new embeddings (cache may have grown)
+        _save_semantic_cache(project_root, cache)
+        q = _embed_text(query_text)
+        if q is None:
+            model = None  # downgrade
+        else:
+            best_score = 0.0
+            best_path: Path | None = None
+            for path, _t, emb in corpus:
+                if emb is None:
+                    continue
+                # both vectors are L2-normalized → cosine == dot
+                score = float(np.dot(q, emb))
+                if score > best_score:
+                    best_score, best_path = score, path
+            if best_path is not None and best_score >= threshold:
+                return best_path, best_score, "embedding"
+            return None, best_score, "embedding"
+
+    # Fallback: rapidfuzz token_set_ratio (0–100) → scaled to 0.0–1.0
+    if not _FUZZ_AVAILABLE:
+        return None, 0.0, "none"
+    fuzz_threshold = int(threshold * 100)
+    best_score_int = 0
+    best_path = None
+    for path, title, _e in corpus:
+        score = _rf_fuzz.token_set_ratio(new_title.lower(), title.lower())
+        if score > best_score_int:
+            best_score_int, best_path = score, path
+    if best_path is not None and best_score_int >= fuzz_threshold:
+        return best_path, best_score_int / 100.0, "rapidfuzz"
+    return None, best_score_int / 100.0, "rapidfuzz"
+
+
+def append_update_section(
+    matched_path: Path,
+    new_body: str,
+    raw_rel: str,
+    today: str,
+    proposed_title: str,
+) -> None:
+    """Append the proposed body content under a `## Update from <date>` section.
+
+    Used when an existing page is the semantic match but no richer update flow
+    exists. Also adds raw_rel to the page's frontmatter `sources:` list (once).
+    """
+    existing = matched_path.read_text()
+    # Add raw_rel to sources if not already present
+    if raw_rel not in existing:
+        existing = existing.replace(
+            "sources:", f"sources:\n  - {raw_rel}", 1
+        )
+    update_block = (
+        f"\n\n## Update from {today}\n\n"
+        f"_Proposed under title: {proposed_title}_\n\n"
+        f"{(new_body or '').strip()}\n"
+    )
+    matched_path.write_text(existing.rstrip() + update_block)
+
+
 def check_already_processed(wiki_dir: Path, source_hash: str) -> bool:
     """Check if a source with this hash has already been processed."""
     sources_dir = wiki_dir / "sources"
@@ -1934,7 +2146,6 @@ last_verified: {today}
 source_hash: "{source_hash}"
 sources:
   - {raw_path}
-quality_score: 0
 concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
@@ -2063,7 +2274,6 @@ last_verified: {today}
 source_hash: "{source_hash}"
 sources:
   - {raw_path}
-quality_score: 0
 concepts:
   - {slug}
 related:
@@ -2183,7 +2393,6 @@ last_verified: {today}
 source_hash: "{source_hash}"
 sources:
   - {raw_path}
-quality_score: 0
 concepts:
   - {slug}
 related:
@@ -2307,7 +2516,6 @@ last_verified: {today}
 source_hash: "synthesis-generated"
 sources:
 {sources_fm}
-quality_score: 0
 concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
@@ -2404,27 +2612,13 @@ def _wikilink_target_exists(target: str, valid_titles: set[str], valid_slugs: se
     return key in valid_titles or _wikilink_slug(key) in valid_slugs
 
 
-def _compute_quality_score(
-    fm: dict,
-    has_wikilinks: bool,
-    has_related: bool,
-) -> int:
-    """Compute 0-100 quality score (mirrors lint_wiki.py logic)."""
-    score = 0
-    required = ["title", "type", "created", "sources"]
-    required_present = sum(1 for f in required if f in fm)
-    score += int(25 * required_present / len(required))
+def _compute_quality_score(*_args, **_kwargs) -> int:
+    """Deprecated. quality_score is computed by scripts/lint_wiki.py.
 
-    if has_wikilinks or has_related:
-        score += 25
-
-    if fm.get("sources") and fm["sources"] != "":
-        score += 25
-
-    # Freshly created pages are not stale
-    score += 25
-
-    return score
+    Retained as a no-op shim so any external caller importing the symbol
+    keeps working (returns 0). See R3 in reports/full-review-2026-04-21.md.
+    """
+    return 0
 
 
 def postprocess_created_pages(
@@ -2527,21 +2721,19 @@ def postprocess_created_pages(
 
             new_fm_lines.append(line)
 
-        # --- Compute quality score ---
-        fm, _ = parse_frontmatter(page_path)
+        # --- R3: quality_score is now computed by lint_wiki.py (which has the
+        # full corpus to compute inbound-link counts), not stamped here. The
+        # field is intentionally omitted at create time and lint --write-scores
+        # populates it later.
         wikilinks = re.findall(r"\[\[([^\]]+)\]\]", body)
-        has_wikilinks = len(wikilinks) > 0
-        has_related = len(seen_related) > 0
-        score = _compute_quality_score(fm, has_wikilinks, has_related)
 
-        # Update quality_score in frontmatter
-        updated_fm_lines = []
-        for line in new_fm_lines:
-            if line.strip().startswith("quality_score:"):
-                updated_fm_lines.append(f"quality_score: {score}")
-            else:
-                updated_fm_lines.append(line)
-        new_fm_lines = updated_fm_lines
+        # Drop any leftover `quality_score:` line so newly generated pages do
+        # not carry a stale literal forward through merges/updates.
+        new_fm_lines = [
+            line for line in new_fm_lines
+            if not line.strip().startswith("quality_score:")
+        ]
+        score = 0  # for the log line below
 
         # Reassemble the page
         new_content = "---\n" + "\n".join(new_fm_lines) + "\n---" + body
@@ -2875,6 +3067,30 @@ def ingest_raw_source(
         concept_path = wiki_dir / "concepts" / filename
         concept_path.parent.mkdir(parents=True, exist_ok=True)
 
+        # Extract the body from the freshly-generated page for semantic dedupe
+        _new_parts = page_content.split("---", 2)
+        _new_body = _new_parts[2] if len(_new_parts) >= 3 else page_content
+
+        # R1: semantic dedupe — embed proposed title+body and compare to existing.
+        if not concept_path.exists() and not is_dedupe_disabled():
+            sem_hit, sem_score, sem_method = find_semantic_match(
+                concept["title"], _new_body, "concepts", wiki_dir, project_root,
+            )
+            if sem_hit is not None:
+                log.info(
+                    "Semantic-dedupe (%s, score=%.3f): '%s' → existing %s "
+                    "(routing to update flow, skipping new file %s)",
+                    sem_method, sem_score, concept["title"], sem_hit.name, filename,
+                )
+                concept_path = sem_hit
+                filename = sem_hit.name
+                # Append proposed content as an Update section (preserves provenance)
+                append_update_section(
+                    concept_path, _new_body, raw_rel, today, concept["title"],
+                )
+                created_pages.append(f"wiki/concepts/{filename}")
+                continue
+
         # Fuzzy-dedupe: redirect to a near-duplicate existing page if any.
         if not concept_path.exists():
             fuzzy_hit = find_fuzzy_match(concept["title"], "concepts", wiki_dir)
@@ -2899,6 +3115,14 @@ def ingest_raw_source(
                 concept_path.write_text(existing)
                 log.info("Merged into existing: wiki/concepts/%s", filename)
         else:
+            # R11: hard-stop new page creation when UPDATE_ONLY mode is set
+            if is_update_only_mode():
+                log.info(
+                    "update-only mode active — skipping creation of "
+                    "wiki/concepts/%s ('%s')",
+                    filename, concept["title"],
+                )
+                continue
             concept_path.write_text(page_content)
             log.info("Created: wiki/concepts/%s", filename)
 
@@ -2913,6 +3137,28 @@ def ingest_raw_source(
         )
         entity_path = wiki_dir / "entities" / filename
         entity_path.parent.mkdir(parents=True, exist_ok=True)
+
+        _new_parts_e = page_content.split("---", 2)
+        _new_body_e = _new_parts_e[2] if len(_new_parts_e) >= 3 else page_content
+
+        # R1: semantic dedupe for entities
+        if not entity_path.exists() and not is_dedupe_disabled():
+            sem_hit, sem_score, sem_method = find_semantic_match(
+                entity["title"], _new_body_e, "entities", wiki_dir, project_root,
+            )
+            if sem_hit is not None:
+                log.info(
+                    "Semantic-dedupe (%s, score=%.3f): '%s' → existing %s "
+                    "(routing to update flow, skipping new file %s)",
+                    sem_method, sem_score, entity["title"], sem_hit.name, filename,
+                )
+                entity_path = sem_hit
+                filename = sem_hit.name
+                append_update_section(
+                    entity_path, _new_body_e, raw_rel, today, entity["title"],
+                )
+                created_pages.append(f"wiki/entities/{filename}")
+                continue
 
         if not entity_path.exists():
             fuzzy_hit = find_fuzzy_match(entity["title"], "entities", wiki_dir)
@@ -2935,6 +3181,13 @@ def ingest_raw_source(
                 entity_path.write_text(existing)
                 log.info("Merged into existing: wiki/entities/%s", filename)
         else:
+            if is_update_only_mode():
+                log.info(
+                    "update-only mode active — skipping creation of "
+                    "wiki/entities/%s ('%s')",
+                    filename, entity["title"],
+                )
+                continue
             entity_path.write_text(page_content)
             log.info("Created: wiki/entities/%s", filename)
 

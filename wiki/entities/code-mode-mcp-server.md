@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "74a8757acf296466e47ec019ed012f319aa0ac972b85f89e614cc779c40b7cbd"
 sources:
   - raw/2026-04-20-cloudflare-launches-code-mode-mcp-server-to-optimize-token-u.md
-quality_score: 100
+quality_score: 69
 concepts:
   - code-mode-mcp-server
 related:

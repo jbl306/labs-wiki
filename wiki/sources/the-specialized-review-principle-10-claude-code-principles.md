@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "d86b1fd9d8d3cb655ece683aef07db27e7b1bc3868b3201d915af52094f217e2"
 sources:
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 83
 concepts:
   - the-specialized-review-principle
 related:

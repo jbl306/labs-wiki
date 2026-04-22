@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
   - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
-quality_score: 100
+quality_score: 69
 concepts:
   - context-hygiene-principle
   - institutional-memory-principle

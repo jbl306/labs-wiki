@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "30fb17c9e237e6a8f8d1036cc7e5eef94384b304a975a1604628dbf921d46565"
 sources:
   - raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
-quality_score: 100
+quality_score: 77
 concepts:
   - long-short-term-memory-lstm
   - lstm-gating-mechanism

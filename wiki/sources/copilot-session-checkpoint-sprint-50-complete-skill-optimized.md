@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "0a2abfd2aaa41c3f309c9ae6c51165979f69e74c85c86cca6d4b34577e81d3ce"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-50-complete-skill-optimized-3fbbedf2.md
-quality_score: 100
+quality_score: 64
 concepts:
   []
 related:

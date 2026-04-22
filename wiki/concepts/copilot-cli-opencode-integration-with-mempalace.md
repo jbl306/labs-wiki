@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "d7c9bdfd6b0d2d033db7f2aacc5997a2b254a782eeeec861b84c54e43fa5c867"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
-quality_score: 100
+quality_score: 59
 concepts:
   - copilot-cli-opencode-integration-with-mempalace
 related:

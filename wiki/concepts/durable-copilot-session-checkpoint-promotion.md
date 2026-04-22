@@ -9,7 +9,7 @@ sources:
   - raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md
   - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
   - raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
-quality_score: 100
+quality_score: 95
 concepts:
   - durable-copilot-session-checkpoint-promotion
 related:

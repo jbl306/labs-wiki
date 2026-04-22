@@ -5,8 +5,9 @@ created: 2026-04-22
 last_verified: 2026-04-22
 source_hash: "3e65ff8540004a023938bd503813baf3709bfc64d1dbcc49c436263dccdc458c"
 sources:
+  - raw/2026-04-22-copilot-session-fixing-live-graph-taps-a2ede579.md
   - raw/2026-04-22-copilot-session-graph-incident-and-cleanup-14e5153b.md
-quality_score: 100
+quality_score: 54
 concepts:
   - systematic-debugging-tdd-ui-regression
 related:
@@ -65,3 +66,4 @@ This approach is essential for maintaining reliable and accessible UI in knowled
 ## Sources
 
 - [[Copilot Session Checkpoint: Graph Incident and Cleanup]] — primary source for this concept
+- [[Copilot Session Checkpoint: Fixing Live Graph Taps]] — additional source

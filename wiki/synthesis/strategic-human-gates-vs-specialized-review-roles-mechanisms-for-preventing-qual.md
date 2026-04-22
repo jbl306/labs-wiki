@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 64
 concepts:
   - specialized-review-principle
   - strategic-human-gate-principle

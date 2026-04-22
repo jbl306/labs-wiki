@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "a3f0a9c735b1cc297b5a24140a8ff3b177b8d3b188ad51eec128530663de13a1"
 sources:
   - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
-quality_score: 100
+quality_score: 86
 concepts:
   - lightgbm-leaf-wise-tree-growth
   - gradient-based-one-side-sampling-goss

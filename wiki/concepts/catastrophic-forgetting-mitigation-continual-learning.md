@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "9f97816e9aa80d8441e22a45aabab7441e7e5c4b4ae0f8aded75d9f7f897b038"
 sources:
   - raw/2026-04-13-260406231v1pdf.md
-quality_score: 100
+quality_score: 49
 concepts:
   - catastrophic-forgetting-mitigation-continual-learning
 related:

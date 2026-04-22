@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "738facc8613e17bebe1ccc6110aded89b719c025ec238ad0ddf175a33ca3d5be"
 sources:
   - raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
-quality_score: 100
+quality_score: 56
 concepts:
   - multinomial-naive-bayes
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "477e5dbd4d13659cf31de2992a6be546df5c474c80638069dbeef4368ec4bba0"
 sources:
   - raw/2026-04-16-251004618v3pdf.md
-quality_score: 100
+quality_score: 56
 concepts:
   - incremental-delta-updates
 related:

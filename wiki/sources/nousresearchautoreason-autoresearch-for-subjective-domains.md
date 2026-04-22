@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "f0ccf54adde211ffedb54b1a0f85d4b1c5066e47bbf5b9969689ffa753ca125f"
 sources:
   - raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
-quality_score: 100
+quality_score: 83
 concepts:
   - autoreason-iterative-self-refinement-framework
 related:

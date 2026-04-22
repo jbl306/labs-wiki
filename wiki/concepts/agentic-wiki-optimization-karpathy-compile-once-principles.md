@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "18966277cc2d851def0d3ab62f0f8bc086251d5a0cc524d2697ef2d9766a9892"
 sources:
   - raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
-quality_score: 100
+quality_score: 46
 concepts:
   - agentic-wiki-optimization-karpathy-compile-once-principles
 related:

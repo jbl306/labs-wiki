@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "06dd6805633a9218e3468d10820c926ecc01540779ea2b97ad403d71816fce93"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-37-backfill-and-dashboard-enhancements-6d6f5926.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

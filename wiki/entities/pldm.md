@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "9c294439e600a5c5a2e741c8b7994207c1ce7af51793e70b9bb6b664cc642f8b"
 sources:
   - raw/2026-04-20-260319312v2pdf.md
-quality_score: 100
+quality_score: 65
 concepts:
   - pldm
 related:

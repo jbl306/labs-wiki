@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "8f16e4e60e551cdd3f674035b1b2a27a6be65980aad74f267605217db5acbc98"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
-quality_score: 100
+quality_score: 90
 concepts:
   - caddy-handle-path-directive-and-its-impact-on-upstream-url-construction
   - opencode-bash-shell-configuration-posix-spawn-enoent-fix

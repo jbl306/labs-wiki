@@ -10,7 +10,7 @@ sources:
   - raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
   - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
   - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
-quality_score: 100
+quality_score: 89
 concepts:
   - forge
 related:

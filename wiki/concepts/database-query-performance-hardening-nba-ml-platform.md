@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "f5ab464da78849dfc56ba65763a75665270132841e455836342a982aa3b2217d"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-phases-1-4-implementation-and-deployment-16041f82.md
-quality_score: 100
+quality_score: 56
 concepts:
   - database-query-performance-hardening-nba-ml-platform
 related:

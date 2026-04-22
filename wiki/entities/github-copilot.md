@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "f15329dffe4f35b2509a04e3f7c3e97f8a038943740f52a8d082de1b4c3bd472"
 sources:
   - raw/2026-04-07-custom-agents-in-vs-code.md
-quality_score: 100
+quality_score: 61
 concepts:
   - github-copilot
 related:

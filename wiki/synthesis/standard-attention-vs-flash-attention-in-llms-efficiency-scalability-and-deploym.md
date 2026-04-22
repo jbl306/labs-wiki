@@ -6,7 +6,7 @@ last_verified: 2026-04-13
 source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md
-quality_score: 100
+quality_score: 59
 concepts:
   - flash-attention
   - standard-attention

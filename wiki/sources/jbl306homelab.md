@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "de40bc77baf9d870707b2d2f3dae074f17d8170ab8973495138735003e86f9d3"
 sources:
   - raw/2026-04-07-jbl306homelab.md
-quality_score: 100
+quality_score: 84
 concepts:
   - homelab-server-deployment-architecture
   - split-dns-routing-cloudflare-tunnel-overrides-homelab-services

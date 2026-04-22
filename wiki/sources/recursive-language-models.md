@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "f5ae69a723513d24cbcbb84186eb866bf58307e8fe5c8f38ae2f92a7d7095538"
 sources:
   - raw/2026-04-10-251224601v2pdf.md
-quality_score: 100
+quality_score: 77
 concepts:
   - recursive-language-models
 related:

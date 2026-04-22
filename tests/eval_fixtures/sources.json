@@ -1,0 +1,26 @@
+[
+  {
+    "name": "karpathy-llm-wiki-gist",
+    "raw_md_path": "raw/2026-04-07-llm-wiki.md",
+    "expected_concepts": ["llm-wiki-pattern", "schema-guided-llm-knowledge-base-maintenance"],
+    "expected_entities": ["karpathy"],
+    "expected_min_sources": 1,
+    "expected_dates": ["2026-04-21"]
+  },
+  {
+    "name": "refrag-decoding",
+    "raw_md_path": "raw/2026-04-22-250901092v2pdf.md",
+    "expected_concepts": ["refrag-decoding-framework"],
+    "expected_entities": ["refrag"],
+    "expected_min_sources": 1,
+    "expected_dates": ["2026-04-22"]
+  },
+  {
+    "name": "copilot-session-checkpoint-fixing-live-graph-taps",
+    "raw_md_path": "raw/2026-04-22-copilot-session-fixing-live-graph-taps-a2ede579.md",
+    "expected_concepts": ["mobile-friendly-graph-ui-tap-handling"],
+    "expected_entities": ["interaction-targets-js", "pointer-gesture-js"],
+    "expected_min_sources": 1,
+    "expected_dates": ["2026-04-22"]
+  }
+]

@@ -8,7 +8,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
   - raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
   - raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
-quality_score: 100
+quality_score: 89
 concepts:
   - minutesmodel
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "a831196b1a3be8b1ca89a1ae99b456bac9bc1771680ef67a1c377cd0fa5c541f"
 sources:
   - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
-quality_score: 100
+quality_score: 67
 concepts:
   - lightgbm-hyperparameter-tuning
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "c2456adddc8be715a1fe114ce8c8bb12cf2cd81ea4d96cc0e1fc780e8a4bf9be"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
-quality_score: 100
+quality_score: 90
 concepts:
   - mempalace-phase-3-4-features-and-implementation
   - autoagent-framework-research

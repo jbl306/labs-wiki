@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "61d2a663201be1287914b264819f16b9d6d4bbee33865442f2be9300278c25db"
 sources:
   - raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md
-quality_score: 100
+quality_score: 90
 concepts:
   - container-resource-tuning-and-performance-remediation
   - agent-documentation-hygiene-and-migration

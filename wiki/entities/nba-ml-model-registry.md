@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-18-copilot-session-sprint-55-planning-and-exploration-be98e3c5.md
   - raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md
   - raw/2026-04-18-copilot-session-sprint-56-no-retrain-fixes-planning-895454cb.md
-quality_score: 100
+quality_score: 91
 concepts:
   - nba-ml-model-registry
 related:

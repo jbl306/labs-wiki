@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "adcb44e6a85c6d693fc04b4b6b334024ca4365e1b7518d6c877ff915a7141135"
 sources:
   - raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md
-quality_score: 100
+quality_score: 59
 concepts:
   - synthesis-batch-runner-merge-cluster-backlog
 related:

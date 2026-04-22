@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
-quality_score: 100
+quality_score: 80
 concepts:
   - github-models-api
 related:

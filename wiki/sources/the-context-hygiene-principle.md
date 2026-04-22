@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "4e0be7f4370f91ef752fb421adafe9e295a097a9f83ca034d9e875ec44e0bba9"
 sources:
   - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
-quality_score: 100
+quality_score: 76
 concepts:
   - the-context-hygiene-principle
 related:

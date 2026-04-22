@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "ce7f4352d0ef40760c4dcda7efa1c67fdf977a1201620f45dbffac174c6567ac"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-41-42-completion-and-roadmap-2b962496.md
-quality_score: 100
+quality_score: 61
 concepts:
   []
 related:

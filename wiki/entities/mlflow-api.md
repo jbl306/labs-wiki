@@ -8,7 +8,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-odds-api-quota-optimization-sgo-investigation-f4c98efb.md
   - raw/2026-04-18-copilot-session-sprint-55-planning-and-exploration-be98e3c5.md
-quality_score: 100
+quality_score: 77
 concepts:
   - mlflow-api
 related:

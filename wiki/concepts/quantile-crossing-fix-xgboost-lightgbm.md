@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "016d553979837ab306dec9cdf9e2309752249db326f2d6c75448f89eba8e6a11"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md
-quality_score: 100
+quality_score: 56
 concepts:
   - quantile-crossing-fix-xgboost-lightgbm
 related:

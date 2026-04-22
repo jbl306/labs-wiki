@@ -1,8 +1,8 @@
 ---
 name: Wiki Orchestrate
-description: "Coordinate wiki maintenance — audit, lint, gap analysis, stale page review. Ingest is handled automatically by the auto-ingest service."
+description: "Coordinate wiki maintenance — audit, lint, gap analysis, stale page review, graph-disagreement triage. Ingest is handled automatically by the auto-ingest service."
 tools: ['agent', 'search/codebase', 'bash']
-agents: ['Wiki Ingest', 'Wiki Lint', 'Wiki Update', 'Wiki Curator']
+agents: ['Wiki Ingest', 'Wiki Lint', 'Wiki Update', 'Wiki Curator', 'Wiki Triage']
 model: ['Claude Sonnet 4', 'GPT-5.4']
 ---
 
@@ -28,6 +28,7 @@ Before changing orchestration, agent prompts, memory handoffs, or evaluator loop
 | Wiki Lint | Quality audits and auto-fixes |
 | Wiki Update | Refreshing stale or outdated pages |
 | Wiki Curator | Gap analysis and synthesis creation |
+| Wiki Triage | Reconcile heuristic vs graph editorial signal one row at a time |
 
 ## Workflows
 
@@ -43,6 +44,10 @@ Before changing orchestration, agent prompts, memory handoffs, or evaluator loop
 3. Delegate to **Wiki Curator** for tier promotion review
 4. Run **Wiki Lint** for final validation
 5. Report summary
+
+### triage-graph-disagreements
+
+Route the read-only `reports/checkpoint-graph-tracker.md` artifact into actual editorial movement. Delegate to **Wiki Triage**, which walks each `compress→keep` and `keep→compress` row, presents it to the user, and on per-row ratification updates the source page's `retention_mode` and `tier` plus a one-line entry in `wiki/log.md`. Never auto-apply — one user `y` per row. Stop when the tracker is exhausted or the user quits, then recommend a graph rebuild so the next pass reflects the new state.
 
 ### Manual Ingest (fallback)
 1. Check if `wiki-auto-ingest` container is running: `docker ps | grep wiki-auto-ingest`

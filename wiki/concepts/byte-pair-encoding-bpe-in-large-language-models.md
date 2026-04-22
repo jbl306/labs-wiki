@@ -6,7 +6,7 @@ last_verified: 2026-04-13
 source_hash: "b40c474ba92950c304e974ce61881ccd715b0bf0d3118793b32a838d0ca55c36"
 sources:
   - raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md
-quality_score: 100
+quality_score: 76
 concepts:
   - byte-pair-encoding-bpe-in-large-language-models
 related:

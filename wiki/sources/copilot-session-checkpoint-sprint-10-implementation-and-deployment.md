@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "a9957a514ef115fac2994880e48b192287f8ae021bb0cc13f878e4b0cd04a43b"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md
-quality_score: 100
+quality_score: 90
 concepts:
   - quantile-crossing-fix-gradient-boosting-models
   - hyperparameter-warmstarting-optuna

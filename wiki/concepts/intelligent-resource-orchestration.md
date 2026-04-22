@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
-quality_score: 100
+quality_score: 76
 concepts:
   - intelligent-resource-orchestration
 related:

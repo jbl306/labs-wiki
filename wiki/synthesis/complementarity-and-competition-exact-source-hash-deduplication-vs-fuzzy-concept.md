@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
   - raw/2026-04-10-httpsgithubcommidudevautoskills.md
-quality_score: 100
+quality_score: 64
 concepts:
   - fuzzy-concept-name-merging
   - exact-source-hash-deduplication

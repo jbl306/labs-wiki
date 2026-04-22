@@ -25,15 +25,21 @@ import asyncio
 import json
 import logging
 import os
+import re
 import time
 from pathlib import Path
 from typing import Any
 
-from fastapi import FastAPI, Header, HTTPException, Query
+from fastapi import Body, FastAPI, Header, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, StreamingResponse
 
-from graph_builder import build as build_graph_artifact
+from graph_builder import (
+    EMBEDDING_FIELD,
+    build as build_graph_artifact,
+    compute_node_embeddings,
+    embed_query,
+)
 
 log = logging.getLogger("wiki-graph-api")
 
@@ -41,6 +47,15 @@ WIKI_PATH = Path(os.environ.get("WIKI_PATH", "/app/wiki"))
 CACHE_DIR = Path(os.environ.get("CACHE_DIR", "/data/cache"))
 GRAPH_PATH = Path(os.environ.get("GRAPH_PATH", "/data/graph.json"))
 ADMIN_TOKEN = os.environ.get("ADMIN_TOKEN", "")
+# R17 — checkpoint tracker markdown path. The graph builder writes this on
+# every rebuild via reports/checkpoint-graph-tracker.md (relative to repo
+# root). The default resolves the repo root from WIKI_PATH's parent.
+TRACKER_PATH = Path(
+    os.environ.get(
+        "CHECKPOINT_TRACKER_PATH",
+        str(WIKI_PATH.parent / "reports" / "checkpoint-graph-tracker.md"),
+    )
+)
 
 
 class GraphState:
@@ -243,6 +258,259 @@ def graph_communities() -> dict[str, Any]:
     return {"communities": state.payload.get("communities", [])}
 
 
+@app.get("/graph/shortest_path")
+def graph_shortest_path(
+    a: str = Query(..., description="source node id"),
+    b: str = Query(..., description="target node id"),
+) -> dict[str, Any]:
+    """Undirected BFS shortest path between two node ids (R16).
+
+    Returns ``{"path": [<node ids>], "length": <edge count>}`` where ``length``
+    is 0 when ``a == b`` and -1 (with empty path) when no path exists.
+    """
+    if a not in state.nodes_by_id:
+        raise HTTPException(status_code=404, detail=f"unknown node {a}")
+    if b not in state.nodes_by_id:
+        raise HTTPException(status_code=404, detail=f"unknown node {b}")
+    if a == b:
+        return {"path": [a], "length": 0}
+
+    prev: dict[str, str | None] = {a: None}
+    queue: list[str] = [a]
+    while queue:
+        cur = queue.pop(0)
+        if cur == b:
+            break
+        for edge in state.adjacency.get(cur, []):
+            nb = edge["neighbor"]
+            if nb not in prev:
+                prev[nb] = cur
+                queue.append(nb)
+
+    if b not in prev:
+        return {"path": [], "length": -1, "source": a, "target": b}
+
+    path: list[str] = []
+    n: str | None = b
+    while n is not None:
+        path.append(n)
+        n = prev[n]
+    path.reverse()
+    return {"path": path, "length": len(path) - 1, "source": a, "target": b}
+
+
+# ---------------------------------------------------------------------------
+# R17 — Checkpoint tracker (parses reports/checkpoint-graph-tracker.md)
+# ---------------------------------------------------------------------------
+
+# In-memory cache keyed by file mtime so successive callers don't re-parse.
+_tracker_cache: dict[str, Any] = {"mtime": 0.0, "payload": None}
+
+
+def _parse_tracker(md_text: str) -> dict[str, Any]:
+    """Convert the auto-generated checkpoint-graph-tracker.md into JSON.
+
+    Looks for the two key tables ('Disagreement detail' and 'Merge-signal
+    checkpoints') and emits one row dict per table line. Header parsing is
+    intentionally tolerant — column order in the markdown is the source of
+    truth so we read the first header row of each table to learn keys.
+    """
+    lines = md_text.splitlines()
+    sections: dict[str, list[str]] = {}
+    current: str | None = None
+    for line in lines:
+        if line.startswith("## "):
+            current = line[3:].strip()
+            sections[current] = []
+        elif current is not None:
+            sections[current].append(line)
+
+    def _parse_table(block: list[str]) -> list[dict[str, str]]:
+        rows: list[dict[str, str]] = []
+        header: list[str] | None = None
+        for raw in block:
+            stripped = raw.strip()
+            if not stripped.startswith("|"):
+                if header is not None:
+                    break  # table ended
+                continue
+            cells = [c.strip() for c in stripped.strip("|").split("|")]
+            # Skip alignment rows like | --- | --- |.
+            if all(set(c) <= set("-: ") and c for c in cells):
+                continue
+            if header is None:
+                header = [c.lower().replace(" ", "_").replace("(", "").replace(")", "")
+                          for c in cells]
+                continue
+            if len(cells) < len(header):
+                cells += [""] * (len(header) - len(cells))
+            rows.append(dict(zip(header, cells)))
+        return rows
+
+    disagreements = _parse_table(sections.get("Disagreement detail", []))
+    merge_signal = _parse_table(sections.get("Merge-signal checkpoints", []))
+
+    # Pull the summary counts via simple regex; keeps the response useful even
+    # when the raw tables are empty.
+    counts: dict[str, int] = {}
+    for line in sections.get("Graph recommendation counts", []):
+        m = re.match(r"\|\s*`(\w+)`\s*\|\s*(\d+)\s*\|", line)
+        if m:
+            counts[m.group(1)] = int(m.group(2))
+
+    breakdown: dict[str, int] = {}
+    for line in sections.get("Disagreement summary", []):
+        m = re.match(r"\|\s*`([^`]+)`\s*\|\s*(\d+)\s*\|", line)
+        if m:
+            breakdown[m.group(1)] = int(m.group(2))
+
+    return {
+        "recommendation_counts": counts,
+        "disagreement_breakdown": breakdown,
+        "disagreements": disagreements,
+        "merge_signal": merge_signal,
+        "disagreement_count": len(disagreements),
+        "merge_signal_count": len(merge_signal),
+    }
+
+
+@app.get("/graph/checkpoint-tracker")
+def graph_checkpoint_tracker() -> dict[str, Any]:
+    """Parsed JSON view of reports/checkpoint-graph-tracker.md (R17).
+
+    Cached in memory by file mtime so repeated polls from the UI are cheap.
+    Returns ``{"available": false, ...}`` when the markdown report is missing
+    (e.g. fresh deploy with no graph build yet).
+    """
+    if not TRACKER_PATH.exists():
+        return {
+            "available": False,
+            "path": str(TRACKER_PATH),
+            "disagreements": [],
+            "merge_signal": [],
+        }
+    try:
+        mtime = TRACKER_PATH.stat().st_mtime
+    except OSError as e:
+        return {"available": False, "error": str(e), "disagreements": [], "merge_signal": []}
+
+    if _tracker_cache["payload"] is not None and _tracker_cache["mtime"] == mtime:
+        return _tracker_cache["payload"]
+
+    try:
+        md = TRACKER_PATH.read_text()
+        parsed = _parse_tracker(md)
+    except Exception as e:
+        return {"available": False, "error": str(e), "disagreements": [], "merge_signal": []}
+
+    payload = {
+        "available": True,
+        "path": str(TRACKER_PATH),
+        "mtime": mtime,
+        **parsed,
+    }
+    _tracker_cache["payload"] = payload
+    _tracker_cache["mtime"] = mtime
+    return payload
+
+
+# ---------------------------------------------------------------------------
+# R19 — /graph/health (data-quality observability; distinct from /health)
+# ---------------------------------------------------------------------------
+
+def _percentile(values: list[float], pct: float) -> float:
+    if not values:
+        return 0.0
+    s = sorted(values)
+    if len(s) == 1:
+        return float(s[0])
+    rank = (pct / 100.0) * (len(s) - 1)
+    low = int(rank)
+    high = min(low + 1, len(s) - 1)
+    frac = rank - low
+    return float(s[low] + (s[high] - s[low]) * frac)
+
+
+@app.get("/graph/health")
+def graph_health() -> dict[str, Any]:
+    """Data-quality snapshot of the loaded graph (R19).
+
+    Independent of /health (liveness). Surfaces signals the wiki team uses
+    to decide whether to trigger ingest, dedupe, or curation passes.
+    """
+    nodes = state.payload.get("nodes", [])
+    edges = state.payload.get("edges", [])
+    node_ids = set(state.nodes_by_id.keys())
+
+    orphan_count = sum(1 for n in nodes if int(n.get("degree", 0)) == 0)
+    # Builder filters dangling edges already; recheck defensively.
+    broken_link_count = sum(
+        1 for e in edges if e.get("source") not in node_ids or e.get("target") not in node_ids
+    )
+
+    # Dedupe candidates — Stream A's scripts/dedupe_concepts.py may write a
+    # JSON sidecar next to its markdown report. Optional; fall back to 0.
+    dedupe_count = 0
+    dedupe_note: str | None = None
+    dedupe_path = WIKI_PATH.parent / "reports" / "dedupe-candidates-latest.json"
+    if dedupe_path.exists():
+        try:
+            data = json.loads(dedupe_path.read_text())
+            if isinstance(data, list):
+                dedupe_count = len(data)
+            elif isinstance(data, dict):
+                dedupe_count = int(data.get("candidate_count", len(data.get("candidates", []))))
+        except Exception as e:
+            dedupe_note = f"failed to read {dedupe_path}: {e}"
+    else:
+        dedupe_note = "run scripts/dedupe_concepts.py"
+
+    qs = [float(n.get("quality_score", 0.0)) for n in nodes if "quality_score" in n]
+    avg_quality = round(sum(qs) / len(qs), 4) if qs else 0.0
+
+    tier_keys = ("hot", "established", "core", "archive", "workflow")
+    tier_distribution: dict[str, int] = {k: 0 for k in tier_keys}
+    for n in nodes:
+        tier = (n.get("tier") or "").strip().lower()
+        if tier in tier_distribution:
+            tier_distribution[tier] += 1
+        elif tier:
+            tier_distribution.setdefault("other", 0)
+            tier_distribution["other"] += 1
+
+    now_ts = time.time()
+    fallback_ts = float(state.payload.get("generated_at") or now_ts)
+    hot_ages_days: list[float] = []
+    for n in nodes:
+        if (n.get("tier") or "").strip().lower() != "hot":
+            continue
+        lv = (n.get("last_verified") or "").strip()
+        when_ts: float | None = None
+        if lv:
+            for fmt in ("%Y-%m-%dT%H:%M:%SZ", "%Y-%m-%d", "%Y-%m-%dT%H:%M:%S"):
+                try:
+                    when_ts = time.mktime(time.strptime(lv[: len(time.strftime(fmt))], fmt))
+                    break
+                except (ValueError, OverflowError):
+                    continue
+        if when_ts is None:
+            when_ts = fallback_ts
+        hot_ages_days.append(max(0.0, (now_ts - when_ts) / 86400.0))
+
+    return {
+        "orphan_count": orphan_count,
+        "broken_link_count": broken_link_count,
+        "broken_link_note": "builder filters dangling edges; field kept for stable schema",
+        "dedupe_candidate_count": dedupe_count,
+        "dedupe_note": dedupe_note,
+        "avg_quality_score": avg_quality,
+        "tier_distribution": tier_distribution,
+        "hot_age_p50_days": round(_percentile(hot_ages_days, 50), 2),
+        "hot_age_p95_days": round(_percentile(hot_ages_days, 95), 2),
+        "hot_node_count": len(hot_ages_days),
+    }
+
+
 @app.get("/graph/god-nodes")
 def graph_god_nodes(limit: int = Query(15, ge=1, le=100)) -> dict[str, Any]:
     return {"god_nodes": state.payload.get("god_nodes", [])[:limit]}
@@ -291,7 +559,134 @@ def graph_checkpoints(
 
 @app.get("/graph/export/json")
 def graph_export_json() -> JSONResponse:
-    return JSONResponse(state.payload)
+    # Embeddings are kept in state.payload for /graph/query but stripped from
+    # the public export to keep the UI download small (R14 — MiniLM dim 384
+    # would otherwise add ~2 MB on a 700-node graph).
+    payload = state.payload
+    nodes = payload.get("nodes", [])
+    if nodes and any(EMBEDDING_FIELD in n for n in nodes):
+        slim_nodes = [
+            {k: v for k, v in n.items() if k != EMBEDDING_FIELD}
+            for n in nodes
+        ]
+        payload = {**payload, "nodes": slim_nodes}
+    return JSONResponse(payload)
+
+
+# ---------------------------------------------------------------------------
+# R14 — POST /graph/query : NL query over node embeddings
+# ---------------------------------------------------------------------------
+
+def _cosine(a: list[float], b: list[float]) -> float:
+    if not a or not b or len(a) != len(b):
+        return 0.0
+    dot = 0.0
+    na = 0.0
+    nb = 0.0
+    for x, y in zip(a, b):
+        dot += x * y
+        na += x * x
+        nb += y * y
+    if na <= 0 or nb <= 0:
+        return 0.0
+    import math
+    return dot / (math.sqrt(na) * math.sqrt(nb))
+
+
+@app.post("/graph/query")
+async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
+    """Embed ``q`` and return the top-K nodes plus their 1-hop subgraph union.
+
+    Body: ``{"q": "<text>", "k": 10}`` (k optional, default 10, capped at 50).
+    Response::
+
+        {
+          "q": "...",
+          "k": 10,
+          "backend": "sentence-transformers" | "tfidf" | "none",
+          "nodes": [<full node records ranked by similarity>],
+          "subgraph": {"nodes": [...], "edges": [...]}
+        }
+
+    If no embedding backend is available (build had ``embedding_backend=none``),
+    the response includes ``"error": "embedding backend unavailable"`` and an
+    empty result set.
+    """
+    q = (payload or {}).get("q", "")
+    if not isinstance(q, str) or not q.strip():
+        raise HTTPException(status_code=400, detail="missing 'q' (non-empty string)")
+    k_raw = (payload or {}).get("k", 10)
+    try:
+        k = max(1, min(int(k_raw), 50))
+    except (TypeError, ValueError):
+        k = 10
+
+    backend = state.payload.get("embedding_backend", "none")
+    qvec = embed_query(q)
+    if qvec is None or backend == "none":
+        return {
+            "q": q,
+            "k": k,
+            "backend": backend,
+            "error": "embedding backend unavailable",
+            "nodes": [],
+            "subgraph": {"nodes": [], "edges": []},
+        }
+
+    scored: list[tuple[float, dict[str, Any]]] = []
+    for n in state.payload.get("nodes", []):
+        vec = n.get(EMBEDDING_FIELD)
+        if not vec:
+            continue
+        s = _cosine(qvec, vec)
+        scored.append((s, n))
+
+    scored.sort(key=lambda r: r[0], reverse=True)
+    top = scored[:k]
+    top_ids = {n["id"] for _, n in top}
+
+    # 1-hop subgraph: union of neighbours of every top-K hit.
+    sub_node_ids: set[str] = set(top_ids)
+    sub_edges: list[dict[str, Any]] = []
+    seen_pairs: set[tuple[str, str]] = set()
+    for nid in list(top_ids):
+        for adj in state.adjacency.get(nid, []):
+            sub_node_ids.add(adj["neighbor"])
+            pair = tuple(sorted((adj["source"], adj["target"])))
+            if pair in seen_pairs:
+                continue
+            seen_pairs.add(pair)
+            sub_edges.append(
+                {
+                    "source": adj["source"],
+                    "target": adj["target"],
+                    "weight": adj.get("weight", 1),
+                    "confidence": adj.get("confidence", "EXTRACTED"),
+                }
+            )
+
+    sub_nodes = [state.nodes_by_id[nid] for nid in sub_node_ids if nid in state.nodes_by_id]
+
+    # Strip embedding vectors from the response — they are only useful server-
+    # side and would balloon the JSON payload (~12kB/node for MiniLM dim 384).
+    def _strip(n: dict[str, Any]) -> dict[str, Any]:
+        if EMBEDDING_FIELD in n:
+            n = {k: v for k, v in n.items() if k != EMBEDDING_FIELD}
+        return n
+
+    return {
+        "q": q,
+        "k": k,
+        "backend": backend,
+        "nodes": [
+            {**_strip(n), "score": round(score, 4)}
+            for score, n in top
+        ],
+        "subgraph": {
+            "nodes": [_strip(n) for n in sub_nodes],
+            "edges": sub_edges,
+        },
+    }
 
 
 @app.get("/events")

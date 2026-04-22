@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "4d5f290f8088b16b6e5191c98cfbbcfcca9a5a1ee0dae3394c776cf28e34b25c"
 sources:
   - raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
-quality_score: 100
+quality_score: 66
 concepts:
   - axi-design-principles-for-agent-ergonomic-cli-tools
   - toon-token-oriented-object-notation-format

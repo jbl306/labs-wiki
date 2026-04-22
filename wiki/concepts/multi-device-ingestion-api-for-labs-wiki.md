@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "bed95bb11bf69d800c6655091a905351b08f9bbfd77b74c912c1ee646e703b4f"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-full-labs-wiki-implementation-complete-22f8c487.md
-quality_score: 100
+quality_score: 67
 concepts:
   - multi-device-ingestion-api-for-labs-wiki
 related:

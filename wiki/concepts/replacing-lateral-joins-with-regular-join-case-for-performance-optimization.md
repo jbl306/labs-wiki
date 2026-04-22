@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "f073ae4fd7b3295570081cdf37f1d67fc5c9838cf1ce8f2aa7e1d9409b01f107"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md
-quality_score: 100
+quality_score: 64
 concepts:
   - replacing-lateral-joins-with-regular-join-case-for-performance-optimization
 related:

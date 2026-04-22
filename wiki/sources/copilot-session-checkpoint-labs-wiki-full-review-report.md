@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "09970c2d6bf98521e8acf64359beba6cb07e02f1015bc2504f2dd8846bbc0c93"
 sources:
   - raw/2026-04-22-copilot-session-labs-wiki-full-review-report-b585f2e1.md
-quality_score: 100
+quality_score: 85
 concepts:
   - semantic-deduplication-wiki-ingest-pipelines
   - tier-promotion-workflow-wiki-systems

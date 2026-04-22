@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "3249b9d1ea8d0a9885cc30c73a773ba55200d3c758ca09c63016eb0a6a790b25"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-implementation-deploying-matviews-7f8e1834.md
-quality_score: 100
+quality_score: 60
 concepts:
   []
 related:

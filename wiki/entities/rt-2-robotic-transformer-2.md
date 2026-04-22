@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "292be7cacf85d0ed3967fe086d8e3892b9233f4e484623cb0d03e96eeb3033f1"
 sources:
   - raw/2026-04-08-httpsarxivorgpdf250504769.md
-quality_score: 100
+quality_score: 68
 concepts:
   - rt-2-robotic-transformer-2
 related:

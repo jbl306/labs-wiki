@@ -12,7 +12,7 @@ sources:
   - raw/2026-04-18-copilot-session-sprint-59-shap-coverage-implementation-9a231f70.md
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
   - raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
-quality_score: 100
+quality_score: 92
 concepts:
   - ensemblemodel
 related:

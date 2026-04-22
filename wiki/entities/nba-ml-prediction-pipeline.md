@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "e46b28ceb3142b4379144f0651127cee40410b71fb087908b377ab58ca92a883"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
-quality_score: 100
+quality_score: 67
 concepts:
   - nba-ml-prediction-pipeline
 related:

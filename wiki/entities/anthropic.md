@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-18-260414228v1pdf.md
   - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
   - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
-quality_score: 100
+quality_score: 90
 concepts:
   - anthropic
 related:

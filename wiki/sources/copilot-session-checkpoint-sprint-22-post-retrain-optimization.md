@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "bfd978a42d02dc83ef9345440857753df2d1553d3b8d333ddb16715c44d9cd5b"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-22-post-retrain-optimization-f0d53185.md
-quality_score: 100
+quality_score: 58
 concepts:
   []
 related:

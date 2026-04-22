@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-installing-mempalace-beginning-migration-f4a540d2.md
-quality_score: 100
+quality_score: 95
 concepts:
   - mempalace-memory-system
 related:

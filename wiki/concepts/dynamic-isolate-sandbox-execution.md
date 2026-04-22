@@ -6,7 +6,7 @@ last_verified: 2026-04-20
 source_hash: "25580bc9fd8967e1cc3d546d88bd84074d2afdc72208d70255b43f6e7590058e"
 sources:
   - raw/2026-04-20-cloudflare-launches-code-mode-mcp-server-to-optimize-token-u.md
-quality_score: 100
+quality_score: 54
 concepts:
   - dynamic-isolate-sandbox-execution
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "6367ce4a808a99045dc0efafe0636d79472595fb817f173c1a1525e43d8d84d4"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-24-prop-consolidation-implementation-e5c3d4c3.md
-quality_score: 100
+quality_score: 58
 concepts:
   []
 related:

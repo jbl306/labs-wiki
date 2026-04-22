@@ -8,7 +8,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
   - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
-quality_score: 100
+quality_score: 89
 concepts:
   - chromadb
 related:

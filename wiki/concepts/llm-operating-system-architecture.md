@@ -6,7 +6,7 @@ last_verified: 2026-04-08
 source_hash: "a4e125acd956ed0ccf70ba66d6510f746deb20fa870597168af46311ee8dd133"
 sources:
   - raw/2026-04-07-test-tweet.md
-quality_score: 100
+quality_score: 76
 concepts:
   - llm-operating-system-architecture
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "64bae2ab67e559be6bdf893fb29bac5a1194853f67a015e0a9239e88019b5bdd"
 sources:
   - raw/2026-04-08-decision-tree-geeksforgeeks.md
-quality_score: 100
+quality_score: 64
 concepts:
   - splitting-criteria-in-decision-trees
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "9583aca364f19d189456564e8242665d819c8e046298a36e6032014ff646bea6"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
-quality_score: 100
+quality_score: 74
 concepts:
   - edge-optimizer
 related:

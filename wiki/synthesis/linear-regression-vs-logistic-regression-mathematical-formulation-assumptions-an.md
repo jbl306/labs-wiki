@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md
   - raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
-quality_score: 100
+quality_score: 64
 concepts:
   - linear-regression
   - logistic-regression

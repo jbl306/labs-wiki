@@ -6,7 +6,7 @@ last_verified: 2026-04-11
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
-quality_score: 100
+quality_score: 65
 concepts:
   - aaak-compression-dialect
 related:

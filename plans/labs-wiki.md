@@ -90,8 +90,8 @@ An LLM-maintained Obsidian wiki with 4 installable skills. Key innovations:
 | **Context-aware activation** | Domain keywords auto-trigger appropriate specialist | Skill routing: "ingest" → ingest skill, "outdated" → update skill |
 | **Orchestrator agent** | `product-manager-orchestrator` coordinates multi-agent workflows | `/wiki-orchestrate` meta-skill for complex operations |
 | **Evidence-based emphasis** | Every recommendation cites sources, frameworks, measurements | Wiki pages require `sources:` frontmatter with citations |
-| **Agent categories** | `core/`, `research/`, `design/`, `ops/`, etc. | Agent personas: `researcher`, `compiler`, `curator`, `auditor` |
-| **Pure markdown specs** | No build step — agents defined as `.md` files | Agent personas as `.md` in `agents/` directory |
+| **Agent categories** | `core/`, `research/`, `design/`, `ops/`, etc. | Agent set: the eight Copilot agents in `.github/agents/` (capture, ingest, update, curator, lint, query, orchestrate, triage) |
+| **Pure markdown specs** | No build step — agents defined as `.md` files | Agent specs as `.md` in `.github/agents/` directory |
 
 ---
 
@@ -119,7 +119,7 @@ An LLM-maintained Obsidian wiki with 4 installable skills. Key innovations:
 | 11 | Idempotent setup wizard | second-brain | `/wiki-setup` skill — safe to re-run, non-destructive |
 | 12 | Sub-organized wiki | second-brain | `wiki/sources/`, `wiki/concepts/`, `wiki/entities/`, `wiki/synthesis/` |
 | 13 | Multi-tool bootstrap | Ar9av + second-brain | `setup.sh` creates symlinks, generates tool configs |
-| 14 | Agent personas | subagents | `agents/researcher.md`, `agents/compiler.md`, `agents/auditor.md` |
+| 14 | Agent personas | subagents | The eight-agent set in `.github/agents/` (wiki-capture, wiki-ingest, wiki-update, wiki-curator, wiki-lint, wiki-query, wiki-orchestrate, wiki-triage) |
 | 15 | Orchestrator meta-skill | subagents | `/wiki-orchestrate` — coordinates multi-step workflows |
 | 16 | Quality scoring | agentmemory | Lint scores pages 0-100 on completeness, accuracy, cross-refs |
 | 17 | Context cost optimization | ussumant | Topic clustering in index.md — 90% token savings on queries |
@@ -161,11 +161,15 @@ labs-wiki/
 │   ├── entities/                     # Named entities (tools, people, orgs)
 │   └── synthesis/                    # Cross-cutting analysis, comparisons
 │
-├── agents/                           # Agent persona definitions (subagents pattern)
-│   ├── researcher.md                 # Deep research, source evaluation
-│   ├── compiler.md                   # Raw → wiki page compilation
-│   ├── curator.md                    # Cross-referencing, gap analysis
-│   └── auditor.md                    # Quality scoring, staleness checks
+├── .github/agents/                   # Agent persona definitions (Copilot agent format)
+│   ├── wiki-capture.agent.md         # Quick-capture URLs/text into raw/
+│   ├── wiki-ingest.agent.md          # Manual two-phase pipeline fallback
+│   ├── wiki-update.agent.md          # Revise pages, preserve provenance
+│   ├── wiki-curator.agent.md         # Gap analysis, synthesis, consolidation
+│   ├── wiki-lint.agent.md            # Quality audit, broken links, staleness
+│   ├── wiki-query.agent.md           # Search and synthesize answers
+│   ├── wiki-orchestrate.agent.md     # Multi-step maintenance workflows
+│   └── wiki-triage.agent.md          # Reconcile heuristic vs graph editorial signal
 │
 ├── wiki-ingest-api/                  # FastAPI capture service (Docker)
 │   ├── Dockerfile
@@ -270,32 +274,13 @@ Phase 2: COMPILE (store)
 
 ### Agent Personas
 
-Inspired by NicholasSpisak/claude-code-subagents. Each persona is a markdown file in `agents/` defining:
-
-```markdown
-# Researcher Agent
-
-## Identity
-You are a deep research specialist focused on source evaluation and knowledge extraction.
-
-## Priority Hierarchy
-1. Accuracy — verify claims against primary sources
-2. Completeness — extract all relevant concepts and entities
-3. Attribution — every fact traces to a source
-4. Brevity — concise but not at the expense of accuracy
-
-## Activation
-Triggered by: /wiki-ingest (Phase 1), /wiki-query (deep research mode)
-
-## Allowed Tools
-Read, Grep, Glob, Bash (curl), Web search
-```
-
-Four core personas:
-- **Researcher** — source evaluation, concept extraction, fact verification
-- **Compiler** — raw → wiki page generation, cross-referencing, index maintenance
-- **Curator** — gap analysis, consolidation, synthesis page creation
-- **Auditor** — quality scoring, staleness detection, broken link repair
+The shipped persona set is the eight-agent collection in `.github/agents/`
+(`wiki-capture`, `wiki-ingest`, `wiki-update`, `wiki-curator`, `wiki-lint`,
+`wiki-query`, `wiki-orchestrate`, `wiki-triage`) using the Copilot agent format
+(YAML frontmatter with `name`, `description`, `tools`, `model`). The
+four-persona model (`researcher` / `compiler` / `curator` / `auditor`) in
+earlier drafts of this plan has been superseded — see `AGENTS.md` §"Agent
+Personas" for the canonical table.
 
 ### Tool-Specific Config Details
 
@@ -638,7 +623,7 @@ Source: https://arxiv.org/abs/2104.09864
 - `copilot-instructions` — .github/copilot-instructions.md for VS Code
 - `opencode-config` — opencode.json agent/model configuration
 - `templates` — Page templates with frontmatter (source, concept, entity, synthesis)
-- `agent-personas` — agents/ directory with researcher, compiler, curator, auditor specs
+- `agent-personas` — `.github/agents/` directory with the eight-agent set (capture, ingest, update, curator, lint, query, orchestrate, triage)
 
 ### Phase 2: Skills & Automation
 - `skill-setup` — wiki-setup SKILL.md (idempotent wizard, from second-brain)
@@ -691,7 +676,7 @@ Source: https://arxiv.org/abs/2104.09864
 1. **AGENTS.md as single source of truth** — Universal schema read by VS Code Copilot, Copilot CLI, and OpenCode
 2. **Two-phase ingest with hash-based skip** — Extract concepts first, then compile pages; skip unchanged sources (atomicmemory + agentmemory)
 3. **Provenance + staleness in frontmatter** — Every page traces to sources and tracks freshness (agentmemory pattern, adapted to markdown)
-4. **Agent personas over monolithic prompts** — Specialized agents (researcher, compiler, curator, auditor) with priority hierarchies (subagents pattern)
+4. **Agent personas over monolithic prompts** — Specialized agents (capture, ingest, update, curator, lint, query, orchestrate, triage in `.github/agents/`) with priority hierarchies (subagents pattern)
 5. **Sub-organized wiki** — `sources/`, `concepts/`, `entities/`, `synthesis/` subdirectories (second-brain pattern)
 6. **Quality scoring as first-class feature** — Lint produces 0-100 scores per page; below threshold triggers re-compilation
 7. **Markdown-first, no databases** — All knowledge in git-trackable Markdown; BM25 via index.md at small scale

@@ -1,6 +1,6 @@
 ---
 title: "Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint 10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted Expanding Mean for Time-Series Features"
-type: synthesis
+type: source
 created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "synthesis-generated"
@@ -8,7 +8,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
-quality_score: 100
+quality_score: 75
 concepts:
   - feature-engineering-for-nba-ml-engine-sprint-10
   - warmstarting-hyperparameter-tuning-with-optuna
@@ -21,8 +21,10 @@ related:
   - "[[Copilot Session Checkpoint: Sprint 10 Complete and Deployed]]"
   - "[[Warmstarting Hyperparameter Tuning with Optuna]]"
 tier: hot
-tags: [checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, machine-learning, nba-ml-engine]
+tags: [checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, machine-learning, nba-ml-engine, cluster-summary]
 ---
+
+> Moved from wiki/synthesis/. See [[Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint 10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted Expanding Mean for Time-Series Features]] for prior link target.
 
 # Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint 10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted Expanding Mean for Time-Series Features
 

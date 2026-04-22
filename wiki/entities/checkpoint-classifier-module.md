@@ -7,7 +7,7 @@ source_hash: "f7f84608a56ca95ea16b47740648af8c3fa8d4783f1503e8d3a6c45e0d21b558"
 sources:
   - raw/2026-04-18-copilot-session-phase-5-backfill-script-written-6227b6ae.md
   - raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md
-quality_score: 100
+quality_score: 73
 concepts:
   - checkpoint-classifier-module
 related:

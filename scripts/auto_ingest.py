@@ -42,6 +42,13 @@ except ImportError:  # pragma: no cover
     _rf_fuzz = None
     _FUZZ_AVAILABLE = False
 
+# Semantic-dedupe deps are loaded lazily — see _get_sentence_transformer().
+# When unavailable, semantic dedupe degrades to the rapidfuzz token_set_ratio
+# path, which is the same fallback `find_fuzzy_match` already uses.
+_ST_MODEL = None
+_ST_AVAILABLE: bool | None = None  # tri-state: None=unprobed, True/False=known
+_ST_NUMPY = None
+
 from checkpoint_classifier import (
     COMPRESS,
     RETAIN,

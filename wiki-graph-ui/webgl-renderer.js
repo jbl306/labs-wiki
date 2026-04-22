@@ -605,6 +605,10 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   // so what counts as a "drag" must be larger for touch. 4 px is correct
   // for a mouse, ~12 px for fingers (matches Material/Cosmograph defaults).
   function tapSlop() { return pressType === "mouse" ? 4 : 12; }
+  // Pan damping — touch pans at 60% finger speed so a single-finger fling
+  // on a small phone screen doesn't fly the graph clean off the viewport.
+  // Mouse pans 1:1 (a desktop user expects geometric exactness).
+  function panFactor() { return pressType === "mouse" ? 1.0 : 0.6; }
 
   function snapshotPinch() {
     const pts = Array.from(pointers.values());
@@ -646,8 +650,9 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       // Pan first (in screen px → world units).
       const dx = midX - prevPinchMidX;
       const dy = midY - prevPinchMidY;
-      cam.x -= dx / cam.scale;
-      cam.y -= dy / cam.scale;
+      const f = panFactor();
+      cam.x -= (dx / cam.scale) * f;
+      cam.y -= (dy / cam.scale) * f;
       // Then zoom around the new midpoint.
       if (prevPinchDist > 0 && dist > 0) {
         const factor = dist / prevPinchDist;
@@ -672,8 +677,9 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       const dy = e.clientY - prevY;
       ptr.prevX = e.clientX; ptr.prevY = e.clientY;
       if (Math.hypot(e.clientX - pressX, e.clientY - pressY) > tapSlop()) moved = true;
-      cam.x -= dx / cam.scale;
-      cam.y -= dy / cam.scale;
+      const f = panFactor();
+      cam.x -= (dx / cam.scale) * f;
+      cam.y -= (dy / cam.scale) * f;
       clampCamera();
       needsRedraw = true;
       schedule();

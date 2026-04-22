@@ -34,6 +34,89 @@ const USE_WEBGL = RENDERER === "webgl";
 let gpuRenderer = null; // populated in initWebgl() if USE_WEBGL
 let gpuLabels = null;   // adaptive HTML label overlay (webgl mode only)
 
+// Map of community id -> short human-friendly label, computed in
+// enrichGraph() from the most-frequent tag(s) inside each community.
+// Used by populateCommunities() and updateLegend() so the filter shows
+// "Wiki & Knowledge Mgmt" instead of "cluster 0".
+const clusterLabels = new Map();
+function clusterLabel(c) {
+  if (c == null || c === "") return "";
+  const lbl = clusterLabels.get(String(c));
+  return lbl ? lbl : `cluster ${c}`;
+}
+
+// Trim verbose ingestion-source prefixes so labels in the graph and
+// neighbour lists read as the actual gist, not the pipeline boilerplate
+// that put them there. Matches: "Copilot Session Checkpoint:",
+// "Copilot Session:", "Copilot CLI Session:", "Recurring checkpoint
+// patterns:", and the AI-generated cluster-summary cruft.
+const TITLE_PREFIX_RE = /^(?:copilot(?:\s+cli)?\s+session(?:\s+checkpoint)?\s*:|recurring\s+checkpoint\s+patterns?\s*:|cluster\s+summary\s*:)\s*/i;
+function displayTitle(title) {
+  if (!title) return title;
+  let t = String(title).replace(TITLE_PREFIX_RE, "").trim();
+  // Common second-pass: titles like "Checkpoint: Foo" → "Foo"
+  t = t.replace(/^checkpoint\s*:\s*/i, "");
+  return t || title;
+}
+
+// Run once after /graph/export/json arrives. (1) shorten every node title
+// for display, keeping the original under `original_title` for search; and
+// (2) auto-name every community by its top tag.
+function enrichGraph(graph) {
+  if (!graph || !Array.isArray(graph.nodes)) return;
+  for (const n of graph.nodes) {
+    if (!n.original_title) n.original_title = n.title;
+    n.title = displayTitle(n.title);
+  }
+  // Tally tag frequency per community, weighted by node degree so hubs
+  // anchor the cluster identity.
+  const tally = new Map(); // community -> Map(tag -> weight)
+  for (const n of graph.nodes) {
+    const c = n.community;
+    if (c == null || c === "") continue;
+    const tags = Array.isArray(n.tags) ? n.tags : [];
+    if (!tags.length) continue;
+    const w = 1 + Math.log2(1 + (n.degree || 0));
+    let m = tally.get(c);
+    if (!m) { m = new Map(); tally.set(c, m); }
+    for (const tag of tags) {
+      if (!tag) continue;
+      m.set(tag, (m.get(tag) || 0) + w);
+    }
+  }
+  clusterLabels.clear();
+  // Track which tags are already "claimed" by a higher-weight cluster so
+  // we don't end up with three "ml-engine" clusters.
+  const claimed = new Set();
+  // Sort communities by total weight so the biggest ones get first pick.
+  const ordered = Array.from(tally.entries()).sort((a, b) => {
+    const sa = Array.from(a[1].values()).reduce((s, v) => s + v, 0);
+    const sb = Array.from(b[1].values()).reduce((s, v) => s + v, 0);
+    return sb - sa;
+  });
+  for (const [c, m] of ordered) {
+    const sorted = Array.from(m.entries()).sort((a, b) => b[1] - a[1]);
+    let primary = sorted.find(([t]) => !claimed.has(t));
+    if (!primary) primary = sorted[0];
+    if (!primary) continue;
+    claimed.add(primary[0]);
+    // Pick a secondary tag for richer naming, also unclaimed if possible.
+    const secondary = sorted.find(([t]) => t !== primary[0] && !claimed.has(t));
+    const parts = [primary[0]];
+    if (secondary && secondary[1] >= primary[1] * 0.4) {
+      parts.push(secondary[0]);
+      claimed.add(secondary[0]);
+    }
+    clusterLabels.set(String(c), parts.map(prettyTag).join(" · "));
+  }
+}
+
+function prettyTag(tag) {
+  return String(tag)
+    .replace(/[-_]+/g, " ")
+    .replace(/\b\w/g, (ch) => ch.toUpperCase());
+}
+
 const state = {
   graph: null,
   filtered: { nodes: [], edges: [] },
@@ -284,7 +367,7 @@ function applyFilters() {
     if (ckptClassF && (n.checkpoint_class || "") !== ckptClassF) return false;
     if (staleOnly && !isNodeStale(n, now)) return false;
     if (!q) return true;
-    const hay = (n.title + " " + (n.tags || []).join(" ") + " " + (n.summary || "")).toLowerCase();
+    const hay = (n.title + " " + (n.original_title || "") + " " + (n.tags || []).join(" ") + " " + (n.summary || "")).toLowerCase();
     return hay.includes(q);
   });
   const ids = new Set(nodes.map((n) => n.id));
@@ -1108,7 +1191,7 @@ async function showNodePanel(node) {
   }
   document.getElementById("node-title").textContent = node.title;
   document.getElementById("node-meta").textContent =
-    `${node.page_type || "page"} · tier=${node.tier || "—"} · degree=${node.degree} · community=${node.community}`;
+    `${node.page_type || "page"} · tier=${node.tier || "—"} · degree=${node.degree} · ${clusterLabel(node.community)}`;
   document.getElementById("node-summary").textContent = node.summary || "";
 
   // R20 — fetch + render the page body so users can review the wiki content
@@ -1200,7 +1283,7 @@ function populateCommunities() {
   for (const c of communities) {
     const opt = document.createElement("option");
     opt.value = String(c);
-    opt.textContent = `cluster ${c}`;
+    opt.textContent = clusterLabel(c);
     select.appendChild(opt);
   }
   if (current && communities.some((c) => String(c) === current)) {
@@ -1218,7 +1301,7 @@ function updateLegend() {
   const el = document.getElementById("legend");
   const top = (state.graph.communities || []).slice(0, 6);
   el.innerHTML = top
-    .map((c) => `<span class='swatch' style='background:${colorForCommunity(c.community)}'></span>cluster ${c.community} · ${c.size}`)
+    .map((c) => `<span class='swatch' style='background:${colorForCommunity(c.community)}'></span>${clusterLabel(c.community)} · ${c.size}`)
     .join("<br/>");
 }
 
@@ -1226,6 +1309,7 @@ async function loadGraph() {
   document.getElementById("connection-state").textContent = "loading graph…";
   try {
     state.graph = await fetchJSON("/graph/export/json");
+    enrichGraph(state.graph);
     if (USE_WEBGL) await initWebgl();
     populateTypes();
     populateCommunities();

@@ -11,7 +11,7 @@ concepts:
   - chrome-devtools
 related:
   - "[[Model-Context-Protocol (MCP) Server for Chrome DevTools]]"
-  - "[[Chrome DevTools MCP GitHub Repository]]"
+  - "[[ChromeDevTools/chrome-devtools-mcp]]"
   - "[[Chrome DevTools MCP]]"
   - "[[puppeteer]]"
 tier: hot
@@ -49,4 +49,4 @@ It is the foundation for browser inspection and debugging in Chrome DevTools MCP
 
 ## Sources
 
-- [[Chrome DevTools MCP GitHub Repository]] — where this entity was mentioned
+- [[ChromeDevTools/chrome-devtools-mcp]] — where this entity was mentioned

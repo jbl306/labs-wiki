@@ -12,7 +12,7 @@ concepts:
   - claude-code
 related:
   - "[[Claude Code Skill Summarization]]"
-  - "[[AutoSkills GitHub Repository]]"
+  - "[[midudev/autoskills]]"
 tier: hot
 tags: [agentic-workflow, ai-agent, claude-code]
 ---
@@ -47,5 +47,5 @@ No related entities documented yet.
 
 ## Sources
 
-- [[AutoSkills GitHub Repository]] — where this entity was mentioned
+- [[midudev/autoskills]] — where this entity was mentioned
 - [[Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems]] — additional source

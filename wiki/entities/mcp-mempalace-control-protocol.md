@@ -12,7 +12,7 @@ concepts:
   - mcp-mempalace-control-protocol
 related:
   - "[[Palace Memory Architecture]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
   - "[[MemPalace]]"
   - "[[AAAK Compression Dialect]]"
   - "[[ChromaDB]]"
@@ -52,5 +52,5 @@ MCP integration allows MemPalace to be used seamlessly by AI agents, automating 
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — where this entity was mentioned
+- [[milla-jovovich/mempalace]] — where this entity was mentioned
 - [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — additional source

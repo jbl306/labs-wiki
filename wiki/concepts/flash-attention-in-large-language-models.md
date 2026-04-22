@@ -11,7 +11,7 @@ concepts:
   - flash-attention-in-large-language-models
 related:
   - "[[Attention Mechanism in Large Language Models]]"
-  - "[[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]]"
+  - "[[amitshekhariitbhu/llm-internals]]"
 tier: hot
 tags: [flash-attention, attention, llm, gpu-optimization]
 ---
@@ -60,4 +60,4 @@ Flash Attention is deployed in LLMs for fast inference and training, supporting 
 
 ## Sources
 
-- [[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]] — primary source for this concept
+- [[amitshekhariitbhu/llm-internals]] — primary source for this concept

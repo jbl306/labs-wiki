@@ -14,7 +14,7 @@ concepts:
 related:
   - "[[Natural Language-Driven Agent Creation]]"
   - "[[Self-Managing Workflow Generation]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
   - "[[AutoAgent]]"
 tier: hot
 tags: [organization, ai-research, agent-framework]
@@ -51,6 +51,6 @@ HKUDS drives innovation in agentic AI, providing tools like AutoAgent that democ
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]] — where this entity was mentioned
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
+- [[HKUDS/AutoAgent]] — where this entity was mentioned
+- [[HKUDS/AutoAgent]] — additional source
+- [[HKUDS/AutoAgent]] — additional source

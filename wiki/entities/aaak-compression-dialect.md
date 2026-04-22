@@ -10,7 +10,7 @@ quality_score: 65
 concepts:
   - aaak-compression-dialect
 related:
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
   - "[[MemPalace]]"
   - "[[ChromaDB]]"
   - "[[MCP (MemPalace Control Protocol)]]"
@@ -50,4 +50,4 @@ AAAK enables MemPalace to inject critical facts into LLM prompts within strict t
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — where this entity was mentioned
+- [[milla-jovovich/mempalace]] — where this entity was mentioned

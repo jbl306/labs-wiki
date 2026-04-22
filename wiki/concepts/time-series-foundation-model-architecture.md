@@ -12,7 +12,7 @@ concepts:
 related:
   - "[[Transformer Architecture]]"
   - "[[Attention Mechanism in Large Language Models]]"
-  - "[[TimesFM: Time Series Foundation Model (google-research/timesfm)]]"
+  - "[[google-research/timesfm]]"
 tier: hot
 tags: [time-series, transformer, forecasting, quantile-prediction, deep-learning]
 ---
@@ -88,4 +88,4 @@ TimesFM is used for forecasting in finance, weather, supply chain, energy, and a
 
 ## Sources
 
-- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — primary source for this concept
+- [[google-research/timesfm]] — primary source for this concept

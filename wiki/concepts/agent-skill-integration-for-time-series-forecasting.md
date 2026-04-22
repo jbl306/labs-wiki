@@ -11,7 +11,7 @@ concepts:
   - agent-skill-integration-for-time-series-forecasting
 related:
   - "[[Agent-Ergonomic Tool Design Principles]]"
-  - "[[TimesFM: Time Series Foundation Model (google-research/timesfm)]]"
+  - "[[google-research/timesfm]]"
 tier: hot
 tags: [agent-skills, automation, integration, time-series, forecasting]
 ---
@@ -62,4 +62,4 @@ Automated agents in finance, operations, and research can use TimesFM for foreca
 
 ## Sources
 
-- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — primary source for this concept
+- [[google-research/timesfm]] — primary source for this concept

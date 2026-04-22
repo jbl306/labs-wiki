@@ -13,7 +13,7 @@ concepts:
   - axi
 related:
   - "[[AutoAgent]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
   - "[[Natural Language-Driven Agent Creation]]"
 tier: hot
@@ -66,6 +66,6 @@ The two paradigms can complement each other: AXI's CLI tools could be integrated
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]]
+- [[HKUDS/AutoAgent]]
 - [[AXI Design Principles for Agent-Ergonomic CLI Tools]]
 - [[Natural Language-Driven Agent Creation]]

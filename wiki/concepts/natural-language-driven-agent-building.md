@@ -14,7 +14,7 @@ concepts:
 related:
   - "[[Automated AI Skill Stack Installation]]"
   - "[[Custom Agent File Structure]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
 tier: hot
 tags: [agent, llm, natural-language, automation, workflow]
 ---
@@ -69,6 +69,6 @@ Used for rapid prototyping of AI agents in research, business automation, and ed
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — primary source for this concept
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
+- [[HKUDS/AutoAgent]] — primary source for this concept
+- [[HKUDS/AutoAgent]] — additional source
+- [[HKUDS/AutoAgent]] — additional source

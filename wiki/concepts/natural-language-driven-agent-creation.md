@@ -12,7 +12,7 @@ concepts:
 related:
   - "[[Automated AI Skill Stack Installation]]"
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
 tier: hot
 tags: [llm-agents, natural-language-interface, zero-code, agent-framework]
 ---
@@ -65,4 +65,4 @@ Used for building research assistants, workflow automation agents, and custom AI
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]] — primary source for this concept
+- [[HKUDS/AutoAgent]] — primary source for this concept

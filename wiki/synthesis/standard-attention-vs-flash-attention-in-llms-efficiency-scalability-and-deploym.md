@@ -12,7 +12,7 @@ concepts:
   - standard-attention
 related:
   - "[[Flash Attention in Large Language Models]]"
-  - "[[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]]"
+  - "[[amitshekhariitbhu/llm-internals]]"
   - "[[Attention Mechanism in Large Language Models]]"
 tier: hot
 tags: [attention, LLM, efficiency, scalability, deployment, GPU]
@@ -64,6 +64,6 @@ A common misconception is that Flash Attention changes the mathematical formulat
 
 ## Sources
 
-- [[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]]
+- [[amitshekhariitbhu/llm-internals]]
 - [[Attention Mechanism in Large Language Models]]
 - [[Flash Attention in Large Language Models]]

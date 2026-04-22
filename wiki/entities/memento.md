@@ -11,7 +11,7 @@ concepts:
   - memento
 related:
   - "[[Memento Blockwise Summarization for LLMs]]"
-  - "[[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]]"
+  - "[[microsoft/memento]]"
   - "[[Microsoft]]"
   - "[[OpenMementos Dataset]]"
 tier: hot
@@ -50,4 +50,4 @@ Memento addresses a key limitation of transformer-based LLMs—their fixed conte
 
 ## Sources
 
-- [[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]] — where this entity was mentioned
+- [[microsoft/memento]] — where this entity was mentioned

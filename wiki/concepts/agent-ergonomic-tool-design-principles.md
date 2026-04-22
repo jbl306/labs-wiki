@@ -11,7 +11,7 @@ concepts:
   - agent-ergonomic-tool-design-principles
 related:
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[Chrome DevTools MCP GitHub Repository]]"
+  - "[[ChromeDevTools/chrome-devtools-mcp]]"
 tier: hot
 tags: [agent-ergonomics, design-principles, token-efficiency, composability, error-handling, interoperability]
 ---
@@ -91,4 +91,4 @@ Used in the design of agentic tools for browser automation, debugging, and perfo
 
 ## Sources
 
-- [[Chrome DevTools MCP GitHub Repository]] — primary source for this concept
+- [[ChromeDevTools/chrome-devtools-mcp]] — primary source for this concept

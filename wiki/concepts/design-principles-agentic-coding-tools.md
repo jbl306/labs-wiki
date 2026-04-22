@@ -85,4 +85,4 @@ Guides the design of agentic coding tools, IDE assistants, and autonomous agent 
 ## Sources
 
 - [[Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems]] — primary source for this concept
-- [[Chrome DevTools MCP GitHub Repository]] — additional source
+- [[ChromeDevTools/chrome-devtools-mcp]] — additional source

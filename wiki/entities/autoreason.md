@@ -11,7 +11,7 @@ concepts:
   - autoreason
 related:
   - "[[Autoreason Iterative Self-Refinement Framework]]"
-  - "[[NousResearch/autoreason: Autoresearch for Subjective Domains]]"
+  - "[[NousResearch/autoreason]]"
   - "[[SHL0MS]]"
   - "[[Hermes Agent]]"
 tier: hot
@@ -49,4 +49,4 @@ Autoreason is significant for advancing agentic workflows in subjective tasks, d
 
 ## Sources
 
-- [[NousResearch/autoreason: Autoresearch for Subjective Domains]] — where this entity was mentioned
+- [[NousResearch/autoreason]] — where this entity was mentioned

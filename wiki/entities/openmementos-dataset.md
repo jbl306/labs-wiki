@@ -11,7 +11,7 @@ concepts:
   - openmementos-dataset
 related:
   - "[[Memento Blockwise Summarization for LLMs]]"
-  - "[[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]]"
+  - "[[microsoft/memento]]"
   - "[[Memento]]"
   - "[[Microsoft]]"
 tier: hot
@@ -50,4 +50,4 @@ This dataset provides the necessary training data for models to learn how to seg
 
 ## Sources
 
-- [[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]] — where this entity was mentioned
+- [[microsoft/memento]] — where this entity was mentioned

@@ -13,7 +13,7 @@ related:
   - "[[Time Series Foundation Model Architecture]]"
   - "[[Continuous Quantile Forecasting in Time-Series Models]]"
   - "[[Agent Skill Integration for Time-Series Forecasting]]"
-  - "[[TimesFM: Time Series Foundation Model (google-research/timesfm)]]"
+  - "[[google-research/timesfm]]"
   - "[[Google Research]]"
 tier: hot
 tags: [time-series, model, forecasting, quantile, agent-skills]
@@ -51,4 +51,4 @@ TimesFM represents a state-of-the-art approach to time-series forecasting, offer
 
 ## Sources
 
-- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — where this entity was mentioned
+- [[google-research/timesfm]] — where this entity was mentioned

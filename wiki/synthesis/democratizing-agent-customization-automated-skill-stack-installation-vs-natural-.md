@@ -14,7 +14,7 @@ concepts:
 related:
   - "[[Automated AI Skill Stack Installation]]"
   - "[[Natural Language-Driven Agent Building]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
 tier: hot
 tags: [agent customization, automation, natural language, AI skills, democratization, security]
 ---
@@ -67,6 +67,6 @@ Common misconceptions include assuming that automated skill stack installation i
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]]
+- [[HKUDS/AutoAgent]]
 - [[Automated AI Skill Stack Installation]]
 - [[Natural Language-Driven Agent Building]]

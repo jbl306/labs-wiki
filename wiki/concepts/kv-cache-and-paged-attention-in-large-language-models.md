@@ -11,7 +11,7 @@ concepts:
   - kv-cache-and-paged-attention-in-large-language-models
 related:
   - "[[Attention Mechanism in Large Language Models]]"
-  - "[[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]]"
+  - "[[amitshekhariitbhu/llm-internals]]"
 tier: hot
 tags: [kv-cache, paged-attention, llm, inference-optimization]
 ---
@@ -65,4 +65,4 @@ These techniques are used in production LLMs for real-time text generation, chat
 
 ## Sources
 
-- [[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]] — primary source for this concept
+- [[amitshekhariitbhu/llm-internals]] — primary source for this concept

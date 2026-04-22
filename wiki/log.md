@@ -4184,3 +4184,9 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   status: success
   notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
 ```
+
+## 2026-04-22 — github-source-refresh
+- operation: refresh_github_sources
+- ingest_method: self-synthesis (no LLM)
+- count: 1
+  - wiki/sources/llm-wiki.md

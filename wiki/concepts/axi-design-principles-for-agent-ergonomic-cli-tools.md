@@ -12,7 +12,7 @@ concepts:
 related:
   - "[[Agent Handoffs in VS Code]]"
   - "[[The Context Hygiene Principle]]"
-  - "[[AXI: Agent eXperience Interface (GitHub Repository)]]"
+  - "[[kunchenguid/axi]]"
 tier: hot
 tags: [agent ergonomics, cli design, token efficiency, automation, TOON format, session hooks, structured errors]
 ---
@@ -93,4 +93,4 @@ AXI principles are applied in agent-facing CLI tools for browser automation (chr
 
 ## Sources
 
-- [[AXI: Agent eXperience Interface (GitHub Repository)]] — primary source for this concept
+- [[kunchenguid/axi]] — primary source for this concept

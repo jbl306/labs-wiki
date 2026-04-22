@@ -13,7 +13,7 @@ concepts:
   - intelligent-resource-orchestration
 related:
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
 tier: hot
 tags: [resource-orchestration, agent, tool, automation, llm]
 ---
@@ -63,6 +63,6 @@ Used in enterprise automation, research collaboration, and AI-driven process opt
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — primary source for this concept
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
+- [[HKUDS/AutoAgent]] — primary source for this concept
+- [[HKUDS/AutoAgent]] — additional source
+- [[HKUDS/AutoAgent]] — additional source

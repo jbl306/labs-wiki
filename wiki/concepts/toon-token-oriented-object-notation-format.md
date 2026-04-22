@@ -11,7 +11,7 @@ concepts:
   - toon-token-oriented-object-notation-format
 related:
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[AXI: Agent eXperience Interface (GitHub Repository)]]"
+  - "[[kunchenguid/axi]]"
 tier: hot
 tags: [TOON format, token efficiency, agent automation, cli output]
 ---
@@ -85,4 +85,4 @@ TOON is used in AXI-compliant CLI tools for browser and GitHub automation, enabl
 
 ## Sources
 
-- [[AXI: Agent eXperience Interface (GitHub Repository)]] — primary source for this concept
+- [[kunchenguid/axi]] — primary source for this concept

@@ -11,7 +11,7 @@ concepts:
   - byte-pair-encoding-bpe-in-large-language-models
 related:
   - "[[Tokenization and Representation in VLA Models]]"
-  - "[[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]]"
+  - "[[amitshekhariitbhu/llm-internals]]"
 tier: hot
 tags: [tokenization, llm, byte-pair-encoding, nlp]
 ---
@@ -64,4 +64,4 @@ BPE is used in LLMs for preprocessing text, enabling efficient handling of diver
 
 ## Sources
 
-- [[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]] — primary source for this concept
+- [[amitshekhariitbhu/llm-internals]] — primary source for this concept

@@ -11,7 +11,7 @@ concepts:
   - chrome-devtools-mcp-cli-interface
 related:
   - "[[Agent-Ergonomic Tool Design Principles]]"
-  - "[[Chrome DevTools MCP GitHub Repository]]"
+  - "[[ChromeDevTools/chrome-devtools-mcp]]"
 tier: hot
 tags: [cli, browser-automation, chrome-devtools, agentic-tools, debugging, performance-analysis]
 ---
@@ -87,4 +87,4 @@ Used for direct browser automation, debugging, and inspection from the terminal.
 
 ## Sources
 
-- [[Chrome DevTools MCP GitHub Repository]] — primary source for this concept
+- [[ChromeDevTools/chrome-devtools-mcp]] — primary source for this concept

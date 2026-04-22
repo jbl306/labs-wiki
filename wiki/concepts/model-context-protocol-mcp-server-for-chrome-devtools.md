@@ -11,7 +11,7 @@ concepts:
   - model-context-protocol-mcp-server-for-chrome-devtools
 related:
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[Chrome DevTools MCP GitHub Repository]]"
+  - "[[ChromeDevTools/chrome-devtools-mcp]]"
 tier: hot
 tags: [browser-automation, chrome-devtools, agentic-workflows, debugging, performance-analysis, mcp, puppeteer, cli, agent-integration]
 ---
@@ -83,4 +83,4 @@ Used by coding agents to automate browser tasks, debug web applications, analyze
 
 ## Sources
 
-- [[Chrome DevTools MCP GitHub Repository]] — primary source for this concept
+- [[ChromeDevTools/chrome-devtools-mcp]] — primary source for this concept

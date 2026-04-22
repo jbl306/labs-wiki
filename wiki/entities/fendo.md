@@ -11,7 +11,7 @@ concepts:
   - fendo
 related:
   - "[[Supply Chain Security Hardening for AI Agent Projects]]"
-  - "[[AutoSkills GitHub Repository]]"
+  - "[[midudev/autoskills]]"
   - "[[AutoSkills]]"
   - "[[skills.sh]]"
   - "[[Claude Code]]"
@@ -51,4 +51,4 @@ fendo is critical for maintaining secure and deterministic dependency management
 
 ## Sources
 
-- [[AutoSkills GitHub Repository]] — where this entity was mentioned
+- [[midudev/autoskills]] — where this entity was mentioned

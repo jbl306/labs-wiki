@@ -13,7 +13,7 @@ concepts:
   - chromadb
 related:
   - "[[Palace Memory Architecture]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
   - "[[MemPalace]]"
   - "[[AAAK Compression Dialect]]"
   - "[[MCP (MemPalace Control Protocol)]]"
@@ -53,6 +53,6 @@ ChromaDB powers the semantic retrieval capabilities of MemPalace, allowing users
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — where this entity was mentioned
+- [[milla-jovovich/mempalace]] — where this entity was mentioned
 - [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — additional source
 - [[Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research]] — additional source

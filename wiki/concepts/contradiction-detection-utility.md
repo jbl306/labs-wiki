@@ -12,7 +12,7 @@ concepts:
   - contradiction-detection-utility
 related:
   - "[[Palace Memory Architecture]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
 tier: hot
 tags: [fact-checking, validation, knowledge-graph, ai]
 ---
@@ -61,5 +61,5 @@ Used by team leads and AI agents to verify decisions, assignments, and timelines
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — primary source for this concept
+- [[milla-jovovich/mempalace]] — primary source for this concept
 - [[LLM Wiki]] — additional source

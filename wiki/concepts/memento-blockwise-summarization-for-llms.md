@@ -12,7 +12,7 @@ concepts:
   - memento-blockwise-summarization-for-llms
 related:
   - "[[KV Cache and Paged Attention in Large Language Models]]"
-  - "[[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]]"
+  - "[[microsoft/memento]]"
 tier: hot
 tags: [llm, memory, summarization, context-window, kv-cache, chain-of-thought]
 ---
@@ -75,5 +75,5 @@ Memento is particularly useful in scenarios requiring long-form reasoning, such 
 
 ## Sources
 
-- [[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]] — primary source for this concept
+- [[microsoft/memento]] — primary source for this concept
 - [[Hope: A Memory Architecture for Continual Learning with Long Contexts]] — additional source

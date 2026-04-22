@@ -13,7 +13,7 @@ concepts:
   - metachain
 related:
   - "[[Self-Managing Workflow Generation]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
   - "[[AutoAgent]]"
 tier: hot
 tags: [agent, framework, automation, deprecated]
@@ -49,6 +49,6 @@ MetaChain laid the foundation for AutoAgent's self-developing, fully-automated a
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — where this entity was mentioned
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
+- [[HKUDS/AutoAgent]] — where this entity was mentioned
+- [[HKUDS/AutoAgent]] — additional source
+- [[HKUDS/AutoAgent]] — additional source

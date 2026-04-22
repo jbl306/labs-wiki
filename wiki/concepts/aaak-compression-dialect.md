@@ -11,7 +11,7 @@ concepts:
   - aaak-compression-dialect
 related:
   - "[[Palace Memory Architecture]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
 tier: hot
 tags: [compression, tokenization, llm, context-management]
 ---
@@ -63,4 +63,4 @@ Used to inject critical facts into LLM prompts for wake-up commands or context l
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — primary source for this concept
+- [[milla-jovovich/mempalace]] — primary source for this concept

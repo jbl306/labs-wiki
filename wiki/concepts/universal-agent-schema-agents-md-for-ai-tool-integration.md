@@ -95,4 +95,4 @@ AGENTS.md enables consistent multi-agent coordination in the labs-wiki system, a
 ## Sources
 
 - [[Copilot Session Checkpoint: Full Labs-Wiki Implementation Complete]] — primary source for this concept
-- [[AutoSkills GitHub Repository]] — additional source
+- [[midudev/autoskills]] — additional source

@@ -12,7 +12,7 @@ concepts:
 related:
   - "[[Time Series Foundation Model Architecture]]"
   - "[[Continuous Quantile Forecasting in Time-Series Models]]"
-  - "[[TimesFM: Time Series Foundation Model (google-research/timesfm)]]"
+  - "[[google-research/timesfm]]"
 tier: hot
 tags: [time-series, foundation-model, forecasting, transformer, quantile-forecasting]
 ---
@@ -96,4 +96,4 @@ TimesFM is used for forecasting in enterprise analytics (BigQuery ML), spreadshe
 
 ## Sources
 
-- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — primary source for this concept
+- [[google-research/timesfm]] — primary source for this concept

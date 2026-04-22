@@ -11,7 +11,7 @@ concepts:
   - supply-chain-security-hardening-for-ai-agent-projects
 related:
   - "[[Automated AI Skill Stack Installation]]"
-  - "[[AutoSkills GitHub Repository]]"
+  - "[[midudev/autoskills]]"
 tier: hot
 tags: [supply-chain-security, dependency-management, ai-agent, deterministic-builds]
 ---
@@ -72,4 +72,4 @@ Protects AI agent projects from supply chain attacks, ensures reproducible build
 
 ## Sources
 
-- [[AutoSkills GitHub Repository]] — primary source for this concept
+- [[midudev/autoskills]] — primary source for this concept

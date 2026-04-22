@@ -13,7 +13,7 @@ concepts:
   - self-managing-workflow-generation
 related:
   - "[[Structured Artifact Chains]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
 tier: hot
 tags: [workflow, automation, llm, agent, dynamic]
 ---
@@ -70,6 +70,6 @@ Used for automating business processes, research pipelines, and multi-step analy
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — primary source for this concept
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]] — additional source
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
+- [[HKUDS/AutoAgent]] — primary source for this concept
+- [[HKUDS/AutoAgent]] — additional source
+- [[HKUDS/AutoAgent]] — additional source

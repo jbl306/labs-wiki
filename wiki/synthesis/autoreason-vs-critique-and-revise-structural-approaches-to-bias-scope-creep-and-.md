@@ -13,7 +13,7 @@ concepts:
   - autoreason
 related:
   - "[[Taxonomy Of LLM Reasoning Failures]]"
-  - "[[NousResearch/autoreason: Autoresearch for Subjective Domains]]"
+  - "[[NousResearch/autoreason]]"
   - "[[Autoreason Iterative Self-Refinement Framework]]"
   - "[[Autoreason]]"
 tier: hot
@@ -64,6 +64,6 @@ A common misconception is that more iterations or more critique always lead to b
 
 ## Sources
 
-- [[NousResearch/autoreason: Autoresearch for Subjective Domains]]
+- [[NousResearch/autoreason]]
 - [[Autoreason Iterative Self-Refinement Framework]]
 - [[Taxonomy Of LLM Reasoning Failures]]

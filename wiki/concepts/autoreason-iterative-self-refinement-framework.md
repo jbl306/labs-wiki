@@ -13,7 +13,7 @@ related:
   - "[[Faithful vs. Motivated Reasoning in Language Models]]"
   - "[[Taxonomy Of LLM Reasoning Failures]]"
   - "[[Agent Skill Integration for Time-Series Forecasting]]"
-  - "[[NousResearch/autoreason: Autoresearch for Subjective Domains]]"
+  - "[[NousResearch/autoreason]]"
 tier: hot
 tags: [self-refinement, agentic workflows, blind evaluation, iterative improvement, subjective domains, llm reasoning]
 ---
@@ -125,4 +125,4 @@ Autoreason is applicable to writing tasks, competitive programming, and any doma
 
 ## Sources
 
-- [[NousResearch/autoreason: Autoresearch for Subjective Domains]] — primary source for this concept
+- [[NousResearch/autoreason]] — primary source for this concept

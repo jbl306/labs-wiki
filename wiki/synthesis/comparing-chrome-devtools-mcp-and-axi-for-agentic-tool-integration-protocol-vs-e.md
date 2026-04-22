@@ -14,7 +14,7 @@ concepts:
 related:
   - "[[Model-Context-Protocol (MCP) Server for Chrome DevTools]]"
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[Chrome DevTools MCP GitHub Repository]]"
+  - "[[ChromeDevTools/chrome-devtools-mcp]]"
   - "[[Chrome DevTools MCP]]"
 tier: hot
 tags: [agentic tools, protocols, CLI design, token optimization, browser automation, error handling]
@@ -66,6 +66,6 @@ A common misconception is that protocol standardization alone guarantees agent u
 
 ## Sources
 
-- [[Chrome DevTools MCP GitHub Repository]]
+- [[ChromeDevTools/chrome-devtools-mcp]]
 - [[Model-Context-Protocol (MCP) Server for Chrome DevTools]]
 - [[AXI Design Principles for Agent-Ergonomic CLI Tools]]

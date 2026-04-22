@@ -13,7 +13,7 @@ related:
   - "[[Automated AI Skill Stack Installation]]"
   - "[[Supply Chain Security Hardening for AI Agent Projects]]"
   - "[[Claude Code Skill Summarization]]"
-  - "[[AutoSkills GitHub Repository]]"
+  - "[[midudev/autoskills]]"
 tier: hot
 tags: [ai-agent, cli-tool, automation, supply-chain-security]
 ---
@@ -50,4 +50,4 @@ No related entities documented yet.
 
 ## Sources
 
-- [[AutoSkills GitHub Repository]] — where this entity was mentioned
+- [[midudev/autoskills]] — where this entity was mentioned

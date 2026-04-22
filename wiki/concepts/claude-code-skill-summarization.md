@@ -12,7 +12,7 @@ concepts:
 related:
   - "[[Automated AI Skill Stack Installation]]"
   - "[[Skill Design Framework for AI Agents]]"
-  - "[[AutoSkills GitHub Repository]]"
+  - "[[midudev/autoskills]]"
 tier: hot
 tags: [claude-code, skill-summarization, agentic-workflow, ai-agent]
 ---
@@ -72,4 +72,4 @@ Used in Claude Code and agentic workflows to provide a quick reference for insta
 
 ## Sources
 
-- [[AutoSkills GitHub Repository]] — primary source for this concept
+- [[midudev/autoskills]] — primary source for this concept

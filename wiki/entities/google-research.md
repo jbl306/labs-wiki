@@ -50,4 +50,4 @@ No related entities documented yet.
 ## Sources
 
 - [[Introducing Nested Learning: A New ML Paradigm for Continual Learning]] — where this entity was mentioned
-- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — additional source
+- [[google-research/timesfm]] — additional source

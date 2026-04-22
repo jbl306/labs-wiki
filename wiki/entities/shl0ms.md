@@ -11,7 +11,7 @@ concepts:
   - shl0ms
 related:
   - "[[Autoreason Iterative Self-Refinement Framework]]"
-  - "[[NousResearch/autoreason: Autoresearch for Subjective Domains]]"
+  - "[[NousResearch/autoreason]]"
   - "[[Hermes Agent]]"
   - "[[Autoreason]]"
 tier: hot
@@ -49,4 +49,4 @@ SHL0MS's contributions are central to the development and validation of Autoreas
 
 ## Sources
 
-- [[NousResearch/autoreason: Autoresearch for Subjective Domains]] — where this entity was mentioned
+- [[NousResearch/autoreason]] — where this entity was mentioned

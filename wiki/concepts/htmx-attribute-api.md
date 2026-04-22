@@ -11,7 +11,7 @@ concepts:
   - htmx-attribute-api
 related:
   - "[[HTML Over The Wire With htmx]]"
-  - "[[htmx - HTML Over The Wire]]"
+  - "[[bigskysoftware/htmx]]"
 tier: hot
 tags: [html, attributes, api, declarative, ajax, websockets, sse]
 ---
@@ -69,4 +69,4 @@ Used for adding interactivity to forms, buttons, navigation elements, and any ot
 
 ## Sources
 
-- [[htmx - HTML Over The Wire]] — primary source for this concept
+- [[bigskysoftware/htmx]] — primary source for this concept

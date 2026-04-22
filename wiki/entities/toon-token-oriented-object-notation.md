@@ -11,7 +11,7 @@ concepts:
   - toon-token-oriented-object-notation
 related:
   - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[AXI: Agent eXperience Interface (GitHub Repository)]]"
+  - "[[kunchenguid/axi]]"
 tier: hot
 tags: [TOON format, token efficiency, cli output, agent automation]
 ---
@@ -46,4 +46,4 @@ No related entities documented yet.
 
 ## Sources
 
-- [[AXI: Agent eXperience Interface (GitHub Repository)]] — where this entity was mentioned
+- [[kunchenguid/axi]] — where this entity was mentioned

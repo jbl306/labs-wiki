@@ -17,7 +17,7 @@ related:
   - "[[Natural Language-Driven Agent Building]]"
   - "[[Self-Managing Workflow Generation]]"
   - "[[Intelligent Resource Orchestration]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
   - "[[MetaChain]]"
 tier: hot
 tags: [agent, llm, framework, automation, open-source]
@@ -55,8 +55,8 @@ AutoAgent democratizes AI agent development by eliminating the need for manual c
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — where this entity was mentioned
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]] — additional source
+- [[HKUDS/AutoAgent]] — where this entity was mentioned
+- [[HKUDS/AutoAgent]] — additional source
 - [[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]] — additional source
 - [[Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research]] — additional source
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (HKUDS/AutoAgent GitHub Repository)]] — additional source
+- [[HKUDS/AutoAgent]] — additional source

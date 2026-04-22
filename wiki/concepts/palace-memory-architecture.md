@@ -13,7 +13,7 @@ concepts:
 related:
   - "[[Continuum Memory System]]"
   - "[[LLM Wiki Architecture]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
 tier: hot
 tags: [memory, ai, knowledge-management, retrieval, architecture]
 ---
@@ -77,5 +77,5 @@ Used by AI agents (Claude Code, ChatGPT, Gemini CLI) to recall decisions, debugg
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — primary source for this concept
+- [[milla-jovovich/mempalace]] — primary source for this concept
 - [[Agents that remember: introducing Agent Memory]] — additional source

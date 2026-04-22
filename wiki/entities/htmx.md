@@ -12,7 +12,7 @@ concepts:
 related:
   - "[[HTML Over The Wire With htmx]]"
   - "[[htmx Attribute API]]"
-  - "[[htmx - HTML Over The Wire]]"
+  - "[[bigskysoftware/htmx]]"
 tier: hot
 tags: [html, javascript, ajax, websockets, sse, tool]
 ---
@@ -48,4 +48,4 @@ No related entities documented yet.
 
 ## Sources
 
-- [[htmx - HTML Over The Wire]] — where this entity was mentioned
+- [[bigskysoftware/htmx]] — where this entity was mentioned

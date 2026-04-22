@@ -11,7 +11,7 @@ concepts:
   - continuous-quantile-forecasting-in-time-series-models
 related:
   - "[[Time Series Foundation Model Architecture]]"
-  - "[[TimesFM: Time Series Foundation Model (google-research/timesfm)]]"
+  - "[[google-research/timesfm]]"
 tier: hot
 tags: [quantile-forecasting, probabilistic-prediction, time-series, uncertainty]
 ---
@@ -67,4 +67,4 @@ Quantile forecasting is used in risk management, scenario planning, and uncertai
 
 ## Sources
 
-- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — primary source for this concept
+- [[google-research/timesfm]] — primary source for this concept

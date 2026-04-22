@@ -24,7 +24,7 @@ related:
   - "[[Palace Memory Architecture]]"
   - "[[AAAK Compression Dialect]]"
   - "[[Contradiction Detection Utility]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
   - "[[ChromaDB]]"
   - "[[MCP (MemPalace Control Protocol)]]"
 tier: hot
@@ -65,7 +65,7 @@ MemPalace addresses the problem of ephemeral AI conversations by preserving ever
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — where this entity was mentioned
+- [[milla-jovovich/mempalace]] — where this entity was mentioned
 - [[Watcher E2E Validation]] — additional source
 - [[Copilot Session Checkpoint: Homepage Overhaul And Resource Tuning]] — additional source
 - [[Copilot Session Checkpoint: NBA ML OOM Fix And Docs Cleanup]] — additional source

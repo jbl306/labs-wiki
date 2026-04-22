@@ -11,7 +11,7 @@ concepts:
   - closet-index-layer
 related:
   - "[[MemPalace Memory System]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
 tier: hot
 tags: [indexing, semantic-search, retrieval, memory-architecture]
 ---
@@ -73,4 +73,4 @@ Closets enable fast, scoped retrieval of relevant information in large corpora, 
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — primary source for this concept
+- [[milla-jovovich/mempalace]] — primary source for this concept

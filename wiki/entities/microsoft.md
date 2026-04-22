@@ -48,4 +48,4 @@ No related entities documented yet.
 ## Sources
 
 - [[LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks]] — where this entity was mentioned
-- [[Memento: Extending LLM Output Length via Blockwise Summarization and KV Cache Compaction]] — additional source
+- [[microsoft/memento]] — additional source

@@ -11,7 +11,7 @@ concepts:
   - forecastconfig-forecasting-configuration-abstraction
 related:
   - "[[Continuous Quantile Forecasting in Time-Series Models]]"
-  - "[[TimesFM: Time Series Foundation Model (google-research/timesfm)]]"
+  - "[[google-research/timesfm]]"
 tier: hot
 tags: [configuration, forecasting, dataclass, model-parameters]
 ---
@@ -77,4 +77,4 @@ Allows users to tailor TimesFM's forecasting behavior to specific datasets, task
 
 ## Sources
 
-- [[TimesFM: Time Series Foundation Model (google-research/timesfm)]] — primary source for this concept
+- [[google-research/timesfm]] — primary source for this concept

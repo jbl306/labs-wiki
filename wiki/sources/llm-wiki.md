@@ -1,65 +1,52 @@
 ---
-title: "LLM Wiki"
+title: LLM Wiki
 type: source
-created: 2026-04-21
-last_verified: 2026-04-21
-source_hash: "a402e64fc0c46e618b01acc3502f18a992b4a42222bfd7f87c9abbee3801c98f"
+created: '2026-04-22'
+last_verified: '2026-04-22'
+source_hash: 2e702592daf7ccd63d3f0229d4e688c3f21b4758ddb58ad0fb402ccb2fa337b6
 sources:
-  - raw/2026-04-07-llm-wiki.md
-quality_score: 90
-concepts:
-  - llm-wiki-pattern
-  - schema-guided-llm-knowledge-base-maintenance
-  - automated-wiki-linting-contradiction-detection
-related:
-  - "[[Schema-Guided LLM Knowledge Base Maintenance]]"
-  - "[[Obsidian]]"
-  - "[[Obsidian Web Clipper]]"
-  - "[[Marp]]"
-  - "[[Dataview]]"
-  - "[[qmd]]"
-tier: hot
-knowledge_state: validated
-tags: [wiki, obsidian, maintenance, pattern, automation, llm, schema, knowledge-base]
+- raw/2026-04-07-llm-wiki.md
+source_url: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+tags:
+- gist
+- github
+- karpathy
+tier: warm
+knowledge_state: ingested
+ingest_method: self-synthesis-no-llm
 ---
 
 # LLM Wiki
 
 ## Summary
 
-This document outlines a pattern for building personal knowledge bases using LLMs, emphasizing persistent, compounding wiki artifacts rather than ephemeral retrieval. It describes the architecture, operational workflows, and practical tips for maintaining a structured, interlinked markdown wiki, with the LLM handling all maintenance and synthesis. The approach is modular and adaptable, designed to reduce human bookkeeping and leverage LLMs for scalable knowledge management.
+A pattern for building personal knowledge bases using LLMs.
 
-## Key Points
+## Repository Info
 
-- LLM Wiki pattern replaces traditional RAG workflows with persistent, evolving knowledge bases.
-- Architecture consists of raw sources, LLM-generated wiki, and a schema guiding workflows.
-- Operations include ingest, query, lint, indexing, and logging, with optional CLI tools for scaling.
+- **Source URL**: https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f
+- **Author**: karpathy
+- **Gist ID**: `442a6bf555914893e9891c11519de94f`
+- **Content size**: 11,922 chars
 
-## Concepts Extracted
+## Content Excerpt
 
-- **LLM Wiki Pattern** — The LLM Wiki Pattern is a methodology for building and maintaining personal or organizational knowledge bases using large language models. Unlike traditional retrieval-augmented generation (RAG) systems, which treat source documents as static and rediscover knowledge on every query, the LLM Wiki Pattern compiles knowledge into a persistent, evolving wiki. This wiki is structured, interlinked, and maintained automatically by the LLM, enabling compounding synthesis, cross-referencing, and contradiction detection.
-- **[[Schema-Guided LLM Knowledge Base Maintenance]]** — Schema-guided maintenance is a methodology where a configuration document defines the structure, conventions, and workflows for an LLM-maintained wiki. This schema acts as the operational blueprint, ensuring that the LLM follows consistent procedures for ingesting sources, updating pages, answering queries, and maintaining the knowledge base.
-- **Automated Wiki Linting and Contradiction Detection** — Automated wiki linting and contradiction detection is a process where the LLM periodically audits the wiki for inconsistencies, stale claims, orphan pages, missing cross-references, and data gaps. This ensures the knowledge base remains healthy, current, and reliable, with contradictions flagged and resolved as new sources are integrated.
+# LLM Wiki
 
-## Entities Mentioned
+A pattern for building personal knowledge bases using LLMs.
 
-- **[[Obsidian]]** — Obsidian is a markdown-based note-taking and knowledge management tool, serving as the IDE for browsing and interacting with LLM-generated wiki content. It supports plugins for graph visualization, web clipping, slide deck generation, and dynamic querying, making it a powerful platform for personal and collaborative knowledge bases.
-- **[[Obsidian Web Clipper]]** — Obsidian Web Clipper is a browser extension that converts web articles into markdown files, streamlining the ingestion of new sources into the LLM Wiki's raw collection. It supports local image downloading and integration with Obsidian's directory structure.
-- **[[Marp]]** — Marp is a markdown-based slide deck format, with an Obsidian plugin that enables users to generate presentations directly from wiki content. It supports dynamic, LLM-generated slide decks for research, teaching, or business applications.
-- **[[Dataview]]** — Dataview is an Obsidian plugin that runs queries over page frontmatter, generating dynamic tables and lists from wiki metadata such as tags, dates, and source counts. It enhances navigation and analysis within the LLM-maintained wiki.
-- **[[qmd]]** — qmd is a local search engine for markdown files, offering hybrid BM25/vector search and LLM re-ranking. It operates on-device, with both CLI and MCP server interfaces, enabling scalable search as the wiki grows.
+This is an idea file, it is designed to be copy pasted to your own LLM Agent (e.g. OpenAI Codex, Claude Code, OpenCode / Pi, or etc.). Its goal is to communicate the high level idea, but your agent will build out the specifics in collaboration with you.
 
-## Notable Quotes
+## The core idea
 
-> "The wiki is a persistent, compounding artifact. The cross-references are already there. The contradictions have already been flagged. The synthesis already reflects everything you've read." — LLM Wiki
-> "The tedious part of maintaining a knowledge base is not the reading or the thinking — it's the bookkeeping. LLMs don't get bored, don't forget to update a cross-reference, and can touch 15 files in one pass." — LLM Wiki
+Most people's experience with LLMs and documents looks like RAG: you upload a collection of files, the LLM retrieves relevant chunks at query time, and generates an answer. This works, but the LLM is rediscovering knowledge from scratch on every question. There's no accumulation. Ask a subtle question that requires synthesizing five documents, and the LLM has to find and piece together the relevant fragments every time. Nothing is built up. NotebookLM, ChatGPT file uploads, and most RAG systems work this way.
 
-## Source Details
+The idea here is different. Instead of just retrieving from raw documents at query time, the LLM **incrementally builds and maintains a persistent wiki** — a structured, interlinked collection of markdown files that sits between you and the raw sources. When you add a new source, the LLM doesn't just index it for later retrieval. It reads it, extracts the key information, and integrates it into the existing wiki — updating entity pages, revising topic summaries, noting where new data contradicts old claims, strengthening or challenging the evolving synthesis. The knowledge is compiled once and then *kept current*, not re-derived on every query.
 
-| Field | Value |
-|-------|-------|
-| Original | `raw/2026-04-07-llm-wiki.md` |
-| Type | gist |
-| Author | Unknown |
-| Date | Unknown |
-| URL | https://gist.github.com/karpathy/442a6bf555914893e9891c11519de94f |
+This is the key difference: **the wiki is a persistent, compounding artifact.** The cross-references are already there. The contradictions have already been flagged. The synthesis already reflects everything you've read. The wiki keeps getting richer with every source you add and eve…
+
+## Crawled Files
+
+Source dump in `raw/2026-04-07-llm-wiki.md` includes:
+
+- gist `karpathy/442a6bf555914893e9891c11519de94f` (single-file gist, raw text)

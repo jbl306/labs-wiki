@@ -16,7 +16,7 @@ related:
   - "[[Flash Attention in Large Language Models]]"
   - "[[KV Cache and Paged Attention in Large Language Models]]"
   - "[[Positional Encoding]]"
-  - "[[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]]"
+  - "[[amitshekhariitbhu/llm-internals]]"
 tier: hot
 tags: [attention, llm, transformer, nlp]
 ---
@@ -73,4 +73,4 @@ Attention is used in LLMs for tasks like machine translation, text generation, a
 
 ## Sources
 
-- [[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]] — primary source for this concept
+- [[amitshekhariitbhu/llm-internals]] — primary source for this concept

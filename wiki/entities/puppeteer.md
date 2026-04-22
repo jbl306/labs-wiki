@@ -11,7 +11,7 @@ concepts:
   - puppeteer
 related:
   - "[[Model-Context-Protocol (MCP) Server for Chrome DevTools]]"
-  - "[[Chrome DevTools MCP GitHub Repository]]"
+  - "[[ChromeDevTools/chrome-devtools-mcp]]"
   - "[[Chrome DevTools MCP]]"
   - "[[Chrome DevTools]]"
 tier: hot
@@ -49,4 +49,4 @@ Puppeteer is integral to Chrome DevTools MCP's automation capabilities, allowing
 
 ## Sources
 
-- [[Chrome DevTools MCP GitHub Repository]] — where this entity was mentioned
+- [[ChromeDevTools/chrome-devtools-mcp]] — where this entity was mentioned

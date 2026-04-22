@@ -11,7 +11,7 @@ concepts:
   - source-adapter-plugin-specification
 related:
   - "[[MemPalace Memory System]]"
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
 tier: hot
 tags: [plugin, adapter, ingest, extensibility, privacy, metadata]
 ---
@@ -81,4 +81,4 @@ Organizations and users can extend MemPalace to ingest data from diverse sources
 
 ## Sources
 
-- [[MemPalace GitHub Repository]] — primary source for this concept
+- [[milla-jovovich/mempalace]] — primary source for this concept

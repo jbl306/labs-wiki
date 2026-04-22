@@ -11,7 +11,7 @@ concepts:
   - hermes-agent
 related:
   - "[[Autoreason Iterative Self-Refinement Framework]]"
-  - "[[NousResearch/autoreason: Autoresearch for Subjective Domains]]"
+  - "[[NousResearch/autoreason]]"
   - "[[SHL0MS]]"
   - "[[Autoreason]]"
 tier: hot
@@ -49,4 +49,4 @@ Hermes Agent's involvement is integral to the Autoreason framework, advancing ag
 
 ## Sources
 
-- [[NousResearch/autoreason: Autoresearch for Subjective Domains]] — where this entity was mentioned
+- [[NousResearch/autoreason]] — where this entity was mentioned

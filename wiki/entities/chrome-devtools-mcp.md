@@ -13,7 +13,7 @@ related:
   - "[[Model-Context-Protocol (MCP) Server for Chrome DevTools]]"
   - "[[Agent-Ergonomic Tool Design Principles]]"
   - "[[Chrome DevTools MCP CLI Interface]]"
-  - "[[Chrome DevTools MCP GitHub Repository]]"
+  - "[[ChromeDevTools/chrome-devtools-mcp]]"
   - "[[puppeteer]]"
   - "[[Chrome DevTools]]"
 tier: hot
@@ -53,4 +53,4 @@ It is a critical middleware for agentic coding workflows, providing deep browser
 
 ## Sources
 
-- [[Chrome DevTools MCP GitHub Repository]] — where this entity was mentioned
+- [[ChromeDevTools/chrome-devtools-mcp]] — where this entity was mentioned

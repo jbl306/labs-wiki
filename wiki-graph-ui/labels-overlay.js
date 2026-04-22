@@ -43,11 +43,18 @@ export function createLabelOverlay({ container, renderer }) {
   layer.appendChild(stage);
   container.appendChild(layer);
 
-  // node id -> { el, w, h }
+  // node id -> { el, w, h, measuredFontPx }
+  // `w`/`h` are the label box dimensions in CSS pixels at `measuredFontPx`.
+  // When the stage font-size changes we *scale* w/h by the ratio rather
+  // than calling getBoundingClientRect — which would force a synchronous
+  // reflow per label (layout thrash) and freeze the main thread on every
+  // zoom settle. Width is linear in font-size for fixed text, so this is
+  // pixel-accurate to within sub-pixel rounding.
   const cache = new Map();
   let nodes = [];
   let pinned = new Set();
   let onLabelClick = null;
+  let currentFontPx = 0;
 
   // Snapshot of the camera *at the time labels were last laid out*.
   // The stage transform is computed against this so labels can ride along
@@ -126,8 +133,9 @@ export function createLabelOverlay({ container, renderer }) {
       if (onLabelClick) onLabelClick(node);
     });
     stage.appendChild(el);
-    const r = el.getBoundingClientRect();
-    return { el, w: Math.ceil(r.width) || 60, h: Math.ceil(r.height) || 16 };
+    // Defer measurement to the batched read pass in runLayout so we don't
+    // interleave reads/writes and force per-label synchronous reflows.
+    return { el, w: 0, h: 0, measuredFontPx: 0 };
   }
 
   function getEl(node) {
@@ -188,10 +196,25 @@ export function createLabelOverlay({ container, renderer }) {
 
     // Font scales mildly with zoom. clamp prevents either extreme.
     const fontPx = Math.max(9, Math.min(20, 10 + Math.log2(Math.max(0.35, cam.scale)) * 2.2));
-    if (stage.style.fontSize !== fontPx + "px") {
+    let fontChanged = false;
+    if (fontPx !== currentFontPx) {
       stage.style.fontSize = fontPx + "px";
-      // Font-size change invalidates cached widths.
-      for (const entry of cache.values()) entry._needsMeasure = true;
+      // Width is linear in font-size for fixed text content, so we can
+      // scale cached dimensions instead of forcing a per-label
+      // getBoundingClientRect (which would reflow the page N times and
+      // produce the multi-hundred-millisecond freeze users see when
+      // zooming). Entries with measuredFontPx===0 are still pending
+      // their first measurement and will be batched-measured below.
+      for (const entry of cache.values()) {
+        if (entry.measuredFontPx > 0) {
+          const ratio = fontPx / entry.measuredFontPx;
+          entry.w = Math.max(1, Math.ceil(entry.w * ratio));
+          entry.h = Math.max(1, Math.ceil(entry.h * ratio));
+          entry.measuredFontPx = fontPx;
+        }
+      }
+      currentFontPx = fontPx;
+      fontChanged = true;
     }
 
     // Budget grows with zoom so wide views stay sparse, zoomed-in views show
@@ -214,7 +237,27 @@ export function createLabelOverlay({ container, renderer }) {
     }
     candidates.sort((a, b) => b.imp - a.imp);
 
-    // Spatial-bucket greedy collision avoidance.
+    // ---- Read pass: measure any unmeasured labels in one batch.
+    // Collect entries in candidate order so we touch only what we'll
+    // probably draw. Reads happen here with no intervening style writes,
+    // so the browser does at most one layout for the whole batch.
+    const toMeasure = [];
+    const entries = new Array(candidates.length);
+    for (let i = 0; i < candidates.length; i++) {
+      const entry = getEl(candidates[i].node);
+      entries[i] = entry;
+      if (entry.measuredFontPx === 0) toMeasure.push(entry);
+    }
+    if (toMeasure.length) {
+      for (const entry of toMeasure) {
+        const r = entry.el.getBoundingClientRect();
+        entry.w = Math.ceil(r.width) || 60;
+        entry.h = Math.ceil(r.height) || 16;
+        entry.measuredFontPx = fontPx;
+      }
+    }
+
+    // ---- Write pass: collision-test then position. No reads from here on.
     const BUCKET = 96;
     const buckets = new Map();
     const visible = new Set();
@@ -252,15 +295,10 @@ export function createLabelOverlay({ container, renderer }) {
       }
     }
 
-    for (const c of candidates) {
+    for (let i = 0; i < candidates.length; i++) {
+      const c = candidates[i];
       if (visible.size >= budget && !c.pinned) break;
-      const entry = getEl(c.node);
-      if (entry._needsMeasure) {
-        const r = entry.el.getBoundingClientRect();
-        entry.w = Math.ceil(r.width) || 60;
-        entry.h = Math.ceil(r.height) || 16;
-        entry._needsMeasure = false;
-      }
+      const entry = entries[i];
       // Position label below the node, beyond the bloomy halo. The halo
       // visible diameter ≈ 2.4× the dot radius for hub nodes, so we push
       // labels by `r * 1.6 + 8` to keep them clear of the node sprite.

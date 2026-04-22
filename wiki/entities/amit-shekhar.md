@@ -14,7 +14,7 @@ related:
   - "[[Attention Mechanism in Large Language Models]]"
   - "[[KV Cache and Paged Attention in Large Language Models]]"
   - "[[Flash Attention in Large Language Models]]"
-  - "[[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]]"
+  - "[[amitshekhariitbhu/llm-internals]]"
   - "[[Outcome School]]"
   - "[[llm-internals]]"
 tier: hot
@@ -55,4 +55,4 @@ Amit Shekhar's work is significant for making complex LLM concepts accessible, f
 
 ## Sources
 
-- [[amitshekhariitbhu/llm-internals: Learn LLM Internals Step by Step]] — where this entity was mentioned
+- [[amitshekhariitbhu/llm-internals]] — where this entity was mentioned

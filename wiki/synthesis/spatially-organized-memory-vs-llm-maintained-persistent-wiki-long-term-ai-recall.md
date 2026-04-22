@@ -12,7 +12,7 @@ concepts:
   - llm-wiki-architecture
   - palace-memory-architecture
 related:
-  - "[[MemPalace GitHub Repository]]"
+  - "[[milla-jovovich/mempalace]]"
   - "[[LLM Wiki Architecture]]"
   - "[[Palace Memory Architecture]]"
 tier: hot
@@ -63,6 +63,6 @@ Common misconceptions include assuming that spatially-organized memory is merely
 
 ## Sources
 
-- [[MemPalace GitHub Repository]]
+- [[milla-jovovich/mempalace]]
 - [[Palace Memory Architecture]]
 - [[LLM Wiki Architecture]]

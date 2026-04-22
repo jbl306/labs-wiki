@@ -77,4 +77,4 @@ MemPalace is used to manage AI agent conversational memory locally, enabling per
 
 - [[Copilot Session Checkpoint: Installing MemPalace, Beginning Migration]] — primary source for this concept
 - [[Copilot Session Checkpoint: Researching MemPalace for Comparison Doc]] — additional source
-- [[MemPalace GitHub Repository]] — additional source
+- [[milla-jovovich/mempalace]] — additional source

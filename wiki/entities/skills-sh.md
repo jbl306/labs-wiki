@@ -11,7 +11,7 @@ concepts:
   - skills-sh
 related:
   - "[[Automated AI Skill Stack Installation]]"
-  - "[[AutoSkills GitHub Repository]]"
+  - "[[midudev/autoskills]]"
 tier: hot
 tags: [ai-agent, skill-registry, automation]
 ---
@@ -46,4 +46,4 @@ No related entities documented yet.
 
 ## Sources
 
-- [[AutoSkills GitHub Repository]] — where this entity was mentioned
+- [[midudev/autoskills]] — where this entity was mentioned

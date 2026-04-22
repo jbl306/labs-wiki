@@ -11,7 +11,7 @@ concepts:
   - automated-ai-skill-stack-installation
 related:
   - "[[Skill Design Framework for AI Agents]]"
-  - "[[AutoSkills GitHub Repository]]"
+  - "[[midudev/autoskills]]"
 tier: hot
 tags: [ai-agent, automation, cli-tool, supply-chain-security, skill-stack]
 ---
@@ -77,4 +77,4 @@ Used to bootstrap AI agent capabilities in new or existing projects, ensuring be
 
 ## Sources
 
-- [[AutoSkills GitHub Repository]] — primary source for this concept
+- [[midudev/autoskills]] — primary source for this concept

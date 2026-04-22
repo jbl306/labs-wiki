@@ -10,7 +10,7 @@ quality_score: 73
 concepts:
   - html-over-the-wire-with-htmx
 related:
-  - "[[htmx - HTML Over The Wire]]"
+  - "[[bigskysoftware/htmx]]"
 tier: hot
 tags: [html, ajax, websockets, sse, declarative, javascript, rest, hypermedia]
 ---
@@ -71,4 +71,4 @@ htmx is ideal for building interactive web applications where server-rendered HT
 
 ## Sources
 
-- [[htmx - HTML Over The Wire]] — primary source for this concept
+- [[bigskysoftware/htmx]] — primary source for this concept

@@ -11,7 +11,7 @@ concepts:
   - intelligent-resource-orchestration-for-llm-agents
 related:
   - "[[Automated AI Skill Stack Installation]]"
-  - "[[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]]"
+  - "[[HKUDS/AutoAgent]]"
 tier: hot
 tags: [resource-orchestration, code-generation, docker, llm-integration]
 ---
@@ -63,4 +63,4 @@ Used for deploying AI agents in enterprise, research, and academic settings. Ena
 
 ## Sources
 
-- [[AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework (GitHub Repository)]] — primary source for this concept
+- [[HKUDS/AutoAgent]] — primary source for this concept

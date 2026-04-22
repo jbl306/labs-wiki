@@ -149,10 +149,11 @@ function syncGpuStyle() {
       ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
       : colorForCommunity(n.community),
     sizeOf: (n) => {
-      // Degree-scaled with generous floor so leaves still register as soft
-      // halos under the glow shader. Hubs read as bright blooms.
+      // Tighter range — large nodes were reading as "busy" at fit-zoom on
+      // a 700-node graph. Leaves stay punchy, hubs still dominate but
+      // don't bloom into one another.
       const deg = Math.max(1, n.degree || 1);
-      return Math.max(8, Math.min(46, 7 + Math.log2(deg + 1) * 5.2));
+      return Math.max(5, Math.min(28, 4.5 + Math.log2(deg + 1) * 3.2));
     },
     dimOf: (n) => {
       const onPath = state.pathNodes.has(n.id);
@@ -181,6 +182,15 @@ function isNodeStale(node, now = Date.now()) {
   const t = Date.parse(lv);
   if (Number.isNaN(t)) return true;
   return now - t > STALE_MS_THRESHOLD;
+}
+
+// Encode a node id (which may contain slashes like "concepts/foo") for use
+// as a URL path segment. We keep literal slashes so origin-side routing
+// + intermediaries (Cloudflare, Caddy) treat each segment as a real path
+// component instead of a URL-encoded blob, while still escaping any other
+// reserved characters in the slug.
+function encodePathId(id) {
+  return String(id).split("/").map(encodeURIComponent).join("/");
 }
 
 async function fetchJSON(path) {
@@ -1079,7 +1089,7 @@ async function showNodePanel(node) {
   const contentEl = document.getElementById("node-content");
   if (contentEl) {
     contentEl.innerHTML = "<div class='muted'>loading page…</div>";
-    fetchJSON(`/graph/page/${encodeURIComponent(node.id)}`)
+    fetchJSON(`/graph/page/${encodePathId(node.id)}`)
       .then((data) => {
         contentEl.innerHTML = renderMarkdown(data.body || "");
         // Intercept wikilink clicks → navigate within the graph if we know
@@ -1109,7 +1119,7 @@ async function showNodePanel(node) {
   const ul = document.getElementById("node-neighbors");
   ul.innerHTML = "<li class='muted'>loading…</li>";
   try {
-    const data = await fetchJSON(`/graph/neighbors/${encodeURIComponent(node.id)}?depth=1`);
+    const data = await fetchJSON(`/graph/neighbors/${encodePathId(node.id)}?depth=1`);
     const neighbors = data.nodes.filter((n) => n.id !== node.id);
     ul.innerHTML = "";
     for (const n of neighbors) {

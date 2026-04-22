@@ -33,6 +33,57 @@ export function createLabelOverlay({ container, renderer }) {
   let pinned = new Set(); // ids that must always render (selected/highlighted)
   let onLabelClick = null;
 
+  // ---------- Perf: throttle + interaction-aware --------------------------
+  // Two failure modes we must avoid on mobile:
+  //   1. Re-laying out 700 candidates + DOM transform writes on every
+  //      animation frame during a pinch -> 60 Hz of jank.
+  //   2. Labels visually lagging behind the GPU during gestures (since
+  //      we're DOM-positioned, not in the same draw call as the canvas).
+  // Fix: hide the label layer entirely while the user is actively
+  // interacting (pinch/drag/wheel), and throttle steady-state layout to
+  // ~25 Hz. This restores buttery pinch performance and labels snap back
+  // crisply once the gesture settles.
+  let activePointers = 0;
+  let interacting = false;
+  let settleTimer = null;
+  let lastLayoutTs = 0;
+  let pendingCam = null;
+  let pendingTimer = null;
+  const LAYOUT_INTERVAL_MS = 40; // ~25 Hz cap
+  const SETTLE_MS = 140;         // grace period after gesture ends
+
+  function setInteracting(on) {
+    if (interacting === on) return;
+    interacting = on;
+    layer.classList.toggle("interacting", on);
+    if (!on && pendingCam) {
+      // Layout once with the freshest camera now that the gesture stopped.
+      const cam = pendingCam;
+      pendingCam = null;
+      runLayout(cam);
+    }
+  }
+
+  function bumpInteraction() {
+    setInteracting(true);
+    if (settleTimer) clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => setInteracting(false), SETTLE_MS);
+  }
+
+  // Track gestures on the container so any pointer/wheel inside the graph
+  // host triggers the "interacting" state.
+  container.addEventListener("pointerdown", (e) => {
+    activePointers += 1;
+    bumpInteraction();
+  }, { passive: true });
+  const releasePointer = () => {
+    activePointers = Math.max(0, activePointers - 1);
+    if (activePointers === 0) bumpInteraction(); // start the settle timer
+  };
+  container.addEventListener("pointerup", releasePointer, { passive: true });
+  container.addEventListener("pointercancel", releasePointer, { passive: true });
+  container.addEventListener("wheel", () => bumpInteraction(), { passive: true });
+
   function setNodes(newNodes) {
     nodes = newNodes || [];
   }
@@ -72,9 +123,37 @@ export function createLabelOverlay({ container, renderer }) {
     return entry;
   }
 
-  // Layout — called by renderer.onTransform.
+  // Public layout entry — throttled + interaction-aware. Renderer fires this
+  // on every notifyTransform() (roughly every drawn frame).
   function layout(cam) {
     if (!cam || !nodes.length) return;
+    // While the user is actively gesturing, drop layout work entirely and
+    // keep the label layer hidden via CSS. We just remember the latest
+    // camera so we can lay out once on settle.
+    if (interacting) {
+      pendingCam = cam;
+      return;
+    }
+    const now = performance.now();
+    const since = now - lastLayoutTs;
+    if (since >= LAYOUT_INTERVAL_MS) {
+      runLayout(cam);
+      return;
+    }
+    // Schedule a trailing layout so the final frame after a wheel/pan is
+    // always fresh, even if the renderer stops issuing transform events.
+    pendingCam = cam;
+    if (pendingTimer) return;
+    pendingTimer = setTimeout(() => {
+      pendingTimer = null;
+      const c = pendingCam;
+      pendingCam = null;
+      if (c) runLayout(c);
+    }, LAYOUT_INTERVAL_MS - since);
+  }
+
+  function runLayout(cam) {
+    lastLayoutTs = performance.now();
     const W = cam.viewW, H = cam.viewH;
 
     // How many labels to show scales with zoom. At wide-zoom we want only the
@@ -145,7 +224,7 @@ export function createLabelOverlay({ container, renderer }) {
       // Position label below node by a small offset proportional to the
       // node's rendered radius (approx).
       const deg = Math.max(1, c.node.degree || 1);
-      const r = Math.min(46, 7 + Math.log2(deg + 1) * 5.2);
+      const r = Math.min(28, 4.5 + Math.log2(deg + 1) * 3.2);
       // Center horizontally on node, sit below the glow.
       const labelX = Math.round(c.sx - entry.w / 2);
       const labelY = Math.round(c.sy + r * 0.55 + 4);

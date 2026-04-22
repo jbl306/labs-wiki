@@ -65,8 +65,11 @@ export function createLabelOverlay({ container, renderer }) {
   let lastLayoutTs = 0;
   let pendingCam = null;
   let pendingTimer = null;
-  const LAYOUT_INTERVAL_MS = 60;
-  const SETTLE_MS = 120;
+  // Settle quickly once the user lifts their finger / stops scrolling so
+  // the labels snap to their final positions instead of lingering at the
+  // pre-zoom transform for a noticeable beat.
+  const LAYOUT_INTERVAL_MS = 30;
+  const SETTLE_MS = 50;
 
   function setInteracting(on) {
     if (interacting === on) return;

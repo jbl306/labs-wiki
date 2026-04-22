@@ -131,6 +131,30 @@ async function initWebgl() {
     // Debug hooks for headless tests + manual console inspection.
     window.__pwCam = () => gpuRenderer.getCamera();
     window.__pwNodes = () => gpuRenderer.getNodes();
+    window.__pwBbox = () => gpuRenderer.getBbox && gpuRenderer.getBbox();
+    window.__pwFit = () => gpuRenderer.fit && gpuRenderer.fit();
+    window.__pwSampleNode = () => {
+      // Find the node whose CSS-pixel screen position is closest to the
+      // centre of the canvas (so a tap will reliably land on it).
+      const cam = gpuRenderer.getCamera();
+      const nodes = gpuRenderer.getNodes ? gpuRenderer.getNodes() : null;
+      const canvas = document.getElementById("graph") || document.querySelector("canvas");
+      if (!nodes || !nodes.length || !canvas) return null;
+      const rect = canvas.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      let best = null, bestD = Infinity;
+      for (const n of nodes) {
+        const sx = rect.left + rect.width / 2 + (n.x - cam.x) * cam.scale;
+        const sy = rect.top + rect.height / 2 + (n.y - cam.y) * cam.scale;
+        if (sx < rect.left + 30 || sx > rect.right - 30) continue;
+        if (sy < rect.top + 80 || sy > rect.bottom - 100) continue;
+        const d = (sx - cx) ** 2 + (sy - cy) ** 2;
+        if (d < bestD) { bestD = d; best = { n, sx, sy }; }
+      }
+      if (!best) return null;
+      return { x: Math.round(best.sx), y: Math.round(best.sy), id: best.n.id, title: best.n.title };
+    };
     return gpuRenderer;
   } catch (e) {
     console.error("webgl renderer failed, falling back to canvas:", e);

@@ -470,10 +470,13 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
 
   // ---------- Camera -----------------------------------------------------
 
-  // Cached graph bbox — computed during fit(). Used by clampCamera() so
-  // the user can never pan into the void: we allow the centre to roam
-  // up to 0.6 viewport-widths beyond the trimmed bbox.
+  // Cached graph bbox + fit scale — computed during fit(). Used by
+  // clampCamera() so the user can never pan into the void: we allow the
+  // centre to roam only a small fraction of the viewport beyond the
+  // trimmed bbox. fitScale is the minimum allowed cam.scale so users
+  // can't zoom out past "everything fits".
   let bbox = null; // { minX, maxX, minY, maxY }
+  let fitScale = 0.05;
 
   function fit() {
     if (!nodes.length || !viewW || !viewH) return;
@@ -506,21 +509,26 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     const sx = viewW * (1 - padding * 2) / w;
     const sy = viewH * (1 - padding * 2) / h;
     cam.scale = Math.min(sx, sy);
+    fitScale = cam.scale * 0.85; // allow a touch of zoom-out room beyond fit
     cam.x = (minX + maxX) / 2;
     cam.y = (minY + maxY) / 2;
     needsRedraw = true;
     schedule();
   }
 
-  // Keep the camera centre within bbox + a half-viewport's-worth of slack
-  // on every side. This makes "fling the graph off-screen" impossible —
-  // even at the edge of legal pan, ~50% of the bbox is still visible.
+  // Keep the camera centre within bbox + a tight slack on every side.
+  // Slack scales with viewport (in world units), so at low zoom (where a
+  // small finger swipe = lots of world units) the cap kicks in fast and
+  // the graph never disappears off-screen.
   function clampCamera() {
     if (!bbox) return;
     const halfW = (viewW || 0) / (2 * cam.scale);
     const halfH = (viewH || 0) / (2 * cam.scale);
-    const slackX = (bbox.maxX - bbox.minX) * 0.15 + halfW * 0.5;
-    const slackY = (bbox.maxY - bbox.minY) * 0.15 + halfH * 0.5;
+    // Allow camera centre to roam only ~25% of a viewport beyond the
+    // trimmed bbox. Combined with the fitScale floor below, this means
+    // at minimum zoom the bbox always fills ≥80% of the viewport.
+    const slackX = halfW * 0.25;
+    const slackY = halfH * 0.25;
     if (cam.x < bbox.minX - slackX) cam.x = bbox.minX - slackX;
     if (cam.x > bbox.maxX + slackX) cam.x = bbox.maxX + slackX;
     if (cam.y < bbox.minY - slackY) cam.y = bbox.minY - slackY;
@@ -705,7 +713,9 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   canvas.addEventListener("pointercancel", endPointer);
 
   function zoomAt(nextScale, anchorX, anchorY) {
-    const clamped = Math.max(0.05, Math.min(20, nextScale));
+    // Floor at fitScale (no zooming out beyond "everything fits") so a
+    // small finger swipe at low zoom can't drag the graph off-screen.
+    const clamped = Math.max(fitScale || 0.05, Math.min(20, nextScale));
     const [wx, wy] = screenToWorld(anchorX, anchorY);
     cam.scale = clamped;
     // Re-anchor so the anchor point stays under the cursor.
@@ -798,5 +808,6 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     getCamera,
     onTransform,
     getNodes: () => nodes,
+    getBbox: () => bbox,
   };
 }

@@ -2146,7 +2146,6 @@ last_verified: {today}
 source_hash: "{source_hash}"
 sources:
   - {raw_path}
-quality_score: 0
 concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
@@ -2275,7 +2274,6 @@ last_verified: {today}
 source_hash: "{source_hash}"
 sources:
   - {raw_path}
-quality_score: 0
 concepts:
   - {slug}
 related:
@@ -2395,7 +2393,6 @@ last_verified: {today}
 source_hash: "{source_hash}"
 sources:
   - {raw_path}
-quality_score: 0
 concepts:
   - {slug}
 related:
@@ -2519,7 +2516,6 @@ last_verified: {today}
 source_hash: "synthesis-generated"
 sources:
 {sources_fm}
-quality_score: 0
 concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
@@ -2616,27 +2612,13 @@ def _wikilink_target_exists(target: str, valid_titles: set[str], valid_slugs: se
     return key in valid_titles or _wikilink_slug(key) in valid_slugs
 
 
-def _compute_quality_score(
-    fm: dict,
-    has_wikilinks: bool,
-    has_related: bool,
-) -> int:
-    """Compute 0-100 quality score (mirrors lint_wiki.py logic)."""
-    score = 0
-    required = ["title", "type", "created", "sources"]
-    required_present = sum(1 for f in required if f in fm)
-    score += int(25 * required_present / len(required))
+def _compute_quality_score(*_args, **_kwargs) -> int:
+    """Deprecated. quality_score is computed by scripts/lint_wiki.py.
 
-    if has_wikilinks or has_related:
-        score += 25
-
-    if fm.get("sources") and fm["sources"] != "":
-        score += 25
-
-    # Freshly created pages are not stale
-    score += 25
-
-    return score
+    Retained as a no-op shim so any external caller importing the symbol
+    keeps working (returns 0). See R3 in reports/full-review-2026-04-21.md.
+    """
+    return 0
 
 
 def postprocess_created_pages(
@@ -2739,21 +2721,19 @@ def postprocess_created_pages(
 
             new_fm_lines.append(line)
 
-        # --- Compute quality score ---
-        fm, _ = parse_frontmatter(page_path)
+        # --- R3: quality_score is now computed by lint_wiki.py (which has the
+        # full corpus to compute inbound-link counts), not stamped here. The
+        # field is intentionally omitted at create time and lint --write-scores
+        # populates it later.
         wikilinks = re.findall(r"\[\[([^\]]+)\]\]", body)
-        has_wikilinks = len(wikilinks) > 0
-        has_related = len(seen_related) > 0
-        score = _compute_quality_score(fm, has_wikilinks, has_related)
 
-        # Update quality_score in frontmatter
-        updated_fm_lines = []
-        for line in new_fm_lines:
-            if line.strip().startswith("quality_score:"):
-                updated_fm_lines.append(f"quality_score: {score}")
-            else:
-                updated_fm_lines.append(line)
-        new_fm_lines = updated_fm_lines
+        # Drop any leftover `quality_score:` line so newly generated pages do
+        # not carry a stale literal forward through merges/updates.
+        new_fm_lines = [
+            line for line in new_fm_lines
+            if not line.strip().startswith("quality_score:")
+        ]
+        score = 0  # for the log line below
 
         # Reassemble the page
         new_content = "---\n" + "\n".join(new_fm_lines) + "\n---" + body

@@ -2957,6 +2957,128 @@ def send_ntfy(title: str, message: str, tags: str = "books") -> None:
 
 
 # ---------------------------------------------------------------------------
+# Copilot CLI backend
+# ---------------------------------------------------------------------------
+
+
+def call_copilot_cli_ingest(
+    raw_path: Path,
+    project_root: Path,
+    model: str,
+    effort: str,
+) -> dict:
+    """Call gh copilot CLI to execute the full wiki ingest workflow.
+    
+    Returns a status dict with:
+    - status: "success" | "partial" | "failed"
+    - source_path, entities_created, concepts_created, synthesis_created
+    - duplicates_avoided, kg_facts_added, notes
+    """
+    prompt_template_path = project_root / "scripts" / "prompts" / "wiki_ingest_prompt.md"
+    if not prompt_template_path.exists():
+        raise FileNotFoundError(f"Prompt template not found: {prompt_template_path}")
+    
+    prompt_template = prompt_template_path.read_text()
+    
+    # Build runtime inputs section
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    runtime_inputs = f"""
+
+## RUNTIME INPUTS
+
+- **RAW_PATH**: `{raw_path.resolve()}`
+- **MODEL_ID**: `{model}`
+- **WING**: `labs_wiki`
+- **TODAY**: `{today}`
+"""
+    
+    final_prompt = prompt_template + runtime_inputs
+    
+    # Invoke gh copilot CLI
+    log.info(
+        "Calling gh copilot CLI for %s (model=%s, effort=%s)",
+        raw_path.name, model, effort,
+    )
+    
+    cmd = [
+        "gh", "copilot", "-p", final_prompt,
+        "--model", model,
+        "--effort", effort,
+        "--allow-all-tools",
+        "--add-dir", str(project_root),
+    ]
+    
+    env = {**os.environ, "COPILOT_ALLOW_ALL": "1"}
+    
+    try:
+        result = subprocess.run(
+            cmd,
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=900,  # 15 minutes max
+            cwd=str(project_root),
+        )
+    except subprocess.TimeoutExpired:
+        log.error("Copilot CLI timed out after 900s for %s", raw_path.name)
+        return {
+            "status": "failed",
+            "notes": "Copilot CLI timed out after 15 minutes",
+        }
+    except Exception as e:
+        log.error("Copilot CLI subprocess failed: %s", e)
+        return {
+            "status": "failed",
+            "notes": f"Subprocess error: {e}",
+        }
+    
+    if result.returncode != 0:
+        log.error(
+            "Copilot CLI exited with code %d for %s:\nSTDERR: %s",
+            result.returncode, raw_path.name, result.stderr,
+        )
+        return {
+            "status": "failed",
+            "notes": f"gh copilot exited with code {result.returncode}",
+        }
+    
+    # Parse JSON status from stdout (last JSON block)
+    stdout = result.stdout.strip()
+    log.debug("Copilot CLI stdout (last 500 chars): %s", stdout[-500:])
+    
+    # Extract last {...} block from stdout
+    json_match = None
+    for match in re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', stdout):
+        json_match = match
+    
+    if not json_match:
+        log.warning(
+            "No JSON status found in Copilot CLI output for %s. "
+            "Assuming partial success.",
+            raw_path.name,
+        )
+        return {
+            "status": "partial",
+            "notes": "No JSON status report found in output",
+        }
+    
+    try:
+        status_dict = json.loads(json_match.group(0))
+        log.info(
+            "Copilot CLI ingest %s: %s",
+            status_dict.get("status", "unknown"),
+            status_dict.get("notes", ""),
+        )
+        return status_dict
+    except json.JSONDecodeError as e:
+        log.error("Failed to parse JSON status from Copilot CLI: %s", e)
+        return {
+            "status": "partial",
+            "notes": f"JSON parse error: {e}",
+        }
+
+
+# ---------------------------------------------------------------------------
 # Main pipeline
 # ---------------------------------------------------------------------------
 
@@ -2984,6 +3106,44 @@ def ingest_raw_source(
     if status != "pending" and not force:
         log.info("Skipping %s (status: %s)", raw_path.name, status)
         return False
+    
+    # Check which backend to use
+    backend = os.environ.get("WIKI_INGEST_BACKEND", "copilot-cli")
+    if backend == "copilot-cli":
+        # New Copilot CLI backend
+        ingest_model = os.environ.get("WIKI_INGEST_MODEL", model or "gpt-5.4")
+        ingest_effort = os.environ.get("WIKI_INGEST_EFFORT", "xhigh")
+        
+        log.info(
+            "Using copilot-cli backend (model=%s, effort=%s)",
+            ingest_model, ingest_effort,
+        )
+        
+        result = call_copilot_cli_ingest(
+            raw_path=raw_path,
+            project_root=project_root,
+            model=ingest_model,
+            effort=ingest_effort,
+        )
+        
+        success = result.get("status") in ("success", "partial")
+        
+        if success:
+            # Notify
+            if not validation_run:
+                send_ntfy(
+                    f"Wiki: {fm.get('title', raw_path.stem)}",
+                    f"Ingested via copilot-cli: {result.get('notes', '')}",
+                    tags="books,white_check_mark",
+                )
+            # Rebuild index
+            rebuild_index(project_root)
+        else:
+            log.error("Copilot CLI ingest failed: %s", result.get("notes", "Unknown error"))
+        
+        return success
+    
+    # Legacy github-models backend (original implementation below)
 
     title = fm.get("title", raw_path.stem)
     source_type = fm.get("type", "text")

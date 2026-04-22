@@ -1,0 +1,61 @@
+INFO: Calling gh copilot CLI for 2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md (model=gpt-5.4, effort=xhigh)
+ERROR: Copilot CLI exited with code 1 for 2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md:
+STDERR: error: unknown option '--no-banner'
+(Did you mean --banner?)
+
+Try 'copilot --help' for more information.
+
+Testing Copilot CLI ingest for 2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
+Model: gpt-5.4, Effort: xhigh
+Project root: /home/jbl/projects/labs-wiki
+
+
+============================================================
+RESULT:
+{
+  "status": "failed",
+  "notes": "gh copilot exited with code 1"
+}
+INFO: Calling gh copilot CLI for 2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md (model=gpt-5.4, effort=xhigh)
+INFO: Copilot CLI ingest success: Successfully ingested the ReasoningBank blog raw by reusing existing wiki pages instead of creating duplicates. Updated wiki/sources/google-research-reasoningbank-blog.md to use ingest_method copilot-cli-gpt-5.4 and added verified wikilinks, changed raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md status to success, appended a new ingest log entry, rebuilt wiki/index.md, and added 4 ReasoningBank KG facts.
+Testing Copilot CLI ingest for 2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
+Model: gpt-5.4, Effort: xhigh
+
+
+============================================================
+RESULT:
+{
+  "status": "success",
+  "source_path": "wiki/sources/google-research-reasoningbank-blog.md",
+  "entities_created": [],
+  "concepts_created": [],
+  "synthesis_created": [],
+  "duplicates_avoided": [
+    {
+      "candidate": "ReasoningBank",
+      "linked_to": "wiki/entities/reasoningbank.md"
+    },
+    {
+      "candidate": "Synapse",
+      "linked_to": "wiki/entities/synapse.md"
+    },
+    {
+      "candidate": "Agent Workflow Memory",
+      "linked_to": "wiki/entities/agent-workflow-memory.md"
+    },
+    {
+      "candidate": "Memory-Aware Test-Time Scaling",
+      "linked_to": "wiki/concepts/memory-aware-test-time-scaling.md"
+    },
+    {
+      "candidate": "WebArena",
+      "linked_to": "wiki/entities/webarena.md"
+    },
+    {
+      "candidate": "SWE-Bench-Verified",
+      "linked_to": "wiki/entities/swe-bench-verified.md"
+    }
+  ],
+  "kg_facts_added": 4,
+  "notes": "Successfully ingested the ReasoningBank blog raw by reusing existing wiki pages instead of creating duplicates. Updated wiki/sources/google-research-reasoningbank-blog.md to use ingest_method copilot-cli-gpt-5.4 and added verified wikilinks, changed raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md status to success, appended a new ingest log entry, rebuilt wiki/index.md, and added 4 ReasoningBank KG facts."
+}

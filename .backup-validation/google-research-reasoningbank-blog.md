@@ -14,7 +14,7 @@ tags:
   - llm-agents
 tier: warm
 knowledge_state: ingested
-ingest_method: copilot-cli-gpt-5.4
+ingest_method: self-synthesis-no-llm
 quality_score: 75
 ---
 
@@ -22,13 +22,13 @@ quality_score: 75
 
 ## Summary
 
-Google Research's blog post introducing [[ReasoningBank]], a novel agent memory framework that enables LLM-based agents to learn from both successful and failed experiences. The framework distills generalizable reasoning strategies through a continuous loop of memory retrieval, experience interaction, self-assessment, and memory consolidation. It also introduces [[Memory-Aware Test-Time Scaling]] (MaTTS) to accelerate learning through scaled exploration.
+Google Research's blog post introducing ReasoningBank, a novel agent memory framework that enables LLM-based agents to learn from both successful and failed experiences. The framework distills generalizable reasoning strategies through a continuous loop of memory retrieval, experience interaction, self-assessment, and memory consolidation. Introduces Memory-Aware Test-Time Scaling (MaTTS) to accelerate learning through scaled exploration.
 
 ## Key Points
 
 - **Agent Learning Problem**: Long-running agents fail to learn from accumulated interaction history, repeatedly making the same strategic errors despite having valuable experience.
 - **ReasoningBank Core Idea**: A memory framework that distills reasoning strategies from both successful and failed experiences, enabling test-time self-evolution.
-- **Key Difference from Prior Art**: Unlike existing approaches such as [[Synapse]] trajectory memory and [[Agent Workflow Memory]], ReasoningBank:
+- **Key Difference from Prior Art**: Unlike existing approaches (e.g., Synapse trajectory memory, Agent Workflow Memory), ReasoningBank:
   - Distills high-level reasoning patterns instead of storing detailed action traces
   - Actively learns from failures, not just successes
   - Uses structured memory items (title, description, content)
@@ -37,16 +37,17 @@ Google Research's blog post introducing [[ReasoningBank]], a novel agent memory 
 - **Learning from Failures**: Generates counterfactual signals and preventative lessons (e.g., "verify page identifier first to avoid infinite scroll traps")
 - **Memory-Aware Test-Time Scaling (MaTTS)**: Links memory with test-time scaling—scaled exploration generates rich contrastive signals that feed back into ReasoningBank
 - **MaTTS Forms**: Parallel scaling (multiple trajectories) and sequential scaling (iterative refinement within single trajectory)
-- **Benchmarks Tested**: [[WebArena]], [[SWE-Bench-Verified]]
-- **Performance Gains**: 8.3% success rate improvement on [[WebArena]], 4.6% on [[SWE-Bench-Verified]]; 3 fewer steps per task; MaTTS adds 3% further improvement
+- **Benchmarks Tested**: WebArena, SWE-Bench-Verified
+- **Performance Gains**: 8.3% success rate improvement on WebArena, 4.6% on SWE-Bench-Verified; 3 fewer steps per task; MaTTS adds 3% further improvement
 - **Emergent Behavior**: Agent memories evolve from simple procedural checklists to advanced compositional structures with preventative logic
 - **Model Used**: Gemini 2.5 Flash
 
 ## Key Concepts
 
-- [[Agent Memory Frameworks]]
-- [[Memory-Aware Test-Time Scaling]]
+- Agent Memory
+- Test-Time Scaling
 - Experience-Driven Learning
+- Memory-Aware Test-Time Scaling (MaTTS)
 - LLM-as-a-Judge
 - Self-Evolution
 - Reasoning Distillation

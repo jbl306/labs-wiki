@@ -4210,4 +4210,13 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - raw/2026-04-22-250925140v2pdf.md
   status: success
   notes: "Manual ingest of 2 failed raws (ReasoningBank blog + arxiv 2509.25140) with web_fetch for arxiv abstract. Created 2 source pages, 5 entity pages (1 primary + 4 supporting), 2 concept pages."
+
+- timestamp: 2026-04-22T17:34:24Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
+  targets:
+    - wiki/sources/google-research-reasoningbank-blog.md
+  status: success
+  notes: "Auto-ingested 1 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
 ```

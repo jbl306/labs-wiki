@@ -60,30 +60,38 @@ export function createCosmosRenderer({ container, onPointClick, onBackgroundClic
   let indexToNode = [];
   let currentNodes = [];
   let currentEdges = [];
+  let settleTimer = null;
 
   const config = {
     backgroundColor: "#0b0e14",
-    spaceSize: 4096,
-    simulationFriction: 0.85,
-    simulationGravity: 0.18,
-    simulationRepulsion: 1.2,
-    simulationLinkSpring: 0.7,
-    simulationLinkDistance: 12,
-    simulationDecay: 1500,
-    pointSizeScale: 1.0,
-    linkColor: "rgba(124,140,168,0.20)",
-    linkWidth: 1.0,
+    spaceSize: 2048,
+    // Keep nodes on-screen: high gravity + center pull, moderate repulsion.
+    // Tuned for ~1500-node graphs; the prior values let the cluster force
+    // fling pods off the canvas.
+    simulationFriction: 0.88,
+    simulationGravity: 0.35,
+    simulationCenter: 0.45,
+    simulationRepulsion: 0.45,
+    simulationRepulsionTheta: 1.7,
+    simulationLinkSpring: 1.1,
+    simulationLinkDistance: 8,
+    simulationDecay: 1000,
+    simulationCluster: 0.55,
+    pointSizeScale: 1.25,
+    scalePointsOnZoom: true,
+    linkColor: "rgba(150,170,210,0.18)",
+    linkWidth: 0.9,
     linkArrows: false,
     curvedLinks: false,
     fitViewOnInit: true,
-    fitViewDelay: 800,
-    fitViewPadding: 0.2,
+    fitViewDelay: 1800,
+    fitViewPadding: 0.18,
     enableDrag: false,
     enableZoom: true,
     showFPSMonitor: false,
     pointGreyoutOpacity: 0.10,
-    linkGreyoutOpacity: 0.06,
-    hoveredPointRingColor: "#5eead4",
+    linkGreyoutOpacity: 0.05,
+    hoveredPointRingColor: "#fef3c7",
     focusedPointRingColor: "#5eead4",
     onClick: (pointIndex) => {
       if (pointIndex == null || pointIndex < 0) {
@@ -103,16 +111,18 @@ export function createCosmosRenderer({ container, onPointClick, onBackgroundClic
     idToIndex = new Map();
     indexToNode = new Array(nodes.length);
 
-    // Spread initial positions on a circle so the simulation starts from a
-    // non-degenerate state. Cosmograph's force solver settles fast (~1s).
+    // Spread initial positions on a small disc so the simulation starts from
+    // a non-degenerate state and stays close to (0,0) — gravity + center pull
+    // do the rest. Larger initial radii caused pods to fling off-screen.
     const positions = new Float32Array(nodes.length * 2);
-    const R = 1500;
+    const R = 280;
     nodes.forEach((n, i) => {
       idToIndex.set(n.id, i);
       indexToNode[i] = n;
-      const a = (i / nodes.length) * Math.PI * 2;
-      positions[i * 2] = Math.cos(a) * R + (Math.random() - 0.5) * 30;
-      positions[i * 2 + 1] = Math.sin(a) * R + (Math.random() - 0.5) * 30;
+      const a = (i / Math.max(nodes.length, 1)) * Math.PI * 2;
+      const r = R * (0.4 + Math.random() * 0.6);
+      positions[i * 2] = Math.cos(a) * r;
+      positions[i * 2 + 1] = Math.sin(a) * r;
     });
     graph.setPointPositions(positions);
 
@@ -135,6 +145,17 @@ export function createCosmosRenderer({ container, onPointClick, onBackgroundClic
     if (typeof graph.setPointClusters === "function") {
       graph.setPointClusters(clusters);
     }
+
+    // Kick the simulation. Cosmos starts on its own with `fitViewOnInit`,
+    // but explicit start + a delayed fit reliably re-frames after the
+    // cluster force has settled (which can take 2-3s on dense graphs).
+    if (typeof graph.start === "function") {
+      try { graph.start(1); } catch (_) {}
+    }
+    if (settleTimer) clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => {
+      if (typeof graph.fitView === "function") graph.fitView(900);
+    }, 2400);
   }
 
   function syncStyle({ colorOf, sizeOf, dimOf }) {

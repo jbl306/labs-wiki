@@ -118,6 +118,7 @@ A flowchart in the README illustrates the process: Task Prompt leads to Incumben
 - **[[Faithful vs. Motivated Reasoning in Language Models]]** — Autoreason's blind judging and explicit restraint address motivated reasoning failures by ensuring only faithful improvements are adopted.
 - **[[Taxonomy Of LLM Reasoning Failures]]** — Autoreason is designed to remedy structural reasoning failures such as prompt bias and scope creep identified in LLM failure taxonomies.
 - **[[Agent Skill Integration for Time-Series Forecasting]]** — Both involve agent-based evaluation and iterative refinement, though Autoreason is focused on subjective domains.
+- **[[Iterative Self-Critique Loop]]** — The general critique-and-revise pattern that Autoreason fixes.
 
 ## Practical Applications
 

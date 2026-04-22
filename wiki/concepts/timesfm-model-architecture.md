@@ -89,6 +89,7 @@ No diagrams or charts are present in the source. The code example illustrates th
 
 - **[[Time Series Foundation Model Architecture]]** — TimesFM is a concrete implementation and extension of this architectural concept.
 - **[[Continuous Quantile Forecasting in Time-Series Models]]** — TimesFM 2.5 implements and extends continuous quantile forecasting.
+- **[[Patched-Decoder Forecasting]]** — TimesFM's core architectural pattern for long-context forecasting.
 
 ## Practical Applications
 

@@ -12,6 +12,7 @@ concepts:
 related:
   - "[[Attention Mechanism in Large Language Models]]"
   - "[[amitshekhariitbhu/llm-internals]]"
+  - "[[microsoft/memento]]"
 tier: hot
 tags: [kv-cache, paged-attention, llm, inference-optimization]
 ---
@@ -66,3 +67,4 @@ These techniques are used in production LLMs for real-time text generation, chat
 ## Sources
 
 - [[amitshekhariitbhu/llm-internals]] — primary source for this concept
+- [[microsoft/memento]] — KV cache compaction via block masking

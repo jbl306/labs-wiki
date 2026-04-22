@@ -12,13 +12,14 @@ tags:
 - python
 tier: warm
 knowledge_state: ingested
-ingest_method: manual-reprocess-github-2026-04-22
-quality_score: 80
+ingest_method: manual-deepen-github-2026-04-22
+quality_score: 90
 concepts:
 - timesfm-model-architecture
 - continuous-quantile-forecasting-in-time-series-models
 - forecastconfig-forecasting-configuration-abstraction
 - agent-skill-integration-for-time-series-forecasting
+- patched-decoder-forecasting
 ---
 
 # google-research/timesfm
@@ -31,23 +32,95 @@ TimesFM (Time Series Foundation Model) is a pretrained, decoder-only foundation 
 
 Direct candidate for nba-ml-engine prediction features that are currently per-stat ARIMA/LSTM ensembles. A pretrained foundation model gives a strong zero-shot baseline to compare custom models against, and the LoRA fine-tuning example via HuggingFace Transformers + PEFT is exactly what you'd need for league-specific calibration. Also relevant for any forecasting work in the homelab monitoring stack (Prometheus → Grafana) where short-horizon prediction would help with alert tuning.
 
-## Key concepts
+## Architecture / Technical model
 
-- **Decoder-only forecasting transformer** — Treats time series like a language-modeling problem; pretrained on a large corpus of real series. See [[timesfm-model-architecture]].
-- **Continuous quantile forecasting** — Optional 30M quantile head returns mean + 10th–90th quantiles up to a 1k horizon. See [[continuous-quantile-forecasting-in-time-series-models]].
-- **`ForecastConfig`** — Per-call configuration: `max_context`, `max_horizon`, `normalize_inputs`, `force_flip_invariance`, `infer_is_positive`, `fix_quantile_crossing`. See [[forecastconfig-forecasting-configuration-abstraction]].
-- **XReg covariates** — Per-input ridge regression covariate support added back in v2.5.
-- **PEFT / LoRA fine-tuning** — Multi-GPU LoRA / DoRA adapter pipeline for TimesFM 2.5 via HuggingFace Transformers + PEFT.
-- **Agent skill** — Ships a first-party `timesfm-forecasting` Agent Skill (SKILL.md / AGENTS.md) for tool-using agents. See [[agent-skill-integration-for-time-series-forecasting]].
-- **Multi-runtime** — PyTorch, Flax (faster inference), or `[xreg]` extras.
+- **Decoder-only foundation model** — Treats time series forecasting like next-token prediction; input patches are processed through a standard transformer decoder stack to produce output patches. Model pretrained on a large corpus of real time series across multiple domains (finance, weather, web traffic, etc.).
+> See [[timesfm-model-architecture]] and [[patched-decoder-forecasting]] for the technical design.
+
+- **Patched-decoder forecasting** — Input time series is divided into fixed-length patches (patch_len), each encoded as a single token. The decoder processes these tokens autoregressively and outputs a sequence of predicted patches, which are then reshaped into the final forecast horizon.
+> See [[patched-decoder-forecasting]] for the patch-based encoding approach.
+
+- **TimesFM 2.5 architecture** — 200M parameters, 16k max context length, no frequency indicator (removed in v2.5). Supports PyTorch and Flax (JAX) runtimes. Input patches default to length 32; output patches depend on `max_horizon` config.
+
+- **Continuous quantile forecasting** — Optional 30M-parameter quantile head produces mean + 10th–90th quantiles (in 10% increments) up to 1k horizon. `use_continuous_quantile_head=True` enables this; output shape becomes `(batch, horizon, 10)` for quantile forecasts.
+> See [[continuous-quantile-forecasting-in-time-series-models]] for the quantile head design.
+
+- **`ForecastConfig`** — Per-call configuration object specifying `max_context`, `max_horizon`, `normalize_inputs`, `force_flip_invariance`, `infer_is_positive`, `fix_quantile_crossing`. Compiled once before inference; can be reused for multiple forecast calls.
+> See [[forecastconfig-forecasting-configuration-abstraction]] for config flags and their effects.
+
+- **XReg covariate support** — Per-input ridge regression regressors added back in v2.5 (removed in v2.0). Covariates are passed as an optional `covariates` array; model performs per-input ridge regression to align covariate influence.
+
+- **Internal instance normalization (RevIN)** — TimesFM 2.5 applies its own reversible instance normalization internally. **Do not** externally normalize your inputs — feed raw values and let the model handle it.
+
+- **Zero-shot inference** — No per-dataset training required; pretrained checkpoints work out-of-the-box on new series. For domain-specific calibration, use the LoRA fine-tuning pipeline under `timesfm-forecasting/examples/finetuning/`.
+
+- **Agent skill integration** — Ships a first-party `timesfm-forecasting` Agent Skill (`SKILL.md` / `AGENTS.md`) for tool-using agents. The skill defines tool signatures for `forecast`, `forecast_with_covariates`, and `evaluate_model`.
+> See [[agent-skill-integration-for-time-series-forecasting]] for the skill interface.
+
+- **Multi-backend support** — PyTorch (GPU/CPU), Flax (GPU/TPU/CPU), and XReg extras. Flax backend is faster for inference on CPU and TPU; PyTorch backend supports PEFT (LoRA/DoRA) fine-tuning via HuggingFace Transformers.
 
 ## How it works
 
-- Load a pretrained checkpoint from the HuggingFace `google/timesfm-*` collection.
-- Compile the model with a `ForecastConfig` (sets context/horizon and inference flags).
-- Call `model.forecast(horizon, inputs)` with a list of 1-D arrays; returns a `(batch, horizon)` point forecast and optionally a `(batch, horizon, 10)` quantile forecast.
-- For fine-tuning: clone the repo, install `[torch]` extras, run the LoRA pipeline under `timesfm-forecasting/examples/finetuning/`.
-- Also exposed in Google products: BigQuery ML, Connected Sheets, Vertex Model Garden.
+1. **Install and select backend**: Clone the repo, install `[torch]`, `[flax]`, or `[xreg]` extras, and optionally install backend-specific accelerators (e.g., `pip install torch --index-url ...` for CUDA).
+2. **Load pretrained checkpoint**: Use `TimesFM_2p5_200M_torch.from_pretrained("google/timesfm-2.5-200m-pytorch")` or the Flax equivalent. Checkpoints hosted on HuggingFace.
+3. **Compile ForecastConfig**: Call `model.compile(ForecastConfig(...))` once to set context/horizon limits and inference flags (normalization, flip invariance, quantile head, etc.).
+4. **Forecast**: Pass a list of 1-D numpy arrays to `model.forecast(horizon=H, inputs=[...])`. Returns `(point_forecast, quantile_forecast)` where:
+   - `point_forecast` shape: `(batch, horizon)`
+   - `quantile_forecast` shape: `(batch, horizon, 10)` if quantile head is enabled (mean + 9 quantiles)
+5. **Optional: covariates**: Use `model.forecast_with_covariates(horizon=H, inputs=[...], covariates=[...])` to include exogenous regressors. Covariates must align with the input series length + horizon.
+6. **Optional: fine-tuning**: For domain-specific adaptation, use the LoRA/DoRA pipeline under `timesfm-forecasting/examples/finetuning/`. This requires the PyTorch backend, HuggingFace Transformers, and PEFT. Training uses random window sampling (Chronos-2 style) and supports multi-GPU via `accelerate`.
+7. **Benchmarking**: Extended benchmarks on Monash/ETT datasets are provided in `v1/experiments/extended_benchmarks/` and `v1/experiments/long_horizon_benchmarks/`. TimesFM 1.0 (200M) achieved best MASE/SMAPE across 27 datasets, 600× faster than StatisticalEnsemble baseline.
+
+## API / interface surface
+
+### Core Classes (PyTorch)
+
+| Class | Description |
+|-------|-------------|
+| `TimesFM_2p5_200M_torch` | PyTorch model wrapper; load with `.from_pretrained(...)` |
+| `ForecastConfig` | Configuration object for inference (context, horizon, normalization flags) |
+
+### Core Classes (Flax)
+
+| Class | Description |
+|-------|-------------|
+| `TimesFM_2p5_200M_flax` | Flax (JAX) model wrapper; load with `.from_pretrained(...)` |
+| `ForecastConfig` | Same config object as PyTorch backend |
+
+### Methods
+
+| Method | Parameters | Returns | Description |
+|--------|------------|---------|-------------|
+| `compile(config)` | `config: ForecastConfig` | None | Compile model with context/horizon limits and flags |
+| `forecast(horizon, inputs)` | `horizon: int`, `inputs: List[np.ndarray]` | `(point, quantile)` | Point + quantile forecasts |
+| `forecast_with_covariates(horizon, inputs, covariates)` | `horizon: int`, `inputs: List[np.ndarray]`, `covariates: List[np.ndarray]` | `(point, quantile)` | Forecast with exogenous regressors |
+
+### ForecastConfig Flags
+
+| Flag | Type | Default | Description |
+|------|------|---------|-------------|
+| `max_context` | int | 1024 | Max input series length |
+| `max_horizon` | int | 256 | Max forecast horizon |
+| `normalize_inputs` | bool | True | Apply internal RevIN normalization |
+| `use_continuous_quantile_head` | bool | False | Enable 30M quantile head for uncertainty |
+| `force_flip_invariance` | bool | False | Enforce forecast symmetry (useful for series with no known direction) |
+| `infer_is_positive` | bool | False | Constrain forecasts to non-negative values |
+| `fix_quantile_crossing` | bool | False | Post-process quantiles to prevent crossing |
+
+### CLI (LoRA Fine-Tuning)
+
+```bash
+python timesfm-forecasting/examples/finetuning/finetune_lora.py \
+    --model_id google/timesfm-2.5-200m-transformers \
+    --context_len 64 \
+    --horizon_len 13 \
+    --epochs 10 \
+    --batch_size 32 \
+    --lr 1e-4 \
+    --lora_r 4 \
+    --lora_alpha 8 \
+    --output_dir my-adapter
+```
 
 ## Setup
 
@@ -77,19 +150,25 @@ Plug-in candidate for nba-ml-engine alongside the existing per-stat models — u
 
 ## Caveats / Gotchas
 
-- Versions 1.0 and 2.0 are archived in `v1/`; pin `timesfm==1.3.0` to load older checkpoints.
-- "This open version is not an officially supported Google product."
-- TimesFM 2.5 dropped the `frequency` indicator; downstream code expecting it must be migrated.
-- Apache-2.0 license per Google Research convention (verify in repo before redistribution).
+- **Not an officially supported Google product** — The README is explicit about this; use at your own risk for production forecasting.
+- **Versions 1.0 and 2.0 archived** — Older checkpoints live in `v1/`; pin `timesfm==1.3.0` to load them. Current checkpoints (2.5) are incompatible with the v1 API.
+- **Frequency indicator removed in v2.5** — Code expecting a `frequency` parameter must be migrated. The model now infers temporal patterns from the raw series.
+- **Do not normalize inputs externally** — TimesFM 2.5 applies internal RevIN normalization. Feeding pre-normalized data will degrade performance.
+- **TimesFM 2.5 PyTorch checkpoint format issue** — The `google/timesfm-2.5-200m-pytorch` checkpoint downloads as `model.safetensors`, but the loader expects `torch_model.ckpt`. This causes a `FileNotFoundError`. Workaround: use TimesFM 1.0 PyTorch or Flax backend until resolved.
+- **Random window sampling in fine-tuning** — The LoRA pipeline samples random `(context, horizon)` windows from each series, not fixed windows. This is more data-efficient but means each epoch sees different slices of the same series.
+- **LoRA rank = 4 is ~0.6% trainable params** — With `r=4`, LoRA adds only ~1.4M trainable params out of ~232M total. This is enough for domain adaptation but may not capture highly dataset-specific patterns.
+- **Quantile head not calibrated post-pretraining** — The 30M quantile head is included in the pretrained model but was not calibrated on a hold-out set. For production use, consider calibrating or conformalizing on your validation data.
+- **Benchmark results use the median quantile head** — MASE/SMAPE scores reported in the extended benchmarks use the 0.5 quantile (median) as the point forecast, not the mean.
+- **Long-horizon benchmarks use stride=horizon** — ETT dataset benchmarks use disjoint test windows (stride = horizon) rather than rolling validation (stride = 1) to keep baseline runtime tractable.
+- **Apache-2.0 license** — Per Google Research convention; verify in repo before redistribution.
 
-## Repo metadata
+## Related concepts
 
-| Field | Value |
-|---|---|
-| Stars | 18,302 |
-| Primary language | Python |
-| Topics | (none) |
-| License | Apache-2.0 (per Google Research convention) |
+- [[timesfm-model-architecture]]
+- [[patched-decoder-forecasting]]
+- [[continuous-quantile-forecasting-in-time-series-models]]
+- [[forecastconfig-forecasting-configuration-abstraction]]
+- [[agent-skill-integration-for-time-series-forecasting]]
 
 ## Source
 

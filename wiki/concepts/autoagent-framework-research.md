@@ -81,6 +81,7 @@ Example Docker sandbox usage involves AutoAgent auto-pulling the appropriate ima
 - **[[LiteLLM]]** — LiteLLM is the LLM backend abstraction layer used by AutoAgent to support multiple providers
 - **[[Docker]]** — Docker provides the sandbox environment for AutoAgent agent execution
 - **[[Copilot CLI]]** — Potential integration target for AutoAgent in homelab workflows
+- **[[Agent-Tool-Memory Loop]]** — The runtime execution pattern used by AutoAgent's agent editor and workflow editor.
 
 ## Practical Applications
 

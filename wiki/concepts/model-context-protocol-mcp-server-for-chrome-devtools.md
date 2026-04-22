@@ -76,6 +76,7 @@ No diagrams or charts are present in the source, but the README and tool referen
 
 - **Agent eXperience Interface (AXI)** — Both are agent-ergonomic interfaces for tool integration; AXI is a design pattern, MCP is a protocol implementation.
 - **[[AXI Design Principles for Agent-Ergonomic CLI Tools]]** — Chrome DevTools MCP follows similar principles for agent-ergonomic design, such as composable tools and human-agent collaboration.
+- **[[MCP Tool Categories]]** — The categorical structure used to organize Chrome DevTools MCP's 34 tools.
 
 ## Practical Applications
 

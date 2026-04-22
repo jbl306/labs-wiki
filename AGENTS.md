@@ -368,3 +368,28 @@ Before committing any changes:
 6. `wiki/index.md` reflects all current pages
 
 Run `/wiki-lint` or `python scripts/lint_wiki.py` to check all rules.
+
+---
+
+## Post-task hook: lessons.md
+
+Any agent finishing a debugging session, an incident response, a corrective
+follow-up, or any task where a user issued a correction **must** append a
+lesson entry to `tasks/lessons.md` before declaring the task complete.
+
+This file is the cross-session memory layer that keeps the same mistake from
+recurring. Treat the append as part of the task definition of done — not as
+optional cleanup.
+
+Format follows [`.github/context/lesson-format.md`](../.github/context/lesson-format.md)
+(linked authoritative spec). Each entry must include the following keys:
+
+- **Date** — ISO date of the lesson
+- **Pattern** — what went wrong or what was corrected
+- **Root cause** — the actual underlying reason, not just the symptom
+- **Prevention rule** — concrete, actionable rule to avoid recurrence
+- **Affected files** — specific paths involved
+- **Category** — one of: `architecture`, `convention`, `api`, `testing`, `tooling`, `knowledge-curation`, `auto-ingest`, `infrastructure`, `agents`, `other`
+
+Never store secrets in a lesson. Never delete or rewrite existing entries —
+the file is append-only.

@@ -4219,4 +4219,37 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/sources/google-research-reasoningbank-blog.md
   status: success
   notes: "Auto-ingested 1 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-22T18:05:16Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-copilot-session-auto-ingest-fix-arxiv-loop-4990d381.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-auto-ingest-fix-arxiv-loop.md
+    - wiki/concepts/deterministic-key-facts-autofill-wiki-ingestion-pipelines.md
+  status: success
+  notes: "Auto-ingested 2 pages (1 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-22T18:08:31Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-test-html-anthropic-agents.md
+  targets:
+    - wiki/sources/anthropic-building-effective-agents.md
+    - wiki/concepts/augmented-llm.md
+    - wiki/concepts/prompt-chaining-workflow.md
+    - wiki/concepts/orchestrator-workers-workflow.md
+    - wiki/concepts/evaluator-optimizer-workflow.md
+    - wiki/entities/anthropic-building-effective-agents-guide.md
+  status: success
+  notes: "Auto-ingested 6 pages (4 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4; refreshed 1 existing entity page"
+- timestamp: 2026-04-22T18:24:23Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-260401437v1pdf.md
+  targets:
+    - wiki/sources/reproducible-explainable-effective-agentic-ai-se.md
+    - wiki/entities/reproducible-explainable-effective-agentic-ai-se.md
+    - wiki/concepts/thought-action-result-tar-trajectories.md
+    - wiki/concepts/agentic-ai-evaluation-software-engineering.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 1 entities, 0 synthesis) via copilot-cli-gpt-5.4"
 ```

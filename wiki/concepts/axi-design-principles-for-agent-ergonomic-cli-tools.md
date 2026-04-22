@@ -2,11 +2,11 @@
 title: "AXI Design Principles for Agent-Ergonomic CLI Tools"
 type: concept
 created: 2026-04-10
-last_verified: 2026-04-10
+last_verified: 2026-04-22
 source_hash: "7ef9072ee6e8f54af2f4e053827cb93014f7a120cab02927398106bd2360e937"
 sources:
   - raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
-quality_score: 79
+quality_score: 82
 concepts:
   - axi-design-principles-for-agent-ergonomic-cli-tools
 related:
@@ -93,4 +93,4 @@ AXI principles are applied in agent-facing CLI tools for browser automation (chr
 
 ## Sources
 
-- [[kunchenguid/axi]] — primary source for this concept
+- [[kunchenguid/axi]] — primary source for this concept, deepened 2026-04-22 with benchmark results (490 browser runs, 425 GitHub runs), reference CLI surfaces, TOON spec link

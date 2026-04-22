@@ -2,16 +2,17 @@
 title: "Automated AI Skill Stack Installation"
 type: concept
 created: 2026-04-10
-last_verified: 2026-04-10
+last_verified: 2026-04-22
 source_hash: "dc0945f923f9941ee6eb62e529f5f0be79e0943484843535425876ed4427ac4c"
 sources:
   - raw/2026-04-10-httpsgithubcommidudevautoskills.md
-quality_score: 76
+quality_score: 78
 concepts:
   - automated-ai-skill-stack-installation
 related:
   - "[[Skill Design Framework for AI Agents]]"
   - "[[midudev/autoskills]]"
+  - "[[Agent Skill Routing Architecture]]"
 tier: hot
 tags: [ai-agent, automation, cli-tool, supply-chain-security, skill-stack]
 ---
@@ -77,4 +78,4 @@ Used to bootstrap AI agent capabilities in new or existing projects, ensuring be
 
 ## Sources
 
-- [[midudev/autoskills]] — primary source for this concept
+- [[midudev/autoskills]] — primary source for this concept, deepened 2026-04-22 with detection ruleset (80+ techs), SKILLS_MAP structure, combo detection logic, multi-ecosystem manifest parsing

@@ -2,11 +2,11 @@
 title: "Agent Skill Routing Architecture"
 type: concept
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "358108ea4d82e3accc5cb671afd3dec27dfb9c5dae571d0970c1b790078c615e"
 sources:
   - raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
-quality_score: 72
+quality_score: 74
 concepts:
   - agent-skill-routing-architecture
 related:
@@ -14,6 +14,8 @@ related:
   - "[[Agent and Skill Surface Optimization for Multi-Tool AI Project Compatibility]]"
   - "[[Custom Copilot CLI Agents]]"
   - "[[Copilot Session Checkpoint: Integrating Agent Skill Routing]]"
+  - "[[midudev/autoskills]]"
+  - "[[Automated AI Skill Stack Installation]]"
 tier: hot
 tags: [agent-routing, skill-integration, architecture, context-engineering, automation, workspace-management]
 ---

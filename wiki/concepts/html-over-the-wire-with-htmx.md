@@ -2,15 +2,16 @@
 title: "HTML Over The Wire With htmx"
 type: concept
 created: 2026-04-08
-last_verified: 2026-04-08
+last_verified: 2026-04-22
 source_hash: "241ccd0756ba8b32170ef8926eb8e21ef7a4a5e8450e14851d915d820e753c51"
 sources:
   - raw/2026-04-07-test-github-repo.md
-quality_score: 73
+quality_score: 75
 concepts:
   - html-over-the-wire-with-htmx
 related:
   - "[[bigskysoftware/htmx]]"
+  - "[[htmx Attribute API]]"
 tier: hot
 tags: [html, ajax, websockets, sse, declarative, javascript, rest, hypermedia]
 ---
@@ -71,4 +72,4 @@ htmx is ideal for building interactive web applications where server-rendered HT
 
 ## Sources
 
-- [[bigskysoftware/htmx]] — primary source for this concept
+- [[bigskysoftware/htmx]] — primary source for this concept, deepened 2026-04-22 with swap model details, event system, OOB swaps, lifecycle hooks

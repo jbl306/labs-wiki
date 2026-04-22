@@ -181,6 +181,40 @@ main#canvas-host { position: relative; background: #05070a; }
   font-size: 12px;
   font-weight: 700;
 }
+.icon-btn[aria-pressed="true"] {
+  background: var(--accent);
+  color: #0b0d12;
+  border-color: var(--accent);
+}
+
+#path-panel {
+  position: absolute;
+  top: calc(12px + var(--safe-top));
+  left: calc(12px + var(--safe-left));
+  z-index: 18;
+  background: var(--panel-strong);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  max-width: min(360px, 70vw);
+  box-shadow: var(--panel-shadow);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  font-size: 12px;
+  line-height: 1.45;
+}
+.path-panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+#path-panel ol {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+#path-panel ol li { margin: 2px 0; }
 
 /* ------------ Floating buttons (hamburger + close) ----------------------- */
 

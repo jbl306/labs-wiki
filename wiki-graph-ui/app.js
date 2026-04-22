@@ -25,11 +25,30 @@ const state = {
   search: "",
   typeFilter: "",
   tierFilter: "",
+  communityFilter: "",
+  checkpointClassFilter: "",
+  staleOnly: false,
   surprises: false,
   communityColors: new Map(),
   visibleNodes: [],
   labelTargets: [],
+  pathMode: false,
+  pathStart: null,   // node id
+  pathEnd: null,     // node id
+  pathNodes: new Set(),  // node ids on shortest path
+  pathEdges: [],     // [{source, target}] consecutive pairs on path
 };
+
+const STALE_DAYS_THRESHOLD = 90;
+const STALE_MS_THRESHOLD = STALE_DAYS_THRESHOLD * 24 * 60 * 60 * 1000;
+
+function isNodeStale(node, now = Date.now()) {
+  const lv = (node.last_verified || "").trim();
+  if (!lv) return true;
+  const t = Date.parse(lv);
+  if (Number.isNaN(t)) return true;
+  return now - t > STALE_MS_THRESHOLD;
+}
 
 async function fetchJSON(path) {
   const url = `${API_BASE}${path}`;
@@ -53,9 +72,17 @@ function applyFilters() {
   const typeF = state.typeFilter;
   const tierF = state.tierFilter;
 
+  const communityF = state.communityFilter;
+  const ckptClassF = state.checkpointClassFilter;
+  const staleOnly = state.staleOnly;
+  const now = Date.now();
+
   const nodes = state.graph.nodes.filter((n) => {
     if (typeF && n.page_type !== typeF) return false;
     if (tierF && n.tier !== tierF) return false;
+    if (communityF !== "" && String(n.community) !== String(communityF)) return false;
+    if (ckptClassF && (n.checkpoint_class || "") !== ckptClassF) return false;
+    if (staleOnly && !isNodeStale(n, now)) return false;
     if (!q) return true;
     const hay = (n.title + " " + (n.tags || []).join(" ") + " " + (n.summary || "")).toLowerCase();
     return hay.includes(q);
@@ -247,6 +274,146 @@ function centerNodeInView(node) {
   view.ty = targetY - canvas.clientHeight / 2 - node.y * view.scale;
 }
 
+// ---------- Path mode (R13) -----------------------------------------------
+
+function buildAdjacency(edges) {
+  const adj = new Map();
+  for (const e of edges) {
+    if (!adj.has(e.source)) adj.set(e.source, []);
+    if (!adj.has(e.target)) adj.set(e.target, []);
+    adj.get(e.source).push(e.target);
+    adj.get(e.target).push(e.source);
+  }
+  return adj;
+}
+
+function bfsShortestPath(startId, endId, edges) {
+  if (startId === endId) return [startId];
+  const adj = buildAdjacency(edges);
+  if (!adj.has(startId) || !adj.has(endId)) return null;
+  const prev = new Map();
+  prev.set(startId, null);
+  const queue = [startId];
+  while (queue.length) {
+    const cur = queue.shift();
+    if (cur === endId) {
+      const path = [];
+      let n = endId;
+      while (n != null) { path.push(n); n = prev.get(n); }
+      return path.reverse();
+    }
+    for (const nb of adj.get(cur) || []) {
+      if (!prev.has(nb)) {
+        prev.set(nb, cur);
+        queue.push(nb);
+      }
+    }
+  }
+  return null;
+}
+
+function clearPathSelection({ redraw = true } = {}) {
+  state.pathStart = null;
+  state.pathEnd = null;
+  state.pathNodes = new Set();
+  state.pathEdges = [];
+  updatePathPanel();
+  if (redraw) draw();
+}
+
+function exitPathMode() {
+  state.pathMode = false;
+  clearPathSelection({ redraw: false });
+  const btn = document.getElementById("path-mode-toggle");
+  btn?.setAttribute("aria-pressed", "false");
+  document.getElementById("path-panel")?.classList.add("hidden");
+  draw();
+}
+
+function enterPathMode() {
+  state.pathMode = true;
+  // Path mode is mutually exclusive with the regular node-click selection.
+  clearSelection({ redraw: false });
+  const btn = document.getElementById("path-mode-toggle");
+  btn?.setAttribute("aria-pressed", "true");
+  document.getElementById("path-panel")?.classList.remove("hidden");
+  updatePathPanel();
+  draw();
+}
+
+function updatePathPanel() {
+  const body = document.getElementById("path-panel-body");
+  if (!body) return;
+  if (!state.pathStart) {
+    body.innerHTML = "<span class='muted'>Click a node to set the start.</span>";
+    return;
+  }
+  const startNode = state.graph?.nodes.find((n) => n.id === state.pathStart);
+  if (!state.pathEnd) {
+    body.innerHTML = `Start: <strong>${escapeHTML(startNode?.title || state.pathStart)}</strong><br/><span class='muted'>Click another node to set the end.</span>`;
+    return;
+  }
+  if (!state.pathNodes.size) {
+    const endNode = state.graph?.nodes.find((n) => n.id === state.pathEnd);
+    body.innerHTML = `No path found between <strong>${escapeHTML(startNode?.title || state.pathStart)}</strong> and <strong>${escapeHTML(endNode?.title || state.pathEnd)}</strong>.<br/><span class='muted'>Click again to reset.</span>`;
+    return;
+  }
+  const nodeById = new Map(state.graph.nodes.map((n) => [n.id, n]));
+  const titles = Array.from(state.pathNodes).map((id) => {
+    const n = nodeById.get(id);
+    return n ? n.title : id;
+  });
+  // pathNodes is a Set built from path order; preserve order using state.pathEdges.
+  const ordered = [];
+  if (state.pathEdges.length) {
+    ordered.push(state.pathEdges[0].source);
+    for (const e of state.pathEdges) ordered.push(e.target);
+  } else {
+    ordered.push(...titles);
+  }
+  const items = ordered.map((id) => {
+    const n = nodeById.get(id);
+    return `<li>${escapeHTML(n?.title || id)}</li>`;
+  }).join("");
+  body.innerHTML = `Path length: <strong>${state.pathEdges.length}</strong> edges (${state.pathNodes.size} nodes)<ol>${items}</ol><span class='muted'>Click any node to reset.</span>`;
+}
+
+function escapeHTML(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+}
+
+function handlePathClick(node) {
+  if (!state.pathStart) {
+    state.pathStart = node.id;
+    state.pathEnd = null;
+    state.pathNodes = new Set([node.id]);
+    state.pathEdges = [];
+    updatePathPanel();
+    draw();
+    return;
+  }
+  if (!state.pathEnd) {
+    state.pathEnd = node.id;
+    const path = bfsShortestPath(state.pathStart, state.pathEnd, state.graph?.edges || []);
+    if (path && path.length) {
+      state.pathNodes = new Set(path);
+      const edges = [];
+      for (let i = 0; i < path.length - 1; i++) {
+        edges.push({ source: path[i], target: path[i + 1] });
+      }
+      state.pathEdges = edges;
+    } else {
+      state.pathNodes = new Set();
+      state.pathEdges = [];
+    }
+    updatePathPanel();
+    draw();
+    return;
+  }
+  // Third click resets.
+  clearPathSelection();
+}
+
 function draw() {
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
   const { nodes, edges } = state.filtered;
@@ -268,23 +435,43 @@ function draw() {
   ctx.scale(view.scale, view.scale);
 
   // Edges
+  const pathEdgeKey = (s, t) => s < t ? `${s}|${t}` : `${t}|${s}`;
+  const pathEdgeSet = state.pathMode && state.pathEdges.length
+    ? new Set(state.pathEdges.map((e) => pathEdgeKey(e.source, e.target)))
+    : null;
+  const dimNonPath = state.pathMode && state.pathNodes.size > 0;
+
   ctx.lineWidth = 0.8 / view.scale;
   for (const e of edges) {
     if (!visibleIds.has(e.source) && !visibleIds.has(e.target)) continue;
     const a = nodeById.get(e.source), b = nodeById.get(e.target);
     if (!a || !b) continue;
-    ctx.strokeStyle = state.surprises && e.cross_community
-      ? "rgba(248,113,113,0.85)"
-      : "rgba(120,130,150,0.25)";
+    let strokeStyle;
+    const isOnPath = pathEdgeSet && pathEdgeSet.has(pathEdgeKey(e.source, e.target));
+    if (isOnPath) {
+      strokeStyle = "rgba(94,234,212,0.95)";
+    } else if (dimNonPath) {
+      strokeStyle = "rgba(120,130,150,0.06)";
+    } else if (state.surprises && e.cross_community) {
+      strokeStyle = "rgba(248,113,113,0.85)";
+    } else {
+      strokeStyle = "rgba(120,130,150,0.25)";
+    }
+    ctx.strokeStyle = strokeStyle;
+    ctx.lineWidth = isOnPath ? 2.5 / view.scale : 0.8 / view.scale;
     ctx.beginPath();
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(b.x, b.y);
     ctx.stroke();
   }
+  ctx.lineWidth = 0.8 / view.scale;
 
   // Nodes
   for (const n of visibleNodes) {
     const r = nodeRadius(n);
+    const onPath = state.pathNodes.has(n.id);
+    const dimNode = dimNonPath && !onPath;
+    ctx.globalAlpha = dimNode ? 0.18 : 1.0;
     ctx.fillStyle = colorForCommunity(n.community);
     if (state.highlightedId === n.id) {
       ctx.fillStyle = "rgba(94,234,212,0.18)";
@@ -296,11 +483,16 @@ function draw() {
     ctx.beginPath();
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
     ctx.fill();
-    if (state.highlightedId === n.id) {
+    if (onPath) {
+      ctx.strokeStyle = "#5eead4";
+      ctx.lineWidth = 2.5 / view.scale;
+      ctx.stroke();
+    } else if (state.highlightedId === n.id) {
       ctx.strokeStyle = "#5eead4";
       ctx.lineWidth = 2 / view.scale;
       ctx.stroke();
     }
+    ctx.globalAlpha = 1.0;
   }
 
   // As the user zooms in, relax the label threshold so mobile exploration
@@ -489,6 +681,10 @@ function handleTap(clientX, clientY) {
     isCoarsePointer,
   });
   if (hit) {
+    if (state.pathMode) {
+      handlePathClick(hit);
+      return;
+    }
     selectNode(hit);
   } else if (state.highlightedId) {
     clearSelection();
@@ -545,6 +741,31 @@ function populateTypes() {
   }
 }
 
+function populateCommunities() {
+  const select = document.getElementById("community-filter");
+  if (!select) return;
+  // Distinct community values from graph.nodes, sorted numerically.
+  const communities = Array.from(
+    new Set(
+      state.graph.nodes
+        .map((n) => n.community)
+        .filter((c) => c != null && c !== ""),
+    ),
+  ).sort((a, b) => Number(a) - Number(b));
+  // Preserve current selection if still valid.
+  const current = select.value;
+  select.innerHTML = "<option value=''>(any)</option>";
+  for (const c of communities) {
+    const opt = document.createElement("option");
+    opt.value = String(c);
+    opt.textContent = `cluster ${c}`;
+    select.appendChild(opt);
+  }
+  if (current && communities.some((c) => String(c) === current)) {
+    select.value = current;
+  }
+}
+
 function updateStats() {
   const s = state.graph;
   document.getElementById("stats").textContent =
@@ -564,6 +785,7 @@ async function loadGraph() {
   try {
     state.graph = await fetchJSON("/graph/export/json");
     populateTypes();
+    populateCommunities();
     updateStats();
     updateLegend();
     resize();
@@ -587,10 +809,40 @@ function bindUI() {
   document.getElementById("surprises-toggle").addEventListener("change", (e) => {
     state.surprises = e.target.checked; draw();
   });
+  document.getElementById("community-filter")?.addEventListener("change", (e) => {
+    state.communityFilter = e.target.value; applyFilters();
+  });
+  document.getElementById("checkpoint-class-filter")?.addEventListener("change", (e) => {
+    state.checkpointClassFilter = e.target.value; applyFilters();
+  });
+  document.getElementById("stale-only-toggle")?.addEventListener("change", (e) => {
+    state.staleOnly = e.target.checked; applyFilters();
+  });
+  document.getElementById("clear-filters")?.addEventListener("click", () => {
+    state.search = "";
+    state.typeFilter = "";
+    state.tierFilter = "";
+    state.communityFilter = "";
+    state.checkpointClassFilter = "";
+    state.staleOnly = false;
+    const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+    const setChecked = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
+    setVal("search", "");
+    setVal("type-filter", "");
+    setVal("tier-filter", "");
+    setVal("community-filter", "");
+    setVal("checkpoint-class-filter", "");
+    setChecked("stale-only-toggle", false);
+    applyFilters();
+  });
   document.getElementById("rebuild-btn").addEventListener("click", () => loadGraph());
   document.getElementById("zoom-in").addEventListener("click", () => setScale(view.scale * ZOOM_STEP));
   document.getElementById("zoom-out").addEventListener("click", () => setScale(view.scale / ZOOM_STEP));
   document.getElementById("zoom-fit").addEventListener("click", () => fitViewToNodes());
+  document.getElementById("path-mode-toggle")?.addEventListener("click", () => {
+    if (state.pathMode) exitPathMode(); else enterPathMode();
+  });
+  document.getElementById("path-panel-close")?.addEventListener("click", () => exitPathMode());
   document.getElementById("node-panel-close").addEventListener("click", () => clearSelection());
 
   // Mobile drawer wiring — these elements are always in the DOM but only
@@ -607,6 +859,8 @@ function bindUI() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && document.body.classList.contains("sidebar-open")) {
       closeSidebar();
+    } else if (e.key === "Escape" && state.pathMode) {
+      exitPathMode();
     } else if (e.key === "Escape" && state.highlightedId) {
       clearSelection();
     }

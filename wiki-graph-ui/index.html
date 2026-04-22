@@ -48,7 +48,34 @@
   </section>
 
   <section>
+    <label for="community-filter">Community</label>
+    <select id="community-filter">
+      <option value="">(any)</option>
+    </select>
+  </section>
+
+  <section>
+    <label for="checkpoint-class-filter">Checkpoint class</label>
+    <select id="checkpoint-class-filter">
+      <option value="">all</option>
+      <option value="planning">planning</option>
+      <option value="executed">executed</option>
+      <option value="validated">validated</option>
+      <option value="recurring">recurring</option>
+      <option value="incident">incident</option>
+    </select>
+  </section>
+
+  <section>
+    <label><input type="checkbox" id="stale-only-toggle" /> Stale only (no last_verified or &gt; 90d)</label>
+  </section>
+
+  <section>
     <label><input type="checkbox" id="surprises-toggle" /> Highlight cross-community edges</label>
+  </section>
+
+  <section>
+    <button id="clear-filters" class="secondary">Clear filters</button>
   </section>
 
   <section id="node-panel" class="hidden">
@@ -79,6 +106,16 @@
     <button id="zoom-in" class="icon-btn" aria-label="Zoom in">+</button>
     <button id="zoom-out" class="icon-btn" aria-label="Zoom out">−</button>
     <button id="zoom-fit" class="icon-btn view-fit-btn" aria-label="Fit graph to viewport">Fit</button>
+    <button id="path-mode-toggle" class="icon-btn view-fit-btn" aria-label="Toggle path mode" aria-pressed="false">Path</button>
+  </div>
+  <div id="path-panel" class="hidden" aria-live="polite">
+    <div class="path-panel-head">
+      <strong id="path-panel-title">Path mode</strong>
+      <button id="path-panel-close" class="icon-btn node-panel-close" aria-label="Exit path mode">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.88 18.29 9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.3-6.3z"/></svg>
+      </button>
+    </div>
+    <div id="path-panel-body" class="muted">Click a node to set the start.</div>
   </div>
   <div id="legend" class="legend muted"></div>
 </main>

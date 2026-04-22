@@ -5,6 +5,10 @@
 // the renderer for @cosmograph/cosmograph per Phase G3.
 
 import { buildLabelTargets, pickNodeAtScreenPoint } from "./interaction-targets.js";
+import {
+  hasPointerMovedEnough,
+  shouldUseCoarsePointerTapSlop,
+} from "./pointer-gesture.js";
 
 const cfg = window.__WIKI_GRAPH_CONFIG || {};
 // If apiBase is literally the placeholder (image built but entrypoint didn't
@@ -366,7 +370,6 @@ let panLastX = 0, panLastY = 0;
 let pointerDownAt = 0;
 let pointerDownX = 0, pointerDownY = 0;
 let pointerMoved = false;
-const TAP_SLOP_PX = 8;       // Movement under this counts as a tap, not a drag.
 const TAP_MAX_MS = 500;
 
 function pinchDistance() {
@@ -415,8 +418,20 @@ canvas.addEventListener("pointermove", (e) => {
   if (e.pointerId === panPointerId) {
     const dx = e.clientX - panLastX;
     const dy = e.clientY - panLastY;
-    if (Math.abs(e.clientX - pointerDownX) > TAP_SLOP_PX || Math.abs(e.clientY - pointerDownY) > TAP_SLOP_PX) {
-      pointerMoved = true;
+    if (!pointerMoved) {
+      pointerMoved = hasPointerMovedEnough({
+        startX: pointerDownX,
+        startY: pointerDownY,
+        currentX: e.clientX,
+        currentY: e.clientY,
+        isCoarsePointer: shouldUseCoarsePointerTapSlop({
+          pointerType: e.pointerType,
+          fallbackIsCoarsePointer: isCoarsePointer,
+        }),
+      });
+    }
+    if (!pointerMoved) {
+      return;
     }
     view.tx += dx;
     view.ty += dy;

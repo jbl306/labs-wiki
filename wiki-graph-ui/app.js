@@ -905,161 +905,6 @@ function handleTap(clientX, clientY) {
   }
 }
 
-// Minimal markdown → HTML converter. Intentionally small (no deps).
-// Handles headings, bold/italic, code (inline+fence), lists, links,
-// wikilinks ([[Foo]] and [[Foo|alt]]), paragraphs, blockquotes, hr.
-function renderMarkdown(md) {
-  if (!md) return "";
-  const lines = md.replace(/\r\n/g, "\n").split("\n");
-  const out = [];
-  let inFence = false, fenceLang = "", fenceBuf = [];
-  let listType = null; // 'ul' | 'ol' | null
-  let paraBuf = [];
-
-  const flushPara = () => {
-    if (!paraBuf.length) return;
-    out.push("<p>" + inlineMd(paraBuf.join(" ")) + "</p>");
-    paraBuf = [];
-  };
-  const flushList = () => {
-    if (listType) { out.push(`</${listType}>`); listType = null; }
-  };
-
-  for (const raw of lines) {
-    if (inFence) {
-      if (/^```/.test(raw)) {
-        out.push(
-          `<pre><code${fenceLang ? ` class="lang-${escAttr(fenceLang)}"` : ""}>${escHTML(fenceBuf.join("\n"))}</code></pre>`,
-        );
-        inFence = false; fenceBuf = []; fenceLang = "";
-      } else {
-        fenceBuf.push(raw);
-      }
-      continue;
-    }
-    const fence = raw.match(/^```(\w*)\s*$/);
-    if (fence) {
-      flushPara(); flushList();
-      inFence = true; fenceLang = fence[1] || "";
-      continue;
-    }
-    if (!raw.trim()) { flushPara(); flushList(); continue; }
-    const h = raw.match(/^(#{1,6})\s+(.*)$/);
-    if (h) {
-      flushPara(); flushList();
-      const lvl = h[1].length;
-      out.push(`<h${lvl}>${inlineMd(h[2])}</h${lvl}>`);
-      continue;
-    }
-    if (/^---+\s*$/.test(raw)) { flushPara(); flushList(); out.push("<hr/>"); continue; }
-    const ol = raw.match(/^\s*\d+\.\s+(.*)$/);
-    const ul = raw.match(/^\s*[-*]\s+(.*)$/);
-    if (ol || ul) {
-      flushPara();
-      const want = ol ? "ol" : "ul";
-      if (listType !== want) { flushList(); out.push(`<${want}>`); listType = want; }
-      out.push("<li>" + inlineMd((ol || ul)[1]) + "</li>");
-      continue;
-    }
-    const bq = raw.match(/^>\s?(.*)$/);
-    if (bq) {
-      flushPara(); flushList();
-      out.push(`<blockquote>${inlineMd(bq[1])}</blockquote>`);
-      continue;
-    }
-    paraBuf.push(raw);
-  }
-  flushPara(); flushList();
-  if (inFence) out.push(`<pre><code>${escHTML(fenceBuf.join("\n"))}</code></pre>`);
-  return out.join("\n");
-}
-
-function escHTML(s) {
-  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-}
-function escAttr(s) {
-  return escHTML(s).replace(/"/g, "&quot;");
-}
-function inlineMd(s) {
-  let t = escHTML(s);
-  // Inline code
-  t = t.replace(/`([^`]+)`/g, "<code>$1</code>");
-  // Wikilink [[Title|alt]] or [[Title]]
-  t = t.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, target, alt) =>
-    `<a class="wikilink" data-wikilink="${escAttr(target.trim())}">${escHTML((alt || target).trim())}</a>`,
-  );
-  // Markdown link
-  t = t.replace(/\[([^\]]+)\]\((https?:[^)]+)\)/g, (_, label, href) =>
-    `<a href="${escAttr(href)}" target="_blank" rel="noopener">${label}</a>`,
-  );
-  // Bold then italic
-  t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
-  t = t.replace(/\*([^*]+)\*/g, "<em>$1</em>");
-  return t;
-}
-
-function selectNodeByTitleOrId(target) {
-  const t = (target || "").trim().toLowerCase();
-  if (!t) return false;
-  const all = state.graph?.nodes || [];
-  let found = all.find((n) => (n.title || "").toLowerCase() === t)
-            || all.find((n) => (n.id || "").toLowerCase() === t)
-            || all.find((n) => (n.id || "").toLowerCase().endsWith("/" + t));
-  if (!found) return false;
-  const local = state.filtered.nodes.find((n) => n.id === found.id);
-  if (local) selectNode(local);
-  else { state.highlightedId = found.id; showNodePanel(found); draw(); }
-  return true;
-}
-
-function setActiveTab(name) {
-  const panel = document.getElementById("node-panel");
-  if (!panel) return;
-  panel.querySelectorAll(".node-tab").forEach((b) => {
-    const active = b.dataset.tab === name;
-    b.classList.toggle("active", active);
-    b.setAttribute("aria-selected", active ? "true" : "false");
-  });
-  panel.querySelectorAll(".node-tab-panel").forEach((p) => {
-    p.classList.toggle("active", p.dataset.panel === name);
-  });
-}
-
-async function loadNodeContent(node) {
-  const target = document.getElementById("node-content");
-  if (!target) return;
-  target.classList.add("muted");
-  target.textContent = "loading…";
-  try {
-    const data = await fetchJSON(`/graph/page-content/${encodeURIComponent(node.id)}`);
-    target.classList.remove("muted");
-    const fmList = document.getElementById("node-fm");
-    if (fmList) {
-      fmList.innerHTML = "";
-      const keys = ["type", "tier", "quality_score", "last_verified", "tags", "concepts", "related"];
-      for (const k of keys) {
-        const v = data.frontmatter?.[k];
-        if (v == null || (Array.isArray(v) && v.length === 0)) continue;
-        const dt = document.createElement("dt"); dt.textContent = k;
-        const dd = document.createElement("dd");
-        dd.textContent = Array.isArray(v) ? v.map((x) => typeof x === "string" ? x.replace(/^\[\[|\]\]$/g, "") : String(x)).join(", ") : String(v);
-        fmList.append(dt, dd);
-      }
-    }
-    target.innerHTML = renderMarkdown(data.body_md || "");
-    // Wire up wikilinks inside the rendered content.
-    target.querySelectorAll("a.wikilink").forEach((a) => {
-      a.addEventListener("click", (ev) => {
-        ev.preventDefault();
-        selectNodeByTitleOrId(a.dataset.wikilink);
-      });
-    });
-  } catch (e) {
-    target.classList.add("muted");
-    target.textContent = `failed to load: ${e.message}`;
-  }
-}
-
 async function showNodePanel(node) {
   document.getElementById("node-panel").classList.remove("hidden");
   if (isCoarsePointer) {
@@ -1070,14 +915,6 @@ async function showNodePanel(node) {
   document.getElementById("node-meta").textContent =
     `${node.page_type || "page"} · tier=${node.tier || "—"} · degree=${node.degree} · community=${node.community}`;
   document.getElementById("node-summary").textContent = node.summary || "";
-  setActiveTab("overview");
-  document.getElementById("node-content").textContent = "";
-  document.getElementById("node-fm").innerHTML = "";
-  // Lazy-load full markdown content the first time the Content tab is shown.
-  // Stored on the panel element so we re-fetch when switching nodes.
-  const panel = document.getElementById("node-panel");
-  panel.dataset.contentLoadedFor = "";
-  panel.dataset.activeNode = node.id;
   const ul = document.getElementById("node-neighbors");
   ul.innerHTML = "<li class='muted'>loading…</li>";
   try {
@@ -1235,24 +1072,6 @@ function bindUI() {
     if (state.health.active) exitCheckpointHealth(); else enterCheckpointHealth();
   });
   document.getElementById("node-panel-close").addEventListener("click", () => clearSelection());
-  // Tab switching inside the node panel.
-  document.querySelectorAll("#node-panel .node-tab").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const tab = btn.dataset.tab;
-      setActiveTab(tab);
-      if (tab === "content") {
-        const panel = document.getElementById("node-panel");
-        const id = panel.dataset.activeNode;
-        if (id && panel.dataset.contentLoadedFor !== id) {
-          const node = state.graph?.nodes.find((n) => n.id === id);
-          if (node) {
-            panel.dataset.contentLoadedFor = id;
-            loadNodeContent(node);
-          }
-        }
-      }
-    });
-  });
 
   // Mobile drawer wiring — these elements are always in the DOM but only
   // visible at narrow widths via CSS.

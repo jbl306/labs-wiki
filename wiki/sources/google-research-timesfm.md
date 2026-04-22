@@ -2,7 +2,7 @@
 title: google-research/timesfm
 type: source
 created: '2026-04-21'
-last_verified: '2026-04-21'
+last_verified: '2026-04-22'
 source_hash: fd7cfe463512c7b0734b9ec2e0b54e50c1919080501f414032e485e14bbf3d22
 sources:
 - raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md
@@ -12,146 +12,86 @@ tags:
 - python
 tier: warm
 knowledge_state: ingested
-ingest_method: self-synthesis-no-llm
-quality_score: 50
+ingest_method: manual-reprocess-github-2026-04-22
+quality_score: 80
+concepts:
+- timesfm-model-architecture
+- continuous-quantile-forecasting-in-time-series-models
+- forecastconfig-forecasting-configuration-abstraction
+- agent-skill-integration-for-time-series-forecasting
 ---
 
 # google-research/timesfm
 
-## Summary
+## What it is
 
-TimesFM (Time Series Foundation Model) is a pretrained time-series foundation model developed by Google Research for time-series forecasting.
+TimesFM (Time Series Foundation Model) is a pretrained, decoder-only foundation model for univariate time-series forecasting from Google Research, published at ICML 2024. It provides zero-shot forecasts without per-dataset training and ships PyTorch and Flax inference plus an optional 30M-parameter quantile head for continuous quantile forecasts. The current model is TimesFM 2.5 — 200M parameters, 16k context, no frequency indicator.
 
-## Repository Info
+## Why it matters
 
-- **Source URL**: https://github.com/google-research/timesfm
-- **Stars**: 18302
-- **Primary language**: Python
+Direct candidate for nba-ml-engine prediction features that are currently per-stat ARIMA/LSTM ensembles. A pretrained foundation model gives a strong zero-shot baseline to compare custom models against, and the LoRA fine-tuning example via HuggingFace Transformers + PEFT is exactly what you'd need for league-specific calibration. Also relevant for any forecasting work in the homelab monitoring stack (Prometheus → Grafana) where short-horizon prediction would help with alert tuning.
 
-## README Excerpt
+## Key concepts
 
-# TimesFM
+- **Decoder-only forecasting transformer** — Treats time series like a language-modeling problem; pretrained on a large corpus of real series. See [[timesfm-model-architecture]].
+- **Continuous quantile forecasting** — Optional 30M quantile head returns mean + 10th–90th quantiles up to a 1k horizon. See [[continuous-quantile-forecasting-in-time-series-models]].
+- **`ForecastConfig`** — Per-call configuration: `max_context`, `max_horizon`, `normalize_inputs`, `force_flip_invariance`, `infer_is_positive`, `fix_quantile_crossing`. See [[forecastconfig-forecasting-configuration-abstraction]].
+- **XReg covariates** — Per-input ridge regression covariate support added back in v2.5.
+- **PEFT / LoRA fine-tuning** — Multi-GPU LoRA / DoRA adapter pipeline for TimesFM 2.5 via HuggingFace Transformers + PEFT.
+- **Agent skill** — Ships a first-party `timesfm-forecasting` Agent Skill (SKILL.md / AGENTS.md) for tool-using agents. See [[agent-skill-integration-for-time-series-forecasting]].
+- **Multi-runtime** — PyTorch, Flax (faster inference), or `[xreg]` extras.
 
-TimesFM (Time Series Foundation Model) is a pretrained time-series foundation
-model developed by Google Research for time-series forecasting.
+## How it works
 
-*   Paper:
-    [A decoder-only foundation model for time-series forecasting](https://arxiv.org/abs/2310.10688),
-    ICML 2024.
-*   All checkpoints:
-    [TimesFM Hugging Face Collection](https://huggingface.co/collections/google/timesfm-release-66e4be5fdb56e960c1e482a6).
-*   [Google Research blog](https://research.google/blog/a-decoder-only-foundation-model-for-time-series-forecasting/).
-*   TimesFM in Google 1P Products:
-    *   [BigQuery ML](https://cloud.google.com/bigquery/docs/timesfm-model): Enterprise level SQL queries for scalability and reliability.
-    *   [Google Sheets](https://workspaceupdates.googleblog.com/2026/02/forecast-data-in-connected-sheets-BigQueryML-TimesFM.html): For your daily spreadsheet. 
-    *   [Vertex Model Garden](https://pantheon.corp.google.com/vertex-ai/publishers/google/model-garden/timesfm): Dockerized endpoint for agentic calling.
+- Load a pretrained checkpoint from the HuggingFace `google/timesfm-*` collection.
+- Compile the model with a `ForecastConfig` (sets context/horizon and inference flags).
+- Call `model.forecast(horizon, inputs)` with a list of 1-D arrays; returns a `(batch, horizon)` point forecast and optionally a `(batch, horizon, 10)` quantile forecast.
+- For fine-tuning: clone the repo, install `[torch]` extras, run the LoRA pipeline under `timesfm-forecasting/examples/finetuning/`.
+- Also exposed in Google products: BigQuery ML, Connected Sheets, Vertex Model Garden.
 
-This open version is not an officially supported Google product.
+## Setup
 
-**Latest Model Version:** TimesFM 2.5
+```bash
+git clone https://github.com/google-research/timesfm.git
+cd timesfm
+uv venv && source .venv/bin/activate
+uv pip install -e .[torch]   # or .[flax] / .[xreg]
+```
 
-**Archived Model Versions:**
+```python
+import timesfm, numpy as np, torch
+torch.set_float32_matmul_precision("high")
+model = timesfm.TimesFM_2p5_200M_torch.from_pretrained("google/timesfm-2.5-200m-pytorch")
+model.compile(timesfm.ForecastConfig(
+    max_context=1024, max_horizon=256,
+    normalize_inputs=True, use_continuous_quantile_head=True,
+    force_flip_invariance=True, infer_is_positive=True,
+    fix_quantile_crossing=True,
+))
+point, quantile = model.forecast(horizon=12, inputs=[np.linspace(0,1,100)])
+```
 
--   1.0 and 2.0: relevant code archived in the sub directory `v1`. You can `pip
-    install timesfm==1.3.0` to install an older version of this package to load
-    them.
+## Integration notes
 
-## Activity Snapshot
+Plug-in candidate for nba-ml-engine alongside the existing per-stat models — useful as a zero-shot prior or a baseline in `walk-forward-stability-analysis-backtesting-nba-ml-engine`. The `[flax]` install path gives the fastest CPU/TPU inference; PyTorch path is fine on the homelab Beelink. The first-party Agent Skill could be wired into the `nba-sprint` custom agent.
 
-### Recent Releases
+## Caveats / Gotchas
 
-### v1.2.6 (2024-12-31)
+- Versions 1.0 and 2.0 are archived in `v1/`; pin `timesfm==1.3.0` to load older checkpoints.
+- "This open version is not an officially supported Google product."
+- TimesFM 2.5 dropped the `frequency` indicator; downstream code expecting it must be migrated.
+- Apache-2.0 license per Google Research convention (verify in repo before redistribution).
 
-Changes:
-----
-1. Add support for TimesFM-2.0 models.
-2. Set the median head as the default point forecaster.
+## Repo metadata
 
-PyPI Release:
-----
-v1.2.6: Support for TimesFM-2.0 models.
-- Add hparam support for TimesFM-2.0 models.
-- Some bug fixes in pytorch decoding.
-- Right now we do not support cached decoding in both jax and pytorch.
+| Field | Value |
+|---|---|
+| Stars | 18,302 |
+| Primary language | Python |
+| Topics | (none) |
+| License | Apache-2.0 (per Google Research convention) |
 
-Checkpoints:
-----
-The TimesFM-2.0 checkpoints are available on Hugging Face:
-- https://huggingface.co/google/timesfm-2.0-500m-jax
-- https://huggingface.co/google/timesfm-2.0-500m-pytorch
+## Source
 
-Full Changelog:
-----
-https://github.com/google-research/timesfm/commits/v1.2.6
-
-### v1.2.1 (2024-10-18)
-
-Changes:
-----
-- PyTorch support for TimesFM inference.
-
-PyPI Release:
-----
-
-v1.2.1: Support separate dependencies for `pax` and `torch` versions of TimesFM:
-  - `pip install timesfm[pax]` for the `pax` version and `jax` checkpoints.
-  - `pip install timesfm[torch]` for the `torch` version and checkpoints.
-  - See the updated [README](https://github.com/google-research/timesfm?tab=readme-ov-file#usage) for the usage.
-
-Checkpoints:
-----
-The PyTorch checkpoint for the 200m model is available on Hugging Face:
-- https://huggingface.co/google/timesfm-1.0-200m-pytorch
-
-Full Changelog:
-----
-https://gi…
-### Recent Commits
-
-- 2026-04-15 d720daa Yichen Zhou: Update README.md
-- 2026-04-15 eacf761 Yichen Zhou: Merge pull request #398 from darkpowerxo/feat/peft-finetuning-pipeline-2.5
-- 2026-04-10 6ae67d4 darkpowerxo: revert: drop PR #393 (xreg batch behavior) and PR #390 (SKILL.md link) per maintainer feedback
-- 2026-04-09 caddef1 darkpowerxo: refactor: replace custom PEFT pipeline with Transformers+PEFT example
-- 2026-04-09 18d5eb2 darkpowerxo: fix: improve PEFT device consistency and XReg output slicing
-- 2026-04-08 ad192b7 darkpowerxo: docs: update README — replace 'under construction' with completed status
-- 2026-04-08 54f5405 darkpowerxo: docs: fix swapped xreg_mode descriptions and typo in error message
-- 2026-04-08 13a8eb2 darkpowerxo: ci: upgrade GitHub Actions to v6
-- 2026-04-08 30f28a1 darkpowerxo: fix: correct SKILL.md link in README
-- 2026-04-08 1bb44d5 darkpowerxo: fix: respect batch_size in v1 data_loader when permute=False
-- 2026-04-08 a63360a darkpowerxo: fix: per-input ridge regression to prevent data leakage in xreg
-- 2026-04-08 c10494a darkpowerxo: test: add unit tests for configs, torch layers, utils, and base utils
-- 2026-04-08 bc03b77 darkpowerxo: fix: correct 'complied' typo and replace print with logging
-- 2026-04-08 b6ac2b3 darkpowerxo: docs: add README for the PEFT fine-tuning pipeline
-- 2026-04-08 a67eeb2 darkpowerxo: feat: add CLI entry-point and launch script for PEFT fine-tuning
-- 2026-04-08 eca7ca3 darkpowerxo: feat: add multi-GPU PEFT trainer for TimesFM 2.5
-- 2026-04-08 9875d92 darkpowerxo: feat: add TimeSeriesDataset for PEFT fine-tuning
-- 2026-04-08 7357458 darkpowerxo: feat: add LoRA/DoRA adapter layers for TimesFM 2.5 (PyTorch)
-- 2026-04-08 aa2b17f darkpowerxo: chore: update .gitignore for egg-info, uv.lock, peft_checkpoints
-- 2026-04-03 f085b90 Yichen Zhou: Update README.md
-### Recently Merged PRs (top 10)
-
-- #398 feat: PEFT fine-tuning pipeline (LoRA/DoRA, multi-GPU) for TimesFM 2.5 (merged 2026-04-15)
-- #376 docs: fix swapped xreg_mode descriptions in forecast_with_covariates (merged 2026-03-19)
-- #369 feat(skill): ship first-party timesfm-forecasting Agent Skill (agentskills.io) (merged 2026-03-19)
-- #372 [HF] use the ModelHubMixin api (merged 2026-03-11)
-- #341 [TimesFMv1] fix variance calculation (merged 2026-02-19)
-- #360 Update pyproject.toml (merged 2026-01-27)
-
-## Crawled Files
-
-Source dump in `raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md` includes:
-
-- `.gitignore`
-- `LICENSE`
-- `pyproject.toml`
-- `requirements.txt`
-- `timesfm-forecasting/examples/finetuning/README.md`
-- `timesfm-forecasting/examples/global-temperature/README.md`
-- `v1/experiments/extended_benchmarks/README.md`
-- `v1/experiments/long_horizon_benchmarks/README.md`
-- `v1/LICENSE`
-- `v1/peft/README.md`
-- `v1/pyproject.toml`
-- `v1/README.md`
-- `timesfm-forecasting/examples/anomaly-detection/detect_anomalies.py`
-- `timesfm-forecasting/examples/anomaly-detection/output/anomaly_detection.json`
+- Raw dump: `raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md`
+- Upstream: https://github.com/google-research/timesfm

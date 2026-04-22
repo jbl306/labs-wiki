@@ -2,7 +2,7 @@
 title: ChromeDevTools/chrome-devtools-mcp
 type: source
 created: '2026-04-21'
-last_verified: '2026-04-21'
+last_verified: '2026-04-22'
 source_hash: 1d475978a97022195cd7c9a199d6b07df2932945141fa124a6d0a8fd51d93fdb
 sources:
 - raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
@@ -18,94 +18,87 @@ tags:
 - mcp-server
 tier: warm
 knowledge_state: ingested
-ingest_method: self-synthesis-no-llm
-quality_score: 50
+ingest_method: manual-reprocess-github-2026-04-22
+quality_score: 80
+concepts:
+- model-context-protocol-mcp-server-for-chrome-devtools
+- chrome-devtools-mcp-cli-interface
 ---
 
 # ChromeDevTools/chrome-devtools-mcp
 
-## Summary
+## What it is
 
-Chrome DevTools for coding agents
+`chrome-devtools-mcp` is an official Chrome DevTools project that lets a coding agent (Gemini, Claude, Cursor, Copilot, etc.) drive and inspect a live Chrome browser. It runs as a Model Context Protocol server, exposing the full DevTools surface — performance traces, network requests, console messages, screenshots — to the agent for automation, debugging, and performance analysis. A standalone CLI is also provided for use without MCP.
 
-## Repository Info
+## Why it matters
 
-- **Source URL**: https://github.com/ChromeDevTools/chrome-devtools-mcp
-- **Stars**: 36605
-- **Primary language**: TypeScript
-- **Topics**: browser, chrome, chrome-devtools, debugging, devtools, mcp, mcp-server, puppeteer
+For any project here that touches the web (debrid-downloader-web, parkcityyt scraping, the booking bots, future labs-wiki frontend work), this gives a coding agent first-class access to the same tooling a human would use in DevTools, without writing custom Puppeteer glue. It pairs naturally with the `stealth-browser` skill in `.github/skills/` for protected-site work, where you want both bot evasion *and* DevTools introspection.
 
-## README Excerpt
+## Key concepts
 
-# Chrome DevTools for Agents
+- **MCP server for browser control** — Standardised tool surface so any MCP-compatible agent can inspect/automate Chrome. See [[model-context-protocol-mcp-server-for-chrome-devtools]].
+- **Performance insights** — Records DevTools traces and extracts actionable performance findings (uses the same Chrome DevTools frontend code).
+- **Network + console inspection** — Source-mapped stack traces, network requests, browser console messages.
+- **Puppeteer-backed automation** — Reliable wait-for-result behavior for clicks, navigation, and form interaction.
+- **Slim mode** — `--slim` reduces the tool surface for basic browser tasks, lowering token cost. See [[chrome-devtools-mcp-cli-interface]].
+- **CrUX integration** — Optional real-user performance data via the Chrome User Experience Report (disable with `--no-performance-crux`).
 
-[![npm chrome-devtools-mcp package](https://img.shields.io/npm/v/chrome-devtools-mcp.svg)](https://npmjs.org/package/chrome-devtools-mcp)
+## How it works
 
-Chrome DevTools for Agents (`chrome-devtools-mcp`) lets your coding agent (such as Gemini, Claude, Cursor or Copilot)
-control and inspect a live Chrome browser. It acts as a Model-Context-Protocol
-(MCP) server, giving your AI coding assistant access to the full power of
-Chrome DevTools for reliable automation, in-depth debugging, and performance analysis.
-A [CLI](docs/cli.md) is also provided for use without MCP.
+- Agent connects to the MCP server (`npx -y chrome-devtools-mcp@latest`).
+- Server launches/attaches to a Chrome instance using Puppeteer.
+- Agent invokes MCP tools to navigate, screenshot, profile, or inspect; results are returned as structured data and source-mapped traces.
+- Server periodically checks npm for updates (disable with `CHROME_DEVTOOLS_MCP_NO_UPDATE_CHECKS`).
+- Telemetry is on by default; disable with `--no-usage-statistics` or env vars `CHROME_DEVTOOLS_MCP_NO_USAGE_STATISTICS` / `CI`.
 
-## Activity Snapshot
+## Setup
 
-### Recent Releases
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest"]
+    }
+  }
+}
+```
 
-### chrome-devtools-mcp-v0.22.0 (2026-04-21)
-### Recent Commits
+For lightweight headless use:
 
-- 2026-04-21 a1612be Nicholas Roscino: test: refactor tests to reduce duplication (#1926)
-- 2026-04-21 42be7c3 Alex Rudenko: docs: clarify resource limitations around the number of tabs (#1927)
-- 2026-04-21 b53752d Wolfgang Beyer: chore: move resolveCdpElementId (#1923)
-- 2026-04-21 f0da776 browser-automation-bot: chore(main): release chrome-devtools-mcp 0.22.0 (#1884)
-- 2026-04-21 76ab9fa Alex Rudenko: docs: clarify tools included into CLI (#1925)
-- 2026-04-21 3ff21cf Nicholas Roscino: feat: support Chrome extensions debugging (#1922)
-- 2026-04-21 86ffd58 Nicholas Roscino: test: add test for console log from content script (#1920)
-- 2026-04-20 57648b7 Alex Rudenko: chore(deps): update lh (#1913)
-- 2026-04-20 9211c6b Nikolay Vitkov: chore(memory): expose a tool for getting the inital data. (#1909)
-- 2026-04-20 ec895f1 Nicholas Roscino: refactor: use puppeteer Extension API (#1911)
-- 2026-04-20 562c308 dependabot[bot]: chore(deps-dev): bump the dev-dependencies group with 2 updates (#1907)
-- 2026-04-20 3a24d71 Mukunda Rao Katta: test: save WebP responses with the right extension (#1901)
-- 2026-04-20 e3a5f6b Cocoon-Break: fix(cli): correct WebP MIME type check in handleResponse ('webp' → 'image/webp') (#1899)
-- 2026-04-20 0f29acf Alex Rudenko: chore: fix viewport eval (#1888)
-- 2026-04-20 da33cb5 Nikolay Vitkov: feat: auto handle dialogs during script evaluation  (#1839)
-- 2026-04-20 0ed086e Nikolay Vitkov: chore: remove code around Audits setup (#1893)
-- 2026-04-17 0a6aaa5 yulunz: chore: generate a json file for flag usage metrics (#1881)
-- 2026-04-17 0331f6a Nikolay Vitkov: chore: implement memory snapshot information (#1874)
-- 2026-04-17 ea57e86 Asish Kumar: fix: ignore unmapped PerformanceIssue events (#1852)
-- 2026-04-17 2f458c1 Nikolay Vitkov: fix(network): trailing data in Network redirect chain (#1880)
-### Open Issues (top 10)
+```json
+{
+  "mcpServers": {
+    "chrome-devtools": {
+      "command": "npx",
+      "args": ["-y", "chrome-devtools-mcp@latest", "--slim", "--headless"]
+    }
+  }
+}
+```
 
-- #1912 Unable to read the Google Sheet Web Page (by maxsxu)
-- #1921 Browser hangs / crashes when MCP connects to Chrome with many tabs (by jabagawee)
-- #1775 Feature: Add evaluate_script_file tool to evaluate JavaScript files from the local filesystem (by achideal)
-### Recently Merged PRs (top 10)
+## Integration notes
 
-- #1926 test: refactor tests to reduce duplication (merged 2026-04-21)
-- #1927 docs: clarify resource limitations around the number of tabs (merged 2026-04-21)
-- #1923 chore: move resolveCdpElementId (merged 2026-04-21)
-- #1884 chore(main): release chrome-devtools-mcp 0.22.0 (merged 2026-04-21)
-- #1925 docs: clarify tools included into CLI (merged 2026-04-21)
-- #1922 feat: support Chrome extensions debugging (merged 2026-04-21)
-- #1920 test: add test for console log from content script (merged 2026-04-21)
-- #1913 chore(deps): update lh (merged 2026-04-20)
-- #1909 chore(memory): expose a tool for getting the inital data. (merged 2026-04-20)
-- #1022 feat: add pageId routing for parallel multi-agent workflows (merged 2026-02-26)
+Drop-in MCP server for Copilot CLI / OpenCode by adding to `~/.copilot/mcp-config.json`. Most useful when paired with `stealth-browser` for sites with bot protection — `chrome-devtools-mcp` itself uses Puppeteer and offers no anti-bot stealth. Could replace ad-hoc Selenium/nodriver scripts in the booking bot family for non-protected pages.
 
-## Crawled Files
+## Caveats / Gotchas
 
-Source dump in `raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md` includes:
+- Exposes full browser content — including sensitive cookies/sessions — to whichever agent is connected. Avoid sharing instances that hold credentials you don't want the model to see.
+- Officially supports only Google Chrome and Chrome for Testing; other Chromium-based browsers are unsupported.
+- Telemetry on by default; the README is explicit that opting out of Chrome metrics does *not* opt you out here.
+- Requires Node.js v20.19+ (latest LTS) and current-stable Chrome.
 
-- `.gitignore`
-- `LICENSE`
-- `package-lock.json`
-- `package.json`
-- `docs/cli.md`
-- `docs/debugging-android.md`
-- `docs/design-principles.md`
-- `docs/slim-tool-reference.md`
-- `docs/tool-reference.md`
-- `docs/troubleshooting.md`
-- `.mcp.json`
-- `.release-please-manifest.json`
-- `CHANGELOG.md`
+## Repo metadata
+
+| Field | Value |
+|---|---|
+| Stars | 36,605 |
+| Primary language | TypeScript |
+| Topics | browser, chrome, chrome-devtools, debugging, devtools, mcp, mcp-server, puppeteer |
+| License | (see upstream — Apache-2.0 per Chrome DevTools convention) |
+
+## Source
+
+- Raw dump: `raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md`
+- Upstream: https://github.com/ChromeDevTools/chrome-devtools-mcp

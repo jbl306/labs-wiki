@@ -2,7 +2,7 @@
 title: bigskysoftware/htmx
 type: source
 created: '2026-04-21'
-last_verified: '2026-04-21'
+last_verified: '2026-04-22'
 source_hash: ca2cfb1d28fe1ee978e9b0876ad605f92affa272f2fbdf6db5f16eb8559d3c25
 sources:
 - raw/2026-04-07-test-github-repo.md
@@ -17,106 +17,75 @@ tags:
 - rest
 tier: warm
 knowledge_state: ingested
-ingest_method: self-synthesis-no-llm
-quality_score: 50
+ingest_method: manual-reprocess-github-2026-04-22
+quality_score: 80
+concepts:
+- html-over-the-wire-with-htmx
+- htmx-attribute-api
 ---
 
 # bigskysoftware/htmx
 
-## Summary
+## What it is
 
-</> htmx - high power tools for HTML
+htmx is a small (~14 kB min+gzipped), dependency-free JavaScript library that gives plain HTML access to AJAX, CSS Transitions, WebSockets, and Server-Sent Events through HTML attributes. Instead of returning JSON to a SPA, the server returns HTML fragments and htmx swaps them into the page on user-triggered events. It is the spiritual successor to intercooler.js and a practical implementation of the HATEOAS / hypermedia-as-the-engine-of-application-state idea.
 
-## Repository Info
+## Why it matters
 
-- **Source URL**: https://github.com/bigskysoftware/htmx
-- **Stars**: 47867
-- **Primary language**: JavaScript
-- **Topics**: hateoas, html, htmx, hyperscript, javascript, rest
+For our internal tools (debrid-downloader desktop UI, nba-fantasy-draft-tool web UI, future labs-wiki dashboards) htmx is a much lower-overhead alternative to spinning up Vue/Nuxt when the backend is already FastAPI returning rendered templates. The bundle size and zero-build-step ergonomics fit small-footprint tooling well, and it composes naturally with FastAPI + Jinja or Nuxt server routes.
 
-## README Excerpt
+## Key concepts
 
-[![</> htmx](https://raw.githubusercontent.com/bigskysoftware/htmx/master/www/static/img/htmx_logo.1.png "high power tools for HTML")](https://htmx.org)
+- **HTML-over-the-wire** — Server returns HTML fragments; the client never parses JSON. See [[html-over-the-wire-with-htmx]].
+- **`hx-*` attributes** — Behavior is declarative: `hx-get`, `hx-post`, `hx-trigger`, `hx-target`, `hx-swap` etc. attached directly to elements. See [[htmx-attribute-api]].
+- **Generalised hypertext** — Any element can issue any HTTP verb, on any event, replacing any part of the DOM. Removes the "only `<a>` and `<form>`" / "only GET and POST" / "only full-page replace" constraints of vanilla HTML.
+- **Extensions** — First-party extensions for SSE, WebSockets, preloading, response targeting, etc.
+- **No build step** — Drop in via CDN `<script>` tag; no bundler required.
 
-*high power tools for HTML*
+## How it works
 
-[![Discord](https://img.shields.io/discord/725789699527933952)](https://htmx.org/discord)
-[![Netlify](https://img.shields.io/netlify/dba3fc85-d9c9-476a-a35a-e52a632cef78)](https://app.netlify.com/sites/htmx/deploys)
-[![Bundlephobia](https://badgen.net/bundlephobia/dependency-count/htmx.org)](https://bundlephobia.com/result?p=htmx.org)
-[![Bundlephobia](https://badgen.net/bundlephobia/minzip/htmx.org)](https://bundlephobia.com/result?p=htmx.org)
+- htmx scans the DOM for `hx-*` attributes on page load and after every swap.
+- A configured event (default: the natural one for the element) triggers an AJAX call to the configured URL with the configured verb.
+- The response — expected to be HTML — is swapped into the configured target using the configured strategy (`innerHTML`, `outerHTML`, `beforebegin`, etc.).
+- Extensions and `hyperscript` (a sister project) layer on richer client-side behavior when needed.
+- Tests use mocha + chai + sinon; bundle is built with TypeScript (recent v2.10 prep added `--skipLibCheck` to the build).
 
-## Activity Snapshot
+## Setup
 
-### Recent Releases
+```html
+<script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.10/dist/htmx.min.js"
+        crossorigin="anonymous"></script>
 
-### v2.0.9 (2026-04-20)
+<button hx-post="/clicked" hx-swap="outerHTML">
+  Click Me
+</button>
+```
 
-See CHANGELOG.md for details
+```bash
+# Or via npm — note the package is htmx.org, not htmx
+npm install htmx.org --save
+```
 
-### v2.0.7 (2025-09-11)
-### Recent Commits
+## Integration notes
 
-- 2026-04-21 dbf77dd Carson Gross: add --skipLibCheck to fix build... again
-- 2026-04-21 2fdfe05 Carson Gross: add --skipLibCheck to fix build
-- 2026-04-21 c87e29d Carson Gross: fix merge
-- 2026-04-21 1b3fb3e Carson Gross: Merge remote-tracking branch 'origin/master'
-- 2026-04-21 bdc7d7d Carson Gross: 2.10 release prep
-- 2026-04-21 20951cc Carson Gross: update libs
-- 2026-04-21 1b4f793 dependabot[bot]: Bump playwright from 1.55.0 to 1.56.1 (#3479)
-- 2026-04-21 17d349d Carson Gross: Merge remote-tracking branch 'origin/dev' into dev
-- 2026-04-21 d53932d MichaelWest22: improve escaping of tag and id in settle lookup (#3752)
-- 2026-04-21 013f335 Carson Gross: restore ts file
-- 2026-04-20 6ff7c48 Carson Gross: typo
-- 2026-04-15 2fe8cc2 Carson Gross: fix URL
-- 2026-04-15 b2e8866 Carson Gross: update shas
-- 2026-04-15 e14f887 Carson Gross: update dist
-- 2026-04-15 ebeca09 Carson Gross: update www
-- 2026-04-15 61784fe Carson Gross: update dist
-- 2026-04-15 b1ddcce Carson Gross: bump version
-- 2026-04-15 294c7ad Carson Gross: 2.0.9 changelog
-- 2026-04-15 a67a6a6 Carson Gross: Merge remote-tracking branch 'origin/dev' into dev
-- 2026-04-15 8183f07 StabbarN: Preserves pre-disabled elements with hx-disabled-elt on other element (#3443)
-### Open Issues (top 10)
+Pairs cleanly with our FastAPI + Jinja stack. Strong fit for the debrid-downloader web UI's real-time bits where we currently use raw WebSocket plumbing. Less appropriate for the Nuxt-based debrid-downloader-web (already SPA-shaped). For the nba-fantasy-draft-tool's Textual + web hybrid, htmx could remove the Vue dependency entirely.
 
-- #3765 No GitHub Release for version 2.0.10 (by adamchainz)
-- #1911 Support for chunked transfer encoding (by carlos-verdes)
-- #3757 Missing types for typescript (by cuboci)
-- #3743 Nested OOB swap is performed even though it is off (by AlexLup06)
-- #2131 [1.9.10] WebSockets: handling events with `hx-on` seems broken (by haja)
-- #2825 Exposing saveCurrentPageToHistory via js API (by Wulfheart)
-- #3726 `title` tag not at the top of the response does not update the existing tab title (by metametadata)
-### Recently Merged PRs (top 10)
+## Caveats / Gotchas
 
-- #3479 Bump playwright from 1.55.0 to 1.56.1 (merged 2026-04-21)
-- #3752 improve escaping of tag and id in settle lookup (merged 2026-04-21)
-- #3759 update header documentation for retarget-reswap-reselect (merged 2026-04-21)
-- #3711 restore hx-on:: shorthand from htmx 2 (merged 2026-03-19)
-- #3717 Align WS and SSE extension APIs (merged 2026-03-30)
-- #3744 Add support for multiple prefix (merged 2026-04-19)
-- #3756 Add auto detection and header based triggering to hx-download extension (merged 2026-04-19)
-- #3443 Preserves pre-disabled elements with hx-disabled-elt on other element (merged 2026-04-15)
-- #3477 fix history normalizePath relative path normalization (merged 2026-04-15)
-- #3715 fix: remove empty class attribute left behind after settle/swap/request (merged 2026-04-15)
+- The npm package is `htmx.org`, not `htmx` — the latter is a stale/broken package.
+- License is BSD 2-Clause Zero (BSD0).
+- Encourages a server-rendering style; teams used to JSON APIs need to adjust their backend templating story.
 
-## Crawled Files
+## Repo metadata
 
-Source dump in `raw/2026-04-07-test-github-repo.md` includes:
+| Field | Value |
+|---|---|
+| Stars | 47,867 |
+| Primary language | JavaScript |
+| Topics | hateoas, html, htmx, hyperscript, javascript, rest |
+| License | BSD-Zero (see repo) |
 
-- `.gitignore`
-- `dist/ext/README.md`
-- `LICENSE`
-- `package-lock.json`
-- `package.json`
-- `www/.gitignore`
-- `www/README.md`
-- `www/content/examples/_index.md`
-- `www/content/examples/active-search.md`
-- `www/content/examples/animations.md`
-- `www/content/examples/async-auth.md`
-- `www/content/examples/bulk-update.md`
-- `www/content/examples/click-to-edit.md`
-- `www/content/examples/click-to-load.md`
-- `www/content/examples/confirm.md`
-- `www/content/examples/delete-row.md`
-- `www/content/examples/dialogs.md`
-- `www/content/examples/edit-row.md`
+## Source
+
+- Raw dump: `raw/2026-04-07-test-github-repo.md`
+- Upstream: https://github.com/bigskysoftware/htmx

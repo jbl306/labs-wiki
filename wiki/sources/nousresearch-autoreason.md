@@ -2,7 +2,7 @@
 title: NousResearch/autoreason
 type: source
 created: '2026-04-21'
-last_verified: '2026-04-21'
+last_verified: '2026-04-22'
 source_hash: fa541749897b9f7b80e6458c2d972050d87a3e54aff9fbcd82146ac2fd666cf6
 sources:
 - raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
@@ -12,72 +12,87 @@ tags:
 - tex
 tier: warm
 knowledge_state: ingested
-ingest_method: self-synthesis-no-llm
-quality_score: 50
+ingest_method: manual-reprocess-github-2026-04-22
+quality_score: 80
+concepts:
+- autoreason-iterative-self-refinement-framework
 ---
 
 # NousResearch/autoreason
 
-## Summary
+## What it is
 
-Autoresearch for subjective domains.
+Autoreason (Nous Research; SHL0MS / Hermes Agent) is a research framework — and accompanying paper — for iterative self-refinement that knows when to stop. Each pass produces three competing versions: the unchanged incumbent A, an adversarial revision B, and a synthesis AB. A panel of fresh judging agents (Borda count, no shared context) picks the winner; "do nothing" is always a first-class option. The repo contains the LaTeX paper, blinded human-evaluation materials, the experiment runners, and the result corpora across writing tasks and CodeContests problems.
 
-## Repository Info
+## Why it matters
 
-- **Source URL**: https://github.com/NousResearch/autoreason
-- **Stars**: 495
-- **Primary language**: TeX
+Direct counter to the naive "critique + revise" loop most of us reach for first. Three findings are practically useful for any verification or self-review skill we build (including `superpowers:code-reviewer`, the `code-reviewer` agent skill, or the Ralph-loop pattern): critique-and-revise *destroys* weak models (Haiku 3.5 outputs shrunk 59–70% over 15 passes), 7 judges converge ~3× faster than 3, and the gains vanish once a model crosses ~60% private accuracy on the underlying task — meaning self-refinement has a model-quality floor and ceiling.
 
-## README Excerpt
+## Key concepts
 
-# Autoreason: Self-Refinement That Knows When to Stop
+- **A / B / AB tournament** — Incumbent, adversarial revision, synthesis. Each pass three candidates compete. See [[autoreason-iterative-self-refinement-framework]].
+- **Blind Borda count** — Judges score with randomized order and neutral labels (Proposal 1/2/3) to defeat positional and label bias.
+- **"Do nothing" as a first-class option** — A wins by default if no revision is strictly better; convergence after k=2 incumbent wins.
+- **Fresh-agent isolation** — Critic, Author B, Synthesizer, and judges all run with no shared context, preventing critique-loop contamination.
+- **Generation-evaluation gap** — Self-refinement only helps when the model can evaluate better than it can generate (transition point ~60% private accuracy on CodeContests).
+- **Length-controlled evaluation** — Beats 3 of 4 baselines (21/28 wins) even at matched word count, ruling out "longer = better" confound.
 
-**SHL0MS | HERMES AGENT**
+## How it works
 
-[Paper (PDF)](paper/autoreason.pdf) · [Human Eval Materials](human_eval/)
+```
+Task Prompt → Incumbent A
+                 ↓
+       ┌── Critic (fresh) ──→ Critique
+       ├── Author B (fresh) ─→ Revision (B)
+       └── Synthesizer ──────→ Synthesis (AB)
+                 ↓
+         Judge Panel (3 fresh, Borda)
+                 ↓
+             Winner → new A   (or converge if A wins k=2)
+```
 
----
+- Writing experiments: 5 open-ended + 3 constrained tasks, 4 baselines, 15-pass iterations.
+- Code experiments: 150 CodeContests problems × 3 strategies × 4 model tiers (Sonnet 4 / 4.6, Haiku 3.5 / 4.5).
+- Ablations cover judge count (1/3/7), Borda vs majority, component necessity (removing B or AB collapses convergence), and length control.
+- Robustness: Monte Carlo (5 runs), multi-seed replication (15 runs across 5 tasks).
 
-Iterative self-refinement fails for three structural reasons: *prompt bias* (models hallucinate flaws when asked to critique), *scope creep* (outputs expand unchecked each pass), and *lack of restraint* (models never say "no changes needed"). Autoreason fixes all three.
+## Setup
 
-Each iteration produces three competing versions — the **unchanged incumbent (A)**, an **adversarial revision (B)**, and a **synthesis (AB)** — judged by fresh agents with no shared context via blind Borda count. "Do nothing" is always a first-class option.
+The repo is a research artifact, not a library. Experiment runners live in `experiments/v2/`:
 
-## Activity Snapshot
+```bash
+git clone https://github.com/NousResearch/autoreason.git
+cd autoreason/experiments/v2
+# requires API access for the relevant model tiers
+python run_overnight.py        # writing tasks
+python run_code_overnight.py   # CodeContests (Sonnet 4.6)
+python run_code_haiku45.py     # Haiku 4.5 code experiment
+python run_multi_seed.py       # multi-seed replication
+python run_ablations.py        # judge count, aggregation, component, length
+python compute_stats.py        # bootstrap CIs and McNemar tests
+```
 
-### Recent Commits
+## Integration notes
 
-- 2026-04-12 538f881 SHL0MS: chore: recompile PDF with corrected citations
-- 2026-04-12 4bb1f02 SHL0MS: fix: correct 4 fabricated/wrong citations in bibliography
-- 2026-04-03 bbe6dc1 shl0ms: Integrate Haiku 4.5 results, update framing to five-tier scaling curve
-- 2026-04-02 61a5157 shl0ms: Rewrite README, add ablation/haiku45 results, remove outdated OVERVIEW.md and RESULTS.md
-- 2026-04-02 f2260a6 shl0ms: Add component ablation, aggregation comparison, update intro/abstract/conclusion/discussion with ablation findings
-- 2026-04-02 6746dff shl0ms: Add judge panel size ablation (1v3v7) and length-controlled evaluation results
-- 2026-04-02 9c464e9 shl0ms: Layout refinements: shorter abstract, wider tables, better spacing, increased line spread
-- 2026-04-02 c53c050 shl0ms: Author: SHL0MS | HERMES AGENT
-- 2026-04-02 db2b36e shl0ms: Fix overfull hboxes, format model list in reproducibility appendix
-- 2026-04-02 0f6a9e4 shl0ms: Fig 1: nudge winner->new A lower and left
-- 2026-04-02 bef2222 shl0ms: Fig 1: center fresh x3 badge with judge panel box
-- 2026-04-02 b135231 shl0ms: Fig 1: horizontal 'winner -> new A' label above gray arrow
-- 2026-04-02 356c64c shl0ms: Fix fig 1 label overlap: bump unchanged/synthesis/revision labels lower
-- 2026-04-02 12a2576 shl0ms: Title: Autoreason: Self-Refinement That Knows When to Stop
-- 2026-04-02 8da20c8 shl0ms: lowercase the
-- 2026-04-02 ccceee3 shl0ms: Title: Autoreason: Resolving The Self-Refinement Paradox
-- 2026-04-02 f5a864f shl0ms: Fix figure 1 overflow (resizebox), widen table 17, add section breaks before references/appendix/repro
-- 2026-04-02 62193a1 shl0ms: Strengthen claims where data supports: remove over-hedging in abstract, intro conditions, conclusion, scope discussion
-- 2026-04-02 d74d8ad shl0ms: Single-column layout, larger figures, 1in margins
-- 2026-04-02 2b6c44f shl0ms: Recompile PDF with Latin Modern (was missing lmodern.sty)
+Take the *pattern*, not the code: the A/B/AB + blind-Borda structure is directly portable into any verification step we add to `superpowers:code-reviewer` or the Ralph loop. For nba-ml-engine, the "evaluator must outperform generator for self-refinement to help" finding is a useful stop-rule for any LLM-graded model selection logic. Worth pairing with the `verification-before-completion` skill.
 
-## Crawled Files
+## Caveats / Gotchas
 
-Source dump in `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md` includes:
+- Strong-model-only effect — the gains evaporate at Haiku 4.5 / Sonnet 4 quality on CodeContests; don't assume self-refinement is universally beneficial.
+- Single-judge runs are noisy and slow; 3 is the practical minimum; 7 converges ~3× faster.
+- Code-heavy: 80.8% TeX (the paper) + 19.2% Python (the runners).
+- Cited bibliography was corrected post-publication (4 fabricated/wrong citations fixed in 2026-04-12 commits) — pull a recent PDF.
 
-- `.gitignore`
-- `experiments/prior/runs/run_01_fixed_order/README.md`
-- `human_eval/README.md`
-- `human_eval_answer_key.json`
-- `experiments/prior/config_matrix.yaml`
-- `experiments/prior/evaluation/blind_pairs/task_01_pair_01.md`
-- `experiments/prior/evaluation/blind_pairs/task_01_pair_02.md`
-- `experiments/prior/evaluation/blind_pairs/task_01_pair_03.md`
-- `experiments/prior/evaluation/blind_pairs/task_01_pair_04.md`
-- `experiments/prior/evaluation/blind_pairs/task_02_pair_01.md`
+## Repo metadata
+
+| Field | Value |
+|---|---|
+| Stars | 495 |
+| Primary language | TeX |
+| Topics | (none) |
+| License | (see upstream) |
+
+## Source
+
+- Raw dump: `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md`
+- Upstream: https://github.com/NousResearch/autoreason

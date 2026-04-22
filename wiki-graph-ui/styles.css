@@ -330,3 +330,113 @@ body.sidebar-open #sidebar-backdrop {
 @media (prefers-reduced-motion: reduce) {
   aside#sidebar, #sidebar-backdrop { transition: none; }
 }
+
+/* ---------- Node panel: tabs + content viewer (mobile-first) ------------ */
+#node-panel-handle {
+  display: none;
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  margin: 4px auto 8px;
+}
+.node-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--border);
+  margin: 8px -4px 0;
+  padding: 0 4px;
+}
+.node-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--muted);
+  padding: 8px 10px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  border-radius: 0;
+  min-height: 36px;
+}
+.node-tab.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.node-tab-panels { padding-top: 10px; }
+.node-tab-panel { display: none; }
+.node-tab-panel.active { display: block; }
+
+.node-fm {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 4px 12px;
+  font-size: 12px;
+  margin: 8px 0 0;
+}
+.node-fm dt { color: var(--muted); }
+.node-fm dd { margin: 0; word-break: break-word; }
+
+.node-content {
+  font-size: 14px;
+  line-height: 1.55;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+.node-content h1,
+.node-content h2,
+.node-content h3,
+.node-content h4 {
+  margin: 18px 0 6px;
+  line-height: 1.25;
+}
+.node-content h1 { font-size: 18px; }
+.node-content h2 { font-size: 16px; }
+.node-content h3 { font-size: 14px; color: var(--accent); }
+.node-content p { margin: 8px 0; }
+.node-content ul, .node-content ol { padding-left: 22px; margin: 8px 0; }
+.node-content li { margin: 4px 0; }
+.node-content code {
+  background: rgba(255,255,255,0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 12.5px;
+}
+.node-content pre {
+  background: #05070b;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px;
+  overflow-x: auto;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.node-content pre code { background: transparent; padding: 0; }
+.node-content a { color: var(--accent); text-decoration: underline; }
+.node-content a.wikilink {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dashed var(--accent-dim);
+  cursor: pointer;
+}
+.node-content blockquote {
+  border-left: 3px solid var(--accent-dim);
+  padding-left: 10px;
+  margin: 8px 0;
+  color: var(--muted);
+}
+.node-content table { border-collapse: collapse; font-size: 12.5px; margin: 8px 0; }
+.node-content th, .node-content td { border: 1px solid var(--border); padding: 4px 8px; }
+
+/* On mobile sheet, expand panel to a tall scrollable bottom drawer. */
+@media (max-width: 768px) {
+  #node-panel {
+    max-height: min(92dvh, 92vh) !important;
+    padding: 0 14px 16px;
+  }
+  #node-panel-handle { display: block; }
+  body.node-panel-open #node-panel {
+    transform: translateY(0);
+  }
+  .node-content { font-size: 15px; }
+}

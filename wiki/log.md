@@ -4127,4 +4127,43 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
   status: success
   notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-22T02:14:14+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-self-synthesizing-r4-checkpoint-clusters.md
+    - wiki/concepts/self-synthesizing-checkpoint-cluster-synthesis.md
+    - wiki/entities/write-synth-py.md
+    - wiki/entities/backfill-checkpoint-cluster-synthesis-py.md
+    - wiki/entities/auto-ingest-py.md
+  source: raw/2026-04-22-copilot-session-self-synthesizing-r4-checkpoint-clusters-fc158a39.md
+  status: success
+  notes: "Auto-ingested 5 pages (1 concepts, 3 entities, 0 synthesis)"
 ```
+
+## 2026-04-21 — github-source-refresh
+- operation: refresh_github_sources
+- ingest_method: self-synthesis (no LLM)
+- count: 3
+  - wiki/sources/bigskysoftware-htmx.md
+  - wiki/sources/kunchenguid-axi.md
+  - wiki/sources/midudev-autoskills.md
+
+## 2026-04-21 — github-source-refresh
+- operation: refresh_github_sources
+- ingest_method: self-synthesis (no LLM)
+- count: 13
+  - wiki/sources/jbl306-homelab.md
+  - wiki/sources/bigskysoftware-htmx.md
+  - wiki/sources/kunchenguid-axi.md
+  - wiki/sources/midudev-autoskills.md
+  - wiki/sources/milla-jovovich-mempalace.md
+  - wiki/sources/hkuds-autoagent.md
+  - wiki/sources/hkuds-autoagent.md
+  - wiki/sources/hkuds-autoagent.md
+  - wiki/sources/amitshekhariitbhu-llm-internals.md
+  - wiki/sources/chromedevtools-chrome-devtools-mcp.md
+  - wiki/sources/google-research-timesfm.md
+  - wiki/sources/nousresearch-autoreason.md
+  - wiki/sources/microsoft-memento.md

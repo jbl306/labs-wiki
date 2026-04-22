@@ -1,19 +1,20 @@
 ---
-title: "https://github.com/HKUDS/AutoAgent"
+title: https://github.com/HKUDS/AutoAgent
 type: url
-captured: 2026-04-12T00:45:46.242514+00:00
+captured: 2026-04-12 00:45:46.242514+00:00
 source: android-share
-url: "https://github.com/HKUDS/AutoAgent"
-content_hash: "sha256:eea9a6e365767ec2fff038d65ac407e985115e55a5eccb5329596fe5e6089aa8"
+url: https://github.com/HKUDS/AutoAgent
+content_hash: sha256:43f24f7731b5d8131225fe524b43cfed0f1df9fb1f6551418fd95a88a819e20a
 tags: []
 status: ingested
+last_refreshed: '2026-04-22T02:44:50+00:00'
 ---
 
 https://github.com/HKUDS/AutoAgent
 
 <!-- fetched-content:start -->
 ## Fetched Metadata
-- fetched_at: 2026-04-21T13:41:52+00:00
+- fetched_at: 2026-04-22T02:44:50+00:00
 - source_url: https://github.com/HKUDS/AutoAgent
 - resolved_url: https://github.com/HKUDS/AutoAgent
 - content_type: application/vnd.github+json
@@ -22,7 +23,7 @@ https://github.com/HKUDS/AutoAgent
 ## Fetched Content
 Repository: HKUDS/AutoAgent
 Description: "AutoAgent: Fully-Automated and Zero-Code LLM Agent Framework"
-Stars: 9186
+Stars: 9189
 Language: Python
 Topics: agent, llms
 
@@ -542,6 +543,130 @@ Rome wasn't built in a day. AutoAgent stands on the shoulders of giants, and we 
 ```tex
 @misc{AutoAgent,
       title={{AutoAgent: A Fully-Automated and Zero-Code F
+Languages: Python 99.8%, Shell 0.2%
+
+## Recent Commits
+
+- 2025-10-16 16c12b0 zrguo: Update Communication.md
+- 2025-10-16 c15956f zrguo: Add files via upload
+- 2025-10-11 35973f8 zrguo: Add Feishu QR code
+- 2025-10-11 89da956 zrguo: Update Communication.md
+- 2025-10-11 235f0d4 zrguo: Add files via upload
+- 2025-10-11 b7b6efe zrguo: Add files via upload
+- 2025-10-09 939d15a Jiabin Tang: Add files via upload
+- 2025-10-07 35c8373 chaohuang-ai: Update README.md
+- 2025-10-07 76dd4fa chaohuang-ai: Update README.md
+- 2025-10-07 2a3f22b chaohuang-ai: Update README.md
+- 2025-10-07 54406a9 chaohuang-ai: Update README.md
+- 2025-10-07 6e124dc chaohuang-ai: Update README.md
+- 2025-09-01 936c70c chaohuang-ai: Update README.md
+- 2025-07-01 afeaed6 chaohuang-ai: Update README.md
+- 2025-06-06 06080ef chaohuang-ai: Update README.md
+- 2025-04-28 be1ae27 Tianyu Fan: Add files via upload
+- 2025-04-15 1f9d14b Tianyu Fan: update wechat qrcode
+- 2025-04-15 3fba6c3 Tianyu Fan: update wechat qrcode
+- 2025-04-04 650382a Tianyu Fan: update wechat qr-code
+- 2025-03-31 b061815 chaohuang-ai: Update README.md
+
+## Open Issues (top 10)
+
+- #87 Proposal: Native Monetization Layer via Merxex (by enigma-zeroclaw)
+- #86 Security: LLM can create and execute arbitrary Python code via create_tool/run_tool (by CrepuscularIRIS)
+- #85 Security: Command injection via unsanitized input in tcp_server.py and local_env.py (by CrepuscularIRIS)
+- #84 Feature: Governance middleware for zero-code agent creation (by jagmarques)
+- #83 Chart Library as a financial tool for AutoAgent (by grahammccain)
+- #39 Feature Request: Integrate Azure AI Foundry Endpoint for LLM Integration (by Shak-Shat)
+- #73 args[__CTX_VARS_NAME__] = context_variables  TypeError: 'str' object does not support item assignment (by IcyFeather233)
+
+## Recently Merged PRs (top 10)
+
+- #2 chore: removed pdfminer duplicate from setup.cfg fixing HOCRConverter import error (merged 2025-02-11)
+- #14 Autoagent (merged 2025-02-16)
+- #10 docs: update README.md (merged 2025-02-15)
+- #4 chore: corrected private to public docker image (merged 2025-02-12)
+- #1 Mirror branch 0207 (merged 2025-02-08)
+
+
+## File: .gitignore
+
+```
+workplace_*/
+workspace_*/
+*.log
+code_db/*
+results/*
+
+__pycache__/
+tmp/*
+logs/*
+*.tar.gz
+
+*.egg-info
+
+.DS_Store
+*.csv
+
+eval_data/*
+evaluation_results/*
+casestudy_results/*
+
+evaluation/*/data/
+evaluation/*/data/*
+evaluation/**/data/
+
+.env
+
+terminal_tmp/*
+
+!tool_docs.csv
+
+.port*
+
+```
+
+
+## File: autoagent/environment/cookie_json/README.md
+
+```
+# How to obtain cookie json files
+
+## What are cookies?
+Cookies are small pieces of data stored by websites on users' computers, containing information like login status and preferences. They are essential for web automation as they allow automated browsers to maintain authenticated sessions, skip repeated logins, and simulate real user behavior across multiple page visits.
+
+## How to organize them in this folder?
+We recommend you to use the Google Chrome browser with the extension "Export cookie JSON file for Puppeteer", as show in the following figure: 
+
+![extension](../../../assets/cookies/extension.png)
+
+1. Go to a specific website and login.
+2. Then use the extension to export the cookies, and save it as a json file in the `cookie_json` folder.
+
+![export](../../../assets/cookies/export.png)
+
+3. After you have exported all cookies, use the following command to convert them to python code:
+
+```bash
+cd path/to/MetaChain && python autoagent/environment/browser_cookies.py
+```
+
+## Recommended websites
+
+We recommend you to export the cookies from the following websites:
+
+- [archive.org](https://archive.org)
+- [github.com](https://github.com)
+- [nature.com](https://nature.com)
+- [orcid.org](https://orcid.org)
+- [www.collinsdictionary.com](https://www.collinsdictionary.com)
+- [www.jstor.org](https://www.jstor.org)
+- [www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov)
+- [www.pnas.org](https://www.pnas.org)
+- [www.reddit.com](https://www.reddit.com)
+- [www.researchgate.net](https://www.researchgate.net)
+- [www.youtube.com](https://www.youtube.com)
+
+```
+
 
 ## File: docs/.gitignore
 
@@ -567,6 +692,1003 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+```
+
+
+## File: docs/package-lock.json
+
+```
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "packages": {
+    "": {
+      "name": "docs",
+      "version": "0.0.0",
+      "dependencies": {
+        "@docusaurus/core": "^3.7.0",
+        "@docusaurus/plugin-content-pages": "^3.7.0",
+        "@docusaurus/preset-classic": "^3.7.0",
+        "@docusaurus/theme-mermaid": "^3.7.0",
+        "@mdx-js/react": "^3.1.0",
+        "clsx": "^2.0.0",
+        "prism-react-renderer": "^2.4.1",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "react-icons": "^5.4.0",
+        "react-use": "^17.6.0"
+      },
+      "devDependencies": {
+        "@docusaurus/module-type-aliases": "^3.5.1",
+        "@docusaurus/tsconfig": "^3.7.0",
+        "@docusaurus/types": "^3.5.1",
+        "typescript": "~5.7.3"
+      },
+      "engines": {
+        "node": ">=18.0"
+      }
+    },
+    "node_modules/@algolia/autocomplete-core": {
+      "version": "1.17.9",
+      "resolved": "https://registry.npmjs.org/@algolia/autocomplete-core/-/autocomplete-core-1.17.9.tgz",
+      "integrity": "sha512-O7BxrpLDPJWWHv/DLA9DRFWs+iY1uOJZkqUwjS5HSZAGcl0hIVCQ97LTLewiZmZ402JYUrun+8NqFP+hCknlbQ==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/autocomplete-plugin-algolia-insights": "1.17.9",
+        "@algolia/autocomplete-shared": "1.17.9"
+      }
+    },
+    "node_modules/@algolia/autocomplete-plugin-algolia-insights": {
+      "version": "1.17.9",
+      "resolved": "https://registry.npmjs.org/@algolia/autocomplete-plugin-algolia-insights/-/autocomplete-plugin-algolia-insights-1.17.9.tgz",
+      "integrity": "sha512-u1fEHkCbWF92DBeB/KHeMacsjsoI0wFhjZtlCq2ddZbAehshbZST6Hs0Avkc0s+4UyBGbMDnSuXHLuvRWK5iDQ==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/autocomplete-shared": "1.17.9"
+      },
+      "peerDependencies": {
+        "search-insights": ">= 1 < 3"
+      }
+    },
+    "node_modules/@algolia/autocomplete-preset-algolia": {
+      "version": "1.17.9",
+      "resolved": "https://registry.npmjs.org/@algolia/autocomplete-preset-algolia/-/autocomplete-preset-algolia-1.17.9.tgz",
+      "integrity": "sha512-Na1OuceSJeg8j7ZWn5ssMu/Ax3amtOwk76u4h5J4eK2Nx2KB5qt0Z4cOapCsxot9VcEN11ADV5aUSlQF4RhGjQ==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/autocomplete-shared": "1.17.9"
+      },
+      "peerDependencies": {
+        "@algolia/client-search": ">= 4.9.1 < 6",
+        "algoliasearch": ">= 4.9.1 < 6"
+      }
+    },
+    "node_modules/@algolia/autocomplete-shared": {
+      "version": "1.17.9",
+      "resolved": "https://registry.npmjs.org/@algolia/autocomplete-shared/-/autocomplete-shared-1.17.9.tgz",
+      "integrity": "sha512-iDf05JDQ7I0b7JEA/9IektxN/80a2MZ1ToohfmNS3rfeuQnIKI3IJlIafD0xu4StbtQTghx9T3Maa97ytkXenQ==",
+      "license": "MIT",
+      "peerDependencies": {
+        "@algolia/client-search": ">= 4.9.1 < 6",
+        "algoliasearch": ">= 4.9.1 < 6"
+      }
+    },
+    "node_modules/@algolia/client-abtesting": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/client-abtesting/-/client-abtesting-5.20.0.tgz",
+      "integrity": "sha512-YaEoNc1Xf2Yk6oCfXXkZ4+dIPLulCx8Ivqj0OsdkHWnsI3aOJChY5qsfyHhDBNSOhqn2ilgHWxSfyZrjxBcAww==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/client-analytics": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/client-analytics/-/client-analytics-5.20.0.tgz",
+      "integrity": "sha512-CIT9ni0+5sYwqehw+t5cesjho3ugKQjPVy/iPiJvtJX4g8Cdb6je6SPt2uX72cf2ISiXCAX9U3cY0nN0efnRDw==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/client-common": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/client-common/-/client-common-5.20.0.tgz",
+      "integrity": "sha512-iSTFT3IU8KNpbAHcBUJw2HUrPnMXeXLyGajmCL7gIzWOsYM4GabZDHXOFx93WGiXMti1dymz8k8R+bfHv1YZmA==",
+      "license": "MIT",
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/client-insights": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/client-insights/-/client-insights-5.20.0.tgz",
+      "integrity": "sha512-w9RIojD45z1csvW1vZmAko82fqE/Dm+Ovsy2ElTsjFDB0HMAiLh2FO86hMHbEXDPz6GhHKgGNmBRiRP8dDPgJg==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/client-personalization": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/client-personalization/-/client-personalization-5.20.0.tgz",
+      "integrity": "sha512-p/hftHhrbiHaEcxubYOzqVV4gUqYWLpTwK+nl2xN3eTrSW9SNuFlAvUBFqPXSVBqc6J5XL9dNKn3y8OA1KElSQ==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/client-query-suggestions": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/client-query-suggestions/-/client-query-suggestions-5.20.0.tgz",
+      "integrity": "sha512-m4aAuis5vZi7P4gTfiEs6YPrk/9hNTESj3gEmGFgfJw3hO2ubdS4jSId1URd6dGdt0ax2QuapXufcrN58hPUcw==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/client-search": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/client-search/-/client-search-5.20.0.tgz",
+      "integrity": "sha512-KL1zWTzrlN4MSiaK1ea560iCA/UewMbS4ZsLQRPoDTWyrbDKVbztkPwwv764LAqgXk0fvkNZvJ3IelcK7DqhjQ==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/events": {
+      "version": "4.0.1",
+      "resolved": "https://registry.npmjs.org/@algolia/events/-/events-4.0.1.tgz",
+      "integrity": "sha512-FQzvOCgoFXAbf5Y6mYozw2aj5KCJoA3m4heImceldzPSMbdyS4atVjJzXKMsfX3wnZTFYwkkt8/z8UesLHlSBQ==",
+      "license": "MIT"
+    },
+    "node_modules/@algolia/ingestion": {
+      "version": "1.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/ingestion/-/ingestion-1.20.0.tgz",
+      "integrity": "sha512-shj2lTdzl9un4XJblrgqg54DoK6JeKFO8K8qInMu4XhE2JuB8De6PUuXAQwiRigZupbI0xq8aM0LKdc9+qiLQA==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/monitoring": {
+      "version": "1.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/monitoring/-/monitoring-1.20.0.tgz",
+      "integrity": "sha512-aF9blPwOhKtWvkjyyXh9P5peqmhCA1XxLBRgItT+K6pbT0q4hBDQrCid+pQZJYy4HFUKjB/NDDwyzFhj/rwKhw==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/recommend": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/recommend/-/recommend-5.20.0.tgz",
+      "integrity": "sha512-T6B/WPdZR3b89/F9Vvk6QCbt/wrLAtrGoL8z4qPXDFApQ8MuTFWbleN/4rHn6APWO3ps+BUePIEbue2rY5MlRw==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0",
+        "@algolia/requester-browser-xhr": "5.20.0",
+        "@algolia/requester-fetch": "5.20.0",
+        "@algolia/requester-node-http": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/requester-browser-xhr": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-browser-xhr/-/requester-browser-xhr-5.20.0.tgz",
+      "integrity": "sha512-t6//lXsq8E85JMenHrI6mhViipUT5riNhEfCcvtRsTV+KIBpC6Od18eK864dmBhoc5MubM0f+sGpKOqJIlBSCg==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/requester-fetch": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-fetch/-/requester-fetch-5.20.0.tgz",
+      "integrity": "sha512-FHxYGqRY+6bgjKsK4aUsTAg6xMs2S21elPe4Y50GB0Y041ihvw41Vlwy2QS6K9ldoftX4JvXodbKTcmuQxywdQ==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@algolia/requester-node-http": {
+      "version": "5.20.0",
+      "resolved": "https://registry.npmjs.org/@algolia/requester-node-http/-/requester-node-http-5.20.0.tgz",
+      "integrity": "sha512-kmtQClq/w3vtPteDSPvaW9SPZL/xrIgMrxZyAgsFwrJk0vJxqyC5/hwHmrCraDnStnGSADnLpBf4SpZnwnkwWw==",
+      "license": "MIT",
+      "dependencies": {
+        "@algolia/client-common": "5.20.0"
+      },
+      "engines": {
+        "node": ">= 14.0.0"
+      }
+    },
+    "node_modules/@ampproject/remapping": {
+      "version": "2.3.0",
+      "resolved": "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz",
+      "integrity": "sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==",
+      "dependencies": {
+        "@jridgewell/gen-mapping": "^0.3.5",
+        "@jridgewell/trace-mapping": "^0.3.24"
+      },
+      "engines": {
+        "node": ">=6.0.0"
+      }
+    },
+    "node_modules/@babel/code-frame": {
+      "version": "7.26.2",
+      "resolved": "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.26.2.tgz",
+      "integrity": "sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==",
+      "dependencies": {
+        "@babel/helper-validator-identifier": "^7.25.9",
+        "js-tokens": "^4.0.0",
+        "picocolors": "^1.0.0"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/compat-data": {
+      "version": "7.26.2",
+      "resolved": "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.26.2.tgz",
+      "integrity": "sha512-Z0WgzSEa+aUcdiJuCIqgujCshpMWgUpgOxXotrYPSA53hA3qopNaqcJpyr0hVb1FeWdnqFA35/fUtXgBK8srQg==",
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/core": {
+      "version": "7.26.0",
+      "resolved": "https://registry.npmjs.org/@babel/core/-/core-7.26.0.tgz",
+      "integrity": "sha512-i1SLeK+DzNnQ3LL/CswPCa/E5u4lh1k6IAEphON8F+cXt0t9euTshDru0q7/IqMa1PMPz5RnHuHscF8/ZJsStg==",
+      "dependencies": {
+        "@ampproject/remapping": "^2.2.0",
+        "@babel/code-frame": "^7.26.0",
+        "@babel/generator": "^7.26.0",
+        "@babel/helper-compilation-targets": "^7.25.9",
+        "@babel/helper-module-transforms": "^7.26.0",
+        "@babel/helpers": "^7.26.0",
+        "@babel/parser": "^7.26.0",
+        "@babel/template": "^7.25.9",
+        "@babel/traverse": "^7.25.9",
+        "@babel/types": "^7.26.0",
+        "convert-source-map": "^2.0.0",
+        "debug": "^4.1.0",
+        "gensync": "^1.0.0-beta.2",
+        "json5": "^2.2.3",
+        "semver": "^6.3.1"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      },
+      "funding": {
+        "type": "opencollective",
+        "url": "https://opencollective.com/babel"
+      }
+    },
+    "node_modules/@babel/core/node_modules/semver": {
+      "version": "6.3.1",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz",
+      "integrity": "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==",
+      "bin": {
+        "semver": "bin/semver.js"
+      }
+    },
+    "node_modules/@babel/generator": {
+      "version": "7.26.2",
+      "resolved": "https://registry.npmjs.org/@babel/generator/-/generator-7.26.2.tgz",
+      "integrity": "sha512-zevQbhbau95nkoxSq3f/DC/SC+EEOUZd3DYqfSkMhY2/wfSeaHV1Ew4vk8e+x8lja31IbyuUa2uQ3JONqKbysw==",
+      "dependencies": {
+        "@babel/parser": "^7.26.2",
+        "@babel/types": "^7.26.0",
+        "@jridgewell/gen-mapping": "^0.3.5",
+        "@jridgewell/trace-mapping": "^0.3.25",
+        "jsesc": "^3.0.2"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/helper-annotate-as-pure": {
+      "version": "7.25.9",
+      "resolved": "https://registry.npmjs.org/@babel/helper-annotate-as-pure/-/helper-annotate-as-pure-7.25.9.tgz",
+      "integrity": "sha512-gv7320KBUFJz1RnylIg5WWYPRXKZ884AGkYpgpWW02TH66Dl+HaC1t1CKd0z3R4b6hdYEcmrNZHUmfCP+1u3/g==",
+      "dependencies": {
+        "@babel/types": "^7.25.9"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/helper-builder-binary-assignment-operator-visitor": {
+      "version": "7.25.9",
+      "resolved": "https://registry.npmjs.org/@babel/helper-builder-binary-assignment-operator-visitor/-/helper-builder-binary-assignment-operator-visitor-7.25.9.tgz",
+      "integrity": "sha512-C47lC7LIDCnz0h4vai/tpNOI95tCd5ZT3iBt/DBH5lXKHZsyNQv18yf1wIIg2ntiQNgmAvA+DgZ82iW8Qdym8g==",
+      "dependencies": {
+        "@babel/traverse": "^7.25.9",
+        "@babel/types": "^7.25.9"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/helper-compilation-targets": {
+      "version": "7.25.9",
+      "resolved": "https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.25.9.tgz",
+      "integrity": "sha512-j9Db8Suy6yV/VHa4qzrj9yZfZxhLWQdVnRlXxmKLYlhWUVB1sB2G5sxuWYXk/whHD9iW76PmNzxZ4UCnTQTVEQ==",
+      "dependencies": {
+        "@babel/compat-data": "^7.25.9",
+        "@babel/helper-validator-option": "^7.25.9",
+        "browserslist": "^4.24.0",
+        "lru-cache": "^5.1.1",
+        "semver": "^6.3.1"
+      },
+      "engines": {
+        "node": ">=6.9.0"
+      }
+    },
+    "node_modules/@babel/helper-compilation-targets/node_modules/semver": {
+      "version": "6.3.1",
+      "resolved": "https://registry.npmjs.org/semver/-/semver-6.3.1.tgz",
+      "integrity": "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==",
+      "bin": {
+        "semver": "bin/semver.js"
+      }
+    },
+    "node_modules/@babel/helper-create-class-features-plugin": {
+      "version": "7.25.9",
+      "resolved": "https://registry.npmjs.org/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.25.9.tgz",
+      "integrity": "sha512-UTZQMvt0d/rSz6KI+qdu7GQze5TIajwTS++GUozlw8VBJDEOAqSXwm1WvmYEZwqdqSGQshRocPDqrt4HBZB3fQ==",
+      "dependencies": {
+        "@babel/helper-annota
+```
+
+
+## File: docs/package.json
+
+```
+{
+  "name": "docs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "docusaurus": "docusaurus",
+    "start": "docusaurus start",
+    "build": "docusaurus build",
+    "swizzle": "docusaurus swizzle",
+    "deploy": "docusaurus deploy",
+    "clear": "docusaurus clear",
+    "serve": "docusaurus serve",
+    "write-translations": "docusaurus write-translations",
+    "write-heading-ids": "docusaurus write-heading-ids",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@docusaurus/core": "^3.7.0",
+    "@docusaurus/plugin-content-pages": "^3.7.0",
+    "@docusaurus/preset-classic": "^3.7.0",
+    "@docusaurus/theme-mermaid": "^3.7.0",
+    "@mdx-js/react": "^3.1.0",
+    "clsx": "^2.0.0",
+    "prism-react-renderer": "^2.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.4.0",
+    "react-use": "^17.6.0"
+  },
+  "devDependencies": {
+    "@docusaurus/module-type-aliases": "^3.5.1",
+    "@docusaurus/tsconfig": "^3.7.0",
+    "@docusaurus/types": "^3.5.1",
+    "typescript": "~5.7.3"
+  },
+  "browserslist": {
+    "production": [
+      ">0.5%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 3 chrome version",
+      "last 3 firefox version",
+      "last 5 safari version"
+    ]
+  },
+  "engines": {
+    "node": ">=18.0"
+  }
+}
+
+```
+
+
+## File: docs/README.md
+
+```
+# Website
+
+This website is built using [Docusaurus](https://docusaurus.io/), a modern static website generator.
+
+### Installation
+
+```
+$ yarn
+```
+
+### Local Development
+
+```
+$ yarn start
+```
+
+This command starts a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
+
+### Build
+
+```
+$ yarn build
+```
+
+This command generates static content into the `build` directory and can be served using any static contents hosting service.
+
+### Deployment
+
+Using SSH:
+
+```
+$ USE_SSH=true yarn deploy
+```
+
+Not using SSH:
+
+```
+$ GIT_USER=<Your GitHub username> yarn deploy
+```
+
+If you are using GitHub pages for hosting, this command is a convenient way to build the website and push to the `gh-pages` branch.
+
+```
+
+
+## File: docs/yarn.lock
+
+```
+# THIS IS AN AUTOGENERATED FILE. DO NOT EDIT THIS FILE DIRECTLY.
+# yarn lockfile v1
+
+
+"@algolia/autocomplete-core@1.17.9":
+  version "1.17.9"
+  resolved "https://registry.npmjs.org/@algolia/autocomplete-core/-/autocomplete-core-1.17.9.tgz"
+  integrity sha512-O7BxrpLDPJWWHv/DLA9DRFWs+iY1uOJZkqUwjS5HSZAGcl0hIVCQ97LTLewiZmZ402JYUrun+8NqFP+hCknlbQ==
+  dependencies:
+    "@algolia/autocomplete-plugin-algolia-insights" "1.17.9"
+    "@algolia/autocomplete-shared" "1.17.9"
+
+"@algolia/autocomplete-plugin-algolia-insights@1.17.9":
+  version "1.17.9"
+  resolved "https://registry.npmjs.org/@algolia/autocomplete-plugin-algolia-insights/-/autocomplete-plugin-algolia-insights-1.17.9.tgz"
+  integrity sha512-u1fEHkCbWF92DBeB/KHeMacsjsoI0wFhjZtlCq2ddZbAehshbZST6Hs0Avkc0s+4UyBGbMDnSuXHLuvRWK5iDQ==
+  dependencies:
+    "@algolia/autocomplete-shared" "1.17.9"
+
+"@algolia/autocomplete-preset-algolia@1.17.9":
+  version "1.17.9"
+  resolved "https://registry.npmjs.org/@algolia/autocomplete-preset-algolia/-/autocomplete-preset-algolia-1.17.9.tgz"
+  integrity sha512-Na1OuceSJeg8j7ZWn5ssMu/Ax3amtOwk76u4h5J4eK2Nx2KB5qt0Z4cOapCsxot9VcEN11ADV5aUSlQF4RhGjQ==
+  dependencies:
+    "@algolia/autocomplete-shared" "1.17.9"
+
+"@algolia/autocomplete-shared@1.17.9":
+  version "1.17.9"
+  resolved "https://registry.npmjs.org/@algolia/autocomplete-shared/-/autocomplete-shared-1.17.9.tgz"
+  integrity sha512-iDf05JDQ7I0b7JEA/9IektxN/80a2MZ1ToohfmNS3rfeuQnIKI3IJlIafD0xu4StbtQTghx9T3Maa97ytkXenQ==
+
+"@algolia/client-abtesting@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/client-abtesting/-/client-abtesting-5.20.0.tgz"
+  integrity sha512-YaEoNc1Xf2Yk6oCfXXkZ4+dIPLulCx8Ivqj0OsdkHWnsI3aOJChY5qsfyHhDBNSOhqn2ilgHWxSfyZrjxBcAww==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/client-analytics@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/client-analytics/-/client-analytics-5.20.0.tgz"
+  integrity sha512-CIT9ni0+5sYwqehw+t5cesjho3ugKQjPVy/iPiJvtJX4g8Cdb6je6SPt2uX72cf2ISiXCAX9U3cY0nN0efnRDw==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/client-common@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/client-common/-/client-common-5.20.0.tgz"
+  integrity sha512-iSTFT3IU8KNpbAHcBUJw2HUrPnMXeXLyGajmCL7gIzWOsYM4GabZDHXOFx93WGiXMti1dymz8k8R+bfHv1YZmA==
+
+"@algolia/client-insights@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/client-insights/-/client-insights-5.20.0.tgz"
+  integrity sha512-w9RIojD45z1csvW1vZmAko82fqE/Dm+Ovsy2ElTsjFDB0HMAiLh2FO86hMHbEXDPz6GhHKgGNmBRiRP8dDPgJg==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/client-personalization@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/client-personalization/-/client-personalization-5.20.0.tgz"
+  integrity sha512-p/hftHhrbiHaEcxubYOzqVV4gUqYWLpTwK+nl2xN3eTrSW9SNuFlAvUBFqPXSVBqc6J5XL9dNKn3y8OA1KElSQ==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/client-query-suggestions@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/client-query-suggestions/-/client-query-suggestions-5.20.0.tgz"
+  integrity sha512-m4aAuis5vZi7P4gTfiEs6YPrk/9hNTESj3gEmGFgfJw3hO2ubdS4jSId1URd6dGdt0ax2QuapXufcrN58hPUcw==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/client-search@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/client-search/-/client-search-5.20.0.tgz"
+  integrity sha512-KL1zWTzrlN4MSiaK1ea560iCA/UewMbS4ZsLQRPoDTWyrbDKVbztkPwwv764LAqgXk0fvkNZvJ3IelcK7DqhjQ==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/events@^4.0.1":
+  version "4.0.1"
+  resolved "https://registry.npmjs.org/@algolia/events/-/events-4.0.1.tgz"
+  integrity sha512-FQzvOCgoFXAbf5Y6mYozw2aj5KCJoA3m4heImceldzPSMbdyS4atVjJzXKMsfX3wnZTFYwkkt8/z8UesLHlSBQ==
+
+"@algolia/ingestion@1.20.0":
+  version "1.20.0"
+  resolved "https://registry.npmjs.org/@algolia/ingestion/-/ingestion-1.20.0.tgz"
+  integrity sha512-shj2lTdzl9un4XJblrgqg54DoK6JeKFO8K8qInMu4XhE2JuB8De6PUuXAQwiRigZupbI0xq8aM0LKdc9+qiLQA==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/monitoring@1.20.0":
+  version "1.20.0"
+  resolved "https://registry.npmjs.org/@algolia/monitoring/-/monitoring-1.20.0.tgz"
+  integrity sha512-aF9blPwOhKtWvkjyyXh9P5peqmhCA1XxLBRgItT+K6pbT0q4hBDQrCid+pQZJYy4HFUKjB/NDDwyzFhj/rwKhw==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/recommend@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/recommend/-/recommend-5.20.0.tgz"
+  integrity sha512-T6B/WPdZR3b89/F9Vvk6QCbt/wrLAtrGoL8z4qPXDFApQ8MuTFWbleN/4rHn6APWO3ps+BUePIEbue2rY5MlRw==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+    "@algolia/requester-browser-xhr" "5.20.0"
+    "@algolia/requester-fetch" "5.20.0"
+    "@algolia/requester-node-http" "5.20.0"
+
+"@algolia/requester-browser-xhr@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/requester-browser-xhr/-/requester-browser-xhr-5.20.0.tgz"
+  integrity sha512-t6//lXsq8E85JMenHrI6mhViipUT5riNhEfCcvtRsTV+KIBpC6Od18eK864dmBhoc5MubM0f+sGpKOqJIlBSCg==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+
+"@algolia/requester-fetch@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/requester-fetch/-/requester-fetch-5.20.0.tgz"
+  integrity sha512-FHxYGqRY+6bgjKsK4aUsTAg6xMs2S21elPe4Y50GB0Y041ihvw41Vlwy2QS6K9ldoftX4JvXodbKTcmuQxywdQ==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+
+"@algolia/requester-node-http@5.20.0":
+  version "5.20.0"
+  resolved "https://registry.npmjs.org/@algolia/requester-node-http/-/requester-node-http-5.20.0.tgz"
+  integrity sha512-kmtQClq/w3vtPteDSPvaW9SPZL/xrIgMrxZyAgsFwrJk0vJxqyC5/hwHmrCraDnStnGSADnLpBf4SpZnwnkwWw==
+  dependencies:
+    "@algolia/client-common" "5.20.0"
+
+"@ampproject/remapping@^2.2.0":
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/@ampproject/remapping/-/remapping-2.3.0.tgz"
+  integrity sha512-30iZtAPgz+LTIYoeivqYo853f02jBYSd5uGnGpkFV0M3xOt9aN73erkgYAmZU43x4VfqcnLxW9Kpg3R5LC4YYw==
+  dependencies:
+    "@jridgewell/gen-mapping" "^0.3.5"
+    "@jridgewell/trace-mapping" "^0.3.24"
+
+"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.25.9", "@babel/code-frame@^7.26.0", "@babel/code-frame@^7.8.3":
+  version "7.26.2"
+  resolved "https://registry.npmjs.org/@babel/code-frame/-/code-frame-7.26.2.tgz"
+  integrity sha512-RJlIHRueQgwWitWgF8OdFYGZX328Ax5BCemNGlqHfplnRT9ESi8JkFlvaVYbS+UubVY6dpv87Fs2u5M29iNFVQ==
+  dependencies:
+    "@babel/helper-validator-identifier" "^7.25.9"
+    js-tokens "^4.0.0"
+    picocolors "^1.0.0"
+
+"@babel/compat-data@^7.22.6", "@babel/compat-data@^7.25.9", "@babel/compat-data@^7.26.0":
+  version "7.26.2"
+  resolved "https://registry.npmjs.org/@babel/compat-data/-/compat-data-7.26.2.tgz"
+  integrity sha512-Z0WgzSEa+aUcdiJuCIqgujCshpMWgUpgOxXotrYPSA53hA3qopNaqcJpyr0hVb1FeWdnqFA35/fUtXgBK8srQg==
+
+"@babel/core@^7.21.3", "@babel/core@^7.25.9":
+  version "7.26.0"
+  resolved "https://registry.npmjs.org/@babel/core/-/core-7.26.0.tgz"
+  integrity sha512-i1SLeK+DzNnQ3LL/CswPCa/E5u4lh1k6IAEphON8F+cXt0t9euTshDru0q7/IqMa1PMPz5RnHuHscF8/ZJsStg==
+  dependencies:
+    "@ampproject/remapping" "^2.2.0"
+    "@babel/code-frame" "^7.26.0"
+    "@babel/generator" "^7.26.0"
+    "@babel/helper-compilation-targets" "^7.25.9"
+    "@babel/helper-module-transforms" "^7.26.0"
+    "@babel/helpers" "^7.26.0"
+    "@babel/parser" "^7.26.0"
+    "@babel/template" "^7.25.9"
+    "@babel/traverse" "^7.25.9"
+    "@babel/types" "^7.26.0"
+    convert-source-map "^2.0.0"
+    debug "^4.1.0"
+    gensync "^1.0.0-beta.2"
+    json5 "^2.2.3"
+    semver "^6.3.1"
+
+"@babel/generator@^7.25.9", "@babel/generator@^7.26.0":
+  version "7.26.2"
+  resolved "https://registry.npmjs.org/@babel/generator/-/generator-7.26.2.tgz"
+  integrity sha512-zevQbhbau95nkoxSq3f/DC/SC+EEOUZd3DYqfSkMhY2/wfSeaHV1Ew4vk8e+x8lja31IbyuUa2uQ3JONqKbysw==
+  dependencies:
+    "@babel/parser" "^7.26.2"
+    "@babel/types" "^7.26.0"
+    "@jridgewell/gen-mapping" "^0.3.5"
+    "@jridgewell/trace-mapping" "^0.3.25"
+    jsesc "^3.0.2"
+
+"@babel/helper-annotate-as-pure@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-annotate-as-pure/-/helper-annotate-as-pure-7.25.9.tgz"
+  integrity sha512-gv7320KBUFJz1RnylIg5WWYPRXKZ884AGkYpgpWW02TH66Dl+HaC1t1CKd0z3R4b6hdYEcmrNZHUmfCP+1u3/g==
+  dependencies:
+    "@babel/types" "^7.25.9"
+
+"@babel/helper-builder-binary-assignment-operator-visitor@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-builder-binary-assignment-operator-visitor/-/helper-builder-binary-assignment-operator-visitor-7.25.9.tgz"
+  integrity sha512-C47lC7LIDCnz0h4vai/tpNOI95tCd5ZT3iBt/DBH5lXKHZsyNQv18yf1wIIg2ntiQNgmAvA+DgZ82iW8Qdym8g==
+  dependencies:
+    "@babel/traverse" "^7.25.9"
+    "@babel/types" "^7.25.9"
+
+"@babel/helper-compilation-targets@^7.22.6", "@babel/helper-compilation-targets@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-compilation-targets/-/helper-compilation-targets-7.25.9.tgz"
+  integrity sha512-j9Db8Suy6yV/VHa4qzrj9yZfZxhLWQdVnRlXxmKLYlhWUVB1sB2G5sxuWYXk/whHD9iW76PmNzxZ4UCnTQTVEQ==
+  dependencies:
+    "@babel/compat-data" "^7.25.9"
+    "@babel/helper-validator-option" "^7.25.9"
+    browserslist "^4.24.0"
+    lru-cache "^5.1.1"
+    semver "^6.3.1"
+
+"@babel/helper-create-class-features-plugin@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-create-class-features-plugin/-/helper-create-class-features-plugin-7.25.9.tgz"
+  integrity sha512-UTZQMvt0d/rSz6KI+qdu7GQze5TIajwTS++GUozlw8VBJDEOAqSXwm1WvmYEZwqdqSGQshRocPDqrt4HBZB3fQ==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.25.9"
+    "@babel/helper-member-expression-to-functions" "^7.25.9"
+    "@babel/helper-optimise-call-expression" "^7.25.9"
+    "@babel/helper-replace-supers" "^7.25.9"
+    "@babel/helper-skip-transparent-expression-wrappers" "^7.25.9"
+    "@babel/traverse" "^7.25.9"
+    semver "^6.3.1"
+
+"@babel/helper-create-regexp-features-plugin@^7.18.6", "@babel/helper-create-regexp-features-plugin@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-create-regexp-features-plugin/-/helper-create-regexp-features-plugin-7.25.9.tgz"
+  integrity sha512-ORPNZ3h6ZRkOyAa/SaHU+XsLZr0UQzRwuDQ0cczIA17nAzZ+85G5cVkOJIj7QavLZGSe8QXUmNFxSZzjcZF9bw==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.25.9"
+    regexpu-core "^6.1.1"
+    semver "^6.3.1"
+
+"@babel/helper-define-polyfill-provider@^0.6.2":
+  version "0.6.2"
+  resolved "https://registry.npmjs.org/@babel/helper-define-polyfill-provider/-/helper-define-polyfill-provider-0.6.2.tgz"
+  integrity sha512-LV76g+C502biUK6AyZ3LK10vDpDyCzZnhZFXkH1L75zHPj68+qc8Zfpx2th+gzwA2MzyK+1g/3EPl62yFnVttQ==
+  dependencies:
+    "@babel/helper-compilation-targets" "^7.22.6"
+    "@babel/helper-plugin-utils" "^7.22.5"
+    debug "^4.1.1"
+    lodash.debounce "^4.0.8"
+    resolve "^1.14.2"
+
+"@babel/helper-member-expression-to-functions@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-member-expression-to-functions/-/helper-member-expression-to-functions-7.25.9.tgz"
+  integrity sha512-wbfdZ9w5vk0C0oyHqAJbc62+vet5prjj01jjJ8sKn3j9h3MQQlflEdXYvuqRWjHnM12coDEqiC1IRCi0U/EKwQ==
+  dependencies:
+    "@babel/traverse" "^7.25.9"
+    "@babel/types" "^7.25.9"
+
+"@babel/helper-module-imports@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-module-imports/-/helper-module-imports-7.25.9.tgz"
+  integrity sha512-tnUA4RsrmflIM6W6RFTLFSXITtl0wKjgpnLgXyowocVPrbYrLUXSBXDgTs8BlbmIzIdlBySRQjINYs2BAkiLtw==
+  dependencies:
+    "@babel/traverse" "^7.25.9"
+    "@babel/types" "^7.25.9"
+
+"@babel/helper-module-transforms@^7.25.9", "@babel/helper-module-transforms@^7.26.0":
+  version "7.26.0"
+  resolved "https://registry.npmjs.org/@babel/helper-module-transforms/-/helper-module-transforms-7.26.0.tgz"
+  integrity sha512-xO+xu6B5K2czEnQye6BHA7DolFFmS3LB7stHZFaOLb1pAwO1HWLS8fXA+eh0A2yIvltPVmx3eNNDBJA2SLHXFw==
+  dependencies:
+    "@babel/helper-module-imports" "^7.25.9"
+    "@babel/helper-validator-identifier" "^7.25.9"
+    "@babel/traverse" "^7.25.9"
+
+"@babel/helper-optimise-call-expression@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-optimise-call-expression/-/helper-optimise-call-expression-7.25.9.tgz"
+  integrity sha512-FIpuNaz5ow8VyrYcnXQTDRGvV6tTjkNtCK/RYNDXGSLlUD6cBuQTSw43CShGxjvfBTfcUA/r6UhUCbtYqkhcuQ==
+  dependencies:
+    "@babel/types" "^7.25.9"
+
+"@babel/helper-plugin-utils@^7.0.0", "@babel/helper-plugin-utils@^7.18.6", "@babel/helper-plugin-utils@^7.22.5", "@babel/helper-plugin-utils@^7.25.9", "@babel/helper-plugin-utils@^7.8.0":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-plugin-utils/-/helper-plugin-utils-7.25.9.tgz"
+  integrity sha512-kSMlyUVdWe25rEsRGviIgOWnoT/nfABVWlqt9N19/dIPWViAOW2s9wznP5tURbs/IDuNk4gPy3YdYRgH3uxhBw==
+
+"@babel/helper-remap-async-to-generator@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-remap-async-to-generator/-/helper-remap-async-to-generator-7.25.9.tgz"
+  integrity sha512-IZtukuUeBbhgOcaW2s06OXTzVNJR0ybm4W5xC1opWFFJMZbwRj5LCk+ByYH7WdZPZTt8KnFwA8pvjN2yqcPlgw==
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.25.9"
+    "@babel/helper-wrap-function" "^7.25.9"
+    "@babel/traverse" "^7.25.9"
+
+"@babel/helper-replace-supers@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-replace-supers/-/helper-replace-supers-7.25.9.tgz"
+  integrity sha512-IiDqTOTBQy0sWyeXyGSC5TBJpGFXBkRynjBeXsvbhQFKj2viwJC76Epz35YLU1fpe/Am6Vppb7W7zM4fPQzLsQ==
+  dependencies:
+    "@babel/helper-member-expression-to-functions" "^7.25.9"
+    "@babel/helper-optimise-call-expression" "^7.25.9"
+    "@babel/traverse" "^7.25.9"
+
+"@babel/helper-simple-access@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-simple-access/-/helper-simple-access-7.25.9.tgz"
+  integrity sha512-c6WHXuiaRsJTyHYLJV75t9IqsmTbItYfdj99PnzYGQZkYKvan5/2jKJ7gu31J3/BJ/A18grImSPModuyG/Eo0Q==
+  dependencies:
+    "@babel/traverse" "^7.25.9"
+    "@babel/types" "^7.25.9"
+
+"@babel/helper-skip-transparent-expression-wrappers@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-skip-transparent-expression-wrappers/-/helper-skip-transparent-expression-wrappers-7.25.9.tgz"
+  integrity sha512-K4Du3BFa3gvyhzgPcntrkDgZzQaq6uozzcpGbOO1OEJaI+EJdqWIMTLgFgQf6lrfiDFo5FU+BxKepI9RmZqahA==
+  dependencies:
+    "@babel/traverse" "^7.25.9"
+    "@babel/types" "^7.25.9"
+
+"@babel/helper-string-parser@^7.25.9":
+  version "7.25.9"
+  resolved "https://registry.npmjs.org/@babel/helper-string-parser/-/helper-string-parser-7.25.9.tgz"
+  integrity sha512-4A/SCr/2KLd5jrtOMFzaKjVtAei3+2r/NChoBNoZ3EyP/+GlhoaEGoWOZUmFmoITP7zOJyHIMm+DYRd8o3PvHA==
+
+"@babel/helper-validator-identifier@^7.25.9":
+  version "7.25.9"
+  resolved "https
+```
+
+
+## File: evaluation/README.md
+
+```
+
+```
+
+
+## File: LICENSE
+
+```
+The MIT License (MIT)
+=====================
+
+Copyright © 2023
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the “Software”), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+```
+
+
+## File: pyproject.toml
+
+```
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+```
+
+
+## File: setup.cfg
+
+```
+[metadata]
+name = autoagent
+version = 0.1.0
+author = jiabintang
+description = dynamic agentic framework.
+long_description = file: README.md
+long_description_content_type = text/markdown
+license = MIT
+
+[options]
+package_dir =
+    = .
+packages = find_namespace:
+zip_safe = True
+include_package_data = True
+install_requires =
+    numpy
+    openai>=1.52.0
+    pytest
+    requests
+    tqdm
+    pre-commit
+    instructor
+    litellm==1.55.0
+    beautifulsoup4
+    browsergym==0.13.0
+    chromadb
+    click
+    datasets
+    docling
+    filelock
+    Flask
+    gymnasium
+    html2text
+    httpx
+    huggingface_hub
+    inquirer
+    loguru
+    mammoth
+    markdownify
+    matplotlib
+    networkx
+    pandas
+    pathvalidate==3.2.1
+    pdfminer.six
+    Pillow
+    playwright==1.39.0
+    prompt_toolkit
+    psutil
+    puremagic
+    pydantic
+    pydub
+    python_pptx
+    PyYAML
+    rich
+    SpeechRecognition
+    tenacity
+    termcolor
+    tiktoken
+    tree_sitter==0.23.1
+    uvicorn
+    youtube_transcript_api
+    moviepy
+    faster_whisper
+    sentence_transformers
+
+[options.packages.find]
+where = .
+include = autoagent*
+    
+python_requires = >=3.10
+
+[options.entry_points]
+console_scripts =
+    auto = autoagent.cli:cli
+[tool.autopep8]
+max_line_length = 120
+ignore = E501,W6
+in-place = true
+recursive = true
+aggressive = 3
 ```
 
 
@@ -1209,7 +2331,196 @@ export default config;
     "message": "Basculer entre le mode sombre et clair (actuellement {mode})",
     "description": "The ARIA label for the navbar color mode toggle"
   },
-  "theme
+  "theme.colorToggle.ariaLabel.mode.dark": {
+    "message": "mode sombre",
+    "description": "The name for the dark color mode"
+  },
+  "theme.colorToggle.ariaLabel.mode.light": {
+    "message": "mode clair",
+    "description": "The name for the light color mode"
+  },
+  "theme.docs.breadcrumbs.navAriaLabel": {
+    "message": "Bouton de navigation des liens de la page",
+    "description": "The ARIA label for the breadcrumbs"
+  },
+  "theme.docs.DocCard.categoryDescription.plurals": {
+    "message": "1 élément|{count} éléments",
+    "description": "The default description for a category card in the generated index about how many items this category includes"
+  },
+  "theme.docs.paginator.navAriaLabel": {
+    "message": "Pages de documentation",
+    "description": "The ARIA label for the docs pagination"
+  },
+  "theme.docs.paginator.previous": {
+    "message": "Précédent",
+    "description": "The label used to navigate to the previous doc"
+  },
+  "theme.docs.paginator.next": {
+    "message": "Suivant",
+    "description": "The label used to navigate to the next doc"
+  },
+  "theme.docs.tagDocListPageTitle.nDocsTagged": {
+    "message": "Un document tagué|{count} documents tagués",
+    "description": "Pluralized label for \"{count} docs tagged\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.docs.tagDocListPageTitle": {
+    "message": "{nDocsTagged} avec \"{tagName}\"",
+    "description": "The title of the page for a docs tag"
+  },
+  "theme.docs.versionBadge.label": {
+    "message": "Version: {versionLabel}"
+  },
+  "theme.docs.versions.unreleasedVersionLabel": {
+    "message": "Ceci est la documentation de la prochaine version {versionLabel} de {siteTitle}.",
+    "description": "The label used to tell the user that he's browsing an unreleased doc version"
+  },
+  "theme.docs.versions.unmaintainedVersionLabel": {
+    "message": "Ceci est la documentation de {siteTitle} {versionLabel}, qui n'est plus activement maintenue.",
+    "description": "The label used to tell the user that he's browsing an unmaintained doc version"
+  },
+  "theme.docs.versions.latestVersionSuggestionLabel": {
+    "message": "Pour une documentation à jour, consultez la {latestVersionLink} ({versionLabel}).",
+    "description": "The label used to tell the user to check the latest version"
+  },
+  "theme.docs.versions.latestVersionLinkLabel": {
+    "message": "dernière version",
+    "description": "The label used for the latest version suggestion link label"
+  },
+  "theme.common.editThisPage": {
+    "message": "Éditer cette page",
+    "description": "The link label to edit the current page"
+  },
+  "theme.common.headingLinkTitle": {
+    "message": "Lien direct vers {heading}",
+    "description": "Title for link to heading"
+  },
+  "theme.lastUpdated.atDate": {
+    "message": " le {date}",
+    "description": "The words used to describe on which date a page has been last updated"
+  },
+  "theme.lastUpdated.byUser": {
+    "message": " par {user}",
+    "description": "The words used to describe by who the page has been last updated"
+  },
+  "theme.lastUpdated.lastUpdatedAtBy": {
+    "message": "Dernière mise à jour{atDate}{byUser}",
+    "description": "The sentence used to display when a page has been last updated, and by who"
+  },
+  "theme.navbar.mobileVersionsDropdown.label": {
+    "message": "Versions",
+    "description": "The label for the navbar versions dropdown on mobile view"
+  },
+  "theme.NotFound.title": {
+    "message": "Page introuvable",
+    "description": "The title of the 404 page"
+  },
+  "theme.tags.tagsListLabel": {
+    "message": "Tags :",
+    "description": "The label alongside a tag list"
+  },
+  "theme.admonition.caution": {
+    "message": "prudence",
+    "description": "The default label used for the Caution admonition (:::caution)"
+  },
+  "theme.admonition.danger": {
+    "message": "danger",
+    "description": "The default label used for the Danger admonition (:::danger)"
+  },
+  "theme.admonition.info": {
+    "message": "information",
+    "description": "The default label used for the Info admonition (:::info)"
+  },
+  "theme.admonition.note": {
+    "message": "remarque",
+    "description": "The default label used for the Note admonition (:::note)"
+  },
+  "theme.admonition.tip": {
+    "message": "astuce",
+    "description": "The default label used for the Tip admonition (:::tip)"
+  },
+  "theme.admonition.warning": {
+    "message": "prudence",
+    "description": "The default label used for the Warning admonition (:::warning)"
+  },
+  "theme.AnnouncementBar.closeButtonAriaLabel": {
+    "message": "Fermer",
+    "description": "The ARIA label for close button of announcement bar"
+  },
+  "theme.blog.sidebar.navAriaLabel": {
+    "message": "Navigation vers les articles récents du blog",
+    "description": "The ARIA label for recent posts in the blog sidebar"
+  },
+  "theme.CodeBlock.copied": {
+    "message": "Copié",
+    "description": "The copied button label on code blocks"
+  },
+  "theme.CodeBlock.copyButtonAriaLabel": {
+    "message": "Copier le code",
+    "description": "The ARIA label for copy code blocks button"
+  },
+  "theme.CodeBlock.copy": {
+    "message": "Copier",
+    "description": "The copy button label on code blocks"
+  },
+  "theme.CodeBlock.wordWrapToggle": {
+    "message": "Activer/désactiver le retour à la ligne",
+    "description": "The title attribute for toggle word wrapping button of code block lines"
+  },
+  "theme.DocSidebarItem.expandCategoryAriaLabel": {
+    "message": "Développer la catégorie '{label}' de la barre latérale",
+    "description": "The ARIA label to expand the sidebar category"
+  },
+  "theme.DocSidebarItem.collapseCategoryAriaLabel": {
+    "message": "Réduire la catégorie '{label}' de la barre latérale",
+    "description": "The ARIA label to collapse the sidebar category"
+  },
+  "theme.NavBar.navAriaLabel": {
+    "message": "Main",
+    "description": "The ARIA label for the main navigation"
+  },
+  "theme.navbar.mobileLanguageDropdown.label": {
+    "message": "Langues",
+    "description": "The label for the mobile language switcher dropdown"
+  },
+  "theme.NotFound.p1": {
+    "message": "Nous n'avons pas trouvé ce que vous recherchez.",
+    "description": "The first paragraph of the 404 page"
+  },
+  "theme.NotFound.p2": {
+    "message": "Veuillez contacter le propriétaire du site qui vous a lié à l'URL d'origine et leur faire savoir que leur lien est cassé.",
+    "description": "The 2nd paragraph of the 404 page"
+  },
+  "theme.TOCCollapsible.toggleButtonLabel": {
+    "message": "Sur cette page",
+    "description": "The label used by the button on the collapsible TOC component"
+  },
+  "theme.blog.post.readMore": {
+    "message": "Lire plus",
+    "description": "The label used in blog post item excerpts to link to full blog posts"
+  },
+  "theme.blog.post.readMoreLabel": {
+    "message": "En savoir plus sur {title}",
+    "description": "The ARIA label for the link to full blog posts from excerpts"
+  },
+  "theme.blog.post.readingTime.plurals": {
+    "message": "Une minute de lecture|{readingTime} minutes de lecture",
+    "description": "Pluralized label for \"{readingTime} min read\". Use as much plural forms (separated by \"|\") as your language support (see https://www.unicode.org/cldr/cldr-aux/charts/34/supplemental/language_plural_rules.html)"
+  },
+  "theme.docs.breadcrumbs.home": {
+    "message": "Page d'accueil",
+    "description": "The ARIA label for the home page in the breadcrumbs"
+  },
+  "theme.docs.sidebar.collapseButtonTitle": {
+    "message": "Réduire le menu latéral",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.collapseButtonAriaLabel": {
+    "message": "Réduire le menu latérale",
+    "description": "The title attribute for collapse button of doc sidebar"
+  },
+  "theme.docs.sidebar.navAriaLabel": {
+    "message": "Barre de navigation latérale des docs",
+    "
 ```
 
 
@@ -1445,5 +2756,55 @@ uniquement pour la source d'openhands
 #### Balise de verrouillage
 
 Ce hash est construit à partir des 16 premiers chiffres du MD5 de :
-- Le nom de l'image de base sur laquelle l'image a été construite (ex : `nikola
+- Le nom de l'image de base sur laquelle l'image a été construite (ex : `nikolaik/python-nodejs:python3.12-nodejs22`)
+- Le contenu du `pyproject.toml` inclus dans l'image.
+- Le contenu du `poetry.lock` inclus dans l'image.
+
+Cela donne effectivement un hash pour les dépendances d'Openhands indépendamment du code source.
+
+#### Balise versionnée - La plus générique
+
+Cette balise est une concaténation de la version d'openhands et du nom de l'image de base (transformé pour s'adapter au standard des balises).
+
+#### Processus de construction
+
+Lors de la génération d'une image...
+
+- **Pas de reconstruction** : OpenHands vérifie d'abord si une image avec la même **balise source la plus spécifique** existe. S'il existe une telle image,
+  aucune construction n'est effectuée - l'image existante est utilisée.
+- **Reconstruction la plus rapide** : OpenHands vérifie ensuite si une image avec la **balise de verrouillage générique** existe. S'il existe une telle image,
+  OpenHands construit une nouvelle image basée sur celle-ci, en contournant toutes les étapes d'installation (comme `poetry install` et
+  `apt-get`) sauf une opération finale pour copier le code source actuel. La nouvelle image est balisée avec une
+  balise **source** uniquement.
+- **Reconstruction correcte** : Si ni une balise **source** ni une balise **de verrouillage** n'existe, une image sera construite sur la base de l'image avec la balise **versionnée**.
+  Dans l'image avec la balise versionnée, la plupart des dépendances devraient déjà être installées, ce qui permet de gagner du temps.
+- **Reconstruction la plus lente** : Si les trois balises n'existent pas, une toute nouvelle image est construite à partir de
+  l'image de base (ce qui est une opération plus lente). Cette nouvelle image est balisée avec toutes les balises **source**, **de verrouillage** et **versionnée**.
+
+Cette approche de balisage permet à OpenHands de gérer efficacement les environnements de développement et de production.
+
+1. Un code source et un Dockerfile identiques produisent toujours la même image (via des balises basées sur des hashs)
+2. Le système peut reconstruire rapidement les images lorsque des changements mineurs se produisent (en s'appuyant sur des images compatibles récentes)
+3. La balise **de verrouillage** (ex : `runtime:oh_v0.9.3_1234567890abcdef`) pointe toujours vers la dernière version pour une combinaison particulière d'image de base, de dépendances et de version d'OpenHands
+
+## Système de plugins du Runtime
+
+Le Runtime d'OpenHands prend en charge un système de plugins qui permet d'étendre les fonctionnalités et de personnaliser l'environnement d'exécution. Les plugins sont initialisés lorsque le client runtime démarre.
+
+Consultez [un exemple de plugin Jupyter ici](https://github.com/All-Hands-AI/OpenHands/blob/ecf4aed28b0cf7c18d4d8ff554883ba182fc6bdd/openhands/runtime/plugins/jupyter/__init__.py#L21-L55) si vous souhaitez implémenter votre propre plugin.
+
+*Plus de détails sur le système de plugins sont encore en construction - les contributions sont les bienvenues !*
+
+Aspects clés du système de plugins :
+
+1. Définition des plugins : Les plugins sont définis comme des classes Python qui héritent d'une classe de base `Plugin`
+2. Enregistrement des plugins : Les plugins disponibles sont enregistrés dans un dictionnaire `ALL_PLUGINS`
+3. Spécification des plugins : Les plugins sont associés à `Agent.sandbox_plugins: list[PluginRequirement]`. Les utilisateurs peuvent spécifier quels plugins charger lors de l'initialisation du runtime
+4. Initialisation : Les plugins sont initialisés de manière asynchrone lorsque le client runtime démarre
+5. Utilisation : Le client runtime peut utiliser les plugins initialisés pour étendre ses capacités (par exemple, le JupyterPlugin pour exécuter des cellules IPython)
+
+```
+
+
+(… 175 more files omitted due to size limit)
 <!-- fetched-content:end -->

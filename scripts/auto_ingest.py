@@ -1324,7 +1324,7 @@ def fetch_url_content(url: str) -> UrlFetchResult:
             )
             readme_resp.raise_for_status()
             parts.append("## README\n")
-            parts.append(readme_resp.text[:20_000])
+            parts.append(readme_resp.text[:30_000])
         except Exception as e:
             log.warning("GitHub README fetch failed for %s/%s: %s", owner, repo, e)
 
@@ -1366,72 +1366,16 @@ def fetch_url_content(url: str) -> UrlFetchResult:
         except Exception as e:
             log.debug("GitHub releases fetch failed for %s/%s: %s", owner, repo, e)
 
-        # Recent commits (last 20 on default branch)
-        try:
-            commits_resp = httpx.get(
-                f"https://api.github.com/repos/{owner}/{repo}/commits?per_page=20",
-                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
-            )
-            commits_resp.raise_for_status()
-            commits = commits_resp.json() or []
-            if commits:
-                parts.append("## Recent Commits\n")
-                for c in commits:
-                    sha = (c.get("sha") or "")[:7]
-                    msg_full = (c.get("commit", {}).get("message") or "").splitlines()
-                    msg = msg_full[0] if msg_full else ""
-                    author = (c.get("commit", {}).get("author") or {}).get("name") or "?"
-                    date = ((c.get("commit", {}).get("author") or {}).get("date") or "")[:10]
-                    parts.append(f"- {date} {sha} {author}: {msg}")
-                parts.append("")
-        except Exception as e:
-            log.debug("GitHub commits fetch failed for %s/%s: %s", owner, repo, e)
-
-        # Open issues (top 10)
-        try:
-            issues_resp = httpx.get(
-                f"https://api.github.com/repos/{owner}/{repo}/issues"
-                "?state=open&per_page=10&sort=updated",
-                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
-            )
-            issues_resp.raise_for_status()
-            raw_issues = issues_resp.json() or []
-            issues = [i for i in raw_issues if not i.get("pull_request")]
-            if issues:
-                parts.append("## Open Issues (top 10)\n")
-                for i in issues[:10]:
-                    parts.append(
-                        f"- #{i.get('number')} {i.get('title')} "
-                        f"(by {(i.get('user') or {}).get('login','?')})"
-                    )
-                parts.append("")
-        except Exception as e:
-            log.debug("GitHub issues fetch failed for %s/%s: %s", owner, repo, e)
-
-        # Recently merged PRs (top 10)
-        try:
-            prs_resp = httpx.get(
-                f"https://api.github.com/repos/{owner}/{repo}/pulls"
-                "?state=closed&per_page=20&sort=updated&direction=desc",
-                headers=gh_headers, follow_redirects=True, timeout=URL_FETCH_TIMEOUT,
-            )
-            prs_resp.raise_for_status()
-            prs = [p for p in (prs_resp.json() or []) if p.get("merged_at")]
-            if prs:
-                parts.append("## Recently Merged PRs (top 10)\n")
-                for p in prs[:10]:
-                    parts.append(
-                        f"- #{p.get('number')} {p.get('title')} "
-                        f"(merged {(p.get('merged_at') or '')[:10]})"
-                    )
-                parts.append("")
-        except Exception as e:
-            log.debug("GitHub PRs fetch failed for %s/%s: %s", owner, repo, e)
+        # Recent commits / open issues / recently-merged PRs are intentionally
+        # NOT fetched: they pollute the LLM's attention with delta/activity
+        # metadata that gets parroted into source pages instead of the
+        # technical synthesis we want. README + tree crawl below carry the
+        # substance. Releases (above) cover "what changed lately".
 
         # Crawl repo tree for additional files
         try:
             parts.extend(
-                _crawl_github_tree(owner, repo, gh_headers, budget=80_000)
+                _crawl_github_tree(owner, repo, gh_headers, budget=120_000)
             )
         except Exception as e:
             log.warning("GitHub tree crawl failed for %s/%s: %s", owner, repo, e)
@@ -2962,10 +2906,13 @@ def send_ntfy(title: str, message: str, tags: str = "books") -> None:
 
 
 def _compute_effort_for_raw(fm: dict) -> str:
-    """Default reasoning effort: 'high' for PDFs, 'medium' otherwise.
+    """Default reasoning effort: 'high' for PDFs and GitHub repos, 'medium' otherwise.
 
-    PDF detection: source URL contains '/pdf/' (arxiv) or ends with '.pdf'
-    (case-insensitive), or frontmatter type is 'file' with a .pdf extension.
+    - PDFs: URL contains '/pdf/' (arxiv) or ends with '.pdf', or frontmatter
+      type is 'file' with a .pdf extension.
+    - GitHub repos: URL matches https://github.com/<owner>/<repo> (root only).
+      These have long READMEs + tree-crawled file contents that need careful
+      synthesis into Architecture / How-it-works / API-surface sections.
     Override with the WIKI_INGEST_EFFORT env var.
     """
     url = str(fm.get("url") or fm.get("source") or "").lower()
@@ -2975,6 +2922,8 @@ def _compute_effort_for_raw(fm: dict) -> str:
         body_ref = str(fm.get("source") or "").lower()
         if body_ref.endswith(".pdf"):
             return "high"
+    if re.match(r"^https?://github\.com/[^/]+/[^/]+/?$", url):
+        return "high"
     return "medium"
 
 

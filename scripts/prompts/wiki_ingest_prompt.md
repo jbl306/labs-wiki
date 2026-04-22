@@ -319,7 +319,43 @@ ReasoningBank establishes memory-driven experience scaling as a new scaling dime
 
 ---
 
-#### Concept Pages (zero or more): `wiki/concepts/<slug>.md`
+#### GitHub repo sources — REQUIRED depth treatment
+
+**When the raw frontmatter has `url: https://github.com/<owner>/<repo>` (root URL, not a sub-path):** the source page MUST be a self-contained technical brief, NOT a summary. The fetcher provides the full README + a tree-crawled set of files (per-directory READMEs, manifests, docs, examples). Mine all of them.
+
+The source page body MUST include these sections in this order (omit any that genuinely don't apply, but default is all-present):
+
+1. `# {owner}/{repo}`
+2. `## What it is` — 2–4 sentences from the README intro. What the project does, who it's for, what makes it distinctive. Plain prose.
+3. `## Why it matters` — 2–3 sentences on the problem it solves and whether/how it relates to our workspace (homelab, nba-ml-engine, debrid-downloader, labs-wiki, the booking bots). Be honest if it's a learning resource vs a tool we'd deploy.
+4. `## Architecture / Technical model` — name + define every named abstraction the repo introduces, inline. Use `**term** — definition` style with concrete details (data shapes, file paths, default values, size limits, IDs, schema fragments). Aim for 5–10 entries. Examples:
+   - For MemPalace: wings, rooms, halls, closets, drawers, tunnels (each with definition, file format, size cap)
+   - For htmx: hx-* attributes, swap targets, triggers, request lifecycle
+   - For an MCP server: each tool category and what tools it contains
+   - For a forecasting model: model architecture + training data + context length
+   Underneath each abstraction, add `> See [[concept-slug]]` if a concept page covers it deeply.
+5. `## How it works` — step-by-step prose or numbered list (5–15 items) explaining the actual flow / pipeline / algorithm. Pull from README sections like "How it works", "Architecture", "Design", "Pipeline". Include numeric details (benchmark scores, retrieval rates, latency, default chunk sizes, timeouts) when the README provides them. Reference exact file paths from the tree crawl when relevant (`mempalace/backends/base.py`, etc).
+6. `## API / interface surface` — for libraries: key functions/classes; for CLIs: top commands with one-line descriptions; for MCP servers: tool list (names + 1-line each); for web frameworks: core directives. Use a compact table or list. Pull from the tree crawl files (entry point modules, `cli.py`, `mcp_server.py`, etc.).
+7. `## Setup` — fenced bash block with the minimum install + run commands from the README's "Install" / "Quickstart" / "Usage" section.
+8. `## Integration notes` — 1–4 sentences on whether/how this could plug into our workspace. Be specific about which project would consume it.
+9. `## Caveats / Gotchas` — bullets for licensing, version pins, known limitations called out in the README. Skip if nothing notable. **Do NOT dump issue/PR titles** — those are activity noise, not project knowledge.
+10. `## Repo metadata` — small table with: Stars, Primary language, Topics, License (when visible). **NO commit SHAs, NO PR lists, NO issue lists, NO release histories.** That metadata is delta information — irrelevant to a knowledge wiki.
+11. `## Related concepts` — bulleted `[[concept-slug]]` links to every concept page that explains a piece of this repo (existing or newly created in the same ingest pass).
+12. `## Source` — `- Raw dump: \`raw/<filename>\`` and `- Upstream: <github url>`.
+
+**Set `quality_score: 85-95` for GitHub repo sources** (lower = the README was thin).
+
+**Concept-page rule for GitHub repos:** for every named abstraction listed in section 4, check if `wiki/concepts/<slug>.md` exists. If not AND the abstraction is substantive enough to deserve its own page (i.e. the README has >=2 paragraphs about it, or the project's identity hinges on it), CREATE it as part of this ingest. Use `templates/concept-page.md`. Set `quality_score: 80-90`. Add a `Sources` section that links back to the source page with `[[<owner>/<repo>]]`.
+
+**Anti-patterns for GitHub sources (do NOT do these):**
+- Listing recent commits / merged PRs / open issues — those are noise
+- A "Repository Info" block as the main body
+- A README excerpt block — synthesize, don't quote-dump
+- Letting the source page be < 100 lines when the README is rich
+
+---
+
+
 
 **Frontmatter schema:**
 ```yaml

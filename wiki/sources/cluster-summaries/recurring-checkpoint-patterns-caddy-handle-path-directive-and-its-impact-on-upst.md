@@ -1,6 +1,6 @@
 ---
 title: "Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing and Optimization, PostgreSQL Materialized Views for Dashboard Optimization"
-type: synthesis
+type: source
 created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "synthesis-generated"
@@ -30,8 +30,10 @@ related:
   - "[[Copilot Session Checkpoint: Fixing Knightcrawler Populate Cron and RD Playback]]"
   - "[[Copilot Session Checkpoint: Dashboard Matviews Implementation In Progress]]"
 tier: hot
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, docker, durable-knowledge, fileback, homelab]
+tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, docker, durable-knowledge, fileback, homelab, cluster-summary]
 ---
+
+> Moved from wiki/synthesis/. See [[Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing and Optimization, PostgreSQL Materialized Views for Dashboard Optimization]] for prior link target.
 
 # Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing and Optimization, PostgreSQL Materialized Views for Dashboard Optimization
 

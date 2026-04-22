@@ -1,6 +1,6 @@
 ---
 title: "Recurring checkpoint patterns: Parallel Agent Coordination in ML Sprint Implementation, Calibration Leakage Mitigation in ML Model Training, Data Source Expansion for NBA ML Prediction Platform"
-type: synthesis
+type: source
 created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "synthesis-generated"
@@ -36,8 +36,10 @@ related:
   - "[[Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning]]"
   - "[[Copilot Session Checkpoint: Sprint 56 No-Retrain Fixes Planning]]"
 tier: hot
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, nba-ml-engine]
+tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, nba-ml-engine, cluster-summary]
 ---
+
+> Moved from wiki/synthesis/. See [[Recurring checkpoint patterns: Parallel Agent Coordination in ML Sprint Implementation, Calibration Leakage Mitigation in ML Model Training, Data Source Expansion for NBA ML Prediction Platform]] for prior link target.
 
 # Recurring checkpoint patterns: Parallel Agent Coordination in ML Sprint Implementation, Calibration Leakage Mitigation in ML Model Training, Data Source Expansion for NBA ML Prediction Platform
 

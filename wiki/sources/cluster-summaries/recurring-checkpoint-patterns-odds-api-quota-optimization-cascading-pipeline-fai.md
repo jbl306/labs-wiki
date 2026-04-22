@@ -1,6 +1,6 @@
 ---
 title: "Recurring checkpoint patterns: Odds API Quota Optimization, Cascading Pipeline Failure Diagnosis and Resilience, SportsGameOdds (SGO) API Data Extraction Challenges"
-type: synthesis
+type: source
 created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "synthesis-generated"
@@ -20,8 +20,10 @@ related:
   - "[[Copilot Session Checkpoint: SGO Data Extraction Fix and Quality Audit]]"
   - "[[Copilot Session Checkpoint: Pipeline Resilience Fixes, Dashboard Metrics Investigation]]"
 tier: hot
-tags: [api, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, pipeline-resilience]
+tags: [api, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, pipeline-resilience, cluster-summary]
 ---
+
+> Moved from wiki/synthesis/. See [[Recurring checkpoint patterns: Odds API Quota Optimization, Cascading Pipeline Failure Diagnosis and Resilience, SportsGameOdds (SGO) API Data Extraction Challenges]] for prior link target.
 
 # Recurring checkpoint patterns: Odds API Quota Optimization, Cascading Pipeline Failure Diagnosis and Resilience, SportsGameOdds (SGO) API Data Extraction Challenges
 

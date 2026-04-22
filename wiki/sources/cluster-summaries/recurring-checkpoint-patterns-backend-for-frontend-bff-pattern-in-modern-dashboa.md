@@ -1,6 +1,6 @@
 ---
 title: "Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library, Dashboard Chart Strategy and Data-Driven Refinement"
-type: synthesis
+type: source
 created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "synthesis-generated"
@@ -18,8 +18,10 @@ related:
   - "[[Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built]]"
   - "[[Copilot Session Checkpoint: Rankings Page and Performance Optimization]]"
 tier: hot
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, nba-ml-engine]
+tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, nba-ml-engine, cluster-summary]
 ---
+
+> Moved from wiki/synthesis/. See [[Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library, Dashboard Chart Strategy and Data-Driven Refinement]] for prior link target.
 
 # Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library, Dashboard Chart Strategy and Data-Driven Refinement
 

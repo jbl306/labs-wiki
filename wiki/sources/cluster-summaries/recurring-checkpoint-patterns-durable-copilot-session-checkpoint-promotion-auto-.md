@@ -1,6 +1,6 @@
 ---
 title: "Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion, Auto-Ingest Pipeline for Wiki Markdown Processing, Custom Copilot CLI Agents"
-type: synthesis
+type: source
 created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "synthesis-generated"
@@ -46,8 +46,10 @@ tier: hot
 checkpoint_cluster_community: 1
 checkpoint_cluster_checkpoint_count: 14
 checkpoint_cluster_signature: d098258a944eccb3
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, durable-knowledge, fileback, graph, homelab, labs-wiki]
+tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, durable-knowledge, fileback, graph, homelab, labs-wiki, cluster-summary]
 ---
+
+> Moved from wiki/synthesis/. See [[Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion, Auto-Ingest Pipeline for Wiki Markdown Processing, Custom Copilot CLI Agents]] for prior link target.
 
 # Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion, Auto-Ingest Pipeline for Wiki Markdown Processing, Custom Copilot CLI Agents
 

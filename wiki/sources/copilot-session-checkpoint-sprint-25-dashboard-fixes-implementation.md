@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "6a309a250ef6aede8c009b708633bf7b3d7fecc6c7bc3faa40d88adbf091bee2"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-25-dashboard-fixes-implementation-a58c0fb5.md
-quality_score: 58
+quality_score: 66
 concepts:
   []
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "8d3bad50b4e5ce4338c31ee04997a2c1d6d8ea252241b5844aada1b951f76d4b"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-35-36-and-game-lines-diagnosis-1dbf44ee.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "3fab50ef4a5c25544924fe1c113888b26176679964c37d5f39943bd9f60a0d8c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-47-prediction-accuracy-fixes-6c547374.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

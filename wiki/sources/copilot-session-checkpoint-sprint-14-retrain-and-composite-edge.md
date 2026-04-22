@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "7f72eb739beae5bd7a19c32cac4047d71a87c9b2b65af1d6b1d675e295e20529"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-14-retrain-and-composite-edge-c04846ad.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

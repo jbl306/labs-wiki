@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "e5841a90e88d9462db5c3d88ad2104b899f374efbd7fcd370a7fd80299c98c4c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-8-retrain-results-collection-8d2c8d55.md
-quality_score: 61
+quality_score: 69
 concepts:
   []
 related:

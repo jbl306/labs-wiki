@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "bb401f462b2e63524f82f4333d7d7a4473910a60cefc4b4025c3ece7601e0153"
 sources:
+  - raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
   - raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sgo-data-extraction-fix-and-quality-audit-76644cc8.md
@@ -56,3 +57,4 @@ This checkpoint documents the optimization of Galloping-Bot's booking flow and i
 - [[Copilot Session Checkpoint: SGO Data Extraction Fix and Quality Audit]] — additional source
 - [[Copilot Session Checkpoint: Sprint 11 Evaluation and Report]] — additional source
 - [[Copilot Session Checkpoint: Phase 5 Merged; Graph UI Next]] — additional source
+- [[Copilot Session Checkpoint: Implementing Full-Review R1-R19 Recommendations]] — additional source

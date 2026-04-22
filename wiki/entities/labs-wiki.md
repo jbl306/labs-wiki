@@ -5,6 +5,8 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "499ac65895e3b4c5dbf581d0dac3942433dcc90dd7be66960430f78040b8df5a"
 sources:
+  - raw/2026-04-22-copilot-session-labs-wiki-full-review-report-b585f2e1.md
+  - raw/2026-04-22-copilot-session-graph-incident-and-cleanup-14e5153b.md
   - raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
   - raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md
   - raw/2026-04-20-copilot-session-graph-tracker-and-depth-review-4445c933.md
@@ -70,3 +72,5 @@ Labs-Wiki serves as the backend for knowledge codification, agent-driven curatio
 - [[Copilot Session Checkpoint: Graph Tracker and Depth Review]] — additional source
 - [[Copilot Session Checkpoint: Pilot Worktree Baseline]] — additional source
 - [[Copilot Session Checkpoint: URL Followup Pass]] — additional source
+- [[Copilot Session Checkpoint: Graph Incident and Cleanup]] — additional source
+- [[Copilot Session Checkpoint: labs-wiki full review report]] — additional source

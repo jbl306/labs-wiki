@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-18
 source_hash: "3a38e39284cc0602ec33af8d22ef0dfb3c2a3a21b23b03f06716e3221ca8b49e"
 sources:
+  - raw/2026-04-22-copilot-session-labs-wiki-full-review-report-b585f2e1.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
@@ -57,3 +58,4 @@ The session focused on building four custom agents using Copilot CLI to automate
 - [[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]] — where this entity was mentioned
 - [[Copilot Session Checkpoint: NBA-ML Agents and Homelab Fixes]] — additional source
 - [[Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode]] — additional source
+- [[Copilot Session Checkpoint: labs-wiki full review report]] — additional source

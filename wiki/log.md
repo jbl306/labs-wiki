@@ -4052,4 +4052,48 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-vs-code-agents-instructions-and-android-capture--a7b54100.md
   status: success
   notes: "Refreshed checkpoint source page from durable raw summary"
+
+- timestamp: 2026-04-22T00:09:51+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/refrag-rethinking-rag-based-decoding.md
+    - wiki/concepts/refrag-decoding-framework.md
+    - wiki/concepts/selective-compression-via-reinforcement-learning.md
+    - wiki/concepts/continual-pre-training-reconstruction-curriculum-learning.md
+    - wiki/entities/refrag.md
+  source: raw/2026-04-22-250901092v2pdf.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 1 entities, 0 synthesis)"
+
+- timestamp: 2026-04-22T00:38:24+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-graph-incident-and-cleanup.md
+    - wiki/concepts/worktree-based-debugging-deployment-validation.md
+    - wiki/concepts/systematic-cleanup-obsolete-cron-workflows.md
+    - wiki/concepts/systematic-debugging-tdd-ui-regression.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/homelab.md
+    - wiki/entities/wiki-graph-ui.md
+  source: raw/2026-04-22-copilot-session-graph-incident-and-cleanup-14e5153b.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 3 entities, 0 synthesis)"
+
+- timestamp: 2026-04-22T01:19:59+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-labs-wiki-full-review-report.md
+    - wiki/concepts/semantic-deduplication-wiki-ingest-pipelines.md
+    - wiki/concepts/tier-promotion-workflow-wiki-systems.md
+    - wiki/concepts/quality-score-rubric-failure-modes.md
+    - wiki/concepts/graph-tracker-artifacts-editorial-triage.md
+    - wiki/entities/labs-wiki.md
+    - wiki/entities/mempalace.md
+    - wiki/entities/copilot-cli.md
+  source: raw/2026-04-22-copilot-session-labs-wiki-full-review-report-b585f2e1.md
+  status: success
+  notes: "Auto-ingested 8 pages (4 concepts, 3 entities, 0 synthesis)"
 ```

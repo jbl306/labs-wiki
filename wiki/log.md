@@ -4167,3 +4167,20 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   - wiki/sources/google-research-timesfm.md
   - wiki/sources/nousresearch-autoreason.md
   - wiki/sources/microsoft-memento.md
+
+- timestamp: 2026-04-22T02:53:35+00:00
+  operation: ingest
+  agent: auto-ingest
+  targets:
+    - wiki/sources/copilot-session-checkpoint-mobile-node-viewer-and-richer-github-ingestion.md
+    - wiki/concepts/mobile-first-node-viewer-wiki-graph-ui.md
+    - wiki/concepts/richer-github-repository-ingestion-workflow.md
+    - wiki/concepts/self-synthesizing-github-source-re-ingestion-workflow.md
+    - wiki/entities/wiki-graph-ui.md
+    - wiki/entities/wiki-graph-ui.md
+    - wiki/entities/auto-ingest-py.md
+    - wiki/entities/refresh-github-sources-py.md
+  source: raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md
+  status: success
+  notes: "Auto-ingested 8 pages (3 concepts, 4 entities, 0 synthesis)"
+```

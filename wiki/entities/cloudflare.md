@@ -2,7 +2,7 @@
 title: "Cloudflare"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "9087cb7649f7304dd2917525af12c2fd1f436fd5b0eb12bcf0b6c9787bb8f3f4"
 sources:
   - raw/2026-04-20-agents-that-remember-introducing-agent-memory.md
@@ -31,9 +31,9 @@ Cloudflare provides DNS, TLS termination, and tunnel services for the homelab en
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://blog.cloudflare.com/introducing-agent-memory/ |
 | Status | Active |
 
 ## Relevance

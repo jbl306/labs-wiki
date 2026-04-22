@@ -2,7 +2,7 @@
 title: "Vite"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "8fde9c682fa2180a86ed53a5cd3c3e4eb8b2053c8c9f3aa44cb67b6ca8eba25c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
@@ -31,9 +31,9 @@ Vite is a modern frontend build tool used to scaffold and build the React 19 + T
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2020 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://vitejs.dev |
 | Status | Active |
 
 ## Relevance

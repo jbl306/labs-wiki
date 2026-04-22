@@ -2,7 +2,7 @@
 title: "Durable Copilot Session Checkpoint"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "bb401f462b2e63524f82f4333d7d7a4473910a60cefc4b4025c3ece7601e0153"
 sources:
   - raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
@@ -33,7 +33,7 @@ Durable Copilot Session Checkpoints are saved states of Copilot CLI sessions tha
 | Field | Value |
 |-------|-------|
 | Type | Concept |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

@@ -2,7 +2,7 @@
 title: "wiki-graph-api/graph_builder.py"
 type: entity
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "c73306469d0b021d04941005a920130ac9f2aca5d4f041c255bcf45d387eb9f0"
 sources:
   - raw/2026-04-20-copilot-session-graph-tracker-and-depth-review-4445c933.md
@@ -28,9 +28,9 @@ This module implements the graph-aware checkpoint tracker for labs-wiki, parsing
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://github.com/jbl306/labs-wiki/blob/main/wiki-graph-api/graph_builder.py |
 | Status | Active |
 
 ## Relevance

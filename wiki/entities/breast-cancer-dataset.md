@@ -2,7 +2,7 @@
 title: "Breast Cancer Dataset"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "afc740175d60aa5e215c7fb57048212d73a4ad3ec2aecb590fdf499b0ddc6575"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
@@ -29,9 +29,9 @@ The breast cancer dataset is a collection of patient data with features such as 
 | Field | Value |
 |-------|-------|
 | Type | Dataset |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://www.geeksforgeeks.org/machine-learning/support-vector-machine-algorithm/ |
 | Status | Active |
 
 ## Relevance

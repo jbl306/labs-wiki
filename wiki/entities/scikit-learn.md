@@ -2,7 +2,7 @@
 title: "scikit-learn"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "529065ba48a0c5e0357fda576a19be6cc301c379b5a5108c3c9ff3b2ac3f30f5"
 sources:
   - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
@@ -31,9 +31,9 @@ scikit-learn is a popular Python machine learning library providing tools for cl
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2007 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://scikit-learn.org |
 | Status | Active |
 
 ## Relevance

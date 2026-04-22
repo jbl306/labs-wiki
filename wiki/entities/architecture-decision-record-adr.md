@@ -2,7 +2,7 @@
 title: "Architecture Decision Record (ADR)"
 type: entity
 created: 2026-04-08
-last_verified: 2026-04-08
+last_verified: 2026-04-22
 source_hash: "5f635969f0ddd587b6295138d202654a9ab042a49563b6eeaa3f303248112b44"
 sources:
   - raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
@@ -27,9 +27,9 @@ An Architecture Decision Record (ADR) is a structured document that captures sig
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://jdforsythe.github.io/10-principles/principles/living-documentation/ |
 | Status | Active |
 
 ## Relevance

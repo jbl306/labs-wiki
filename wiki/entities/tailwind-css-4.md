@@ -2,7 +2,7 @@
 title: "Tailwind CSS 4"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "8fde9c682fa2180a86ed53a5cd3c3e4eb8b2053c8c9f3aa44cb67b6ca8eba25c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
@@ -31,9 +31,9 @@ Tailwind CSS 4 is a utility-first CSS framework used in the NBA ML Engine React 
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2015 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://tailwindcss.com |
 | Status | Active |
 
 ## Relevance

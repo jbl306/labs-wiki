@@ -2,7 +2,7 @@
 title: "Backfill Checkpoint Curation Script"
 type: entity
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "aa0a9fb971c2616e13c747864ac64e29a813db353a4b28896b78d03b5dff3a2a"
 sources:
   - raw/2026-04-18-copilot-session-phase-5-backfill-script-written-6227b6ae.md
@@ -28,7 +28,7 @@ The Backfill Checkpoint Curation Script is a standalone Python tool developed fo
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

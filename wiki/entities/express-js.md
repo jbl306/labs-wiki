@@ -2,7 +2,7 @@
 title: "Express.js"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "bda088556b526d765495b4eb44e9e07a7a9a83c274765d5b943d5a42aa248499"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md
@@ -32,7 +32,7 @@ Express.js is a minimal and flexible Node.js web application framework that prov
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

@@ -2,7 +2,7 @@
 title: "Express 5"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "8fde9c682fa2180a86ed53a5cd3c3e4eb8b2053c8c9f3aa44cb67b6ca8eba25c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
@@ -30,7 +30,7 @@ Express 5 is a Node.js web application framework used to build the Backend-For-F
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

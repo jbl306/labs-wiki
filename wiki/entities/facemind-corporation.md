@@ -2,7 +2,7 @@
 title: "FaceMind Corporation"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "4ee068b261ce6b20df7021842f1cbae08b0ec5e4124c648f86d6f1e7e50fc275"
 sources:
   - raw/2026-04-21-260402176v2pdf.md
@@ -31,7 +31,7 @@ FaceMind Corporation is one of the organizations affiliated with the authors of 
 | Type | Organization |
 | Created | Unknown |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://arxiv.org/abs/2604.02176 |
 | Status | Active |
 
 ## Relevance

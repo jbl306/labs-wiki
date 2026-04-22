@@ -2,7 +2,7 @@
 title: "update_opencode_skills_paths.py"
 type: entity
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "358108ea4d82e3accc5cb671afd3dec27dfb9c5dae571d0970c1b790078c615e"
 sources:
   - raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
@@ -29,9 +29,9 @@ update_opencode_skills_paths.py is a script used to dynamically discover, rewrit
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://github.com/jbl306/labs-wiki |
 | Status | Active |
 
 ## Relevance

@@ -2,7 +2,7 @@
 title: "Qdrant"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "b86ec7cb4abcfbce82b0a9b160fefa2aa57af2722acf67653163c263a5b39884"
 sources:
   - raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
@@ -32,7 +32,7 @@ Qdrant is a vector database container running in the homelab, used for efficient
 | Type | Tool |
 | Created | Unknown |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://qdrant.io |
 | Status | Active |
 
 ## Relevance

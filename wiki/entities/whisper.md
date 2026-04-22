@@ -2,7 +2,7 @@
 title: "Whisper"
 type: entity
 created: 2026-04-08
-last_verified: 2026-04-08
+last_verified: 2026-04-22
 source_hash: "07173adf0a23d99d4e19b0760bfd78b6d34d9e6d29a64415b4303d0245e32fa4"
 sources:
   - raw/2026-04-08-the-hardening-principle-10-claude-code-principles.md
@@ -27,9 +27,9 @@ Whisper is an automatic speech recognition (ASR) system, used to transcribe audi
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2022 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://openai.com/research/whisper |
 | Status | Active |
 
 ## Relevance

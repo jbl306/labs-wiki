@@ -2,7 +2,7 @@
 title: "Peiyang Song"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "9b909ca9eada78d8d05ef05a3e511af46402d434c5a0b53123bbb430e41e3e8d"
 sources:
   - raw/2026-04-13-260406231v1pdf.md
@@ -33,7 +33,7 @@ Peiyang Song is a researcher affiliated with California Institute of Technology 
 | Type | Person |
 | Created | Unknown |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://arxiv.org/pdf/2602.06176 |
 | Status | Active |
 
 ## Relevance

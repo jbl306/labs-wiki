@@ -2,7 +2,7 @@
 title: "TimescaleDB"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "f5ab464da78849dfc56ba65763a75665270132841e455836342a982aa3b2217d"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-phases-1-4-implementation-and-deployment-16041f82.md
@@ -30,9 +30,9 @@ TimescaleDB is a time-series optimized extension of PostgreSQL used as the datab
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2016 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://www.timescale.com |
 | Status | Active |
 
 ## Relevance

@@ -2,7 +2,7 @@
 title: "Gato"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "a4e06e1d925f1612228746698586d9c95f5b1f53a14aefe2385e14b354b4870d"
 sources:
   - raw/2026-04-08-httpsarxivorgpdf250504769.md
@@ -29,9 +29,9 @@ Gato is a generalist agent model that combines vision-language representations w
 | Field | Value |
 |-------|-------|
 | Type | Model |
-| Created | Unknown |
+| Created | 2025 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://arxiv.org/abs/2505.04769 |
 | Status | Active |
 
 ## Relevance

@@ -2,7 +2,7 @@
 title: "AAAK Compression Dialect"
 type: entity
 created: 2026-04-11
-last_verified: 2026-04-11
+last_verified: 2026-04-22
 source_hash: "101bef9011616b455e60e17998c3f1b308c5cab895c27a19c5a6f4d028ffcfb8"
 sources:
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
@@ -29,9 +29,9 @@ AAAK is an experimental abbreviation system for compressing repeated entities an
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Created | 2026 |
+| Creator | MemPalace |
+| URL | https://github.com/milla-jovovich/mempalace |
 | Status | Active |
 
 ## Relevance

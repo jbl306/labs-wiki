@@ -28,9 +28,9 @@ refresh_github_sources.py is a new script for deterministic, skill-driven re-ing
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://github.com/jbl306/labs-wiki/blob/main/scripts/refresh_github_sources.py |
 | Status | Active |
 
 ## Relevance

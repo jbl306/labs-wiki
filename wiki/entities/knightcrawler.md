@@ -2,7 +2,7 @@
 title: "KnightCrawler"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "b86ec7cb4abcfbce82b0a9b160fefa2aa57af2722acf67653163c263a5b39884"
 sources:
   - raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md

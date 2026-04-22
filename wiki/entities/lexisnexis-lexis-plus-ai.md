@@ -2,7 +2,7 @@
 title: "LexisNexis (Lexis+ AI)"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "35e9fc85797a2b2f1a36afddb2e31c48be2da7111d6965af4170541cbeaf7331"
 sources:
   - raw/2026-04-14-legal_rag_hallucinationspdf.md

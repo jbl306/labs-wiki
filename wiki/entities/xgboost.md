@@ -2,7 +2,7 @@
 title: "XGBoost"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "016d553979837ab306dec9cdf9e2309752249db326f2d6c75448f89eba8e6a11"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
@@ -34,9 +34,9 @@ XGBoost is a scalable and efficient gradient boosting library widely used for su
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2014 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://xgboost.readthedocs.io |
 | Status | Active |
 
 ## Relevance

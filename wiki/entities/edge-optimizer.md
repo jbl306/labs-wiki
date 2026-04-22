@@ -2,7 +2,7 @@
 title: "Edge Optimizer"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "9583aca364f19d189456564e8242665d819c8e046298a36e6032014ff646bea6"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
@@ -30,7 +30,7 @@ Edge Optimizer is a module that performs threshold optimization for betting edge
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

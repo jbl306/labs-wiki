@@ -2,7 +2,7 @@
 title: "Streamlit Dashboard"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "f5ab464da78849dfc56ba65763a75665270132841e455836342a982aa3b2217d"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-phases-1-4-implementation-and-deployment-16041f82.md
@@ -32,7 +32,7 @@ The Streamlit Dashboard is the user interface component of the NBA ML Engine, im
 | Type | Tool |
 | Created | Unknown |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://github.com/jbl306/nba-ml-engine/tree/main/dashboard |
 | Status | Active |
 
 ## Relevance

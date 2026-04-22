@@ -2,7 +2,7 @@
 title: "scripts/backfill_checkpoint_curation.py"
 type: entity
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "4f6f78933f56d8ae7e529c0883a3bea68f61cc64465402d8aa421afc538919d5"
 sources:
   - raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
@@ -27,9 +27,9 @@ This Python script is the core utility for running checkpoint curation passes in
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://github.com/jbl306/labs-wiki/blob/main/scripts/backfill_checkpoint_curation.py |
 | Status | Active |
 
 ## Relevance

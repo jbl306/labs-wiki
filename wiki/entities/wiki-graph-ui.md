@@ -31,9 +31,9 @@ Wiki-Graph-UI is the front-end visualization component for Labs-Wiki, responsibl
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://github.com/jbl306/labs-wiki/tree/main/wiki-graph-ui |
 | Status | Active |
 
 ## Relevance

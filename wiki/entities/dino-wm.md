@@ -2,7 +2,7 @@
 title: "DINO-WM"
 type: entity
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "9c294439e600a5c5a2e741c8b7994207c1ce7af51793e70b9bb6b664cc642f8b"
 sources:
   - raw/2026-04-20-260319312v2pdf.md
@@ -29,9 +29,9 @@ DINO-WM is a foundation-model-based world model that uses a pre-trained DINOv2 v
 | Field | Value |
 |-------|-------|
 | Type | Model |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://arxiv.org/pdf/2603.19312 |
 | Status | Active |
 
 ## Relevance

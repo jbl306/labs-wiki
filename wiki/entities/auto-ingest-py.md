@@ -30,7 +30,7 @@ auto_ingest.py is a core script in labs-wiki responsible for synthesis page gene
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

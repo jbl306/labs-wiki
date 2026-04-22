@@ -2,7 +2,7 @@
 title: "OpenClaw"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "5e880814019e287bffa500ebc398bafcb3aad10f0f27a56c87c53d911dba65c6"
 sources:
   - raw/2026-04-18-260414228v1pdf.md
@@ -32,7 +32,7 @@ OpenClaw is an independent open-source AI agent system designed as a multi-chann
 | Type | Tool |
 | Created | Unknown |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://arxiv.org/pdf/2604.14228 |
 | Status | Active |
 
 ## Relevance

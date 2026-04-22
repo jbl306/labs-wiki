@@ -2,7 +2,7 @@
 title: "DecisionTreeClassifier"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "529065ba48a0c5e0357fda576a19be6cc301c379b5a5108c3c9ff3b2ac3f30f5"
 sources:
   - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
@@ -28,9 +28,9 @@ DecisionTreeClassifier is a scikit-learn implementation of decision trees for cl
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://www.geeksforgeeks.org/machine-learning/implementing-the-adaboost-algorithm-from-scratch/ |
 | Status | Active |
 
 ## Relevance

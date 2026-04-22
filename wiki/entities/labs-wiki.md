@@ -2,7 +2,7 @@
 title: "Labs-Wiki"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "499ac65895e3b4c5dbf581d0dac3942433dcc90dd7be66960430f78040b8df5a"
 sources:
   - raw/2026-04-22-copilot-session-fixing-live-graph-taps-a2ede579.md

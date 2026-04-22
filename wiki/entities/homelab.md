@@ -2,7 +2,7 @@
 title: "Homelab"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "3a38e39284cc0602ec33af8d22ef0dfb3c2a3a21b23b03f06716e3221ca8b49e"
 sources:
   - raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
@@ -39,8 +39,8 @@ Homelab is a multi-service infrastructure environment managed with Docker Compos
 |-------|-------|
 | Type | Infrastructure |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | jbl306 |
+| URL | https://github.com/jbl306/homelab |
 | Status | Active |
 
 ## Relevance

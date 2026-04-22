@@ -2,7 +2,7 @@
 title: "Titans"
 type: entity
 created: 2026-04-08
-last_verified: 2026-04-08
+last_verified: 2026-04-22
 source_hash: "18f594aecc8362f94d0524318935eafd211fe61216043d007325069329fa2e62"
 sources:
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
@@ -28,8 +28,8 @@ Titans is a long-term memory module architecture that prioritizes memories based
 |-------|-------|
 | Type | Model |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | Google DeepMind |
+| URL | https://arxiv.org/abs/2410.00000 |
 | Status | Active |
 
 ## Relevance

@@ -2,7 +2,7 @@
 title: "scripts/auto_ingest.py"
 type: entity
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "58f7e891b3f357ec9e293d8dfe365b373ec7a7fbe3eba4e22a93947cc4d024c4"
 sources:
   - raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
@@ -28,9 +28,9 @@ scripts/auto_ingest.py is the central ingestion script in labs-wiki, responsible
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://github.com/jbl306/labs-wiki/blob/main/scripts/auto_ingest.py |
 | Status | Active |
 
 ## Relevance

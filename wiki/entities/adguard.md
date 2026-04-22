@@ -2,7 +2,7 @@
 title: "AdGuard"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "5d62c5ec9d154108bd891ed92b71cf061018b412b20cfcfc2b686c64b646c9e9"
 sources:
   - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
@@ -30,7 +30,7 @@ A network-level ad and tracker blocking service running as a Docker container in
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

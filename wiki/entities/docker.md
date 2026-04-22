@@ -2,7 +2,7 @@
 title: "Docker"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "1e682ce7421bcaeabd752a7742a3c49d999aeb75bc995c31118f12c24d1a690c"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md
@@ -32,7 +32,7 @@ A containerization platform used to package and run applications in isolated env
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

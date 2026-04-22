@@ -2,7 +2,7 @@
 title: "Thomson Reuters (Westlaw AI-Assisted Research)"
 type: entity
 created: 2026-04-21
-last_verified: 2026-04-21
+last_verified: 2026-04-22
 source_hash: "35e9fc85797a2b2f1a36afddb2e31c48be2da7111d6965af4170541cbeaf7331"
 sources:
   - raw/2026-04-14-legal_rag_hallucinationspdf.md
@@ -30,8 +30,8 @@ Thomson Reuters is a major legal technology provider whose Westlaw AI-Assisted R
 |-------|-------|
 | Type | Tool |
 | Created | Unknown |
-| Creator | Unknown |
-| URL | N/A |
+| Creator | Thomson Reuters |
+| URL | https://legal.thomsonreuters.com/westlaw |
 | Status | Active |
 
 ## Relevance

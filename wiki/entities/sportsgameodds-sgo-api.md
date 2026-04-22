@@ -2,7 +2,7 @@
 title: "SportsGameOdds (SGO) API"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "c4cd8c8e81648711e1dbceea098279d1120878d54e1d8ae18c7015937060ae6d"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sgo-data-extraction-fix-and-quality-audit-76644cc8.md
@@ -28,10 +28,10 @@ The SportsGameOdds (SGO) API is a sports odds data provider API that returns det
 
 | Field | Value |
 |-------|-------|
-| Type | Tool |
+| Type | Dataset |
 | Created | Unknown |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://sportsdata.io |
 | Status | Active |
 
 ## Relevance

@@ -29,7 +29,7 @@ Dockerfile.graph-ui is the deployment configuration file for the labs-wiki Graph
 | Field | Value |
 |-------|-------|
 | Type | Tool |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

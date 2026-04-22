@@ -2,7 +2,7 @@
 title: "EnsembleModel"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-22
 source_hash: "665c60129067f8fba29792521cb202b0e0ab91fc22982f1f58081019b034c549"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-13-model-improvements-code-5db17c4d.md
@@ -36,7 +36,7 @@ EnsembleModel is a component of the NBA ML Engine responsible for aggregating pr
 | Field | Value |
 |-------|-------|
 | Type | Model |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
 | URL | N/A |
 | Status | Active |

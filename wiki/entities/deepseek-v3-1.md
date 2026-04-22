@@ -2,7 +2,7 @@
 title: "DeepSeek-V3.1"
 type: entity
 created: 2026-04-20
-last_verified: 2026-04-20
+last_verified: 2026-04-22
 source_hash: "477e5dbd4d13659cf31de2992a6be546df5c474c80638069dbeef4368ec4bba0"
 sources:
   - raw/2026-04-16-251004618v3pdf.md
@@ -29,9 +29,9 @@ DeepSeek-V3.1 is an open-source large language model used as the backbone for AC
 | Field | Value |
 |-------|-------|
 | Type | Model |
-| Created | Unknown |
+| Created | 2026 |
 | Creator | Unknown |
-| URL | N/A |
+| URL | https://arxiv.org/pdf/2510.04618 |
 | Status | Active |
 
 ## Relevance

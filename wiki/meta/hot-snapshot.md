@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-04-22T03:22:05+00:00
+generated: 2026-04-23T03:22:12+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,51 +11,51 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-04-22T03:22:05+00:00
+> Regenerated: 2026-04-23T03:22:12+00:00
 
 ## Recent Wiki Edits
 
-- `2026-04-21` — [[self-synthesizing-checkpoint-cluster-synthesis]] (`wiki/concepts/self-synthesizing-checkpoint-cluster-synthesis.md`)
-- `2026-04-21` — [[auto-ingest-py]] (`wiki/entities/auto-ingest-py.md`)
-- `2026-04-21` — [[backfill-checkpoint-cluster-synthesis-py]] (`wiki/entities/backfill-checkpoint-cluster-synthesis-py.md`)
-- `2026-04-21` — [[write-synth-py]] (`wiki/entities/write-synth-py.md`)
-- `2026-04-21` — [[amitshekhariitbhu-llm-internals]] (`wiki/sources/amitshekhariitbhu-llm-internals.md`)
-- `2026-04-21` — [[bigskysoftware-htmx]] (`wiki/sources/bigskysoftware-htmx.md`)
-- `2026-04-21` — [[chromedevtools-chrome-devtools-mcp]] (`wiki/sources/chromedevtools-chrome-devtools-mcp.md`)
-- `2026-04-21` — [[copilot-session-checkpoint-self-synthesizing-r4-checkpoint-clusters]] (`wiki/sources/copilot-session-checkpoint-self-synthesizing-r4-checkpoint-clusters.md`)
-- `2026-04-21` — [[google-research-timesfm]] (`wiki/sources/google-research-timesfm.md`)
-- `2026-04-21` — [[hkuds-autoagent]] (`wiki/sources/hkuds-autoagent.md`)
+- `2026-04-22` — [[block-masking-for-llm-kv-cache-compaction]] (`wiki/concepts/block-masking-for-llm-kv-cache-compaction.md`)
+- `2026-04-22` — [[reasoning-trace-segmentation-and-iterative-summarization]] (`wiki/concepts/reasoning-trace-segmentation-and-iterative-summarization.md`)
+- `2026-04-22` — [[memento]] (`wiki/entities/memento.md`)
+- `2026-04-22` — [[openmementos-dataset]] (`wiki/entities/openmementos-dataset.md`)
+- `2026-04-22` — [[vllm-block-masking-overlay]] (`wiki/entities/vllm-block-masking-overlay.md`)
+- `2026-04-22` — [[microsoft-memento]] (`wiki/sources/microsoft-memento.md`)
+- `2026-04-22` — [[training-time-segmentation-vs-inference-time-compaction-in-memento]] (`wiki/synthesis/training-time-segmentation-vs-inference-time-compaction-in-memento.md`)
+- `2026-04-22` — [[automatic-git-commits-after-successful-wiki-ingest]] (`wiki/concepts/automatic-git-commits-after-successful-wiki-ingest.md`)
+- `2026-04-22` — [[jsonl-sidecar-kg-fact-replay-containerized-ingest]] (`wiki/concepts/jsonl-sidecar-kg-fact-replay-containerized-ingest.md`)
+- `2026-04-22` — [[scripts-replay-kg-facts-py]] (`wiki/entities/scripts-replay-kg-facts-py.md`)
 
 ## Recent Sources Captured
 
-- `2026-04-22` — `raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md`
-- `2026-04-22` — `raw/2026-04-22-copilot-session-self-synthesizing-r4-checkpoint-clusters-fc158a39.md`
-- `2026-04-22` — `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md`
 - `2026-04-22` — `raw/2026-04-21-httpsgithubcommicrosoftmemento.md`
-- `2026-04-22` — `raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md`
-- `2026-04-22` — `raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md`
-- `2026-04-22` — `raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md`
-- `2026-04-22` — `raw/2026-04-12-httpsgithubcomhkudsautoagent.md`
-- `2026-04-22` — `raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md`
-- `2026-04-22` — `raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md`
+- `2026-04-22` — `raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md`
+- `2026-04-22` — `raw/2026-04-22-copilot-session-github-ingest-depth-fetcher-trim-732c3907.md`
+- `2026-04-22` — `raw/2026-04-22-test-pdf-arxiv-2510-04618.md`
+- `2026-04-22` — `raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md`
+- `2026-04-22` — `raw/2026-04-22-260401437v1pdf.md`
+- `2026-04-22` — `raw/2026-04-22-test-html-anthropic-agents.md`
+- `2026-04-22` — `raw/2026-04-22-copilot-session-auto-ingest-fix-arxiv-loop-4990d381.md`
+- `2026-04-22` — `raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md`
+- `2026-04-22` — `raw/2026-04-22-250925140v2pdf.md`
 
 ## Always-Hot Pages (`tier: hot`)
 
 - [[Dockerfile.graph-ui]] → `wiki/entities/dockerfile-graph-ui.md`
 - [[Checkpoint Classifier Module]] → `wiki/entities/checkpoint-classifier-module.md`
 - [[Edge Optimizer]] → `wiki/entities/edge-optimizer.md`
+- [[ReasoningBank]] → `wiki/entities/reasoningbank.md`
 - [[FaceMind Corporation]] → `wiki/entities/facemind-corporation.md`
 - [[The Chinese University of Hong Kong]] → `wiki/entities/the-chinese-university-of-hong-kong.md`
 - [[Node Version Manager (nvm)]] → `wiki/entities/node-version-manager-nvm.md`
 - [[Claude Code]] → `wiki/entities/claude-code.md`
+- [[scripts/replay_kg_facts.py]] → `wiki/entities/scripts-replay-kg-facts-py.md`
 - [[AdGuard]] → `wiki/entities/adguard.md`
 - [[Agentic Context Engineering (ACE)]] → `wiki/entities/agentic-context-engineering-ace.md`
 - [[Qdrant]] → `wiki/entities/qdrant.md`
 - [[DecisionTreeClassifier]] → `wiki/entities/decisiontreeclassifier.md`
+- [[vLLM Block Masking Overlay]] → `wiki/entities/vllm-block-masking-overlay.md`
 - [[Breast Cancer Dataset]] → `wiki/entities/breast-cancer-dataset.md`
-- [[TimesFM]] → `wiki/entities/timesfm.md`
-- [[Hermes Agent]] → `wiki/entities/hermes-agent.md`
-- [[Microsoft]] → `wiki/entities/microsoft.md`
 
 ## In-Progress Tasks
 

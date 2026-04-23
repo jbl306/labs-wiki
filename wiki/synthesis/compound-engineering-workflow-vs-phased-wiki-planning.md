@@ -22,6 +22,7 @@ tags:
   - knowledge-management
   - planning
   - workflow-comparison
+quality_score: 75
 ---
 
 # Compound Engineering Workflow vs Phased Wiki Planning

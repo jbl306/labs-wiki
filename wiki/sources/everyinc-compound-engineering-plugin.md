@@ -18,7 +18,7 @@ tags:
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 89
+quality_score: 65
 concepts:
   - compound-engineering-workflow
   - cross-platform-agent-plugin-conversion

@@ -18,7 +18,7 @@ related:
   - "[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]"
 tier: hot
 tags: [nba-ml-engine, machine-learning, ml-ops, walk-forward-cv, model-selection, checkpoint-synthesis]
-quality_score: 84
+quality_score: 67
 ---
 
 # Daily Validation vs Walk-Forward Cross-Validation in NBA ML Engine

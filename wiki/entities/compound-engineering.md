@@ -21,6 +21,7 @@ tags:
   - knowledge-management
   - plugin
   - workflow-automation
+quality_score: 69
 ---
 
 # Compound Engineering

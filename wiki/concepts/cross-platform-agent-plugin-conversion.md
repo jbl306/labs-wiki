@@ -6,7 +6,7 @@ last_verified: '2026-04-23'
 source_hash: 47dca59f5e85d3b968b39b0119e3e03fe82d3bc935cfa91eaa1b03d60cf1aeeb
 sources:
   - raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md
-quality_score: 84
+quality_score: 82
 related:
   - "[[Compound Engineering Workflow]]"
   - "[[Custom Agents in VS Code]]"

@@ -4338,4 +4338,17 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/daily-validation-vs-walk-forward-cv-nba-ml-engine.md
   status: success
   notes: "Auto-ingested 3 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-23T18:23:56Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-23-260419572v1pdf.md
+  targets:
+    - wiki/sources/self-evolving-terminal-agent-context-compression.md
+    - wiki/entities/taco.md
+    - wiki/entities/terminalbench.md
+    - wiki/concepts/terminal-observation-compression.md
+    - wiki/concepts/self-evolving-rule-pools-agent-compression.md
+    - wiki/synthesis/agent-context-compression-layers-tool-using-systems.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

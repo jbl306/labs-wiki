@@ -6,7 +6,7 @@ last_verified: 2026-04-23
 source_hash: "16035a6f5cdc2578c200345a8209b1b969443251f4126a9af138fbf055e69779"
 sources:
   - raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md
-quality_score: 84
+quality_score: 65
 concepts:
   - daily-weekly-validation-split-nba-ml-pipelines
 related:

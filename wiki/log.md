@@ -4316,4 +4316,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/recursive-language-models-vs-block-masking-long-context-scaling.md
   status: success
   notes: "Auto-ingested 4 pages (1 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4; reused existing RLM source/concept/entity pages from an earlier raw capture"
+- timestamp: 2026-04-23T11:18:56Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md
+  targets:
+    - wiki/sources/everyinc-compound-engineering-plugin.md
+    - wiki/entities/compound-engineering.md
+    - wiki/concepts/compound-engineering-workflow.md
+    - wiki/concepts/cross-platform-agent-plugin-conversion.md
+    - wiki/synthesis/compound-engineering-workflow-vs-phased-wiki-planning.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

@@ -4328,4 +4328,14 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/compound-engineering-workflow-vs-phased-wiki-planning.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-23T14:32:55Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-nba-ml-pipeline-oom-fixes.md
+    - wiki/concepts/daily-weekly-validation-split-nba-ml-pipelines.md
+    - wiki/synthesis/daily-validation-vs-walk-forward-cv-nba-ml-engine.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

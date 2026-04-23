@@ -10,7 +10,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
-quality_score: 93
+quality_score: 92
 concepts:
   - autoagent
 related:

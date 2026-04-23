@@ -13,6 +13,7 @@ related:
   - "[[Reasoning Trace Segmentation and Iterative Summarization]]"
 tier: hot
 tags: [llm, kv-cache, block-masking, vllm, inference, long-context]
+quality_score: 82
 ---
 
 # Block Masking for LLM KV Cache Compaction

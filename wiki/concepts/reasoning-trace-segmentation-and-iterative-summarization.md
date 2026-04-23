@@ -13,6 +13,7 @@ related:
   - "[[OpenMementos Dataset]]"
 tier: hot
 tags: [llm, training-pipeline, segmentation, summarization, chain-of-thought, long-context]
+quality_score: 82
 ---
 
 # Reasoning Trace Segmentation and Iterative Summarization

@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "23657eb3935efc0dbc400af97abfe6e9aa4c98d3cc6aac876d7a0ed1195b3b92"
 sources:
   - raw/2026-04-22-250925140v2pdf.md
-quality_score: 75
+quality_score: 58
 concepts:
   - test-time-scaling
   - agent-memory-frameworks

@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "a402e64fc0c46e618b01acc3502f18a992b4a42222bfd7f87c9abbee3801c98f"
 sources:
   - raw/2026-04-07-llm-wiki.md
-quality_score: 54
+quality_score: 46
 concepts:
   - schema-guided-llm-knowledge-base-maintenance
 related:

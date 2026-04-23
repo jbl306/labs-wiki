@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "4f6f78933f56d8ae7e529c0883a3bea68f61cc64465402d8aa421afc538919d5"
 sources:
   - raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
-quality_score: 39
+quality_score: 49
 concepts:
   - scripts-backfill-checkpoint-curation-py
 related:

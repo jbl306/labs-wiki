@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "cb1641cfd3a617f69e5849c8b18e45f913175c5a97adb89f01ebd767b34bd251"
 sources:
   - raw/2026-04-22-copilot-session-self-synthesizing-r4-checkpoint-clusters-fc158a39.md
-quality_score: 45
+quality_score: 55
 concepts:
   - backfill-checkpoint-cluster-synthesis-py
 related:

@@ -12,6 +12,7 @@ related:
   - "[[Auto-Ingest Pipeline for LLM-Powered Knowledge Wiki]]"
 tier: hot
 tags: [knowledge-graph, jsonl, auto-ingest, mempalace, pipeline]
+quality_score: 65
 ---
 
 # JSONL Sidecar Knowledge-Graph Fact Replay for Containerized Ingest Pipelines

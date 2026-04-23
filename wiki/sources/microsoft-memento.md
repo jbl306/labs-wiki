@@ -11,7 +11,7 @@ tags: [github, llm, long-context, kv-cache, block-masking, vllm, chain-of-though
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 92
+quality_score: 59
 concepts:
   - memento-blockwise-summarization-for-llms
   - block-masking-for-llm-kv-cache-compaction

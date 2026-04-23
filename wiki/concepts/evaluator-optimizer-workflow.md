@@ -14,6 +14,7 @@ related:
   - "[[Anthropic’s 'Building Effective Agents' Guide]]"
 tier: warm
 tags: [evaluation, iterative-refinement, feedback-loops, llm-workflows, optimization]
+quality_score: 79
 ---
 
 # Evaluator-Optimizer Workflow

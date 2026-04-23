@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
-quality_score: 89
+quality_score: 86
 concepts:
   - self-managing-workflow-generation
 related:

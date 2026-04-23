@@ -7,7 +7,7 @@ source_hash: "cb1641cfd3a617f69e5849c8b18e45f913175c5a97adb89f01ebd767b34bd251"
 sources:
   - raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md
   - raw/2026-04-22-copilot-session-self-synthesizing-r4-checkpoint-clusters-fc158a39.md
-quality_score: 100
+quality_score: 63
 concepts:
   - auto-ingest-py
 related:

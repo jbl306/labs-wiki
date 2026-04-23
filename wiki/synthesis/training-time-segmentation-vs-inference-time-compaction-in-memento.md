@@ -15,6 +15,7 @@ related:
   - "[[Block Masking for LLM KV Cache Compaction]]"
 tier: hot
 tags: [llm, memento, training, inference, kv-cache, summarization]
+quality_score: 59
 ---
 
 # Training-Time Segmentation vs. Inference-Time Compaction in Memento

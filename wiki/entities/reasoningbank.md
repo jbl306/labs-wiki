@@ -7,7 +7,7 @@ source_hash: "15e0d38d97945d4e58427c03622de24ec2191b5d77cc532159579b7444219a6d"
 sources:
   - raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
   - raw/2026-04-22-250925140v2pdf.md
-quality_score: 90
+quality_score: 81
 concepts:
   - agent-memory-frameworks
   - test-time-scaling

@@ -12,7 +12,7 @@ tags: [context-adaptation, llm-agents, self-improvement, benchmark, agent-memory
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 78
+quality_score: 90
 ---
 
 # Agentic Context Engineering: Evolving Contexts for Self-Improving Language Models

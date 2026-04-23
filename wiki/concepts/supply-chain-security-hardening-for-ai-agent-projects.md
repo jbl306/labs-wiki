@@ -6,7 +6,7 @@ last_verified: 2026-04-10
 source_hash: "dc0945f923f9941ee6eb62e529f5f0be79e0943484843535425876ed4427ac4c"
 sources:
   - raw/2026-04-10-httpsgithubcommidudevautoskills.md
-quality_score: 76
+quality_score: 72
 concepts:
   - supply-chain-security-hardening-for-ai-agent-projects
 related:

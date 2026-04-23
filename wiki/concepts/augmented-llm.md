@@ -14,6 +14,7 @@ related:
   - "[[Anthropic’s 'Building Effective Agents' Guide]]"
 tier: warm
 tags: [augmented-llm, retrieval, tools, memory, llm-architecture]
+quality_score: 82
 ---
 
 # Augmented LLM

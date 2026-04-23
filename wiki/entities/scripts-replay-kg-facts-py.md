@@ -13,6 +13,7 @@ related:
   - "[[Labs-Wiki]]"
 tier: hot
 tags: [python, automation, mempalace, knowledge-graph, labs-wiki]
+quality_score: 56
 ---
 
 # scripts/replay_kg_facts.py

@@ -14,6 +14,7 @@ related:
   - "[[SWE-Bench-Verified]]"
 tier: hot
 tags: [arxiv, position-paper, agentic-ai, software-engineering, evaluation, reproducibility, explainability]
+quality_score: 59
 ---
 
 # Reproducible, Explainable, and Effective Evaluations of Agentic AI for Software Engineering

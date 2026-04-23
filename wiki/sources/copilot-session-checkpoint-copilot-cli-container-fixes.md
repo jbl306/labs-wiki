@@ -19,7 +19,7 @@ tags: [copilot-session, checkpoint, durable-knowledge, labs-wiki, auto-ingest, c
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 78
+quality_score: 65
 checkpoint_class: project-progress
 retention_mode: compress
 ---

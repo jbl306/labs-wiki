@@ -23,7 +23,7 @@ checkpoint_class: durable-debugging
 retention_mode: retain
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 74
+quality_score: 65
 ---
 
 # Copilot Session Checkpoint: Auto-ingest fix + arxiv loop

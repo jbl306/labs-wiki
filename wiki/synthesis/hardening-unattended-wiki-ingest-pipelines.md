@@ -17,6 +17,7 @@ related:
   - "[[Automatic Git Commits After Successful Wiki Ingest]]"
 tier: hot
 tags: [auto-ingest, pipeline-hardening, copilot-cli, knowledge-graph, git-automation, labs-wiki]
+quality_score: 75
 ---
 
 # Hardening Unattended Wiki Ingest Pipelines

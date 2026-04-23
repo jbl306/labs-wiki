@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md
   - raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
   - raw/2026-04-22-copilot-session-graph-incident-and-cleanup-14e5153b.md
-quality_score: 100
+quality_score: 77
 concepts:
   - wiki-graph-ui
 related:

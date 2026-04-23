@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "b70af3041d4741db64a44777acc137226f83b7d150d6fbb3afbc693de05fc53a"
 sources:
   - raw/2026-04-22-copilot-session-fixing-live-graph-taps-a2ede579.md
-quality_score: 45
+quality_score: 55
 concepts:
   - dockerfile-graph-ui
 related:

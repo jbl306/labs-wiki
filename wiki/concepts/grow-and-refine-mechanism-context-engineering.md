@@ -7,7 +7,7 @@ source_hash: "sha256:d1f1d7139d7de1aefe1f74a2a9e53e1ac4d3103bf532c94ad72ad02286b
 sources:
   - raw/2026-04-16-251004618v3pdf.md
   - raw/2026-04-22-test-pdf-arxiv-2510-04618.md
-quality_score: 56
+quality_score: 64
 related:
   - "[[ACE (Agentic Context Engineering)]]"
   - "[[Incremental Delta Updates]]"

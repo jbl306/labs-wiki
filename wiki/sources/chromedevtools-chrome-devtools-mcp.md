@@ -19,7 +19,7 @@ tags:
 tier: warm
 knowledge_state: ingested
 ingest_method: manual-deepen-github-2026-04-22
-quality_score: 90
+quality_score: 59
 concepts:
 - model-context-protocol-mcp-server-for-chrome-devtools
 - chrome-devtools-mcp-cli-interface

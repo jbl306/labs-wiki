@@ -18,7 +18,7 @@ tags: [arxiv, agentic-ai, software-engineering, evaluation, reproducibility, exp
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 76
+quality_score: 65
 ---
 
 # Reproducible, Explainable, and Effective Evaluations of Agentic AI for Software Engineering

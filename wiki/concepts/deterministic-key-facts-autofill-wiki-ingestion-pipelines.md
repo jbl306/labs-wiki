@@ -13,6 +13,7 @@ related:
   - "[[Durable Copilot Session Checkpoint Promotion]]"
 tier: hot
 tags: [wiki-ingestion, metadata, post-processing, heuristics, auto-ingest, key-facts]
+quality_score: 65
 ---
 
 # Deterministic Key Facts Autofill in Wiki Ingestion Pipelines

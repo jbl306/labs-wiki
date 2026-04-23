@@ -12,6 +12,7 @@ related:
   - "[[Agent Memory Frameworks]]"
 tier: hot
 tags: [agentic-ai, evaluation, trajectories, observability, software-engineering, reproducibility]
+quality_score: 79
 ---
 
 # Thought-Action-Result (TAR) Trajectories

@@ -14,6 +14,7 @@ related:
   - "[[Dockerfile.auto-ingest]]"
 tier: hot
 tags: [copilot-cli, wiki-ingestion, backend, auto-ingest, docker]
+quality_score: 59
 ---
 
 # Copilot CLI Backend for Wiki Ingestion

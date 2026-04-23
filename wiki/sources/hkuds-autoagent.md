@@ -15,7 +15,7 @@ tags:
 tier: warm
 knowledge_state: ingested
 ingest_method: manual-deepen-github-2026-04-22
-quality_score: 90
+quality_score: 62
 concepts:
 - autoagent-framework-research
 - natural-language-driven-agent-creation

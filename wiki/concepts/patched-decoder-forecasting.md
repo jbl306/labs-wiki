@@ -5,7 +5,7 @@ created: '2026-04-22'
 last_verified: '2026-04-22'
 sources:
   - raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md
-quality_score: 85
+quality_score: 75
 concepts:
   - patched-decoder-forecasting
 related:

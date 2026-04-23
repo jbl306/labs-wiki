@@ -12,6 +12,7 @@ related:
   - "[[Auto-Ingest Pipeline for LLM-Powered Knowledge Wiki]]"
 tier: hot
 tags: [git, automation, auto-ingest, durability, provenance, labs-wiki]
+quality_score: 82
 ---
 
 # Automatic Git Commits After Successful Wiki Ingest

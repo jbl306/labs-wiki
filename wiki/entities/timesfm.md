@@ -6,7 +6,7 @@ last_verified: 2026-04-13
 source_hash: "7db9778a42e98d53c01f3f061b1882f3b443288dbd137c0bac910129717f1c39"
 sources:
   - raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md
-quality_score: 57
+quality_score: 48
 concepts:
   - timesfm
 related:

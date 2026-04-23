@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-19-6372438pdf.md
   - raw/2026-04-16-251004618v3pdf.md
   - raw/2026-04-22-test-pdf-arxiv-2510-04618.md
-quality_score: 81
+quality_score: 95
 related:
   - "[[ACE (Agentic Context Engineering)]]"
   - "[[Brevity Bias and Context Collapse in LLM Context Adaptation]]"

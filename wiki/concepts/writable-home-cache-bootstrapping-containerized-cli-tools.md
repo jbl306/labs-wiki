@@ -14,6 +14,7 @@ related:
   - "[[Dockerfile.auto-ingest]]"
 tier: hot
 tags: [docker, containers, permissions, cache, cli, runtime]
+quality_score: 59
 ---
 
 # Writable HOME and Cache Bootstrapping for Containerized CLI Tools

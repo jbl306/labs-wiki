@@ -16,7 +16,7 @@ tags:
 tier: warm
 knowledge_state: ingested
 ingest_method: self-synthesis-no-llm
-quality_score: 80
+quality_score: 61
 ---
 
 # ReasoningBank: Scaling Agent Self-Evolving with Reasoning Memory

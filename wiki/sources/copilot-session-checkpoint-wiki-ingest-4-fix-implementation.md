@@ -21,7 +21,7 @@ tags: [copilot-session, labs-wiki, auto-ingest, mempalace, knowledge-graph, git-
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 78
+quality_score: 65
 checkpoint_class: durable-architecture
 checkpoint_class_rule: "body:graph-api"
 retention_mode: retain

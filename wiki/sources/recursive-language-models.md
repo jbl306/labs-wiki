@@ -1,54 +1,55 @@
 ---
 title: "Recursive Language Models"
 type: source
-created: 2026-04-21
-last_verified: 2026-04-21
-source_hash: "f5ae69a723513d24cbcbb84186eb866bf58307e8fe5c8f38ae2f92a7d7095538"
+created: '2026-04-21'
+last_verified: '2026-04-23'
+source_hash: 7368a08484d58101c8102490723a5cbfabe63a85dde56bb84b8cde3ecabf99e8
 sources:
   - raw/2026-04-10-251224601v2pdf.md
-quality_score: 77
-concepts:
-  - recursive-language-models
+  - raw/2026-04-23-251224601v2pdf.md
+source_url: https://arxiv.org/abs/2512.24601
+tags: [language-models, long-context, recursion, inference-time-scaling, arxiv]
+tier: hot
+knowledge_state: ingested
+ingest_method: copilot-cli-gpt-5.4
+quality_score: 84
 related:
   - "[[RLM-Qwen3-8B]]"
+  - "[[GPT-5]]"
   - "[[Qwen3-Coder-480B-A35B]]"
-tier: hot
-knowledge_state: executed
-tags: [agentic-architecture, long-context, language-models, scaling, recursion]
 ---
 
 # Recursive Language Models
 
 ## Summary
 
-This paper introduces Recursive Language Models (RLMs), a paradigm for scaling large language models (LLMs) to process arbitrarily long prompts by treating the prompt as an external environment and enabling programmatic, recursive self-invocation. RLMs outperform vanilla LLMs and common long-context scaffolds in both quality and cost across diverse tasks, and the authors demonstrate the first natively recursive language model via post-training. Extensive experiments show that RLMs maintain strong performance even as input lengths greatly exceed traditional context windows.
+This paper reframes long-context inference as an environment-interaction problem instead of a bigger-context-window problem. Recursive Language Models (RLMs) place the prompt in a persistent REPL environment, let the model inspect it symbolically, and allow recursive self-calls over prompt slices; that setup reaches 10M+ token inputs, beats common long-context baselines, and supports the first post-trained native recursive model, [[RLM-Qwen3-8B]].
 
 ## Key Points
 
-- RLMs allow LLMs to process prompts far beyond their native context window by recursively decomposing and invoking themselves over prompt slices.
-- RLMs outperform vanilla LLMs and other agent scaffolds on long-context tasks, maintaining quality and comparable cost.
-- The first natively recursive model, RLM-Qwen3-8B, is post-trained and achieves substantial performance gains over its base model.
+- **Core reframing**: The user prompt is stored as a variable in a persistent REPL environment instead of being copied wholesale into the root model context window.
+- **Root-loop design**: The root model only sees constant-size metadata about prompt state and stdout, so the working history grows with control traces rather than with the full prompt length.
+- **Three defining properties**: RLMs require a symbolic handle to the prompt, programmatic construction of the final answer via environment variables, and symbolic recursion through sub-RLM calls executed inside code.
+- **Formal scaling claim**: The paper argues RLMs can support effectively unbounded input tokens, unbounded output tokens, and semantic work on the order of $\Omega(|P|)$ or even $\Omega(|P|^2)$ over a prompt $P$.
+- **Benchmarks**: Evaluation covers S-NIAH, BrowseComp-Plus (1K docs), OOLONG, OOLONG-Pairs, and LongBench-v2 CodeQA to span constant-, linear-, and quadratic-complexity long-context tasks.
+- **Base models**: The main experiments use [[GPT-5]] and [[Qwen3-Coder-480B-A35B]] as both direct baselines and recursive sub-call models.
+- **Length regime**: Controlled tasks scale prompt lengths from $2^{13}$ to $2^{18}$ tokens, and the paper reports RLM behavior in the 10M+ token regime and up to two orders of magnitude beyond model context windows.
+- **Performance gains**: On OOLONG, RLMs improve over the base model by 28.4% with GPT-5 and 33.3% with Qwen3-Coder; on OOLONG-Pairs, base models stay below 0.1% F1 while RLM(GPT-5) reaches 58.0% and RLM(Qwen3-Coder) reaches 23.1%.
+- **Cost profile**: On BrowseComp-Plus (1K), the paper estimates naive GPT-5-mini ingestion of 6-11M tokens would cost roughly $1.50-$2.75, while RLM(GPT-5) averages $0.99 and beats summarization and retrieval baselines by more than 29%.
+- **Ablation result**: A REPL-only ablation can already exceed base context limits, but recursive sub-calls deliver an extra 10%-59% gain on the most information-dense tasks.
+- **Native recursion training**: [[RLM-Qwen3-8B]] is fine-tuned from Qwen3-8B on 1,000 filtered LongBenchPro trajectories and improves average downstream RLM performance by 28.3%.
+- **Observed behaviors**: The authors report regex-based filtering, simple chunking strategies, and variable-based output stitching as common emergent patterns in successful RLM trajectories.
 
-## Concepts Extracted
+## Key Concepts
 
-- **Recursive Language Models** — Recursive Language Models (RLMs) are an inference-time paradigm for large language models (LLMs) that enables processing of arbitrarily long prompts by treating the prompt as an external environment and allowing the LLM to recursively invoke itself over programmatic slices of the prompt. This approach overcomes the limitations of fixed context windows and enables dense, expressive access to prompt content.
+- Recursive language models
+- Inference-time scaling
+- Symbolic recursion
+- Long-context processing
+- Context-compaction baselines
 
-## Entities Mentioned
+## Related Entities
 
-- **[[RLM-Qwen3-8B]]** — RLM-Qwen3-8B is the first natively recursive language model, created by post-training Qwen3-8B on filtered trajectories from Qwen3-Coder-480B-A35B. It is designed to operate as a Recursive Language Model, enabling programmatic recursion and manipulation of prompt content for long-context tasks.
-- **[[Qwen3-Coder-480B-A35B]]** — Qwen3-Coder-480B-A35B is a frontier open language model used as a baseline and for generating training trajectories for RLM-Qwen3-8B. It is evaluated across diverse long-context tasks and serves as a foundation for recursive inference experiments.
-
-## Notable Quotes
-
-> "RLMs can successfully process inputs up to two orders of magnitude beyond model context windows and, even for shorter prompts, dramatically outperform the quality of vanilla frontier LLMs and common long-context scaffolds." — Alex L. Zhang et al.
-> "The key insight is that arbitrarily long user prompts should not be fed into the neural network directly but should instead be treated as part of the environment that the LLM is tasked to symbolically and recursively interact with." — Alex L. Zhang et al.
-
-## Source Details
-
-| Field | Value |
-|-------|-------|
-| Original | `raw/2026-04-10-251224601v2pdf.md` |
-| Type | paper |
-| Author | Alex L. Zhang, Tim Kraska, Omar Khattab |
-| Date | null |
-| URL | https://arxiv.org/pdf/2512.24601 |
+- **[[RLM-Qwen3-8B]]** — The paper's proof-of-concept native recursive model, fine-tuned to make better REPL and sub-call decisions.
+- **[[GPT-5]]** — Frontier closed model used as a direct baseline and as the root/sub-call model in the strongest RLM runs.
+- **[[Qwen3-Coder-480B-A35B]]** — Frontier open model used for baseline comparisons and for generating trajectories used in RLM-Qwen3-8B training.

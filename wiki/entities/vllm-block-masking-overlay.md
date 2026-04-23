@@ -16,6 +16,7 @@ related:
   - "[[KV Cache and Paged Attention in Large Language Models]]"
 tier: hot
 tags: [vllm, llm, inference, kv-cache, block-masking, microsoft]
+quality_score: 82
 ---
 
 # vLLM Block Masking Overlay

@@ -14,6 +14,7 @@ related:
   - "[[Homelab]]"
 tier: hot
 tags: [docker, auto-ingest, copilot-cli, container, build-config]
+quality_score: 50
 ---
 
 # Dockerfile.auto-ingest

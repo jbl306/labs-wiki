@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "423c7a2ae5c59c2efc5c796bac6d680f59be742da49a3c33d7b5b7e270fdc412"
 sources:
   - raw/2026-04-10-httpsgithubcommidudevautoskills.md
-quality_score: 56
+quality_score: 48
 concepts:
   - fendo
 related:

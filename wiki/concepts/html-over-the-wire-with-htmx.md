@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "241ccd0756ba8b32170ef8926eb8e21ef7a4a5e8450e14851d915d820e753c51"
 sources:
   - raw/2026-04-07-test-github-repo.md
-quality_score: 75
+quality_score: 73
 concepts:
   - html-over-the-wire-with-htmx
 related:

@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "7ef9072ee6e8f54af2f4e053827cb93014f7a120cab02927398106bd2360e937"
 sources:
   - raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
-quality_score: 82
+quality_score: 79
 concepts:
   - axi-design-principles-for-agent-ergonomic-cli-tools
 related:

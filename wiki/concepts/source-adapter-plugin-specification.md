@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "d08a3ffff055c78ea944afe2266f216cbdf096a7a4848a8aaca92dff7205ba1d"
 sources:
   - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
-quality_score: 64
+quality_score: 56
 concepts:
   - source-adapter-plugin-specification
 related:

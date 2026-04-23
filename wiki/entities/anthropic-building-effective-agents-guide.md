@@ -22,6 +22,7 @@ related:
   - "[[Evaluator-Optimizer Workflow]]"
 tier: warm
 tags: [anthropic, agentic-systems, workflows, agents, llm-architecture]
+quality_score: 70
 ---
 
 # Anthropic’s 'Building Effective Agents' Guide

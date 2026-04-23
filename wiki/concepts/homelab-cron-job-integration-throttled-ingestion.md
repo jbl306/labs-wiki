@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "6d1d5390738d68e0aaef5baf1126bb8caaff561e8e8b9d0084a6fcafd3d0555f"
 sources:
   - raw/2026-04-21-copilot-session-free-tier-backfill-runner-a2d20186.md
-quality_score: 56
+quality_score: 64
 concepts:
   - homelab-cron-job-integration-throttled-ingestion
 related:

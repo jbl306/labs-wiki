@@ -14,6 +14,7 @@ related:
   - "[[Anthropic’s 'Building Effective Agents' Guide]]"
 tier: warm
 tags: [orchestration, worker-models, task-decomposition, llm-workflows, coding-agents]
+quality_score: 82
 ---
 
 # Orchestrator-Workers Workflow

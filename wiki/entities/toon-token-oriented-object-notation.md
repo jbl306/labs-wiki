@@ -6,7 +6,7 @@ last_verified: 2026-04-10
 source_hash: "7ef9072ee6e8f54af2f4e053827cb93014f7a120cab02927398106bd2360e937"
 sources:
   - raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
-quality_score: 45
+quality_score: 37
 concepts:
   - toon-token-oriented-object-notation
 related:

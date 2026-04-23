@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "0a4ff72c02c43a07f603a8baab32716ef2cb63b6d31b3dd941b64676f49cd7bd"
 sources:
   - raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md
-quality_score: 100
+quality_score: 72
 concepts:
   - self-synthesizing-github-source-re-ingestion-workflow
 related:

@@ -12,6 +12,7 @@ related:
   - "[[SWE-Bench-Verified]]"
 tier: hot
 tags: [agentic-ai, software-engineering, evaluation, reproducibility, explainability, benchmarks]
+quality_score: 59
 ---
 
 # Agentic AI Evaluation for Software Engineering

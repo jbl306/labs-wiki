@@ -4305,4 +4305,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/hardening-unattended-wiki-ingest-pipelines.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-23T10:34:03Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-23-251224601v2pdf.md
+  targets:
+    - wiki/sources/recursive-language-models.md
+    - wiki/concepts/recursive-language-models.md
+    - wiki/entities/rlm-qwen3-8b.md
+    - wiki/synthesis/recursive-language-models-vs-block-masking-long-context-scaling.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4; reused existing RLM source/concept/entity pages from an earlier raw capture"
 ```

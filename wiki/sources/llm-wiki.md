@@ -14,6 +14,7 @@ tags:
 tier: warm
 knowledge_state: ingested
 ingest_method: self-synthesis-no-llm
+quality_score: 70
 ---
 
 # LLM Wiki

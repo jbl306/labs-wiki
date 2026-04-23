@@ -13,6 +13,7 @@ related:
   - "[[Anthropic’s 'Building Effective Agents' Guide]]"
 tier: warm
 tags: [prompt-chaining, workflows, llm-pipelines, decomposition, validation]
+quality_score: 79
 ---
 
 # Prompt Chaining Workflow

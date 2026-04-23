@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-2.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
   - raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
-quality_score: 75
+quality_score: 55
 concepts:
   - hkuds
 related:

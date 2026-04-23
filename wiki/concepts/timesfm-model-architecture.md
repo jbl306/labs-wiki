@@ -6,7 +6,7 @@ last_verified: 2026-04-21
 source_hash: "953a023ae381d64a6a416b274883aa7f90d18bd9eabf91f5d6fa27573c44c032"
 sources:
   - raw/2026-04-13-httpsgithubcomgoogle-researchtimesfm.md
-quality_score: 67
+quality_score: 78
 concepts:
   - timesfm-model-architecture
 related:

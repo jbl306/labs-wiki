@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "3f74fe7844e038b10bfb0f29c9a27acf64d9c65cb9437934aa6cb8cb60254178"
 sources:
   - raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
-quality_score: 64
+quality_score: 60
 concepts:
   - hermes-agent
 related:

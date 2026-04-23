@@ -16,6 +16,7 @@ related:
   - "[[Source-Aware Model Routing in Wiki Ingestion Pipelines]]"
 tier: hot
 tags: [wiki-ingestion, copilot-cli, github-models-api, backend, auto-ingest, docker]
+quality_score: 75
 ---
 
 # Copilot CLI vs GitHub Models API for Wiki Ingestion

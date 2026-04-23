@@ -8,7 +8,7 @@ sources:
   - raw/2026-04-07-jbl306homelab.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-retrained-models-deploying-improvements-59ba9a6c.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-data-source-expansion-exploration-b12f747f.md
-quality_score: 72
+quality_score: 80
 concepts:
   - homelab-server-deployment-nba-ml-platform
 related:

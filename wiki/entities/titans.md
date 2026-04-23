@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "18f594aecc8362f94d0524318935eafd211fe61216043d007325069329fa2e62"
 sources:
   - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
-quality_score: 46
+quality_score: 56
 concepts:
   - titans
 related:

@@ -15,7 +15,7 @@ tags:
 tier: warm
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 75
+quality_score: 65
 ---
 
 # ReasoningBank: Enabling agents to learn from experience

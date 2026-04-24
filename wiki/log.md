@@ -4351,4 +4351,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/agent-context-compression-layers-tool-using-systems.md
   status: success
   notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-24T01:09:46Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-homelab-memory-beddybyes-ingest.md
+    - wiki/concepts/prometheus-guided-docker-right-sizing-startup-validation.md
+    - wiki/concepts/broadcaster-extractor-fallback-missing-torrent-titles.md
+    - wiki/synthesis/debrid-first-acquisition-vs-broadcaster-extractor-fallback.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4; reused existing durable-checkpoint, homelab, docker, and Real-Debrid knowledge pages"
 ```

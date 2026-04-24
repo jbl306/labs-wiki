@@ -4373,4 +4373,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/debrid-first-acquisition-vs-broadcaster-extractor-fallback.md
   status: success
   notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4; reused existing durable-checkpoint, homelab, docker, and Real-Debrid knowledge pages"
+- timestamp: 2026-04-24T17:22:59Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md
+  targets:
+    - wiki/sources/copilot-session-galloping-bot-payment-resilience-fix.md
+    - wiki/entities/tokenex.md
+    - wiki/concepts/resilient-payment-encryption-fallback-chains.md
+    - wiki/concepts/error-pattern-alert-escalation-zero-exit-automation-failures.md
+    - wiki/synthesis/payment-encryption-fallback-chains-vs-zero-exit-alert-escalation.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

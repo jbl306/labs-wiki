@@ -38,6 +38,7 @@ from graph_builder import (
     EMBEDDING_FIELD,
     build as build_graph_artifact,
     compute_node_embeddings,
+    compute_wiki_signature,
     embed_query,
 )
 
@@ -79,6 +80,7 @@ class GraphState:
             log.warning("failed to load %s: %s", GRAPH_PATH, e)
             return False
         self._install(payload)
+        self._refresh_query_embeddings()
         return True
 
     def _install(self, payload: dict[str, Any]) -> None:
@@ -97,8 +99,34 @@ class GraphState:
             )
         self.last_rebuild_seconds = float(payload.get("build_seconds", 0.0))
 
+    def _refresh_query_embeddings(self) -> None:
+        """Fit the configured query embedding backend after loading graph.json."""
+        nodes = self.payload.get("nodes", [])
+        if not nodes:
+            return
+        embeddings, backend = compute_node_embeddings(nodes, CACHE_DIR)
+        for node in nodes:
+            vec = embeddings.get(node.get("id"))
+            if vec is None:
+                node.pop(EMBEDDING_FIELD, None)
+            else:
+                node[EMBEDDING_FIELD] = vec
+        self.payload["embedding_backend"] = backend
+        log.info("query embeddings ready: backend=%s vectors=%d", backend, len(embeddings))
+
     async def rebuild(self) -> dict[str, Any]:
         async with self._lock:
+            current_signature = compute_wiki_signature(WIKI_PATH)
+            if (
+                self.payload
+                and self.payload.get("source_signature") == current_signature
+            ):
+                log.info("rebuild skipped; wiki source unchanged")
+                return {
+                    "ok": True,
+                    "rebuild_skipped": True,
+                    **self.payload,
+                }
             loop = asyncio.get_running_loop()
             payload = await loop.run_in_executor(
                 None, build_graph_artifact, WIKI_PATH, CACHE_DIR, GRAPH_PATH
@@ -762,6 +790,7 @@ async def internal_rebuild(x_admin_token: str | None = Header(default=None)) -> 
     payload = await state.rebuild()
     return {
         "ok": True,
+        "rebuild_skipped": payload.get("rebuild_skipped", False),
         "node_count": payload.get("node_count", 0),
         "edge_count": payload.get("edge_count", 0),
         "build_seconds": payload.get("build_seconds", 0.0),
@@ -772,4 +801,8 @@ async def internal_rebuild(x_admin_token: str | None = Header(default=None)) -> 
 async def graph_rebuild(x_admin_token: str | None = Header(default=None)) -> dict[str, Any]:
     _require_admin(x_admin_token)
     payload = await state.rebuild()
-    return {"ok": True, "stats": payload.get("extraction_stats", {})}
+    return {
+        "ok": True,
+        "rebuild_skipped": payload.get("rebuild_skipped", False),
+        "stats": payload.get("extraction_stats", {}),
+    }

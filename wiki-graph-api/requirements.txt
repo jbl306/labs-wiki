@@ -2,9 +2,8 @@ fastapi==0.115.0
 uvicorn[standard]==0.32.0
 networkx==3.3
 # R14 — semantic NL query endpoint (POST /graph/query) and node embeddings.
-# Primary: sentence-transformers (cached MiniLM weights). The graph_builder
-# falls back to TF-IDF (sklearn) and finally to a no-op stub if neither
-# package is importable, so the build still succeeds in minimal images.
-sentence-transformers==3.2.1
+# Default: TF-IDF (sklearn), which keeps the homelab API process lightweight.
+# sentence-transformers remains an optional code path for custom images via
+# WIKI_GRAPH_EMBEDDING_BACKEND=sentence-transformers.
 scikit-learn==1.5.2
 numpy==2.1.2

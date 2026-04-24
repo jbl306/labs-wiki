@@ -19,6 +19,7 @@ import datetime
 import hashlib
 import json
 import logging
+import os
 import re
 import time
 from collections import Counter
@@ -39,11 +40,10 @@ log = logging.getLogger("graph_builder")
 # can rank by cosine similarity. We compute these once per build and cache them
 # in CACHE_DIR/embeddings.npz keyed by (node_id, content_hash).
 #
-# Backend selection (in priority order):
-#   1. sentence-transformers (MiniLM-L6-v2) — best quality; default in prod.
-#   2. scikit-learn TfidfVectorizer — fully-local fallback; documented in
-#      requirements.txt. Lower fidelity but works offline with no model
-#      download.
+# Backend selection:
+#   1. scikit-learn TfidfVectorizer — default in prod; lightweight and local.
+#   2. sentence-transformers (MiniLM-L6-v2) — opt-in via
+#      WIKI_GRAPH_EMBEDDING_BACKEND=sentence-transformers for higher quality.
 #   3. No-op — returns empty embeddings dict; /graph/query then returns a
 #      structured "embedding backend unavailable" response. Build still
 #      succeeds.
@@ -53,10 +53,51 @@ log = logging.getLogger("graph_builder")
 
 EMBEDDING_FIELD = "embedding"
 EMBEDDING_DIM_DEFAULT = 384  # MiniLM-L6-v2
+EMBEDDING_BACKEND_ENV = "WIKI_GRAPH_EMBEDDING_BACKEND"
+TFIDF_MAX_FEATURES_ENV = "WIKI_GRAPH_TFIDF_MAX_FEATURES"
+TFIDF_MAX_FEATURES_DEFAULT = 512
 
 # Module-level cached model instance to avoid reloading per build.
 _st_model = None
 _tfidf_state: dict[str, Any] = {}
+
+
+def _embedding_backend_preference() -> str:
+    """Return the configured embedding backend preference."""
+    raw = os.environ.get(EMBEDDING_BACKEND_ENV, "tfidf").strip().lower()
+    aliases = {
+        "": "tfidf",
+        "sklearn": "tfidf",
+        "sentence_transformers": "sentence-transformers",
+        "st": "sentence-transformers",
+        "off": "none",
+        "disabled": "none",
+    }
+    backend = aliases.get(raw, raw)
+    if backend not in {"tfidf", "sentence-transformers", "auto", "none"}:
+        log.warning(
+            "unknown %s=%r; falling back to tfidf",
+            EMBEDDING_BACKEND_ENV,
+            raw,
+        )
+        return "tfidf"
+    return backend
+
+
+def _tfidf_max_features() -> int:
+    """Configured TF-IDF vector width, bounded to avoid memory blowups."""
+    raw = os.environ.get(TFIDF_MAX_FEATURES_ENV, str(TFIDF_MAX_FEATURES_DEFAULT))
+    try:
+        value = int(raw)
+    except ValueError:
+        log.warning(
+            "invalid %s=%r; using %d",
+            TFIDF_MAX_FEATURES_ENV,
+            raw,
+            TFIDF_MAX_FEATURES_DEFAULT,
+        )
+        return TFIDF_MAX_FEATURES_DEFAULT
+    return max(64, min(value, 2048))
 
 
 def _embedding_text(node: dict[str, Any]) -> str:
@@ -106,14 +147,18 @@ def _embed_with_tfidf(texts: list[str]) -> list[list[float]] | None:
         log.info("sklearn unavailable (%s); embeddings disabled for this build", e)
         return None
     try:
-        vec = TfidfVectorizer(max_features=4096, ngram_range=(1, 2), stop_words="english")
+        vec = TfidfVectorizer(
+            max_features=_tfidf_max_features(),
+            ngram_range=(1, 2),
+            stop_words="english",
+        )
         mat = vec.fit_transform(texts)
         mat = normalize(mat, norm="l2", axis=1)
         # Persist the vectorizer in module state so /graph/query can transform
         # the user's query text the same way at request time.
         _tfidf_state["vectorizer"] = vec
-        # Densify for storage in node["embedding"].  Corpus is < 1k nodes so
-        # 4096-dim vectors are fine memory-wise (~32MB).
+        # Densify for storage in node["embedding"]. Keep the feature cap low so
+        # Python float lists don't dominate the API process memory.
         dense = mat.toarray()
         return [list(map(float, row)) for row in dense]
     except Exception as e:  # pragma: no cover
@@ -136,6 +181,20 @@ def compute_node_embeddings(
     """
     if not nodes:
         return {}, "none"
+
+    preference = _embedding_backend_preference()
+    texts = [_embedding_text(n) for n in nodes]
+    if preference == "none":
+        _tfidf_state.clear()
+        return {}, "none"
+    if preference == "tfidf":
+        vecs = _embed_with_tfidf(texts)
+        if vecs is None:
+            log.warning(
+                "TF-IDF embedding backend unavailable; /graph/query will be disabled"
+            )
+            return {}, "none"
+        return {n["id"]: vec for n, vec in zip(nodes, vecs)}, "tfidf"
 
     cache_path = (cache_dir / "embeddings.npz") if cache_dir else None
     cache_dir and cache_dir.mkdir(parents=True, exist_ok=True)
@@ -175,10 +234,12 @@ def compute_node_embeddings(
 
     backend = "none"
     if needed_texts:
-        vecs = _embed_with_st(needed_texts)
-        if vecs is not None:
-            backend = "sentence-transformers"
-        else:
+        vecs = None
+        if preference in {"sentence-transformers", "auto"}:
+            vecs = _embed_with_st(needed_texts)
+            if vecs is not None:
+                backend = "sentence-transformers"
+        if vecs is None:
             vecs = _embed_with_tfidf(needed_texts)
             if vecs is not None:
                 backend = "tfidf"
@@ -192,15 +253,29 @@ def compute_node_embeddings(
     else:
         # All hits — backend choice is moot; report whichever is available so
         # /graph/query can still embed the *query* text at request time.
-        backend = "sentence-transformers" if _try_load_sentence_transformers()[0] is not None else (
-            "tfidf" if _tfidf_state.get("vectorizer") is not None else "cached"
-        )
+        if (
+            preference in {"sentence-transformers", "auto"}
+            and _try_load_sentence_transformers()[0] is not None
+        ):
+            backend = "sentence-transformers"
+        else:
+            # Cache hits with no ST model still need a fitted query vectorizer.
+            vecs = _embed_with_tfidf(texts)
+            if vecs is not None:
+                for n, vec in zip(nodes, vecs):
+                    by_id[n["id"]] = vec
+                backend = "tfidf"
+            else:
+                backend = "cached"
 
     # Persist updated cache (npz if numpy, else JSON sidecar).
     if cache_path and cached:
         try:
             if np_mod is not None:
-                arrays = {k: np_mod.asarray(v, dtype="float32") for k, v in cached.items()}
+                arrays = {
+                    k: np_mod.asarray(v, dtype="float32")
+                    for k, v in cached.items()
+                }
                 np_mod.savez_compressed(cache_path, **arrays)
             else:
                 json_path = cache_path.with_suffix(".json")
@@ -219,14 +294,21 @@ def embed_query(text: str) -> list[float] | None:
     """
     if not text or not text.strip():
         return None
-    # Prefer ST if loaded.
-    model, _ = _try_load_sentence_transformers()
-    if model is not None:
-        try:
-            v = model.encode([text], normalize_embeddings=True, show_progress_bar=False)[0]
-            return [float(x) for x in v]
-        except Exception as e:  # pragma: no cover
-            log.warning("ST query embed failed: %s", e)
+    preference = _embedding_backend_preference()
+    # Prefer ST only when already loaded or explicitly configured; default TF-IDF
+    # queries must not import the Torch/sentence-transformers stack.
+    if _st_model is not None or preference in {"sentence-transformers", "auto"}:
+        model, _ = _try_load_sentence_transformers()
+        if model is not None:
+            try:
+                v = model.encode(
+                    [text],
+                    normalize_embeddings=True,
+                    show_progress_bar=False,
+                )[0]
+                return [float(x) for x in v]
+            except Exception as e:  # pragma: no cover
+                log.warning("ST query embed failed: %s", e)
     vec = _tfidf_state.get("vectorizer")
     if vec is not None:
         try:
@@ -372,6 +454,37 @@ def _cache_path(cache_dir: Path, content_hash: str) -> Path:
     return cache_dir / f"{content_hash}.json"
 
 
+def _iter_wiki_markdown(wiki_dir: Path) -> list[Path]:
+    """Return graph-eligible markdown files in deterministic order."""
+    out: list[Path] = []
+    for md in sorted(wiki_dir.rglob("*.md")):
+        if md.name in {"index.md", "hot.md", "log.md"}:
+            continue
+        if "/.obsidian/" in str(md) or "/meta/" in str(md):
+            continue
+        out.append(md)
+    return out
+
+
+def compute_wiki_signature(wiki_dir: Path) -> str:
+    """Content signature for deciding whether a rebuild can be skipped."""
+    h = hashlib.sha256()
+    count = 0
+    for md in _iter_wiki_markdown(wiki_dir):
+        try:
+            raw = md.read_bytes()
+        except OSError:
+            continue
+        rel = str(md.relative_to(wiki_dir)).replace("\\", "/")
+        h.update(rel.encode("utf-8", errors="ignore"))
+        h.update(b"\0")
+        h.update(hashlib.sha256(raw).hexdigest().encode())
+        h.update(b"\n")
+        count += 1
+    h.update(f"count={count}".encode())
+    return h.hexdigest()
+
+
 def _page_to_cache_dict(p: Page) -> dict[str, Any]:
     return {
         "node_id": p.node_id,
@@ -419,12 +532,7 @@ def extract_pages(wiki_dir: Path, cache_dir: Path | None = None) -> tuple[list[P
     if cache_dir is not None:
         cache_dir.mkdir(parents=True, exist_ok=True)
 
-    for md in sorted(wiki_dir.rglob("*.md")):
-        if md.name in {"index.md", "hot.md", "log.md"}:
-            continue
-        if "/.obsidian/" in str(md) or "/meta/" in str(md):
-            continue
-
+    for md in _iter_wiki_markdown(wiki_dir):
         # Hash the raw bytes first so we can skip parse on cache hit.
         try:
             raw = md.read_bytes()
@@ -867,6 +975,7 @@ def to_node_link(
 
     return {
         "generated_at": int(time.time()),
+        "source_signature": compute_wiki_signature_from_pages(pages_by_id.values()),
         "node_count": g.number_of_nodes(),
         "edge_count": g.number_of_edges(),
         "community_count": len(set(communities.values())) if communities else 0,
@@ -878,6 +987,20 @@ def to_node_link(
         "communities": analysis["communities"],
         "checkpoint_health": analysis.get("checkpoint_health", {}),
     }
+
+
+def compute_wiki_signature_from_pages(pages: Any) -> str:
+    """Content signature from already-parsed pages."""
+    h = hashlib.sha256()
+    count = 0
+    for page in sorted(pages, key=lambda p: p.path):
+        h.update(page.path.encode("utf-8", errors="ignore"))
+        h.update(b"\0")
+        h.update(page.content_hash.encode())
+        h.update(b"\n")
+        count += 1
+    h.update(f"count={count}".encode())
+    return h.hexdigest()
 
 
 def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:

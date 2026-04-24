@@ -1318,6 +1318,17 @@
   source: raw/2026-04-17-watcher-e2e-validation.md
   status: success
   notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis)"
+- timestamp: 2026-04-24T01:18:03Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-24-copilot-session-beddybyes-rt-ingest-drm-wall-179cf44c.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-beddybyes-rte-ingest-drm-wall.md
+    - wiki/concepts/anonymous-token-ip-bound-manifest-handoff.md
+    - wiki/concepts/drm-wall-broadcaster-extraction-workflows.md
+    - wiki/synthesis/broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4; reused existing broadcaster-fallback, debrid-first, homelab, docker, ffmpeg, knightcrawler, and durable-checkpoint pages"
 ```
 
 ## [2026-04-17] curator-merge | duplicate concept consolidation

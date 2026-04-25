@@ -4441,4 +4441,17 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md
   status: success
   notes: "Auto-ingested 7 pages (3 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T16:51:45Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-direct-sportsbook-sources.md
+    - wiki/entities/draftkings-sportsbook.md
+    - wiki/entities/fanduel-sportsbook.md
+    - wiki/concepts/browser-backed-sportsbook-truth-validation.md
+    - wiki/concepts/standard-over-under-vs-milestone-prop-market-identity.md
+    - wiki/synthesis/heuristic-prop-line-selection-vs-direct-sportsbook-validation.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

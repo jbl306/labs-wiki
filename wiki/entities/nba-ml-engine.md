@@ -2,9 +2,10 @@
 title: "NBA ML Engine"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-25
 source_hash: "665c60129067f8fba29792521cb202b0e0ab91fc22982f1f58081019b034c549"
 sources:
+  - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
   - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
   - raw/2026-04-19-copilot-session-sprint-61-planning-audit-6c5cb258.md
   - raw/2026-04-19-copilot-session-sprint-60-pts-feature-planning-abd21993.md
@@ -54,12 +55,14 @@ The NBA ML Engine is a machine learning pipeline used for training, validating, 
 
 ## Relevance
 
-Central to the session, the NBA ML Engine's reliability and artifact integrity are being improved through root-cause analysis and validation gates. Its ensemble modeling capabilities and registry health checks are critical for production deployment.
+Central to the session history, the NBA ML Engine keeps accumulating durability lessons about how model quality should be surfaced and validated in production. This later checkpoint adds two important ones: headline Backtesting metrics must reconcile to settled Props History at the same `player/date/stat` grain, and current-slate prop surfaces cannot be trusted unless sportsbook/provider/DB alignment has been validated explicitly.
 
 ## Associated Concepts
 
 - **[[Ensemble Model Save-Round-Trip Validation Gate]]** — Validation gate is integrated into the NBA ML Engine's training loop.
 - **[[Root-Cause Analysis of Silent Ensemble Model Save Failures]]** — Analysis targets silent failures in the NBA ML Engine's artifact saving process.
+- **[[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]]** — Defines the trust contract for the engine's Backtesting page.
+- **[[Primary Prop Line Selection to Avoid Alternate Line Contamination]]** — Captures one of the engine's recurring sportsbook data-cleaning challenges.
 
 ## Related Entities
 
@@ -86,3 +89,4 @@ Central to the session, the NBA ML Engine's reliability and artifact integrity a
 - [[Copilot Session Checkpoint: Sprint 60 PTS Feature Planning]] — additional source
 - [[Copilot Session Checkpoint: Sprint 61 Planning + Audit]] — additional source
 - [[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]] — additional source
+- [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] — completed backtest reconciliation and preserved the next prop-line integrity investigation

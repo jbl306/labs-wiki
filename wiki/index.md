@@ -596,6 +596,7 @@
 - [[Copilot Session Checkpoint: Auto-ingest Pipeline Built and Docs Updated]] — Copilot Session Checkpoint: Auto-ingest Pipeline Built and Docs Updated (T:hot, score: 90)
 - [[Copilot Session Checkpoint: Auto-ingest fix + arxiv loop]] — Copilot Session Checkpoint: Auto-ingest fix + arxiv loop (T:hot, score: 65)
 - [[Copilot Session Checkpoint: Backtest Accuracy Contracts]] — Copilot Session Checkpoint: Backtest Accuracy Contracts (T:hot, score: 79)
+- [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] — Copilot Session Checkpoint: Backtest Completion Props Investigation (T:hot, score: 78)
 - [[Copilot Session Checkpoint: BeddyByes RTÉ ingest — DRM wall]] — Copilot Session Checkpoint: BeddyByes RTÉ ingest — DRM wall (T:hot, score: 76)
 - [[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]] — Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents (T:hot, score: 90)
 - [[Copilot Session Checkpoint: Copilot CLI container deployment fixes]] — Copilot Session Checkpoint: Copilot CLI container deployment fixes (T:hot, score: 65)

@@ -4427,4 +4427,18 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md
   status: success
   notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T15:41:18Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-backtest-completion-props-investigation.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/entities/sportsgameodds-sgo-api.md
+    - wiki/concepts/canonical-settled-prop-backtesting-trustworthy-ml-dashboards.md
+    - wiki/concepts/primary-prop-line-selection-to-avoid-alternate-line-contamination.md
+    - wiki/concepts/sportsgameodds-sgo-api-data-extraction-challenges.md
+    - wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md
+  status: success
+  notes: "Auto-ingested 7 pages (3 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

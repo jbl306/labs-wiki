@@ -2,9 +2,10 @@
 title: "SportsGameOdds (SGO) API Data Extraction Challenges"
 type: concept
 created: 2026-04-18
-last_verified: 2026-04-18
+last_verified: 2026-04-25
 source_hash: "c4cd8c8e81648711e1dbceea098279d1120878d54e1d8ae18c7015937060ae6d"
 sources:
+  - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sgo-data-extraction-fix-and-quality-audit-76644cc8.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-odds-api-quota-optimization-sgo-investigation-f4c98efb.md
 quality_score: 80
@@ -21,7 +22,7 @@ tags: [sports-data, api, data-extraction, parsing, sportsbetting]
 
 ## Overview
 
-The SportsGameOdds (SGO) API provides rich bookmaker odds data for sports games, including player props. However, extracting complete and accurate data from the API can be challenging due to quota restrictions, data structure changes, and parsing issues. Understanding and debugging these challenges is crucial for reliable data ingestion.
+The SportsGameOdds (SGO) API provides rich bookmaker odds data for sports games, including player props. However, extracting complete and accurate data from the API can be challenging due to quota restrictions, data structure changes, parsing issues, and market-identity ambiguity between standard over/under props and alternate or game-prop variants. Understanding and debugging these challenges is crucial for reliable data ingestion.
 
 ## How It Works
 
@@ -33,6 +34,8 @@ Challenges encountered include:
 - **Sparse Data Extraction:** Despite the API returning rich data, the fetcher extracts very sparse data (e.g., only 1 PRA line for April 12).
 - **Data Structure Changes:** The `bookOdds` field may have changed from a dictionary to a string, causing attribute errors during parsing.
 - **Bookmaker Filtering:** The function `_selected_sportsgameodds_bookmakers()` may be filtering bookmakers too aggressively, excluding valid data.
+- **Market-Type Ambiguity:** DraftKings and FanDuel payloads can contain both normal O/U props and alternate or game-prop markets, so a row that looks syntactically valid may still be the wrong market for dashboard use.
+- **Truth-Validation Gap:** A later checkpoint showed that API/dashboard rows for Josh Hart steals (`SGO_DK line=0.5`, `SGO_FD line=1.5`) could not be trusted without comparing sportsbook UI, raw provider payload, `prop_lines`, `prop_line_snapshots`, and `/api/props` together.
 
 The extraction process involves:
 
@@ -40,8 +43,9 @@ The extraction process involves:
 2. Parsing the `bookOdds` field to extract odds per bookmaker.
 3. Mapping odds to player stats and game periods.
 4. Filtering bookmakers based on configured preferences.
+5. Selecting or deduplicating rows for downstream use, often with heuristics such as "closest line to prediction."
 
-Debugging requires inspecting raw API responses, adjusting parsing logic to handle data type changes, and verifying filtering criteria. Manual testing with direct API calls and log inspection helps identify skipped or unmatched lines.
+Debugging requires inspecting raw API responses, adjusting parsing logic to handle data type changes, and verifying filtering criteria. The later checkpoint adds another requirement: preserve or inspect enough market identity to distinguish primary O/U markets from alternate or one-sided bets, because downstream heuristics can accidentally bless the wrong row. Manual testing with direct API calls, sportsbook UI inspection, DB comparison, and log inspection helps identify skipped, stale, or mismatched lines.
 
 ## Key Properties
 
@@ -49,10 +53,11 @@ Debugging requires inspecting raw API responses, adjusting parsing logic to hand
 - **Odds Entries Per Game:** ~618 odds entries including player props.
 - **Data Structure:** `bookOdds` field contains bookmaker odds; may be dict or string.
 - **OddID Format:** `{statID}-{playerEntity}-{period}-{betType}-{side}`
+- **Validation chain:** Reliable audits often require four-way comparison across sportsbook UI, raw SGO payload, production DB tables, and dashboard/API outputs.
 
 ## Limitations
 
-Free tier API keys limit access to full bookmaker odds, causing incomplete data extraction. Changes in API response structure (e.g., `bookOdds` field type) can break parsing logic. Aggressive filtering of bookmakers may exclude valid data. Sparse data extraction impacts downstream analytics and model training quality.
+Free tier API keys limit access to full bookmaker odds, causing incomplete data extraction. Changes in API response structure (e.g., `bookOdds` field type) can break parsing logic. Aggressive filtering of bookmakers may exclude valid data. Even when extraction succeeds, missing market-type markers or stale provider rows can make the "best" parsed line diverge from the actual sportsbook UI, which impacts downstream analytics, dashboards, and trust.
 
 ## Example
 
@@ -88,3 +93,4 @@ This concept is critical for sports analytics platforms relying on third-party o
 
 - [[Copilot Session Checkpoint: Odds API Quota Optimization, SGO Investigation]] — primary source for this concept
 - [[Copilot Session Checkpoint: SGO Data Extraction Fix and Quality Audit]] — additional source
+- [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] — adds the later DK/FD validation workflow and market-truth caveat

@@ -5,6 +5,7 @@ created: 2026-04-25
 last_verified: 2026-04-25
 source_hash: "6925ce7a48d728479bbb091c23eb9fd2775349c5187f58544249a5dc6cbc546f"
 sources:
+  - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
   - raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
 quality_score: 87
 related:
@@ -23,13 +24,15 @@ tags: [backtesting, dashboard, canonical-data, settled-props, ml-ops, trust, api
 
 Canonical settled-prop backtesting is a dashboard design pattern in which headline performance claims are computed from the exact population of bets that has actually settled, rather than from a broader convenience population that merely happens to be easy to aggregate. It matters because users interpret a Backtesting page as evidence of realized model quality, so the page should align with the same settlement rules and population boundaries used by the system's historical P&L view.
 
-In the checkpoint, this concept became the governing contract for the Backtesting page: the dashboard would promote settled canonical props to the main view, keep broader model evidence as secondary context, and make the population difference explicit rather than letting two superficially similar hit-rate numbers fight for authority.
+In the checkpoint series, this concept became the governing contract for the Backtesting page: the dashboard would promote settled canonical props to the main view, keep broader model evidence as secondary context, and make the population difference explicit rather than letting two superficially similar hit-rate numbers fight for authority. A later implementation checkpoint tightened the concept further by proving that "canonical" also depends on getting the relational grain exactly right in SQL, not just on choosing the right product narrative.
 
 ## How It Works
 
-The first step is to define the canonical population. In this checkpoint, the canonical set is not "all predictions with enough downstream data to compute an outcome." It is the narrower set of settled prop snapshots that match the same logic users see in Props History. That distinction sounds small, but it changes the semantics of every headline card. If a dashboard says a model hit 53% and made money, the reader reasonably assumes those numbers come from bets that were actually settled under the platform's real matching rules. Canonical settled-prop backtesting enforces exactly that assumption.
+The first step is to define the canonical population. In this checkpoint family, the canonical set is not "all predictions with enough downstream data to compute an outcome." It is the narrower set of settled prop snapshots that match the same logic users see in Props History. That distinction sounds small, but it changes the semantics of every headline card. If a dashboard says a model hit 53% and made money, the reader reasonably assumes those numbers come from bets that were actually settled under the platform's real matching rules. Canonical settled-prop backtesting enforces exactly that assumption.
 
-Once the population is fixed, the system has to match predictions to the right settled snapshots. The source describes a `prediction_blend` CTE that averages predictions by `player_id`, `game_date`, and `stat_name`, then joins that blended prediction surface to prop-line snapshots in a `ranked_snaps` CTE. The key implementation detail is that the ranking partition includes `snap.source` in addition to player, date, and stat. Without source in the partition, the query silently collapses sportsbook/source splits and corrupts breakdowns such as `by_source`. This is a good example of why a canonical contract is not just a UX choice; it depends on precise relational semantics.
+Once the population is fixed, the system has to match predictions to the right settled snapshots at the right grain. The later completion checkpoint exposed why this is subtle. The implementation used a `prediction_blend` CTE that averaged predictions by `player_id`, `game_date`, and `stat_name`, then joined that blended surface to settled snapshots in a `ranked_snaps` CTE. The initial canonical endpoint partitioned ranking by `snap.player_id, snap.game_date, snap.stat_name, snap.source`, effectively choosing one "canonical" row per sportsbook. That looked reasonable for `by_source` reporting, but it silently doubled or multiplied the headline population across books and inflated the live canonical total to **8,394** while Props History still showed **4,197**.
+
+The correction is the durable lesson: canonical headline grain must be source-agnostic. The ranking partition should be `snap.player_id, snap.game_date, snap.stat_name` only, with the chosen row's `source` carried forward as an attribute of the selected canonical record rather than as part of the identity of the canonical population. This lets the dashboard keep descriptive source breakdowns without redefining "canonical bet" to mean "one settled row per sportsbook." After that fix, live validation aligned exactly: Backtest canonical total **4,197**, Props History total **4,197**, hit rate **0.5282**, and flat P&L **237**.
 
 After the matching step, the canonical service computes outcome metrics that are simple enough to be auditable. The flat P&L rule is intentionally plain:
 
@@ -63,13 +66,13 @@ Finally, the concept changes how a team interprets discrepancies. Before this ar
 
 - **Population fidelity**: Headline metrics are computed from settled snapshots that match realized historical outcomes, not from a broader proxy population.
 - **Contracted thresholds**: Confidence tiers (`>= 0.8`, `>= 0.6`, else low) and edge buckets (`0-5%`, `5-15%`, `15-30%`, `30%+`) are fixed parts of the interface.
-- **Source-preserving matching**: Snapshot ranking partitions by `snap.source` so sportsbook/source splits remain truthful in grouped views.
+- **Source-agnostic canonical grain**: Canonical selection is one settled row per `player/date/stat`; the chosen row's source is preserved as metadata rather than treated as a separate canonical identity.
 - **Auditable metrics**: Flat P&L and hit rate use simple, inspectable formulas rather than opaque blended outcome scores.
 - **Honest failure mode**: Canonical fetch failure is treated as a route failure, not as empty success data.
 
 ## Limitations
 
-Canonical settled-prop backtesting reduces ambiguity, but it does not remove every judgment call. Matching settled snapshots to prediction surfaces still depends on SQL ranking logic, and small partition mistakes can distort breakdowns without obviously breaking totals. The approach also narrows the available population, so headline samples may be smaller and move more slowly than broader diagnostics. Finally, settlement-aligned metrics say more about realized user-facing evidence than about model capacity in the abstract; teams still need separate diagnostic views for broader model analysis.
+Canonical settled-prop backtesting reduces ambiguity, but it does not remove every judgment call. Matching settled snapshots to prediction surfaces still depends on SQL ranking logic, and small partition mistakes can distort totals or breakdowns without throwing an obvious error. The approach also narrows the available population, so headline samples may be smaller and move more slowly than broader diagnostics. Finally, settlement-aligned metrics say more about realized user-facing evidence than about model capacity in the abstract; teams still need separate diagnostic views for broader model analysis, and they may still need separate sportsbook-specific diagnostics when source truth itself is under investigation.
 
 ## Examples
 
@@ -112,4 +115,4 @@ This concept is valuable for decision-support dashboards where users could mista
 ## Sources
 
 - [[Copilot Session Checkpoint: Backtest Accuracy Contracts]] — defines the canonical endpoint, thresholds, matching logic, and trust-first presentation rule.
-
+- [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] — records the live grain bug, the source-agnostic partition fix, and the final 4,197-row reconciliation with Props History.

@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-04-24T03:22:20+00:00
+generated: 2026-04-25T03:18:03+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,23 +11,25 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-04-24T03:22:20+00:00
+> Regenerated: 2026-04-25T03:18:03+00:00
 
 ## Recent Wiki Edits
 
-- `2026-04-23` — [[anonymous-token-ip-bound-manifest-handoff]] (`wiki/concepts/anonymous-token-ip-bound-manifest-handoff.md`)
-- `2026-04-23` — [[drm-wall-broadcaster-extraction-workflows]] (`wiki/concepts/drm-wall-broadcaster-extraction-workflows.md`)
-- `2026-04-23` — [[copilot-session-checkpoint-beddybyes-rte-ingest-drm-wall]] (`wiki/sources/copilot-session-checkpoint-beddybyes-rte-ingest-drm-wall.md`)
-- `2026-04-23` — [[broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction]] (`wiki/synthesis/broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction.md`)
-- `2026-04-23` — [[broadcaster-extractor-fallback-missing-torrent-titles]] (`wiki/concepts/broadcaster-extractor-fallback-missing-torrent-titles.md`)
-- `2026-04-23` — [[prometheus-guided-docker-right-sizing-startup-validation]] (`wiki/concepts/prometheus-guided-docker-right-sizing-startup-validation.md`)
-- `2026-04-23` — [[copilot-session-checkpoint-homelab-memory-beddybyes-ingest]] (`wiki/sources/copilot-session-checkpoint-homelab-memory-beddybyes-ingest.md`)
-- `2026-04-23` — [[debrid-first-acquisition-vs-broadcaster-extractor-fallback]] (`wiki/synthesis/debrid-first-acquisition-vs-broadcaster-extractor-fallback.md`)
-- `2026-04-23` — [[compound-engineering-workflow]] (`wiki/concepts/compound-engineering-workflow.md`)
-- `2026-04-23` — [[cross-platform-agent-plugin-conversion]] (`wiki/concepts/cross-platform-agent-plugin-conversion.md`)
+- `2026-04-24` — [[honest-fallback-metadata-accuracy-warnings-ml-dashboards]] (`wiki/concepts/honest-fallback-metadata-accuracy-warnings-ml-dashboards.md`)
+- `2026-04-24` — [[shared-contract-normalization-dashboard-apis]] (`wiki/concepts/shared-contract-normalization-dashboard-apis.md`)
+- `2026-04-24` — [[copilot-session-checkpoint-dashboard-accuracy-fixes]] (`wiki/sources/copilot-session-checkpoint-dashboard-accuracy-fixes.md`)
+- `2026-04-24` — [[ml-dashboard-trust-contract-normalization-vs-provenance-transparency]] (`wiki/synthesis/ml-dashboard-trust-contract-normalization-vs-provenance-transparency.md`)
+- `2026-04-24` — [[error-pattern-alert-escalation-zero-exit-automation-failures]] (`wiki/concepts/error-pattern-alert-escalation-zero-exit-automation-failures.md`)
+- `2026-04-24` — [[resilient-payment-encryption-fallback-chains]] (`wiki/concepts/resilient-payment-encryption-fallback-chains.md`)
+- `2026-04-24` — [[tokenex]] (`wiki/entities/tokenex.md`)
+- `2026-04-24` — [[copilot-session-galloping-bot-payment-resilience-fix]] (`wiki/sources/copilot-session-galloping-bot-payment-resilience-fix.md`)
+- `2026-04-24` — [[payment-encryption-fallback-chains-vs-zero-exit-alert-escalation]] (`wiki/synthesis/payment-encryption-fallback-chains-vs-zero-exit-alert-escalation.md`)
+- `2026-04-23` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 
 ## Recent Sources Captured
 
+- `2026-04-25` — `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md`
+- `2026-04-24` — `raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md`
 - `2026-04-24` — `raw/2026-04-24-copilot-session-beddybyes-rt-ingest-drm-wall-179cf44c.md`
 - `2026-04-24` — `raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md`
 - `2026-04-23` — `raw/2026-04-23-260419572v1pdf.md`
@@ -36,8 +38,6 @@ ttl_hours: 24
 - `2026-04-23` — `raw/2026-04-23-251224601v2pdf.md`
 - `2026-04-22` — `raw/2026-04-21-httpsgithubcommicrosoftmemento.md`
 - `2026-04-22` — `raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md`
-- `2026-04-22` — `raw/2026-04-22-copilot-session-github-ingest-depth-fetcher-trim-732c3907.md`
-- `2026-04-22` — `raw/2026-04-22-test-pdf-arxiv-2510-04618.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

@@ -4467,4 +4467,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/entities/nba-ml-engine.md
   status: success
   notes: "Auto-ingested 5 pages (3 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T19:28:58Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-251001171v3pdf.md
+  targets:
+    - wiki/sources/verbalized-sampling-mode-collapse-llm-diversity.md
+    - wiki/entities/verbalized-sampling.md
+    - wiki/concepts/typicality-bias-preference-data.md
+    - wiki/concepts/mode-collapse-aligned-llms.md
+    - wiki/synthesis/typicality-bias-mode-collapse-verbalized-sampling-aligned-llms.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

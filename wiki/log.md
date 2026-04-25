@@ -4396,4 +4396,12 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/ml-dashboard-trust-contract-normalization-vs-provenance-transparency.md
   status: success
   notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T10:56:02Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-dashboard-accuracy-finalization-f5b87e0e.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-dashboard-accuracy-finalization.md
+  status: success
+  notes: "Auto-ingested 1 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
 ```

@@ -4404,4 +4404,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/sources/copilot-session-checkpoint-dashboard-accuracy-finalization.md
   status: success
   notes: "Auto-ingested 1 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T12:01:21Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-dashboard-accuracy-hardening.md
+    - wiki/concepts/serving-signal-aligned-calibration-reporting.md
+    - wiki/concepts/reference-safe-artifact-pruning-shared-model-registries.md
+    - wiki/concepts/freshness-gate-alignment-between-ml-apis-and-dashboards.md
+    - wiki/synthesis/ml-dashboard-trust-hardening-calibration-artifact-freshness.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

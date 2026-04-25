@@ -4385,4 +4385,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/payment-encryption-fallback-chains-vs-zero-exit-alert-escalation.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T01:07:09Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-dashboard-accuracy-fixes.md
+    - wiki/concepts/shared-contract-normalization-dashboard-apis.md
+    - wiki/concepts/honest-fallback-metadata-accuracy-warnings-ml-dashboards.md
+    - wiki/synthesis/ml-dashboard-trust-contract-normalization-vs-provenance-transparency.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

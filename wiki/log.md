@@ -4416,4 +4416,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/ml-dashboard-trust-hardening-calibration-artifact-freshness.md
   status: success
   notes: "Auto-ingested 5 pages (3 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T15:10:28Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-backtest-accuracy-contracts.md
+    - wiki/concepts/canonical-settled-prop-backtesting-trustworthy-ml-dashboards.md
+    - wiki/concepts/broad-diagnostic-backtesting-secondary-model-evidence.md
+    - wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

@@ -4454,4 +4454,17 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/heuristic-prop-line-selection-vs-direct-sportsbook-validation.md
   status: success
   notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-25T17:32:17Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-direct-sportsbook-ingestion.md
+    - wiki/concepts/source-priority-canonical-prop-ingestion.md
+    - wiki/concepts/generic-sportsbook-market-storage-non-canonical-props.md
+    - wiki/concepts/local-db-only-prop-market-metadata-backfill.md
+    - wiki/synthesis/heuristic-cleanup-vs-market-aware-prop-ingestion.md
+    - wiki/entities/nba-ml-engine.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

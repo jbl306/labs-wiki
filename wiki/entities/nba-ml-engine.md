@@ -5,6 +5,7 @@ created: 2026-04-18
 last_verified: 2026-04-25
 source_hash: "665c60129067f8fba29792521cb202b0e0ab91fc22982f1f58081019b034c549"
 sources:
+  - raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md
   - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
   - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
   - raw/2026-04-19-copilot-session-sprint-61-planning-audit-6c5cb258.md
@@ -27,6 +28,9 @@ sources:
 quality_score: 95
 concepts:
   - nba-ml-engine
+  - source-priority-canonical-prop-ingestion
+  - generic-sportsbook-market-storage-non-canonical-props
+  - local-db-only-prop-market-metadata-backfill
 related:
   - "[[Ensemble Model Save-Round-Trip Validation Gate]]"
   - "[[Root-Cause Analysis of Silent Ensemble Model Save Failures]]"
@@ -57,12 +61,17 @@ The NBA ML Engine is a machine learning pipeline used for training, validating, 
 
 Central to the session history, the NBA ML Engine keeps accumulating durability lessons about how model quality should be surfaced and validated in production. This later checkpoint adds two important ones: headline Backtesting metrics must reconcile to settled Props History at the same `player/date/stat` grain, and current-slate prop surfaces cannot be trusted unless sportsbook/provider/DB alignment has been validated explicitly.
 
+The newest ingestion checkpoint extends that trust contract from debugging into architecture. The engine now treats direct sportsbook adapters as first-class inputs, prefers explicit bookmaker-aware source priority over provider-only heuristics, stores non-canonical sportsbook markets outside `prop_lines`, and upgrades historical rows through a DB-only metadata backfill instead of spending external API quota.
+
 ## Associated Concepts
 
 - **[[Ensemble Model Save-Round-Trip Validation Gate]]** — Validation gate is integrated into the NBA ML Engine's training loop.
 - **[[Root-Cause Analysis of Silent Ensemble Model Save Failures]]** — Analysis targets silent failures in the NBA ML Engine's artifact saving process.
 - **[[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]]** — Defines the trust contract for the engine's Backtesting page.
 - **[[Primary Prop Line Selection to Avoid Alternate Line Contamination]]** — Captures one of the engine's recurring sportsbook data-cleaning challenges.
+- **[[Source-Priority Canonical Prop Ingestion]]** — Captures the next-stage rule that prefers direct-book truth within each bookmaker family before heuristic tie-breaking.
+- **[[Generic Sportsbook Market Storage for Non-Canonical Props]]** — Explains why standard player O/U rows were separated from milestone and game markets.
+- **[[Local DB-Only Prop Market Metadata Backfill]]** — Describes the quota-safe migration path that upgrades older prop rows into the new market-aware schema.
 
 ## Related Entities
 
@@ -90,3 +99,4 @@ Central to the session history, the NBA ML Engine keeps accumulating durability 
 - [[Copilot Session Checkpoint: Sprint 61 Planning + Audit]] — additional source
 - [[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]] — additional source
 - [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] — completed backtest reconciliation and preserved the next prop-line integrity investigation
+- [[Copilot Session Checkpoint: Direct Sportsbook Ingestion]] — captures the direct-book adapter rollout, source-priority ingestion, generic sportsbook market storage, and DB-only historical metadata backfill

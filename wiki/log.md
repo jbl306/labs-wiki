@@ -4479,4 +4479,13 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/typicality-bias-mode-collapse-verbalized-sampling-aligned-llms.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-26T00:50:26Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-26-copilot-session-dashboard-prop-line-debug-ccc0f19c.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-dashboard-prop-line-debug.md
+    - wiki/synthesis/architectural-source-priority-vs-live-prop-line-incident-diagnosis.md
+  status: success
+  notes: "Auto-ingested 2 pages (0 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

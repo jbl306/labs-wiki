@@ -4488,4 +4488,17 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/architectural-source-priority-vs-live-prop-line-incident-diagnosis.md
   status: success
   notes: "Auto-ingested 2 pages (0 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-26T19:11:07Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-oom-mitigation-follow-up.md
+    - wiki/concepts/skip-training-daily-pipeline-guardrails-ml-containers.md
+    - wiki/synthesis/memory-tuning-vs-workload-shaping-nba-ml-oom-response.md
+    - wiki/entities/nba-ml-api.md
+    - wiki/entities/ofelia-scheduler.md
+    - wiki/entities/galloping-bot.md
+  status: success
+  notes: "Auto-ingested 6 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4; refreshed 3 reused entities"
 ```

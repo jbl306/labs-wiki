@@ -2,11 +2,12 @@
 title: "Galloping-Bot"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-22
+last_verified: 2026-04-26
 source_hash: "047e464d50e32062c5eb82637072ff9ad4eca8476f8f0c7369fe4664be464407"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-optimizing-snipe-book-then-retry-flow-a86837aa.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
+  - raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
 quality_score: 74
 concepts:
   - galloping-bot
@@ -25,7 +26,9 @@ tags: [automation, cron, notifications]
 
 ## Overview
 
-Galloping-Bot is a cron-invoked containerized script that snipes golf tee time bookings. It runs once per week and logs booking confirmations. The bot's output is captured and parsed to send ntfy notifications with booking results and error alerts, enabling real-time operational awareness.
+Galloping-Bot is a cron-invoked containerized script that snipes golf tee time bookings. It runs once per week, logs booking confirmations, and has wrapper-side notification logic that turns its output into actionable ntfy alerts about booking success, booking failure, and wrapper-level errors.
+
+Later operational review added another durable reliability detail: because `docker compose run` does not rebuild an existing image automatically, the wrapper now performs a cached `compose build galloping-bot` before each cron-run execution. That closes a stale-image drift path where the bot could keep running week-old code even though the cron wrapper itself was healthy.
 
 ## Key Facts
 
@@ -39,7 +42,7 @@ Galloping-Bot is a cron-invoked containerized script that snipes golf tee time b
 
 ## Relevance
 
-Galloping-Bot automation benefits from ntfy notifications to provide immediate feedback on booking success or failure, improving user responsiveness.
+Galloping-Bot is a useful example of how cron reliability problems are often semantic rather than binary. The 2026-04-26 session preserved the lesson that a scheduled automation can appear operational while still executing an outdated image, so freshness guardrails sometimes belong in the wrapper script rather than only in the application code.
 
 ## Associated Concepts
 
@@ -57,3 +60,4 @@ Galloping-Bot automation benefits from ntfy notifications to provide immediate f
 
 - [[Copilot Session Checkpoint: ntfy Notifications, Galloping-Bot Alerts, Monitor Fixes]] — where this entity was mentioned
 - [[Copilot Session Checkpoint: Optimizing Snipe Book-Then-Retry Flow]] — additional source
+- [[Copilot Session Checkpoint: OOM Mitigation and Follow-Up]] — records the review and push decision for the build-before-run wrapper fix

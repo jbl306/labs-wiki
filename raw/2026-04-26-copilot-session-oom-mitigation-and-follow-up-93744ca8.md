@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, nba-ml
 checkpoint_class: durable-debugging
 checkpoint_class_rule: "title:oom"
 retention_mode: retain
-status: pending
+status: success
 ---
 
 # Copilot Session Checkpoint Export

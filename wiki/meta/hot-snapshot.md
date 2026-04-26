@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-04-25T03:18:03+00:00
+generated: 2026-04-26T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,33 +11,33 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-04-25T03:18:03+00:00
+> Regenerated: 2026-04-26T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-04-24` — [[honest-fallback-metadata-accuracy-warnings-ml-dashboards]] (`wiki/concepts/honest-fallback-metadata-accuracy-warnings-ml-dashboards.md`)
-- `2026-04-24` — [[shared-contract-normalization-dashboard-apis]] (`wiki/concepts/shared-contract-normalization-dashboard-apis.md`)
-- `2026-04-24` — [[copilot-session-checkpoint-dashboard-accuracy-fixes]] (`wiki/sources/copilot-session-checkpoint-dashboard-accuracy-fixes.md`)
-- `2026-04-24` — [[ml-dashboard-trust-contract-normalization-vs-provenance-transparency]] (`wiki/synthesis/ml-dashboard-trust-contract-normalization-vs-provenance-transparency.md`)
-- `2026-04-24` — [[error-pattern-alert-escalation-zero-exit-automation-failures]] (`wiki/concepts/error-pattern-alert-escalation-zero-exit-automation-failures.md`)
-- `2026-04-24` — [[resilient-payment-encryption-fallback-chains]] (`wiki/concepts/resilient-payment-encryption-fallback-chains.md`)
-- `2026-04-24` — [[tokenex]] (`wiki/entities/tokenex.md`)
-- `2026-04-24` — [[copilot-session-galloping-bot-payment-resilience-fix]] (`wiki/sources/copilot-session-galloping-bot-payment-resilience-fix.md`)
-- `2026-04-24` — [[payment-encryption-fallback-chains-vs-zero-exit-alert-escalation]] (`wiki/synthesis/payment-encryption-fallback-chains-vs-zero-exit-alert-escalation.md`)
-- `2026-04-23` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-04-25` — [[copilot-session-checkpoint-dashboard-prop-line-debug]] (`wiki/sources/copilot-session-checkpoint-dashboard-prop-line-debug.md`)
+- `2026-04-25` — [[architectural-source-priority-vs-live-prop-line-incident-diagnosis]] (`wiki/synthesis/architectural-source-priority-vs-live-prop-line-incident-diagnosis.md`)
+- `2026-04-25` — [[mode-collapse-aligned-llms]] (`wiki/concepts/mode-collapse-aligned-llms.md`)
+- `2026-04-25` — [[typicality-bias-preference-data]] (`wiki/concepts/typicality-bias-preference-data.md`)
+- `2026-04-25` — [[verbalized-sampling]] (`wiki/entities/verbalized-sampling.md`)
+- `2026-04-25` — [[verbalized-sampling-mode-collapse-llm-diversity]] (`wiki/sources/verbalized-sampling-mode-collapse-llm-diversity.md`)
+- `2026-04-25` — [[typicality-bias-mode-collapse-verbalized-sampling-aligned-llms]] (`wiki/synthesis/typicality-bias-mode-collapse-verbalized-sampling-aligned-llms.md`)
+- `2026-04-25` — [[generic-sportsbook-market-storage-non-canonical-props]] (`wiki/concepts/generic-sportsbook-market-storage-non-canonical-props.md`)
+- `2026-04-25` — [[local-db-only-prop-market-metadata-backfill]] (`wiki/concepts/local-db-only-prop-market-metadata-backfill.md`)
+- `2026-04-25` — [[source-priority-canonical-prop-ingestion]] (`wiki/concepts/source-priority-canonical-prop-ingestion.md`)
 
 ## Recent Sources Captured
 
-- `2026-04-25` — `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md`
-- `2026-04-24` — `raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md`
-- `2026-04-24` — `raw/2026-04-24-copilot-session-beddybyes-rt-ingest-drm-wall-179cf44c.md`
-- `2026-04-24` — `raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md`
-- `2026-04-23` — `raw/2026-04-23-260419572v1pdf.md`
-- `2026-04-23` — `raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md`
-- `2026-04-23` — `raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md`
-- `2026-04-23` — `raw/2026-04-23-251224601v2pdf.md`
-- `2026-04-22` — `raw/2026-04-21-httpsgithubcommicrosoftmemento.md`
-- `2026-04-22` — `raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md`
+- `2026-04-26` — `raw/2026-04-26-copilot-session-dashboard-prop-line-debug-ccc0f19c.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-audit-recommendations-sprint-d4afb911.md`
+- `2026-04-25` — `raw/2026-04-25-251001171v3pdf.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md`
+- `2026-04-25` — `raw/2026-04-25-copilot-session-dashboard-accuracy-finalization-f5b87e0e.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

@@ -1,0 +1,11 @@
+This workspace adapts "One Skill to Rule Them All" / "Task Observer" by
+Eoghan Henn (https://rebelytics.com).
+
+Upstream repository:
+https://github.com/rebelytics/one-skill-to-rule-them-all
+
+Upstream licence:
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+https://creativecommons.org/licenses/by/4.0/
+
+Retain attribution when reusing or adapting this skill further.

@@ -61,6 +61,14 @@ Sources are processed **automatically** by the `wiki-auto-ingest` Docker sidecar
 
 Use wiki-* skills for knowledge management tasks (see skills table in `AGENTS.md`).
 
+### Task Observer Meta-Skill
+
+- `task-observer` is installed at `.github/skills/task-observer/SKILL.md`.
+- Invoke it at the start of every task-oriented session before other skill or tool work.
+- When loading any skill, check `skill-observations/log.md` for `OPEN` observations tagged to that skill and apply them during the current task.
+- When `task-observer` surfaces safe, concrete improvements to local skills or instructions, update them in the same session.
+- After any skill-directory change, run `python3 /home/jbl/projects/update_opencode_skills_paths.py`.
+
 ### Context-Engineering Skills
 
 Use the shared context-engineering skills for agent-system changes:
@@ -83,6 +91,8 @@ MemPalace is the persistent memory MCP. Two relevant wings:
 3. `mempalace_search(query=<topic>, wing="labs_wiki_knowledge")` — curated knowledge
 4. `mempalace_search(query=<topic>, wing="copilot_sessions")` — prior sessions
 5. Named entity? `mempalace_kg_query(entity=...)`
+
+**Recall split:** Use MemPalace for session recall. For cross-project patterns, concepts, or comparisons, call `wiki_search`, then `wiki_read` the canonical page. Do not preload wiki indexes into prompt context.
 
 **After significant wiki decisions** (schema changes, new agent, auto-ingest tweaks): `mempalace_add_drawer(wing="labs_wiki", room="documentation"|"architecture", content=<verbatim>)`.
 

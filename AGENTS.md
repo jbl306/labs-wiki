@@ -327,10 +327,12 @@ Seven agent specs are defined in `.github/agents/`. These are Copilot-format age
 
 ## Skills
 
-Six skills are available in `.github/skills/wiki-*/SKILL.md`:
+Project skills live in `.github/skills/` and include the cross-cutting
+`task-observer` meta-skill alongside the wiki workflows:
 
 | Skill | Purpose |
 |-------|---------|
+| `task-observer` | Observe task sessions, capture skill improvements, and drive proactive skill maintenance |
 | `wiki-setup` | Idempotent initialization — creates dirs, validates structure |
 | `wiki-ingest` | Manual source processing (fallback when auto-ingest unavailable) |
 | `wiki-query` | Search index, read pages, synthesize answers |
@@ -339,8 +341,16 @@ Six skills are available in `.github/skills/wiki-*/SKILL.md`:
 | `wiki-orchestrate` | Audit, maintenance, and gap analysis workflows |
 
 **Routing guide:**
+- Task-oriented session start / skill maintenance? → `task-observer`
 - Wiki sources / pages / quality? → wiki-* skills above
 - Agent system / prompts? → context-engineering skills
+
+## Task Observer Meta-Skill
+
+- Install `task-observer` under `.github/skills/task-observer/`; OpenCode mirrors the same skill through `.opencode/skills/`.
+- Invoke `task-observer` at the start of every task-oriented session before other skill or tool work.
+- When loading any skill, check `skill-observations/log.md` for `OPEN` observations tagged to that skill and apply them during the current task.
+- When `task-observer` surfaces safe, concrete improvements to local skills or instructions, update them in the same session and rerun `python3 /home/jbl/projects/update_opencode_skills_paths.py`.
 
 ---
 
@@ -354,6 +364,8 @@ Agents operating in this repo must query MemPalace before answering. Relevant wi
 3. `mempalace_search(query=<topic>, wing="labs_wiki_knowledge")`
 4. `mempalace_search(query=<topic>, wing="copilot_sessions")`
 5. `mempalace_kg_query(entity=<name>)` for named things
+
+**Recall split:** Use MemPalace for episodic recall: recent decisions, who said what, prior changes, and session history. Before fresh research on any cross-project topic, pattern, concept, or comparison, call `wiki_search`, then `wiki_read` for the canonical page. Do not preload wiki page lists or indexes into instruction files.
 
 **During work:** `mempalace_add_drawer(wing="labs_wiki", room=<domain>, content=<verbatim>)` for significant findings. Use `mempalace_kg_add` / `mempalace_kg_invalidate` when facts change.
 

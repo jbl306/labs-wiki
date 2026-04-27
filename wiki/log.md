@@ -4501,4 +4501,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/entities/galloping-bot.md
   status: success
   notes: "Auto-ingested 6 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4; refreshed 3 reused entities"
+- timestamp: 2026-04-27T01:34:04Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-weekly-retrain-oom-debugging.md
+    - wiki/concepts/per-model-subprocess-isolation-memory-safe-weekly-retrains.md
+    - wiki/concepts/persistent-log-manifest-observability-detached-ml-runs.md
+    - wiki/synthesis/weekly-retrain-survivability-vs-observability-shared-ml-hosts.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

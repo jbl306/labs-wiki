@@ -4512,4 +4512,19 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/weekly-retrain-survivability-vs-observability-shared-ml-hosts.md
   status: success
   notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-27T11:30:28Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-27-260414228v1pdf.md
+  targets:
+    - wiki/sources/dive-into-claude-code-the-design-space-of-todays-and-future-ai-agent-systems.md
+    - wiki/entities/claude-code.md
+    - wiki/entities/openclaw.md
+    - wiki/concepts/agentic-loop-architecture-claude-code.md
+    - wiki/concepts/layered-agentic-architecture-claude-code.md
+    - wiki/concepts/context-management-compaction-pipeline-claude-code.md
+    - wiki/concepts/comparative-agent-system-architecture-claude-code-vs-openclaw.md
+    - wiki/synthesis/claude-code-vs-openclaw-architecture-choices-shaped-by-deployment-context.md
+  status: success
+  notes: "Auto-ingested 8 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4; refreshed 6 reused pages"
 ```

@@ -2,15 +2,17 @@
 title: "Context Management and Compaction Pipeline in Claude Code"
 type: concept
 created: 2026-04-18
-last_verified: 2026-04-18
-source_hash: "5e880814019e287bffa500ebc398bafcb3aad10f0f27a56c87c53d911dba65c6"
+last_verified: 2026-04-27
+source_hash: "sha256:52403a5a6e85eaaaea18a62242944f072dddb53022a49811b1954716bb1f6b68"
 sources:
   - raw/2026-04-18-260414228v1pdf.md
+  - raw/2026-04-27-260414228v1pdf.md
 quality_score: 56
 concepts:
   - context-management-compaction-pipeline-claude-code
 related:
   - "[[Agentic Context Engineering (ACE)]]"
+  - "[[Agentic Loop Architecture in Claude Code]]"
   - "[[Dive Into Claude Code: The Design Space of Today’s and Future AI Agent Systems]]"
 tier: hot
 tags: [context-management, compaction, agentic-systems, session-coherence]

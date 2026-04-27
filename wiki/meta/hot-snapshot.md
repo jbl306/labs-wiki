@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-04-26T03:17:01+00:00
+generated: 2026-04-27T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,23 +11,25 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-04-26T03:17:01+00:00
+> Regenerated: 2026-04-27T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-04-25` — [[copilot-session-checkpoint-dashboard-prop-line-debug]] (`wiki/sources/copilot-session-checkpoint-dashboard-prop-line-debug.md`)
-- `2026-04-25` — [[architectural-source-priority-vs-live-prop-line-incident-diagnosis]] (`wiki/synthesis/architectural-source-priority-vs-live-prop-line-incident-diagnosis.md`)
-- `2026-04-25` — [[mode-collapse-aligned-llms]] (`wiki/concepts/mode-collapse-aligned-llms.md`)
-- `2026-04-25` — [[typicality-bias-preference-data]] (`wiki/concepts/typicality-bias-preference-data.md`)
-- `2026-04-25` — [[verbalized-sampling]] (`wiki/entities/verbalized-sampling.md`)
-- `2026-04-25` — [[verbalized-sampling-mode-collapse-llm-diversity]] (`wiki/sources/verbalized-sampling-mode-collapse-llm-diversity.md`)
-- `2026-04-25` — [[typicality-bias-mode-collapse-verbalized-sampling-aligned-llms]] (`wiki/synthesis/typicality-bias-mode-collapse-verbalized-sampling-aligned-llms.md`)
-- `2026-04-25` — [[generic-sportsbook-market-storage-non-canonical-props]] (`wiki/concepts/generic-sportsbook-market-storage-non-canonical-props.md`)
-- `2026-04-25` — [[local-db-only-prop-market-metadata-backfill]] (`wiki/concepts/local-db-only-prop-market-metadata-backfill.md`)
-- `2026-04-25` — [[source-priority-canonical-prop-ingestion]] (`wiki/concepts/source-priority-canonical-prop-ingestion.md`)
+- `2026-04-26` — [[per-model-subprocess-isolation-memory-safe-weekly-retrains]] (`wiki/concepts/per-model-subprocess-isolation-memory-safe-weekly-retrains.md`)
+- `2026-04-26` — [[persistent-log-manifest-observability-detached-ml-runs]] (`wiki/concepts/persistent-log-manifest-observability-detached-ml-runs.md`)
+- `2026-04-26` — [[copilot-session-checkpoint-weekly-retrain-oom-debugging]] (`wiki/sources/copilot-session-checkpoint-weekly-retrain-oom-debugging.md`)
+- `2026-04-26` — [[weekly-retrain-survivability-vs-observability-shared-ml-hosts]] (`wiki/synthesis/weekly-retrain-survivability-vs-observability-shared-ml-hosts.md`)
+- `2026-04-26` — [[skip-training-daily-pipeline-guardrails-ml-containers]] (`wiki/concepts/skip-training-daily-pipeline-guardrails-ml-containers.md`)
+- `2026-04-26` — [[galloping-bot]] (`wiki/entities/galloping-bot.md`)
+- `2026-04-26` — [[nba-ml-api]] (`wiki/entities/nba-ml-api.md`)
+- `2026-04-26` — [[ofelia-scheduler]] (`wiki/entities/ofelia-scheduler.md`)
+- `2026-04-26` — [[copilot-session-checkpoint-oom-mitigation-follow-up]] (`wiki/sources/copilot-session-checkpoint-oom-mitigation-follow-up.md`)
+- `2026-04-26` — [[memory-tuning-vs-workload-shaping-nba-ml-oom-response]] (`wiki/synthesis/memory-tuning-vs-workload-shaping-nba-ml-oom-response.md`)
 
 ## Recent Sources Captured
 
+- `2026-04-27` — `raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md`
+- `2026-04-26` — `raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md`
 - `2026-04-26` — `raw/2026-04-26-copilot-session-dashboard-prop-line-debug-ccc0f19c.md`
 - `2026-04-25` — `raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md`
 - `2026-04-25` — `raw/2026-04-25-copilot-session-audit-recommendations-sprint-d4afb911.md`
@@ -36,8 +38,6 @@ ttl_hours: 24
 - `2026-04-25` — `raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md`
 - `2026-04-25` — `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md`
 - `2026-04-25` — `raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md`
-- `2026-04-25` — `raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md`
-- `2026-04-25` — `raw/2026-04-25-copilot-session-dashboard-accuracy-finalization-f5b87e0e.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

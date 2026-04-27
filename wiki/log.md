@@ -4527,4 +4527,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/claude-code-vs-openclaw-architecture-choices-shaped-by-deployment-context.md
   status: success
   notes: "Auto-ingested 8 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4; refreshed 6 reused pages"
+- timestamp: 2026-04-27T16:06:21Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-27-copilot-session-homelab-migration-and-tunnel-fix-78392c21.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-homelab-migration-tunnel-fix.md
+    - wiki/entities/debrid-downloader-web.md
+    - wiki/concepts/single-user-local-sqlite-migration-self-hosted-web-apps.md
+    - wiki/concepts/native-module-safe-docker-builds-uid-aligned-sqlite-mounts.md
+    - wiki/synthesis/migrating-cloud-dependent-web-apps-into-homelab.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

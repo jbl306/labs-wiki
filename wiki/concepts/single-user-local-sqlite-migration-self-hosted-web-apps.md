@@ -12,6 +12,7 @@ related:
   - "[[Homelab Service Inventory And Dashboard Synchronization]]"
 tier: hot
 tags: [sqlite, self-hosting, migration, nuxt, supabase, single-user]
+quality_score: 65
 ---
 
 # Single-User Local SQLite Migration for Self-Hosted Web Apps

@@ -7,7 +7,7 @@ source_hash: "6925ce7a48d728479bbb091c23eb9fd2775349c5187f58544249a5dc6cbc546f"
 sources:
   - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
   - raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
-quality_score: 87
+quality_score: 70
 related:
   - "[[Broad Diagnostic Backtesting as Secondary Model Evidence]]"
   - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"

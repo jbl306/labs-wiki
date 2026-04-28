@@ -12,6 +12,7 @@ related:
   - "[[Worktree-Based Debugging and Deployment Validation]]"
 tier: hot
 tags: [payments, resilience, encryption, fallback-chain, automation, python]
+quality_score: 82
 ---
 
 # Resilient Payment Encryption Fallback Chains

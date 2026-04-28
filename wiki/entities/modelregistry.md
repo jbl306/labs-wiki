@@ -7,7 +7,7 @@ source_hash: "924e132f95d9fa94650d78f540b91683d2ddb7c4f20d9fb9d776cf74f1885c5a"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
-quality_score: 71
+quality_score: 83
 concepts:
   - modelregistry
 related:

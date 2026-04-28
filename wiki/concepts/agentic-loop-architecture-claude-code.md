@@ -6,7 +6,7 @@ last_verified: 2026-04-27
 source_hash: "sha256:52403a5a6e85eaaaea18a62242944f072dddb53022a49811b1954716bb1f6b68"
 sources:
   - raw/2026-04-27-260414228v1pdf.md
-quality_score: 84
+quality_score: 65
 related:
   - "[[Layered Agentic Architecture in Claude Code]]"
   - "[[Context Management and Compaction Pipeline in Claude Code]]"

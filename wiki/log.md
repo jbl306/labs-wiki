@@ -4549,4 +4549,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/concepts/dual-layer-skill-activation.md
   status: success
   notes: "Auto-ingested 3 pages (1 concepts, 1 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-28T18:36:33Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-28-260109113v1pdf.md
+  targets:
+    - wiki/sources/ai-hippocampus-how-far-human-memory.md
+    - wiki/concepts/implicit-memory-llms.md
+    - wiki/concepts/explicit-memory-llm-systems.md
+    - wiki/concepts/agentic-memory-autonomous-agents.md
+    - wiki/synthesis/implicit-vs-explicit-vs-agentic-memory-llm-systems.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

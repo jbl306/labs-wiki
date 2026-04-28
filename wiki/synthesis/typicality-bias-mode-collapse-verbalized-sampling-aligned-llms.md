@@ -15,6 +15,7 @@ related:
   - "[[Cognitive Biases In Large Language Models]]"
 tier: hot
 tags: [llm, alignment, mode-collapse, diversity, prompting, cognitive-bias]
+quality_score: 70
 ---
 
 # Typicality Bias, Mode Collapse, and Verbalized Sampling in Aligned LLMs

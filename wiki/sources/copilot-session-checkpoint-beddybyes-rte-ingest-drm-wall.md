@@ -10,7 +10,7 @@ tags: [copilot-session, checkpoint, homelab, media-ingest, rte-player, drm, yt-d
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 76
+quality_score: 65
 checkpoint_class: project-progress
 retention_mode: compress
 concepts:

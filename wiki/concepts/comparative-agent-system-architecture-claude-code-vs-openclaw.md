@@ -7,7 +7,7 @@ source_hash: "sha256:52403a5a6e85eaaaea18a62242944f072dddb53022a49811b1954716bb1
 sources:
   - raw/2026-04-18-260414228v1pdf.md
   - raw/2026-04-27-260414228v1pdf.md
-quality_score: 64
+quality_score: 81
 concepts:
   - comparative-agent-system-architecture-claude-code-vs-openclaw
 related:

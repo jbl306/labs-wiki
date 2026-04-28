@@ -7,7 +7,7 @@ source_hash: "synthesis-generated"
 sources:
   - raw/2026-04-18-260414228v1pdf.md
   - raw/2026-04-27-260414228v1pdf.md
-quality_score: 82
+quality_score: 86
 concepts:
   - agentic-loop-architecture-claude-code
   - layered-agentic-architecture-claude-code

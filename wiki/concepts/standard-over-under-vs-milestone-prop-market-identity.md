@@ -13,6 +13,7 @@ related:
   - "[[Heuristic Prop-Line Selection vs Direct Sportsbook Validation]]"
 tier: hot
 tags: [sports-betting, market-taxonomy, prop-lines, sportsbook-data, data-validation]
+quality_score: 65
 ---
 
 # Standard Over/Under vs Milestone Prop Market Identity

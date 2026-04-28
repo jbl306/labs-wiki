@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "15e0d38d97945d4e58427c03622de24ec2191b5d77cc532159579b7444219a6d"
 sources:
   - raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
-quality_score: 65
+quality_score: 69
 concepts:
   - agent-memory-frameworks
 related:

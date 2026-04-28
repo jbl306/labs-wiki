@@ -13,6 +13,7 @@ related:
   - "[[Heuristic Cleanup vs Market-Aware Prop Ingestion]]"
 tier: hot
 tags: [sports-betting, data-modeling, prop-lines, sportsbook-data, nba-ml-engine]
+quality_score: 65
 ---
 
 # Generic Sportsbook Market Storage for Non-Canonical Props

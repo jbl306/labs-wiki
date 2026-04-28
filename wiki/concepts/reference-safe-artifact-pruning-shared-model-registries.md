@@ -12,6 +12,7 @@ related:
   - "[[Atomic Save Pattern for Model Artifacts]]"
 tier: hot
 tags: [artifact-registry, ml-ops, pruning, model-registry, reliability, production]
+quality_score: 65
 ---
 
 # Reference-Safe Artifact Pruning in Shared Model Registries

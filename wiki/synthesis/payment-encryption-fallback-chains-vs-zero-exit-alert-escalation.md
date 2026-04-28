@@ -15,6 +15,7 @@ related:
   - "[[Ntfy Push Notifications for Service Monitoring]]"
 tier: hot
 tags: [automation, resilience, payments, observability, homelab]
+quality_score: 59
 ---
 
 # Payment Encryption Fallback Chains vs Zero-Exit Alert Escalation

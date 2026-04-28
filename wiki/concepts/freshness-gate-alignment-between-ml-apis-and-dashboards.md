@@ -12,6 +12,7 @@ related:
   - "[[Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture]]"
 tier: hot
 tags: [freshness, dashboard, api-design, ml-ops, reliability, warnings]
+quality_score: 81
 ---
 
 # Freshness-Gate Alignment Between ML APIs and Dashboards

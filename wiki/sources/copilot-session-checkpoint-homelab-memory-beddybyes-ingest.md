@@ -10,7 +10,7 @@ tags: [copilot-session, checkpoint, homelab, docker, memory-optimization, media-
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 74
+quality_score: 65
 checkpoint_class: durable-debugging
 retention_mode: retain
 concepts:

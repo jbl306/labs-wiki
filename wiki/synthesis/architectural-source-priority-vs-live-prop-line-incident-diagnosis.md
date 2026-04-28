@@ -19,6 +19,7 @@ related:
   - "[[NBA ML Engine]]"
 tier: hot
 tags: [sports-betting, synthesis, prop-lines, incident-response, nba-ml-engine]
+quality_score: 83
 ---
 
 # Architectural Source Priority vs Live Prop-Line Incident Diagnosis

@@ -23,7 +23,7 @@ checkpoint_class: durable-debugging
 retention_mode: retain
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 76
+quality_score: 77
 ---
 
 # Copilot Session Checkpoint: Dashboard Prop Line Debug

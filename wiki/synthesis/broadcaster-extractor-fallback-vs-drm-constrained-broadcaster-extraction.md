@@ -18,6 +18,7 @@ related:
   - "[[Homelab]]"
 tier: hot
 tags: [media-ingest, yt-dlp, drm, streaming, homelab, vpn]
+quality_score: 70
 ---
 
 # Broadcaster Extractor Fallback vs DRM-Constrained Broadcaster Extraction

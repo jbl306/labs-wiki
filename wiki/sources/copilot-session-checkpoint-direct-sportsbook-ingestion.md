@@ -25,7 +25,7 @@ checkpoint_class: durable-workflow
 retention_mode: retain
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 79
+quality_score: 85
 ---
 
 # Copilot Session Checkpoint: Direct Sportsbook Ingestion

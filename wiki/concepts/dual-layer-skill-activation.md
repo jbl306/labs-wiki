@@ -13,6 +13,7 @@ related:
   - "[[Task Observer]]"
 tier: hot
 tags: [meta-skill, activation, agent-routing, opencode, copilot-cli, vscode, workspace-management]
+quality_score: 73
 ---
 
 # Dual-Layer Skill Activation

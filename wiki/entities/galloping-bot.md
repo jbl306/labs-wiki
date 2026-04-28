@@ -8,7 +8,7 @@ sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-optimizing-snipe-book-then-retry-flow-a86837aa.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
   - raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
-quality_score: 74
+quality_score: 94
 concepts:
   - galloping-bot
 related:

@@ -19,7 +19,7 @@ related:
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 76
+quality_score: 65
 tags: [copilot-session, checkpoint, galloping-bot, payments, resilience, homelab, notifications, automation]
 checkpoint_class: durable-debugging
 retention_mode: retain

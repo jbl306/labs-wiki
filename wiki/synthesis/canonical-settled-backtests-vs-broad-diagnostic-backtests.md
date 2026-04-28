@@ -18,6 +18,7 @@ related:
   - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"
 tier: hot
 tags: [backtesting, dashboard, trust, canonical-data, diagnostics, ml-ops]
+quality_score: 91
 ---
 
 # Canonical Settled Backtests vs Broad Diagnostic Backtests

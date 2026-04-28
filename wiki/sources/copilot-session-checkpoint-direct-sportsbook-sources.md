@@ -23,7 +23,7 @@ tags: [copilot-session, checkpoint, nba-ml-engine, sportsbook-data, prop-lines, 
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 78
+quality_score: 85
 ---
 
 # Copilot Session Checkpoint: Direct Sportsbook Sources

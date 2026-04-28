@@ -15,6 +15,7 @@ related:
   - "[[Copilot Session Checkpoint: Galloping bot payment resilience fix]]"
 tier: hot
 tags: [payments, tokenization, client-side-encryption, javascript, automation]
+quality_score: 70
 ---
 
 # TokenEx

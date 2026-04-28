@@ -21,7 +21,7 @@ checkpoint_class: durable-architecture
 retention_mode: retain
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 79
+quality_score: 77
 ---
 
 # Copilot Session Checkpoint: Backtest Accuracy Contracts

@@ -11,6 +11,7 @@ related:
   - "[[Cognitive Biases In Large Language Models]]"
 tier: warm
 tags: [llm, alignment, generation, diversity, mode-collapse, prompting]
+quality_score: 62
 ---
 
 # Mode Collapse in Aligned LLMs

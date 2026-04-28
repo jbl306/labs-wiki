@@ -12,6 +12,7 @@ related:
   - "[[Real-Debrid InstantAvailability API and Playback Issues]]"
 tier: hot
 tags: [streaming, authentication, theplatform, yt-dlp, rte-player, manifest, vpn]
+quality_score: 62
 ---
 
 # Anonymous Token to IP-Bound Manifest Handoff

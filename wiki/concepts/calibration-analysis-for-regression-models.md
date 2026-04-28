@@ -6,7 +6,7 @@ last_verified: 2026-04-18
 source_hash: "7947d08e9a063fe0b24b8984da65f96b90179927fffc01c1f05927569f503763"
 sources:
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-11-evaluation-and-report-5b560f0f.md
-quality_score: 64
+quality_score: 76
 concepts:
   - calibration-analysis-for-regression-models
 related:

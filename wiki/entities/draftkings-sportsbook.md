@@ -17,6 +17,7 @@ related:
   - "[[Browser-Backed Sportsbook Truth Validation]]"
 tier: hot
 tags: [draftkings, sportsbook, nba, prop-lines, sportsbook-data]
+quality_score: 85
 ---
 
 # DraftKings Sportsbook

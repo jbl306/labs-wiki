@@ -10,7 +10,7 @@ tags: [copilot-session, checkpoint, homelab, debrid-downloader, sqlite, cloudfla
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 78
+quality_score: 65
 checkpoint_class: durable-architecture
 retention_mode: retain
 concepts:

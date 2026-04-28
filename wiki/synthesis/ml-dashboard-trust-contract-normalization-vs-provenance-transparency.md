@@ -17,6 +17,7 @@ related:
   - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"
 tier: hot
 tags: [dashboard, trust, api-contracts, data-quality, provenance, ml-ops]
+quality_score: 70
 ---
 
 # ML Dashboard Trust: Contract Normalization vs Provenance Transparency

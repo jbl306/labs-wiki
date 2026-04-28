@@ -12,6 +12,7 @@ related:
   - "[[Homelab Cron-Job Integration for Throttled Ingestion]]"
 tier: hot
 tags: [yt-dlp, media-ingest, streaming, homelab, real-debrid, geo-restriction]
+quality_score: 62
 ---
 
 # Broadcaster Extractor Fallback for Missing Torrent Titles

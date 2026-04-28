@@ -6,7 +6,7 @@ last_verified: 2026-04-25
 source_hash: "6925ce7a48d728479bbb091c23eb9fd2775349c5187f58544249a5dc6cbc546f"
 sources:
   - raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
-quality_score: 84
+quality_score: 65
 related:
   - "[[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]]"
   - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"

@@ -21,6 +21,7 @@ related:
   - "[[Heuristic Prop-Line Selection vs Direct Sportsbook Validation]]"
 tier: hot
 tags: [sports-betting, synthesis, data-ingestion, prop-lines, nba-ml-engine]
+quality_score: 87
 ---
 
 # Heuristic Cleanup vs Market-Aware Prop Ingestion

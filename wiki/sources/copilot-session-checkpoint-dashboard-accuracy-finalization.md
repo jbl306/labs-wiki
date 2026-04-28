@@ -27,7 +27,7 @@ checkpoint_class: project-progress
 retention_mode: compress
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 76
+quality_score: 73
 ---
 
 # Copilot Session Checkpoint: Dashboard Accuracy Finalization

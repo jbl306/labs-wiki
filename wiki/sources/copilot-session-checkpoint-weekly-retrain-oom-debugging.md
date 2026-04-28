@@ -22,7 +22,7 @@ related:
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 78
+quality_score: 85
 tags: [copilot-session, checkpoint, durable-debugging, nba-ml-engine, homelab, oom, observability, ofelia]
 checkpoint_class: durable-debugging
 retention_mode: retain

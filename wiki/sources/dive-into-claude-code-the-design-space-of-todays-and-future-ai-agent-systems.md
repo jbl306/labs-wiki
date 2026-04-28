@@ -21,7 +21,7 @@ tags: [claude-code, agentic-systems, architecture, safety, context-management, o
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 79
+quality_score: 90
 ---
 
 # Dive into Claude Code: The Design Space of Today’s and Future AI Agent Systems

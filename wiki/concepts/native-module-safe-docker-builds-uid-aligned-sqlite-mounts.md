@@ -12,6 +12,7 @@ related:
   - "[[Single-User Local SQLite Migration for Self-Hosted Web Apps]]"
 tier: hot
 tags: [docker, sqlite, nodejs, better-sqlite3, permissions, homelab]
+quality_score: 62
 ---
 
 # Native-Module-Safe Docker Builds and UID-Aligned SQLite Mounts

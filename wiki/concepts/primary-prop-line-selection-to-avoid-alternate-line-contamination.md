@@ -7,7 +7,7 @@ source_hash: "d12567d0a0a05fa3d657bf2e2ec6bb6e9fa482a9676eee6bf73ec13f8bbf53c0"
 sources:
   - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
   - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-alt-line-accuracy-fixes-466ff308.md
-quality_score: 73
+quality_score: 81
 concepts:
   - primary-prop-line-selection-to-avoid-alternate-line-contamination
 related:

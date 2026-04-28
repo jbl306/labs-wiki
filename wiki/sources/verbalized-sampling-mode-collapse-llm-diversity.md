@@ -11,7 +11,7 @@ tags: [arxiv, llm, alignment, prompting, mode-collapse, diversity, preference-da
 tier: warm
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 78
+quality_score: 62
 ---
 
 # Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity

@@ -21,6 +21,7 @@ related:
   - "[[nba-ml-api]]"
 tier: hot
 tags: [ml-ops, synthesis, nba-ml-engine, observability, oom, retraining]
+quality_score: 75
 ---
 
 # Weekly Retrain Survivability vs Observability on Shared ML Hosts

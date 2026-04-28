@@ -16,6 +16,7 @@ related:
   - "[[Homelab]]"
 tier: hot
 tags: [media-ingest, real-debrid, yt-dlp, homelab, streaming]
+quality_score: 78
 ---
 
 # Debrid-First Acquisition vs Broadcaster Extractor Fallback

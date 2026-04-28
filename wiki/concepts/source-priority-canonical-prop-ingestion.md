@@ -13,6 +13,7 @@ related:
   - "[[Heuristic Cleanup vs Market-Aware Prop Ingestion]]"
 tier: hot
 tags: [sports-betting, data-ingestion, prop-lines, sportsbook-data, nba-ml-engine]
+quality_score: 85
 ---
 
 # Source-Priority Canonical Prop Ingestion

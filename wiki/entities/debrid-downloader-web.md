@@ -17,6 +17,7 @@ related:
   - "[[AdGuard]]"
 tier: hot
 tags: [self-hosted, nuxt, sqlite, torrentio, homelab, debrid]
+quality_score: 71
 ---
 
 # Debrid Downloader Web

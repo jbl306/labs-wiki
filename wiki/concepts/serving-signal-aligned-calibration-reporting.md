@@ -12,6 +12,7 @@ related:
   - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"
 tier: hot
 tags: [model-calibration, ml-ops, dashboard, ece, reliability, serving]
+quality_score: 85
 ---
 
 # Serving-Signal-Aligned Calibration Reporting

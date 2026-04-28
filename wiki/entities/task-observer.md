@@ -15,6 +15,7 @@ related:
   - "[[update_opencode_skills_paths.py]]"
 tier: hot
 tags: [task-observer, meta-skill, agent-skills, copilot-cli, opencode, vscode, workspace-management]
+quality_score: 77
 ---
 
 # Task Observer

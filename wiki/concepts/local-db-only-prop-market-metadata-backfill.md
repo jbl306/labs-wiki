@@ -13,6 +13,7 @@ related:
   - "[[Heuristic Cleanup vs Market-Aware Prop Ingestion]]"
 tier: hot
 tags: [sports-betting, backfill, data-migration, prop-lines, nba-ml-engine]
+quality_score: 85
 ---
 
 # Local DB-Only Prop Market Metadata Backfill

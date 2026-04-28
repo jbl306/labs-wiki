@@ -12,6 +12,7 @@ related:
   - "[[Systematic Debugging and Test-Driven Development for UI Regression]]"
 tier: hot
 tags: [observability, alerting, cron, ntfy, automation, error-detection]
+quality_score: 62
 ---
 
 # Error-Pattern Alert Escalation for Zero-Exit Automation Failures

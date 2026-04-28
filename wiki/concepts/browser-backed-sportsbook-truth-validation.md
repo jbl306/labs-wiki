@@ -13,6 +13,7 @@ related:
   - "[[Heuristic Prop-Line Selection vs Direct Sportsbook Validation]]"
 tier: hot
 tags: [sports-betting, browser-automation, data-validation, prop-lines, sportsbook-data]
+quality_score: 85
 ---
 
 # Browser-Backed Sportsbook Truth Validation

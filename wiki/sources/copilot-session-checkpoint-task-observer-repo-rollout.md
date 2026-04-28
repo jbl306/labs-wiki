@@ -23,7 +23,7 @@ tags: [copilot-session, checkpoint, task-observer, meta-skill, skill-integration
 tier: hot
 knowledge_state: ingested
 ingest_method: copilot-cli-gpt-5.4
-quality_score: 75
+quality_score: 69
 ---
 
 # Copilot Session Checkpoint: Task-Observer Repo Rollout

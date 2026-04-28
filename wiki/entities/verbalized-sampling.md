@@ -13,6 +13,7 @@ related:
   - "[[Cognitive Biases In Large Language Models]]"
 tier: warm
 tags: [llm, prompting, alignment, mode-collapse, diversity, inference-time]
+quality_score: 76
 ---
 
 # Verbalized Sampling

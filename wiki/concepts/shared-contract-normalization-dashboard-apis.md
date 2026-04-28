@@ -6,7 +6,7 @@ last_verified: 2026-04-25
 source_hash: "664cba87ef6621c1f63044b989fa00f476930abd1aab2bee1fcf33d463fce646"
 sources:
   - raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
-quality_score: 87
+quality_score: 65
 related:
   - "[[Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture]]"
   - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"

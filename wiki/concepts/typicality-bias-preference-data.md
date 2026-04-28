@@ -11,6 +11,7 @@ related:
   - "[[Cognitive Biases In Large Language Models]]"
 tier: warm
 tags: [llm, preference-data, cognitive-bias, alignment, mode-collapse]
+quality_score: 62
 ---
 
 # Typicality Bias in Preference Data

@@ -7,7 +7,7 @@ source_hash: "8d4ffe804f00fc1786f05b552df93998c7e6bf7f3b353158464961c4edb4f8a3"
 sources:
   - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
   - raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
-quality_score: 79
+quality_score: 89
 concepts:
   - ofelia-scheduler
 related:

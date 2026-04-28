@@ -18,6 +18,7 @@ related:
   - "[[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]"
 tier: hot
 tags: [homelab, migration, deployment, sqlite, docker, cloudflare]
+quality_score: 75
 ---
 
 # Migrating Cloud-Dependent Web Apps Into a Homelab

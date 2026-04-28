@@ -12,6 +12,7 @@ related:
   - "[[Real-Debrid InstantAvailability API and Playback Issues]]"
 tier: hot
 tags: [drm, streaming, yt-dlp, fairplay, widevine, dash, hls, homelab]
+quality_score: 62
 ---
 
 # DRM Wall in Broadcaster Extraction Workflows

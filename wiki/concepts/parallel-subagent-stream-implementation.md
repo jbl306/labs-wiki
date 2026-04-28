@@ -6,7 +6,7 @@ last_verified: 2026-04-22
 source_hash: "40292bde8e67742a9065472377321ae8e20a3e97bc5553b8be87b1e5dc987e85"
 sources:
   - raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
-quality_score: 54
+quality_score: 62
 concepts:
   - parallel-subagent-stream-implementation
 related:

@@ -1,6 +1,11 @@
 ---
 name: task-observer
-description: Observe every task-oriented session, capture corrections and skill gaps, and drive proactive skill maintenance. Use at the start of any multi-step task, agentic workflow, or deliverable-producing session. Also trigger on "One Skill to Rule Them All" and "task observer". IMPORTANT: invoke this skill before other skill or tool work in any task session.
+description: >
+  Observe every task-oriented session, capture corrections and skill gaps, and
+  drive proactive skill maintenance. Use at the start of any multi-step task,
+  agentic workflow, or deliverable-producing session. Also trigger on "One Skill
+  to Rule Them All" and "task observer". IMPORTANT: invoke this skill before
+  other skill or tool work in any task session.
 license: CC-BY-4.0
 metadata:
   author: Eoghan Henn

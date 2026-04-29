@@ -1,0 +1,12 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "type": "command",
+        "command": "RTK_COPILOT_ALLOW_REWRITE=1 /home/jbl/projects/.github/hooks/scripts/rtk-copilot-yolo.sh",
+        "cwd": ".",
+        "timeout": 5
+      }
+    ]
+  }
+}

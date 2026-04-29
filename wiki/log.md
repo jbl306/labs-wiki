@@ -4561,4 +4561,17 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/implicit-vs-explicit-vs-agentic-memory-llm-systems.md
   status: success
   notes: "Auto-ingested 5 pages (3 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-29T16:18:02Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-29-260424881v1pdf.md
+  targets:
+    - wiki/sources/latent-agents-internalized-multi-agent-debate.md
+    - wiki/entities/latent-agents.md
+    - wiki/concepts/multi-agent-debate.md
+    - wiki/concepts/internalized-multi-agent-debate.md
+    - wiki/concepts/agent-specific-activation-subspaces.md
+    - wiki/synthesis/explicit-vs-internalized-multi-agent-debate.md
+  status: success
+  notes: "Auto-ingested 6 pages (3 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

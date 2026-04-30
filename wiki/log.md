@@ -4574,4 +4574,26 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/explicit-vs-internalized-multi-agent-debate.md
   status: success
   notes: "Auto-ingested 6 pages (3 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-30T20:03:05Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-22-copilot-session-github-ingest-depth-fetcher-trim-732c3907.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-github-ingest-depth-fetcher-trim.md
+    - wiki/concepts/signal-preserving-github-repository-ingestion.md
+    - wiki/synthesis/richer-vs-signal-preserving-github-repository-ingestion.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-04-30T20:07:29Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-audit-recommendations-implementation.md
+    - wiki/concepts/source-tagged-confidence-contracts-ml-dashboards.md
+    - wiki/concepts/training-mode-aware-rolling-window-metadata.md
+    - wiki/concepts/prior-season-feature-mapping-temporal-leakage-prevention.md
+    - wiki/synthesis/audit-remediation-patterns-nba-ml-integrity.md
+  status: success
+  notes: "Auto-ingested 5 pages (3 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, labs-w
 checkpoint_class: durable-architecture
 checkpoint_class_rule: "body:architecture"
 retention_mode: retain
-status: pending
+status: success
 ---
 
 # Copilot Session Checkpoint Export

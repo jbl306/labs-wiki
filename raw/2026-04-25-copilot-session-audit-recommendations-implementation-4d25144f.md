@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, nba-ml-engine, 
 checkpoint_class: durable-workflow
 checkpoint_class_rule: "body:workflow"
 retention_mode: retain
-status: pending
+status: success
 ---
 
 # Copilot Session Checkpoint Export

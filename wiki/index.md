@@ -6,6 +6,7 @@
 ## Concepts
 
 - [[AAAK Compression Dialect]] — AAAK Compression Dialect (T:hot, score: 76)
+- [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]] — API-Level Cloudflare Clearance Keepalive and 403 Recovery (T:hot, score: 85)
 - [[AXI Design Principles for Agent-Ergonomic CLI Tools]] — AXI Design Principles for Agent-Ergonomic CLI Tools (T:hot, score: 79)
 - [[Activation Functions in Neural Networks]] — Activation Functions in Neural Networks (T:hot, score: 76)
 - [[AdGuard Memory Out-Of-Memory (OOM) Diagnosis and Fix]] — AdGuard Memory Out-Of-Memory (OOM) Diagnosis and Fix (T:hot, score: 59)
@@ -62,6 +63,7 @@
 - [[Brevity Bias and Context Collapse in LLM Context Adaptation]] — Brevity Bias and Context Collapse in LLM Context Adaptation (T:hot, score: 67)
 - [[Broad Diagnostic Backtesting as Secondary Model Evidence]] — Broad Diagnostic Backtesting as Secondary Model Evidence (T:hot, score: 65)
 - [[Broadcaster Extractor Fallback for Missing Torrent Titles]] — Broadcaster Extractor Fallback for Missing Torrent Titles (T:hot, score: 62)
+- [[Browser-Backed HTTP for Anti-Bot Session Fidelity]] — Browser-Backed HTTP for Anti-Bot Session Fidelity (T:hot, score: 84)
 - [[Browser-Backed Sportsbook Truth Validation]] — Browser-Backed Sportsbook Truth Validation (T:hot, score: 85)
 - [[Byte Pair Encoding (BPE) in Large Language Models]] — Byte Pair Encoding (BPE) in Large Language Models (T:hot, score: 76)
 - [[Caddy handle_path Directive and Its Impact on Upstream URL Construction]] — Caddy handle_path Directive and Its Impact on Upstream URL Construction (T:hot, score: 84)
@@ -648,6 +650,7 @@
 - [[Copilot Session Checkpoint: Fixing MemPalace Timeouts]] — Copilot Session Checkpoint: Fixing MemPalace Timeouts (T:hot, score: 90)
 - [[Copilot Session Checkpoint: Free Tier Backfill Runner]] — Copilot Session Checkpoint: Free Tier Backfill Runner (T:hot, score: 84)
 - [[Copilot Session Checkpoint: Full Labs-Wiki Implementation Complete]] — Copilot Session Checkpoint: Full Labs-Wiki Implementation Complete (T:hot, score: 90)
+- [[Copilot Session Checkpoint: Galloping bot CF clearance recovery]] — Copilot Session Checkpoint: Galloping bot CF clearance recovery (T:hot, score: 76)
 - [[Copilot Session Checkpoint: Galloping bot payment resilience fix]] — Copilot Session Checkpoint: Galloping bot payment resilience fix (T:hot, score: 65)
 - [[Copilot Session Checkpoint: GitHub Crawling and Richer Extraction]] — Copilot Session Checkpoint: GitHub Crawling and Richer Extraction (T:hot, score: 90)
 - [[Copilot Session Checkpoint: GitHub ingest depth — fetcher trim]] — Copilot Session Checkpoint: GitHub ingest depth — fetcher trim (T:hot, score: 76)
@@ -831,6 +834,7 @@
 - [[Debrid-First Acquisition vs Broadcaster Extractor Fallback]] — Debrid-First Acquisition vs Broadcaster Extractor Fallback (T:hot, score: 78)
 - [[Democratizing Agent Customization: Automated Skill Stack Installation vs. Natural Language-Driven Agent Building]] — Democratizing Agent Customization: Automated Skill Stack Installation vs. Natural Language-Driven Agent Building (T:hot, score: 64)
 - [[Explicit vs Internalized Multi-Agent Debate]] — Explicit vs Internalized Multi-Agent Debate (T:hot)
+- [[Galloping-Bot Boundary Resilience Patterns]] — Galloping-Bot Boundary Resilience Patterns (T:hot, score: 82)
 - [[Hardening Unattended Wiki Ingest Pipelines]] — Hardening Unattended Wiki Ingest Pipelines (T:hot, score: 75)
 - [[Heuristic Cleanup vs Market-Aware Prop Ingestion]] — Heuristic Cleanup vs Market-Aware Prop Ingestion (T:hot, score: 87)
 - [[Heuristic Prop-Line Selection vs Direct Sportsbook Validation]] — Heuristic Prop-Line Selection vs Direct Sportsbook Validation (T:hot, score: 90)

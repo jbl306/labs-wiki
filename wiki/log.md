@@ -4604,4 +4604,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/sources/copilot-session-checkpoint-audit-recommendations-sprint.md
   status: success
   notes: "Auto-ingested 1 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-01T18:18:03Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-galloping-bot-cf-clearance-recovery.md
+    - wiki/concepts/api-cloudflare-clearance-keepalive-403-recovery.md
+    - wiki/concepts/browser-backed-http-anti-bot-session-fidelity.md
+    - wiki/synthesis/galloping-bot-boundary-resilience-patterns.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-01T03:17:01+00:00
+generated: 2026-05-02T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,33 +11,33 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-01T03:17:01+00:00
+> Regenerated: 2026-05-02T03:17:01+00:00
 
 ## Recent Wiki Edits
 
+- `2026-05-01` — [[api-cloudflare-clearance-keepalive-403-recovery]] (`wiki/concepts/api-cloudflare-clearance-keepalive-403-recovery.md`)
+- `2026-05-01` — [[browser-backed-http-anti-bot-session-fidelity]] (`wiki/concepts/browser-backed-http-anti-bot-session-fidelity.md`)
+- `2026-05-01` — [[copilot-session-checkpoint-galloping-bot-cf-clearance-recovery]] (`wiki/sources/copilot-session-checkpoint-galloping-bot-cf-clearance-recovery.md`)
+- `2026-05-01` — [[galloping-bot-boundary-resilience-patterns]] (`wiki/synthesis/galloping-bot-boundary-resilience-patterns.md`)
+- `2026-04-30` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-04-30` — [[copilot-session-checkpoint-audit-recommendations-sprint]] (`wiki/sources/copilot-session-checkpoint-audit-recommendations-sprint.md`)
 - `2026-04-30` — [[prior-season-feature-mapping-temporal-leakage-prevention]] (`wiki/concepts/prior-season-feature-mapping-temporal-leakage-prevention.md`)
 - `2026-04-30` — [[signal-preserving-github-repository-ingestion]] (`wiki/concepts/signal-preserving-github-repository-ingestion.md`)
 - `2026-04-30` — [[source-tagged-confidence-contracts-ml-dashboards]] (`wiki/concepts/source-tagged-confidence-contracts-ml-dashboards.md`)
 - `2026-04-30` — [[training-mode-aware-rolling-window-metadata]] (`wiki/concepts/training-mode-aware-rolling-window-metadata.md`)
-- `2026-04-30` — [[copilot-session-checkpoint-audit-recommendations-implementation]] (`wiki/sources/copilot-session-checkpoint-audit-recommendations-implementation.md`)
-- `2026-04-30` — [[copilot-session-checkpoint-github-ingest-depth-fetcher-trim]] (`wiki/sources/copilot-session-checkpoint-github-ingest-depth-fetcher-trim.md`)
-- `2026-04-30` — [[audit-remediation-patterns-nba-ml-integrity]] (`wiki/synthesis/audit-remediation-patterns-nba-ml-integrity.md`)
-- `2026-04-30` — [[richer-vs-signal-preserving-github-repository-ingestion]] (`wiki/synthesis/richer-vs-signal-preserving-github-repository-ingestion.md`)
-- `2026-04-29` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 
 ## Recent Sources Captured
 
-- `2026-04-30` — `raw/2026-04-28-260109113v1pdf.md`
-- `2026-04-30` — `raw/2026-04-29-260424881v1pdf.md`
-- `2026-04-30` — `raw/2026-04-25-copilot-session-audit-recommendations-sprint-d4afb911.md`
-- `2026-04-30` — `raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md`
-- `2026-04-30` — `raw/2026-04-22-copilot-session-github-ingest-depth-fetcher-trim-732c3907.md`
-- `2026-04-27` — `raw/2026-04-27-copilot-session-task-observer-repo-rollout-6fb8d221.md`
-- `2026-04-27` — `raw/2026-04-27-copilot-session-homelab-migration-and-tunnel-fix-78392c21.md`
-- `2026-04-27` — `raw/2026-04-27-260414228v1pdf.md`
-- `2026-04-27` — `raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md`
-- `2026-04-26` — `raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md`
+- `2026-05-01` — `raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md`
+- `2026-05-01` — `raw/2026-04-29-260424881v1pdf.md`
+- `2026-05-01` — `raw/2026-04-28-260109113v1pdf.md`
+- `2026-05-01` — `raw/2026-04-27-260414228v1pdf.md`
+- `2026-05-01` — `raw/2026-04-25-251001171v3pdf.md`
+- `2026-05-01` — `raw/2026-04-23-260419572v1pdf.md`
+- `2026-05-01` — `raw/2026-04-23-251224601v2pdf.md`
+- `2026-05-01` — `raw/2026-04-22-test-pdf-arxiv-2510-04618.md`
+- `2026-05-01` — `raw/2026-04-22-260401437v1pdf.md`
+- `2026-05-01` — `raw/2026-04-22-250925140v2pdf.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

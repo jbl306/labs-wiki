@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-07T03:17:02+00:00
+generated: 2026-05-08T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-07T03:17:02+00:00
+> Regenerated: 2026-05-08T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-05` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-05-06` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-01` — [[api-cloudflare-clearance-keepalive-403-recovery]] (`wiki/concepts/api-cloudflare-clearance-keepalive-403-recovery.md`)
 - `2026-05-01` — [[browser-backed-http-anti-bot-session-fidelity]] (`wiki/concepts/browser-backed-http-anti-bot-session-fidelity.md`)
 - `2026-05-01` — [[copilot-session-checkpoint-galloping-bot-cf-clearance-recovery]] (`wiki/sources/copilot-session-checkpoint-galloping-bot-cf-clearance-recovery.md`)

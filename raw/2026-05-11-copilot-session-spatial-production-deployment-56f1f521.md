@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, mempal
 checkpoint_class: project-progress
 checkpoint_class_rule: "body:deployed"
 retention_mode: compress
-status: pending
+status: ingested
 ---
 
 # Copilot Session Checkpoint Export

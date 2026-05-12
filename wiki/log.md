@@ -4635,4 +4635,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/local-vision-vs-developer-assisted-workflows-spatial-planning.md
   status: success
   notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-12T19:44:57Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-no-llm-reference-workflow.md
+    - wiki/entities/spatial-design-studio-reference-worker.md
+    - wiki/concepts/deterministic-reference-artifact-pipeline.md
+    - wiki/concepts/review-first-candidate-acceptance-reference-jobs.md
+    - wiki/synthesis/vision-policy-vs-extraction-vs-acceptance-spatial-reference.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entity, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

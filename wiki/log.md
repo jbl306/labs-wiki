@@ -4624,4 +4624,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/entities/spatial-design-studio.md
   status: success
   notes: "Auto-ingested 2 pages (0 concepts, 1 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-12T17:19:33Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-clarifying-vision-options.md
+    - wiki/concepts/free-first-vision-pipeline-modes-spatial-planning-apps.md
+    - wiki/concepts/developer-assisted-vision-workflows-spatial-planning-apps.md
+    - wiki/synthesis/local-vision-vs-developer-assisted-workflows-spatial-planning.md
+  status: success
+  notes: "Auto-ingested 4 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

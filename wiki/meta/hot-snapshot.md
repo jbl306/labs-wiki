@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-12T03:17:01+00:00
+generated: 2026-05-13T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,23 +11,25 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-12T03:17:01+00:00
+> Regenerated: 2026-05-13T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-11` — [[spatial-design-studio]] (`wiki/entities/spatial-design-studio.md`)
-- `2026-05-11` — [[copilot-session-checkpoint-spatial-production-deployment]] (`wiki/sources/copilot-session-checkpoint-spatial-production-deployment.md`)
-- `2026-05-10` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
-- `2026-05-01` — [[api-cloudflare-clearance-keepalive-403-recovery]] (`wiki/concepts/api-cloudflare-clearance-keepalive-403-recovery.md`)
-- `2026-05-01` — [[browser-backed-http-anti-bot-session-fidelity]] (`wiki/concepts/browser-backed-http-anti-bot-session-fidelity.md`)
-- `2026-05-01` — [[copilot-session-checkpoint-galloping-bot-cf-clearance-recovery]] (`wiki/sources/copilot-session-checkpoint-galloping-bot-cf-clearance-recovery.md`)
-- `2026-05-01` — [[galloping-bot-boundary-resilience-patterns]] (`wiki/synthesis/galloping-bot-boundary-resilience-patterns.md`)
-- `2026-04-30` — [[copilot-session-checkpoint-audit-recommendations-sprint]] (`wiki/sources/copilot-session-checkpoint-audit-recommendations-sprint.md`)
-- `2026-04-30` — [[prior-season-feature-mapping-temporal-leakage-prevention]] (`wiki/concepts/prior-season-feature-mapping-temporal-leakage-prevention.md`)
-- `2026-04-30` — [[signal-preserving-github-repository-ingestion]] (`wiki/concepts/signal-preserving-github-repository-ingestion.md`)
+- `2026-05-12` — [[deterministic-reference-artifact-pipeline]] (`wiki/concepts/deterministic-reference-artifact-pipeline.md`)
+- `2026-05-12` — [[review-first-candidate-acceptance-reference-jobs]] (`wiki/concepts/review-first-candidate-acceptance-reference-jobs.md`)
+- `2026-05-12` — [[spatial-design-studio-reference-worker]] (`wiki/entities/spatial-design-studio-reference-worker.md`)
+- `2026-05-12` — [[copilot-session-checkpoint-no-llm-reference-workflow]] (`wiki/sources/copilot-session-checkpoint-no-llm-reference-workflow.md`)
+- `2026-05-12` — [[vision-policy-vs-extraction-vs-acceptance-spatial-reference]] (`wiki/synthesis/vision-policy-vs-extraction-vs-acceptance-spatial-reference.md`)
+- `2026-05-12` — [[developer-assisted-vision-workflows-spatial-planning-apps]] (`wiki/concepts/developer-assisted-vision-workflows-spatial-planning-apps.md`)
+- `2026-05-12` — [[free-first-vision-pipeline-modes-spatial-planning-apps]] (`wiki/concepts/free-first-vision-pipeline-modes-spatial-planning-apps.md`)
+- `2026-05-12` — [[copilot-session-checkpoint-clarifying-vision-options]] (`wiki/sources/copilot-session-checkpoint-clarifying-vision-options.md`)
+- `2026-05-12` — [[local-vision-vs-developer-assisted-workflows-spatial-planning]] (`wiki/synthesis/local-vision-vs-developer-assisted-workflows-spatial-planning.md`)
+- `2026-05-11` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 
 ## Recent Sources Captured
 
+- `2026-05-12` — `raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md`
+- `2026-05-12` — `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md`
 - `2026-05-11` — `raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md`
 - `2026-05-11` — `raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md`
 - `2026-05-01` — `raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md`
@@ -36,8 +38,6 @@ ttl_hours: 24
 - `2026-05-01` — `raw/2026-04-27-260414228v1pdf.md`
 - `2026-05-01` — `raw/2026-04-25-251001171v3pdf.md`
 - `2026-05-01` — `raw/2026-04-23-260419572v1pdf.md`
-- `2026-05-01` — `raw/2026-04-23-251224601v2pdf.md`
-- `2026-05-01` — `raw/2026-04-22-test-pdf-arxiv-2510-04618.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

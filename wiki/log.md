@@ -4657,4 +4657,14 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/vision-policy-vs-hardware-reality-spatial-planning-apps.md
   status: success
   notes: "Auto-ingested 3 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-14T15:44:21Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-spatial-s6-foundation.md
+    - wiki/concepts/staged-toolchain-baseline-hardening-active-monorepos.md
+    - wiki/synthesis/spatial-roadmap-vs-deployment-vs-foundation-baselines.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

@@ -2,13 +2,16 @@
 title: "Spatial Design Studio"
 type: entity
 created: 2026-05-11
-last_verified: 2026-05-11
+last_verified: 2026-05-14
 source_hash: "4fdaa6f0bd4b95994b247bf8ac8cf5c37b96f5b530b958e90bd8bd7de651ea70"
 sources:
   - raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md
+  - raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md
 concepts:
   - agent-skill-routing-architecture
   - universal-agent-schema-agents-md-for-ai-tool-integration
+  - multi-surface-ui-quality-gates-active-product-delivery
+  - accessibility-hardening-command-driven-3d-web-interfaces
 related:
   - "[[Homelab]]"
   - "[[Task Observer]]"
@@ -64,6 +67,12 @@ The checkpoint also records a live workflow limitation: context-engineering skil
 The major unfinished area is the user experience of the main studio shell. The checkpoint says the next session should start by loading the plan at `plans/spatial-design-studio-production-ui-ux-and-feature-plan.md`, extracting reusable UI primitives into `apps/web/app/components/`, and refactoring the monolithic shell into clearer surfaces with production-grade loading, empty, and error states.
 
 Later phases are already named: better 2D planner pan/zoom and scale affordances, improved 3D camera/material polish, stronger product ingestion workflow, AI workflow refinements, collaboration and sharing, and operational cleanup. That gives the project a durable next-step hierarchy rather than a vague "polish later" placeholder.
+
+## Quality-System Maturation
+
+The S8 quality checkpoint moves Spatial Design Studio from "deployed and structurally safer" toward "safe to evolve at the interface layer." The product now has a concrete UI quality stack: Storybook 10 for isolated component rendering, Lost Pixel visual baselines, Playwright coverage for a mocked core flow, a WCAG-oriented accessibility pass across forms, 3D scenes, and media panels, plus a keyboard-first command palette wired into `StudioShell` and `StudioWorkspace`. That matters because the project now preserves more than architectural and deployment truth; it also preserves evidence about what a healthy user-facing slice should look and feel like.
+
+The checkpoint is especially durable because it records the exact compatibility seams that made the stack work. Storybook 8 was rejected by Next 16 peer dependencies, so the repo advanced to Storybook 10 and used `@storybook/addon-docs` plus `@storybook/addon-a11y` instead of the unavailable `@storybook/addon-essentials@10`. Lost Pixel still needed `lostpixel.config.ts`, so the repo kept a re-export next to `lost-pixel.config.ts`. Playwright e2e moved to port `3107` to avoid a local AdGuard collision on `3000`, and Lost Pixel required an older Chromium build through `playwright-core@1.47.2`. Those details make [[Copilot Session Checkpoint: Implementing S8 Quality]], [[Multi-Surface UI Quality Gates for Active Product Delivery]], and [[Accessibility Hardening for Command-Driven 3D Web Interfaces]] useful as operational references instead of vague "we improved quality" notes.
 
 ## Impact
 

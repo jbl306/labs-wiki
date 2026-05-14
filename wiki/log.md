@@ -4647,4 +4647,14 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/vision-policy-vs-extraction-vs-acceptance-spatial-reference.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entity, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-14T13:41:31Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-spatial-studio-production-roadmap.md
+    - wiki/concepts/cpu-bound-ai-stack-planning-homelab-spatial-apps.md
+    - wiki/synthesis/vision-policy-vs-hardware-reality-spatial-planning-apps.md
+  status: success
+  notes: "Auto-ingested 3 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

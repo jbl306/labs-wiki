@@ -66,6 +66,7 @@
 - [[Browser-Backed HTTP for Anti-Bot Session Fidelity]] — Browser-Backed HTTP for Anti-Bot Session Fidelity (T:hot, score: 84)
 - [[Browser-Backed Sportsbook Truth Validation]] — Browser-Backed Sportsbook Truth Validation (T:hot, score: 85)
 - [[Byte Pair Encoding (BPE) in Large Language Models]] — Byte Pair Encoding (BPE) in Large Language Models (T:hot, score: 76)
+- [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] — CPU-Bound AI Stack Planning for Homelab Spatial Apps (T:hot)
 - [[Caddy handle_path Directive and Its Impact on Upstream URL Construction]] — Caddy handle_path Directive and Its Impact on Upstream URL Construction (T:hot, score: 84)
 - [[Caddy handle_path Directive and URL Token Injection]] — Caddy handle_path Directive and URL Token Injection (T:hot, score: 75)
 - [[Calibration Analysis for Regression Models]] — Calibration Analysis for Regression Models (T:hot, score: 76)
@@ -707,6 +708,7 @@
 - [[Copilot Session Checkpoint: Self-synthesizing R4 checkpoint clusters]] — Copilot Session Checkpoint: Self-synthesizing R4 checkpoint clusters (T:archive, score: 82)
 - [[Copilot Session Checkpoint: Session Wiki Promotion]] — Copilot Session Checkpoint: Session Wiki Promotion (T:hot, score: 87)
 - [[Copilot Session Checkpoint: Spatial Production Deployment]] — Copilot Session Checkpoint: Spatial Production Deployment (T:hot, score: 74)
+- [[Copilot Session Checkpoint: Spatial Studio Production Roadmap]] — Copilot Session Checkpoint: Spatial Studio Production Roadmap (T:hot, score: 75)
 - [[Copilot Session Checkpoint: Sprint 10 Complete and Deployed]] — Copilot Session Checkpoint: Sprint 10 Complete and Deployed (T:archive, score: 90)
 - [[Copilot Session Checkpoint: Sprint 10 Implementation and Deployment]] — Copilot Session Checkpoint: Sprint 10 Implementation and Deployment (T:archive, score: 90)
 - [[Copilot Session Checkpoint: Sprint 10 Retrain In Progress]] — Copilot Session Checkpoint: Sprint 10 Retrain In Progress (T:archive, score: 90)
@@ -885,5 +887,6 @@
 - [[Transformer vs. Hope Architecture: Memory, Continual Learning, and Long-Context Handling]] — Transformer vs. Hope Architecture: Memory, Continual Learning, and Long-Context Handling (T:hot, score: 67)
 - [[Typicality Bias, Mode Collapse, and Verbalized Sampling in Aligned LLMs]] — Typicality Bias, Mode Collapse, and Verbalized Sampling in Aligned LLMs (T:hot, score: 70)
 - [[Vision Policy vs Extraction vs Acceptance in Spatial Reference Workflows]] — Vision Policy vs Extraction vs Acceptance in Spatial Reference Workflows (T:hot)
+- [[Vision Policy vs Hardware Reality in Spatial Planning Apps]] — Vision Policy vs Hardware Reality in Spatial Planning Apps (T:hot)
 - [[Weekly Retrain Survivability vs Observability on Shared ML Hosts]] — Weekly Retrain Survivability vs Observability on Shared ML Hosts (T:hot, score: 75)
 

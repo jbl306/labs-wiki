@@ -4689,4 +4689,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/spatial-foundation-baselines-vs-product-quality-systems.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-14T19:36:40Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-implementing-s9-features.md
+    - wiki/entities/spatial-design-studio.md
+    - wiki/concepts/metadata-first-local-vision-capability-surfacing.md
+    - wiki/synthesis/local-vision-policy-vs-planning-vs-wiring-spatial-design-studio.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

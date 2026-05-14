@@ -3,15 +3,18 @@ title: "Spatial Design Studio"
 type: entity
 created: 2026-05-11
 last_verified: 2026-05-14
-source_hash: "4fdaa6f0bd4b95994b247bf8ac8cf5c37b96f5b530b958e90bd8bd7de651ea70"
+source_hash: "c2c1e0f4ec58dfd8c603b1ce0e4231d656ce300cab8d51853141f3abaa454768"
 sources:
   - raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md
   - raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md
+  - raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md
 concepts:
   - agent-skill-routing-architecture
   - universal-agent-schema-agents-md-for-ai-tool-integration
   - multi-surface-ui-quality-gates-active-product-delivery
   - accessibility-hardening-command-driven-3d-web-interfaces
+  - cpu-bound-ai-stack-planning-homelab-spatial-apps
+  - metadata-first-local-vision-capability-surfacing
 related:
   - "[[Homelab]]"
   - "[[Task Observer]]"
@@ -21,7 +24,7 @@ related:
   - "[[FastAPI]]"
   - "[[PostgreSQL]]"
 tier: hot
-tags: [spatial-design-studio, room-planner, homelab, nextjs, fastapi, 3d, deployment]
+tags: [spatial-design-studio, room-planner, homelab, nextjs, fastapi, 3d, deployment, local-vision]
 ---
 
 # Spatial Design Studio
@@ -73,6 +76,12 @@ Later phases are already named: better 2D planner pan/zoom and scale affordances
 The S8 quality checkpoint moves Spatial Design Studio from "deployed and structurally safer" toward "safe to evolve at the interface layer." The product now has a concrete UI quality stack: Storybook 10 for isolated component rendering, Lost Pixel visual baselines, Playwright coverage for a mocked core flow, a WCAG-oriented accessibility pass across forms, 3D scenes, and media panels, plus a keyboard-first command palette wired into `StudioShell` and `StudioWorkspace`. That matters because the project now preserves more than architectural and deployment truth; it also preserves evidence about what a healthy user-facing slice should look and feel like.
 
 The checkpoint is especially durable because it records the exact compatibility seams that made the stack work. Storybook 8 was rejected by Next 16 peer dependencies, so the repo advanced to Storybook 10 and used `@storybook/addon-docs` plus `@storybook/addon-a11y` instead of the unavailable `@storybook/addon-essentials@10`. Lost Pixel still needed `lostpixel.config.ts`, so the repo kept a re-export next to `lost-pixel.config.ts`. Playwright e2e moved to port `3107` to avoid a local AdGuard collision on `3000`, and Lost Pixel required an older Chromium build through `playwright-core@1.47.2`. Those details make [[Copilot Session Checkpoint: Implementing S8 Quality]], [[Multi-Surface UI Quality Gates for Active Product Delivery]], and [[Accessibility Hardening for Command-Driven 3D Web Interfaces]] useful as operational references instead of vague "we improved quality" notes.
+
+## S9 Feature Delivery
+
+The S9 checkpoint shows the project maturing from quality hardening into feature-delivery under production constraints. On the user-facing side, `Scene3D.tsx` gained cutaway-wall controls, sun-position tuning, camera and panorama presets, local PNG/JSON exports, and accessible scene summaries. That is an important product signal: the 3D surface is no longer just a viewer attached to the plan; it is becoming a real planning workstation with export and inspection affordances.
+
+The same checkpoint also refines how AI-adjacent spatial edits become durable state. Reviewed wall proposals now flow through `POST /reference/jobs/{job_id}/wall-proposals/accept`, creating a new annotated version while preserving the original target version instead of mutating the latest scene implicitly. At the same time, the app adds [[Metadata-First Local Vision Capability Surfacing]] through seeded local model profiles, `localVision` worker metadata, env and compose wiring, capability badges, and license warnings, while still blocking unsafe cloud mode in production. This makes the project's AI story more honest: more visible and structured than a roadmap note, but still explicit about what remains deferred or metadata-only.
 
 ## Impact
 

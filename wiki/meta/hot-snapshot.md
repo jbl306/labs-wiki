@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-13T03:17:01+00:00
+generated: 2026-05-14T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,10 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-13T03:17:01+00:00
+> Regenerated: 2026-05-14T03:17:01+00:00
 
 ## Recent Wiki Edits
 
+- `2026-05-12` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-12` — [[deterministic-reference-artifact-pipeline]] (`wiki/concepts/deterministic-reference-artifact-pipeline.md`)
 - `2026-05-12` — [[review-first-candidate-acceptance-reference-jobs]] (`wiki/concepts/review-first-candidate-acceptance-reference-jobs.md`)
 - `2026-05-12` — [[spatial-design-studio-reference-worker]] (`wiki/entities/spatial-design-studio-reference-worker.md`)
@@ -24,7 +25,6 @@ ttl_hours: 24
 - `2026-05-12` — [[free-first-vision-pipeline-modes-spatial-planning-apps]] (`wiki/concepts/free-first-vision-pipeline-modes-spatial-planning-apps.md`)
 - `2026-05-12` — [[copilot-session-checkpoint-clarifying-vision-options]] (`wiki/sources/copilot-session-checkpoint-clarifying-vision-options.md`)
 - `2026-05-12` — [[local-vision-vs-developer-assisted-workflows-spatial-planning]] (`wiki/synthesis/local-vision-vs-developer-assisted-workflows-spatial-planning.md`)
-- `2026-05-11` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 
 ## Recent Sources Captured
 

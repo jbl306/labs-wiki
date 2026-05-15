@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-14T03:17:01+00:00
+generated: 2026-05-15T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,33 +11,33 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-14T03:17:01+00:00
+> Regenerated: 2026-05-15T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-12` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
-- `2026-05-12` — [[deterministic-reference-artifact-pipeline]] (`wiki/concepts/deterministic-reference-artifact-pipeline.md`)
-- `2026-05-12` — [[review-first-candidate-acceptance-reference-jobs]] (`wiki/concepts/review-first-candidate-acceptance-reference-jobs.md`)
-- `2026-05-12` — [[spatial-design-studio-reference-worker]] (`wiki/entities/spatial-design-studio-reference-worker.md`)
-- `2026-05-12` — [[copilot-session-checkpoint-no-llm-reference-workflow]] (`wiki/sources/copilot-session-checkpoint-no-llm-reference-workflow.md`)
-- `2026-05-12` — [[vision-policy-vs-extraction-vs-acceptance-spatial-reference]] (`wiki/synthesis/vision-policy-vs-extraction-vs-acceptance-spatial-reference.md`)
-- `2026-05-12` — [[developer-assisted-vision-workflows-spatial-planning-apps]] (`wiki/concepts/developer-assisted-vision-workflows-spatial-planning-apps.md`)
-- `2026-05-12` — [[free-first-vision-pipeline-modes-spatial-planning-apps]] (`wiki/concepts/free-first-vision-pipeline-modes-spatial-planning-apps.md`)
-- `2026-05-12` — [[copilot-session-checkpoint-clarifying-vision-options]] (`wiki/sources/copilot-session-checkpoint-clarifying-vision-options.md`)
-- `2026-05-12` — [[local-vision-vs-developer-assisted-workflows-spatial-planning]] (`wiki/synthesis/local-vision-vs-developer-assisted-workflows-spatial-planning.md`)
+- `2026-05-14` — [[metadata-first-local-vision-capability-surfacing]] (`wiki/concepts/metadata-first-local-vision-capability-surfacing.md`)
+- `2026-05-14` — [[spatial-design-studio]] (`wiki/entities/spatial-design-studio.md`)
+- `2026-05-14` — [[copilot-session-checkpoint-implementing-s9-features]] (`wiki/sources/copilot-session-checkpoint-implementing-s9-features.md`)
+- `2026-05-14` — [[local-vision-policy-vs-planning-vs-wiring-spatial-design-studio]] (`wiki/synthesis/local-vision-policy-vs-planning-vs-wiring-spatial-design-studio.md`)
+- `2026-05-14` — [[accessibility-hardening-command-driven-3d-web-interfaces]] (`wiki/concepts/accessibility-hardening-command-driven-3d-web-interfaces.md`)
+- `2026-05-14` — [[multi-surface-ui-quality-gates-active-product-delivery]] (`wiki/concepts/multi-surface-ui-quality-gates-active-product-delivery.md`)
+- `2026-05-14` — [[copilot-session-checkpoint-implementing-s8-quality]] (`wiki/sources/copilot-session-checkpoint-implementing-s8-quality.md`)
+- `2026-05-14` — [[spatial-foundation-baselines-vs-product-quality-systems]] (`wiki/synthesis/spatial-foundation-baselines-vs-product-quality-systems.md`)
+- `2026-05-14` — [[behavior-preserving-monolith-decomposition-live-services]] (`wiki/concepts/behavior-preserving-monolith-decomposition-live-services.md`)
+- `2026-05-14` — [[copilot-session-completing-s6-roadmap]] (`wiki/sources/copilot-session-completing-s6-roadmap.md`)
 
 ## Recent Sources Captured
 
+- `2026-05-14` — `raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md`
+- `2026-05-14` — `raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md`
+- `2026-05-14` — `raw/2026-05-14-copilot-session-completing-s6-roadmap-212ec880.md`
+- `2026-05-14` — `raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md`
+- `2026-05-14` — `raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md`
 - `2026-05-12` — `raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md`
 - `2026-05-12` — `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md`
 - `2026-05-11` — `raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md`
 - `2026-05-11` — `raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md`
 - `2026-05-01` — `raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md`
-- `2026-05-01` — `raw/2026-04-29-260424881v1pdf.md`
-- `2026-05-01` — `raw/2026-04-28-260109113v1pdf.md`
-- `2026-05-01` — `raw/2026-04-27-260414228v1pdf.md`
-- `2026-05-01` — `raw/2026-04-25-251001171v3pdf.md`
-- `2026-05-01` — `raw/2026-04-23-260419572v1pdf.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-16T03:17:01+00:00
+generated: 2026-05-17T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-16T03:17:01+00:00
+> Regenerated: 2026-05-17T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-14` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-05-15` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-14` — [[metadata-first-local-vision-capability-surfacing]] (`wiki/concepts/metadata-first-local-vision-capability-surfacing.md`)
 - `2026-05-14` — [[spatial-design-studio]] (`wiki/entities/spatial-design-studio.md`)
 - `2026-05-14` — [[copilot-session-checkpoint-implementing-s9-features]] (`wiki/sources/copilot-session-checkpoint-implementing-s9-features.md`)

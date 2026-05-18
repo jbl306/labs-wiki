@@ -4700,4 +4700,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/local-vision-policy-vs-planning-vs-wiring-spatial-design-studio.md
   status: success
   notes: "Auto-ingested 4 pages (1 concepts, 0 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-18T16:09:02Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-knightcrawler-torbox-backend.md
+    - wiki/entities/torbox.md
+    - wiki/concepts/dual-surface-provider-registration-minified-addon-bundles.md
+    - wiki/concepts/reliable-recent-scrape-automation-media-ingestion.md
+    - wiki/synthesis/knightcrawler-addon-customization-vs-operational-reliability.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

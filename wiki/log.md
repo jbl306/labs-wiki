@@ -4712,4 +4712,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/knightcrawler-addon-customization-vs-operational-reliability.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-18T17:15:08Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-homelab-nba-repairs.md
+    - wiki/entities/nextcloud.md
+    - wiki/concepts/trusted-domain-scope-reverse-proxied-nextcloud-checks.md
+    - wiki/concepts/task-specific-feature-profiles-memory-bounded-ml-training.md
+    - wiki/synthesis/configuration-scope-vs-workload-shaping-homelab-repairs.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

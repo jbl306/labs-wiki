@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-18T03:17:01+00:00
+generated: 2026-05-19T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,23 +11,25 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-18T03:17:01+00:00
+> Regenerated: 2026-05-19T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-16` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
-- `2026-05-14` — [[metadata-first-local-vision-capability-surfacing]] (`wiki/concepts/metadata-first-local-vision-capability-surfacing.md`)
-- `2026-05-14` — [[spatial-design-studio]] (`wiki/entities/spatial-design-studio.md`)
-- `2026-05-14` — [[copilot-session-checkpoint-implementing-s9-features]] (`wiki/sources/copilot-session-checkpoint-implementing-s9-features.md`)
-- `2026-05-14` — [[local-vision-policy-vs-planning-vs-wiring-spatial-design-studio]] (`wiki/synthesis/local-vision-policy-vs-planning-vs-wiring-spatial-design-studio.md`)
-- `2026-05-14` — [[accessibility-hardening-command-driven-3d-web-interfaces]] (`wiki/concepts/accessibility-hardening-command-driven-3d-web-interfaces.md`)
-- `2026-05-14` — [[multi-surface-ui-quality-gates-active-product-delivery]] (`wiki/concepts/multi-surface-ui-quality-gates-active-product-delivery.md`)
-- `2026-05-14` — [[copilot-session-checkpoint-implementing-s8-quality]] (`wiki/sources/copilot-session-checkpoint-implementing-s8-quality.md`)
-- `2026-05-14` — [[spatial-foundation-baselines-vs-product-quality-systems]] (`wiki/synthesis/spatial-foundation-baselines-vs-product-quality-systems.md`)
-- `2026-05-14` — [[behavior-preserving-monolith-decomposition-live-services]] (`wiki/concepts/behavior-preserving-monolith-decomposition-live-services.md`)
+- `2026-05-18` — [[task-specific-feature-profiles-memory-bounded-ml-training]] (`wiki/concepts/task-specific-feature-profiles-memory-bounded-ml-training.md`)
+- `2026-05-18` — [[trusted-domain-scope-reverse-proxied-nextcloud-checks]] (`wiki/concepts/trusted-domain-scope-reverse-proxied-nextcloud-checks.md`)
+- `2026-05-18` — [[nextcloud]] (`wiki/entities/nextcloud.md`)
+- `2026-05-18` — [[copilot-session-checkpoint-homelab-nba-repairs]] (`wiki/sources/copilot-session-checkpoint-homelab-nba-repairs.md`)
+- `2026-05-18` — [[configuration-scope-vs-workload-shaping-homelab-repairs]] (`wiki/synthesis/configuration-scope-vs-workload-shaping-homelab-repairs.md`)
+- `2026-05-18` — [[dual-surface-provider-registration-minified-addon-bundles]] (`wiki/concepts/dual-surface-provider-registration-minified-addon-bundles.md`)
+- `2026-05-18` — [[reliable-recent-scrape-automation-media-ingestion]] (`wiki/concepts/reliable-recent-scrape-automation-media-ingestion.md`)
+- `2026-05-18` — [[torbox]] (`wiki/entities/torbox.md`)
+- `2026-05-18` — [[copilot-session-checkpoint-knightcrawler-torbox-backend]] (`wiki/sources/copilot-session-checkpoint-knightcrawler-torbox-backend.md`)
+- `2026-05-18` — [[knightcrawler-addon-customization-vs-operational-reliability]] (`wiki/synthesis/knightcrawler-addon-customization-vs-operational-reliability.md`)
 
 ## Recent Sources Captured
 
+- `2026-05-18` — `raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md`
+- `2026-05-18` — `raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md`
 - `2026-05-14` — `raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md`
 - `2026-05-14` — `raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md`
 - `2026-05-14` — `raw/2026-05-14-copilot-session-completing-s6-roadmap-212ec880.md`
@@ -36,8 +38,6 @@ ttl_hours: 24
 - `2026-05-12` — `raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md`
 - `2026-05-12` — `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md`
 - `2026-05-11` — `raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md`
-- `2026-05-11` — `raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md`
-- `2026-05-01` — `raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

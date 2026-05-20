@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-19T03:17:01+00:00
+generated: 2026-05-20T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,10 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-19T03:17:01+00:00
+> Regenerated: 2026-05-20T03:17:01+00:00
 
 ## Recent Wiki Edits
 
+- `2026-05-18` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-18` — [[task-specific-feature-profiles-memory-bounded-ml-training]] (`wiki/concepts/task-specific-feature-profiles-memory-bounded-ml-training.md`)
 - `2026-05-18` — [[trusted-domain-scope-reverse-proxied-nextcloud-checks]] (`wiki/concepts/trusted-domain-scope-reverse-proxied-nextcloud-checks.md`)
 - `2026-05-18` — [[nextcloud]] (`wiki/entities/nextcloud.md`)
@@ -24,7 +25,6 @@ ttl_hours: 24
 - `2026-05-18` — [[reliable-recent-scrape-automation-media-ingestion]] (`wiki/concepts/reliable-recent-scrape-automation-media-ingestion.md`)
 - `2026-05-18` — [[torbox]] (`wiki/entities/torbox.md`)
 - `2026-05-18` — [[copilot-session-checkpoint-knightcrawler-torbox-backend]] (`wiki/sources/copilot-session-checkpoint-knightcrawler-torbox-backend.md`)
-- `2026-05-18` — [[knightcrawler-addon-customization-vs-operational-reliability]] (`wiki/synthesis/knightcrawler-addon-customization-vs-operational-reliability.md`)
 
 ## Recent Sources Captured
 

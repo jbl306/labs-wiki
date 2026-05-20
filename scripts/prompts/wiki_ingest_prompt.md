@@ -530,8 +530,8 @@ ReasoningBank builds on prior work like [[Synapse]] and [[Agent Workflow Memory]
 ### Step 5 — Update raw status
 
 Edit the raw file's frontmatter:
-- Change `status: pending` → `status: success`
-- OR `status: failed` → `status: success` (if reprocessing)
+- Change `status: pending` → `status: ingested`
+- OR `status: failed` → `status: ingested` (if reprocessing)
 
 Use the `edit` tool to make this change precisely.
 

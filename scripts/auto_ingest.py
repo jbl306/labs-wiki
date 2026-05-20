@@ -217,6 +217,122 @@ def _is_meaningful_markdown(text: str) -> bool:
     return len(compressed) >= 30
 
 
+_PDF_SINGLE_CHAR_LINE_RE = re.compile(r"^[A-Za-z0-9\[\]\(\)\.:;,_-]$")
+_PDF_SPACED_WORD_RE = re.compile(r"\b(?:[A-Za-z]{1,2}\s+){3,}[A-Za-z]{1,2}\b")
+_PDF_SPACED_WORD_STOPWORDS = {
+    "a", "an", "and", "as", "at", "be", "by", "do", "et", "for", "he",
+    "if", "in", "is", "it", "of", "on", "or", "so", "to", "up", "we",
+}
+
+
+def _strip_pdf_vertical_noise(text: str) -> str:
+    """Remove vertical single-character metadata dumps common in PDF extraction."""
+    lines = text.splitlines()
+    cleaned: list[str] = []
+    i = 0
+    while i < len(lines):
+        j = i
+        total_lines = 0
+        single_char_lines = 0
+        while j < len(lines):
+            stripped = lines[j].strip()
+            if not stripped:
+                if total_lines == 0:
+                    break
+                total_lines += 1
+                j += 1
+                continue
+            if _PDF_SINGLE_CHAR_LINE_RE.fullmatch(stripped):
+                single_char_lines += 1
+                total_lines += 1
+                j += 1
+                continue
+            break
+        if single_char_lines >= 6 and total_lines >= 8:
+            i = j
+            continue
+        cleaned.append(lines[i])
+        i += 1
+    return "\n".join(cleaned)
+
+
+def _merge_spaced_pdf_word(match: re.Match[str]) -> str:
+    phrase = match.group(0)
+    tokens = phrase.split()
+    letters_only = "".join(tokens)
+    if len(tokens) < 3:
+        return phrase
+    lowered = [token.lower() for token in tokens]
+    if all(token in _PDF_SPACED_WORD_STOPWORDS for token in lowered):
+        return phrase
+    if len(letters_only) >= 6:
+        return letters_only
+    mixed_case_token = any(
+        any(ch.islower() for ch in token) and any(ch.isupper() for ch in token)
+        for token in tokens
+    )
+    if mixed_case_token or sum(len(token) == 1 for token in tokens) >= 3:
+        return letters_only
+    return phrase
+
+
+def _merge_pdf_fragments_if_known(match: re.Match[str], known_words: Counter[str]) -> str:
+    pieces = [piece for piece in match.groups() if piece]
+    if len(pieces) < 2:
+        return match.group(0)
+    if any(piece.lower() in _PDF_SPACED_WORD_STOPWORDS for piece in pieces):
+        return match.group(0)
+
+    for piece_count in range(len(pieces), 1, -1):
+        candidate = "".join(pieces[:piece_count])
+        if len(candidate) < 6:
+            continue
+        if known_words[candidate.lower()] > 0:
+            suffix = ""
+            if piece_count < len(pieces):
+                suffix = " " + " ".join(pieces[piece_count:])
+            return candidate + suffix
+    return match.group(0)
+
+
+def _normalize_pdf_link_line(line: str) -> str:
+    if not any(marker in line.lower() for marker in ("http", "www.", "github", "openreview", "doi.org")):
+        return line
+    line = re.sub(r"(https?)\s*:\s*/\s*/\s*", r"\1://", line)
+    line = re.sub(r"(https?://)\s+", r"\1", line)
+    line = re.sub(r"(www\.)\s+", r"\1", line)
+    line = re.sub(r"\s+([/?#=&.:])", r"\1", line)
+    line = re.sub(r"([/?#=&.:])\s+", r"\1", line)
+    return line
+
+
+def normalize_pdf_markdown(text: str) -> str:
+    """Apply lightweight cleanup to PDF-derived markdown/text.
+
+    MarkItDown PDF output is often good enough structurally, but arXiv papers can
+    still contain vertical single-character metadata, spaced-out words, and URLs
+    with embedded spaces. Clean those artifacts without aggressively reflowing the
+    document.
+    """
+    cleaned = text.replace("\x00", "")
+    cleaned = re.sub(r"\(cid:\d+\)", "", cleaned)
+    cleaned = cleaned.replace("ﬁ", "fi").replace("ﬂ", "fl")
+    cleaned = re.sub(r"(?<=\w)-\n(?=\w)", "", cleaned)
+    cleaned = _strip_pdf_vertical_noise(cleaned)
+    cleaned = _PDF_SPACED_WORD_RE.sub(_merge_spaced_pdf_word, cleaned)
+    known_words = Counter(word.lower() for word in re.findall(r"\b[A-Za-z]{7,}\b", cleaned))
+    cleaned = re.sub(
+        r"\b([A-Za-z]{3,})(?:\s+([A-Za-z]{1,3}))(?:\s+([A-Za-z]{1,3}))?\b",
+        lambda match: _merge_pdf_fragments_if_known(match, known_words),
+        cleaned,
+    )
+    cleaned = "\n".join(_normalize_pdf_link_line(line) for line in cleaned.splitlines())
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    cleaned = re.sub(r"[ \t]+\n", "\n", cleaned)
+    return cleaned.strip()
+
+
+
 def _is_markitdown_binary_url(source_url: str, content_type: str | None) -> bool:
     suffix = _suffix_from_url(source_url) or _guess_extension_from_content_type(content_type)
     normalized_content_type = _normalized_content_type(content_type)
@@ -286,6 +402,8 @@ def convert_file_to_markdown(path: Path) -> tuple[str | None, str | None]:
         return None, None
 
     text = getattr(result, "text_content", "").strip()
+    if suffix == ".pdf":
+        text = normalize_pdf_markdown(text)
     if not _is_meaningful_markdown(text):
         return None, _normalized_content_type(mimetypes.guess_type(path.name)[0])
     return text, _normalized_content_type(mimetypes.guess_type(path.name)[0])
@@ -317,6 +435,8 @@ def convert_binary_response_to_markdown(
         return None
 
     text = getattr(result, "text_content", "").strip()
+    if suffix == ".pdf":
+        text = normalize_pdf_markdown(text)
     if not _is_meaningful_markdown(text):
         return None
     return text
@@ -808,8 +928,11 @@ def normalize_html_document(raw_html: str) -> str:
     text = re.sub(r"[ \t]+\n", "\n", text)
     # Preserve all non-empty lines; no global short-line deduplication so
     # lists, table rows, captions, and footnotes survive verbatim.
+    # Do not truncate here: the raw fetched-content block is the durable source
+    # snapshot and should keep the full translated document body. Downstream LLM
+    # calls already apply their own max_source_chars budget.
     lines = [line.strip() for line in text.splitlines() if line.strip()]
-    return "\n".join(lines).strip()[:50_000]
+    return "\n".join(lines).strip()
 
 
 MODEL_DEFAULT = _env_str("GITHUB_MODELS_MODEL_DEFAULT", "GITHUB_MODELS_MODEL", default=DEFAULT_MODEL)
@@ -1155,7 +1278,9 @@ def fetch_url_content(url: str) -> UrlFetchResult:
     if arxiv_match:
         paper_id = arxiv_match.group(1)
         html_url = f"https://arxiv.org/html/{paper_id}"
-        log.info("arxiv detected — rewriting to HTML: %s → %s", url, html_url)
+        pdf_url = f"https://arxiv.org/pdf/{paper_id}.pdf"
+        abs_url = f"https://arxiv.org/abs/{paper_id}"
+        log.info("arxiv detected — preferring full-paper content for %s", paper_id)
         try:
             resp = httpx.get(
                 html_url,
@@ -1164,15 +1289,46 @@ def fetch_url_content(url: str) -> UrlFetchResult:
                 timeout=URL_FETCH_TIMEOUT,
             )
             resp.raise_for_status()
-            if "html" in resp.headers.get("content-type", ""):
+            if (
+                "html" in resp.headers.get("content-type", "")
+                and str(resp.url).rstrip("/") == html_url
+            ):
                 log.info("arxiv HTML version available, fetching full paper")
                 return fetch_url_content(html_url)
         except Exception:
             pass
-        # Fallback: fetch the abstract page directly (NOT via fetch_url_content,
-        # which would re-match this same arxiv branch and recurse infinitely).
-        abs_url = f"https://arxiv.org/abs/{paper_id}"
-        log.warning("arxiv HTML not available for %s, falling back to abstract", paper_id)
+
+        # Preferred fallback: fetch the PDF itself and run MarkItDown so the
+        # raw source stores translated document text instead of an abstract-only
+        # pointer page when arXiv has no HTML rendering yet.
+        try:
+            pdf_resp = httpx.get(
+                pdf_url,
+                headers={"User-Agent": "Mozilla/5.0 (compatible; labs-wiki-bot/1.0)"},
+                follow_redirects=True,
+                timeout=URL_FETCH_TIMEOUT,
+            )
+            pdf_resp.raise_for_status()
+            converted_pdf = convert_binary_response_to_markdown(
+                pdf_resp.content,
+                source_url=pdf_url,
+                content_type=pdf_resp.headers.get("content-type"),
+            )
+            if converted_pdf and _is_meaningful_markdown(converted_pdf):
+                log.info("arxiv HTML unavailable for %s; using PDF-to-markdown fallback", paper_id)
+                return UrlFetchResult(
+                    text=converted_pdf,
+                    image_urls=[],
+                    resolved_url=pdf_url,
+                    content_type=pdf_resp.headers.get("content-type"),
+                )
+        except Exception as e:
+            log.warning("arxiv PDF fallback failed for %s: %s", paper_id, e)
+
+        # Last-resort fallback: fetch the abstract page directly (NOT via
+        # fetch_url_content, which would re-match this same arxiv branch and
+        # recurse infinitely).
+        log.warning("arxiv HTML/PDF unavailable for %s, falling back to abstract", paper_id)
         try:
             abs_resp = httpx.get(
                 abs_url,
@@ -1469,7 +1625,7 @@ def fetch_url_content(url: str) -> UrlFetchResult:
             if converted_binary:
                 log.info("Converted binary URL response via MarkItDown: %s", resolved_url)
                 return UrlFetchResult(
-                    text=converted_binary[:50_000],
+                    text=converted_binary,
                     image_urls=[],
                     resolved_url=resolved_url,
                     content_type=content_type,
@@ -3210,10 +3366,90 @@ def ingest_raw_source(
     if status != "pending" and not force:
         log.info("Skipping %s (status: %s)", raw_path.name, status)
         return False
-    
+
+    title = fm.get("title", raw_path.stem)
+    source_type = fm.get("type", "text")
+    source_url = fm.get("url")
+
     # Check which backend to use
     backend = os.environ.get("WIKI_INGEST_BACKEND", "copilot-cli")
     if backend == "copilot-cli":
+        # Enrich raw URL/file sources before handing off to the copilot-cli
+        # compiler flow so prompt-side page generation sees the durable fetched /
+        # extracted body instead of the original pointer-only raw stub.
+        if source_type == "file":
+            asset_path_ref, original_filename = parse_file_asset_reference(body)
+            persisted_text, persisted_metadata = read_persisted_extracted_content(body)
+            if not original_filename:
+                original_filename = str(persisted_metadata.get("original_filename") or "").strip() or None
+            should_extract = bool(asset_path_ref) and (refresh_fetch or force or not persisted_text)
+            if asset_path_ref and should_extract:
+                asset_path = (project_root / asset_path_ref).resolve()
+                try:
+                    project_root_resolved = project_root.resolve()
+                    asset_path.relative_to(project_root_resolved)
+                except ValueError:
+                    log.warning("Skipping out-of-tree asset reference in %s: %s", raw_path.name, asset_path_ref)
+                else:
+                    if not asset_path.exists():
+                        log.warning("Referenced asset does not exist for %s: %s", raw_path.name, asset_path)
+                    else:
+                        extracted_text, extracted_content_type = convert_file_to_markdown(asset_path)
+                        if extracted_text:
+                            updated_raw = upsert_extracted_content_block(
+                                raw_path.read_text(),
+                                build_extracted_content_block(
+                                    extracted_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                    asset_path=asset_path_ref,
+                                    original_filename=original_filename,
+                                    content_type=extracted_content_type,
+                                    text=extracted_text.strip(),
+                                ),
+                            )
+                            raw_path.write_text(updated_raw)
+                            body = updated_raw
+                            fm, body = parse_frontmatter(raw_path)
+                            log.info(
+                                "Persisted %d chars of extracted file content for %s before copilot-cli ingest",
+                                len(extracted_text.strip()),
+                                raw_path.name,
+                            )
+        elif source_type == "url" and source_url:
+            persisted_text, _persisted_metadata = read_persisted_fetched_content(body)
+            should_fetch = refresh_fetch or force or not persisted_text
+            if should_fetch:
+                try:
+                    fetch_result = fetch_url_content(source_url)
+                except Exception as exc:
+                    log.error("Failed to fetch URL %s before copilot-cli ingest: %s", source_url, exc)
+                else:
+                    fetched_text = fetch_result.text.strip()
+                    if is_meaningful_fetched_body(fetched_text, source_url) or _is_binary_url_placeholder(fetched_text):
+                        updated_raw = upsert_fetched_content_block(
+                            raw_path.read_text(),
+                            build_fetched_content_block(
+                                fetched_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                                source_url=source_url,
+                                resolved_url=fetch_result.resolved_url,
+                                content_type=fetch_result.content_type,
+                                image_urls=fetch_result.image_urls,
+                                text=fetched_text,
+                            ),
+                        )
+                        raw_path.write_text(updated_raw)
+                        body = updated_raw
+                        fm, body = parse_frontmatter(raw_path)
+                        log.info(
+                            "Persisted %d chars of fetched content for %s before copilot-cli ingest",
+                            len(fetched_text),
+                            raw_path.name,
+                        )
+                    else:
+                        log.warning(
+                            "Fetched URL content for %s was not meaningful before copilot-cli ingest; leaving raw unchanged",
+                            source_url,
+                        )
+
         # New Copilot CLI backend
         ingest_model = os.environ.get("WIKI_INGEST_MODEL", model or "gpt-5.4")
         # Effort routing: env var wins; otherwise PDFs get 'high', everything
@@ -3237,10 +3473,11 @@ def ingest_raw_source(
         success = result.get("status") in ("success", "partial")
 
         if success:
+            update_raw_status(raw_path, "ingested")
             # Notify
             if not validation_run:
                 send_ntfy(
-                    f"Wiki: {fm.get('title', raw_path.stem)}",
+                    f"Wiki: {title}",
                     f"Ingested via copilot-cli: {result.get('notes', '')}",
                     tags="books,white_check_mark",
                 )
@@ -3255,7 +3492,7 @@ def ingest_raw_source(
             try:
                 commit_wiki_changes(
                     project_root,
-                    title=fm.get("title", raw_path.stem),
+                    title=title,
                     notes=result.get("notes", ""),
                 )
             except Exception as exc:
@@ -3264,7 +3501,7 @@ def ingest_raw_source(
             log.error("Copilot CLI ingest failed: %s", result.get("notes", "Unknown error"))
 
         return success
-    
+
     # Legacy github-models backend (original implementation below)
 
     title = fm.get("title", raw_path.stem)

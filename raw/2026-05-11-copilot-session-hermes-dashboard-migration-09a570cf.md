@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, homelab, mempal
 checkpoint_class: durable-architecture
 checkpoint_class_rule: "title:migration"
 retention_mode: retain
-status: pending
+status: ingested
 ---
 
 # Copilot Session Checkpoint Export

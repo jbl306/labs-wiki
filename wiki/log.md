@@ -4724,4 +4724,17 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/configuration-scope-vs-workload-shaping-homelab-repairs.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-20T13:11:02Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-hermes-dashboard-migration.md
+    - wiki/entities/hermes-dashboard.md
+    - wiki/entities/hermes-gateway.md
+    - wiki/concepts/host-managed-cli-dashboard-migration-homelab-services.md
+    - wiki/concepts/cloudflare-access-gating-unauthenticated-homelab-dashboards.md
+    - wiki/synthesis/publishing-homelab-dashboards-safely-access-gates-dns.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

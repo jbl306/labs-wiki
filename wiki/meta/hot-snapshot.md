@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-20T03:17:01+00:00
+generated: 2026-05-21T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,23 +11,24 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-20T03:17:01+00:00
+> Regenerated: 2026-05-21T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-18` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-05-20` — [[cloudflare-access-gating-unauthenticated-homelab-dashboards]] (`wiki/concepts/cloudflare-access-gating-unauthenticated-homelab-dashboards.md`)
+- `2026-05-20` — [[host-managed-cli-dashboard-migration-homelab-services]] (`wiki/concepts/host-managed-cli-dashboard-migration-homelab-services.md`)
+- `2026-05-20` — [[hermes-dashboard]] (`wiki/entities/hermes-dashboard.md`)
+- `2026-05-20` — [[hermes-gateway]] (`wiki/entities/hermes-gateway.md`)
+- `2026-05-20` — [[copilot-session-checkpoint-hermes-dashboard-migration]] (`wiki/sources/copilot-session-checkpoint-hermes-dashboard-migration.md`)
+- `2026-05-20` — [[publishing-homelab-dashboards-safely-access-gates-dns]] (`wiki/synthesis/publishing-homelab-dashboards-safely-access-gates-dns.md`)
+- `2026-05-19` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-18` — [[task-specific-feature-profiles-memory-bounded-ml-training]] (`wiki/concepts/task-specific-feature-profiles-memory-bounded-ml-training.md`)
 - `2026-05-18` — [[trusted-domain-scope-reverse-proxied-nextcloud-checks]] (`wiki/concepts/trusted-domain-scope-reverse-proxied-nextcloud-checks.md`)
 - `2026-05-18` — [[nextcloud]] (`wiki/entities/nextcloud.md`)
-- `2026-05-18` — [[copilot-session-checkpoint-homelab-nba-repairs]] (`wiki/sources/copilot-session-checkpoint-homelab-nba-repairs.md`)
-- `2026-05-18` — [[configuration-scope-vs-workload-shaping-homelab-repairs]] (`wiki/synthesis/configuration-scope-vs-workload-shaping-homelab-repairs.md`)
-- `2026-05-18` — [[dual-surface-provider-registration-minified-addon-bundles]] (`wiki/concepts/dual-surface-provider-registration-minified-addon-bundles.md`)
-- `2026-05-18` — [[reliable-recent-scrape-automation-media-ingestion]] (`wiki/concepts/reliable-recent-scrape-automation-media-ingestion.md`)
-- `2026-05-18` — [[torbox]] (`wiki/entities/torbox.md`)
-- `2026-05-18` — [[copilot-session-checkpoint-knightcrawler-torbox-backend]] (`wiki/sources/copilot-session-checkpoint-knightcrawler-torbox-backend.md`)
 
 ## Recent Sources Captured
 
+- `2026-05-20` — `raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md`
 - `2026-05-18` — `raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md`
 - `2026-05-18` — `raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md`
 - `2026-05-14` — `raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md`
@@ -37,7 +38,6 @@ ttl_hours: 24
 - `2026-05-14` — `raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md`
 - `2026-05-12` — `raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md`
 - `2026-05-12` — `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md`
-- `2026-05-11` — `raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

@@ -4737,4 +4737,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/publishing-homelab-dashboards-safely-access-gates-dns.md
   status: success
   notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-28T19:49:54Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-28-copilot-session-swapping-real-debrid-for-comet-torbox-122ac146.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-swapping-real-debrid-comet-torbox.md
+    - wiki/entities/comet.md
+    - wiki/concepts/comet-resolver-workflow-torbox-backed-downloads.md
+    - wiki/synthesis/comet-resolver-vs-real-debrid-magnet-polling.md
+  status: success
+  notes: "Auto-ingested 4 pages (1 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

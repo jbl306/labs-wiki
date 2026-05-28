@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-27T03:17:02+00:00
+generated: 2026-05-28T03:17:02+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-27T03:17:02+00:00
+> Regenerated: 2026-05-28T03:17:02+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-25` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-05-26` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-20` — [[cloudflare-access-gating-unauthenticated-homelab-dashboards]] (`wiki/concepts/cloudflare-access-gating-unauthenticated-homelab-dashboards.md`)
 - `2026-05-20` — [[host-managed-cli-dashboard-migration-homelab-services]] (`wiki/concepts/host-managed-cli-dashboard-migration-homelab-services.md`)
 - `2026-05-20` — [[hermes-dashboard]] (`wiki/entities/hermes-dashboard.md`)

@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-05-28T03:17:02+00:00
+generated: 2026-05-29T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,23 +11,24 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-05-28T03:17:02+00:00
+> Regenerated: 2026-05-29T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-05-26` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-05-28` — [[comet-resolver-workflow-torbox-backed-downloads]] (`wiki/concepts/comet-resolver-workflow-torbox-backed-downloads.md`)
+- `2026-05-28` — [[comet]] (`wiki/entities/comet.md`)
+- `2026-05-28` — [[copilot-session-checkpoint-swapping-real-debrid-comet-torbox]] (`wiki/sources/copilot-session-checkpoint-swapping-real-debrid-comet-torbox.md`)
+- `2026-05-28` — [[comet-resolver-vs-real-debrid-magnet-polling]] (`wiki/synthesis/comet-resolver-vs-real-debrid-magnet-polling.md`)
+- `2026-05-27` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-20` — [[cloudflare-access-gating-unauthenticated-homelab-dashboards]] (`wiki/concepts/cloudflare-access-gating-unauthenticated-homelab-dashboards.md`)
 - `2026-05-20` — [[host-managed-cli-dashboard-migration-homelab-services]] (`wiki/concepts/host-managed-cli-dashboard-migration-homelab-services.md`)
 - `2026-05-20` — [[hermes-dashboard]] (`wiki/entities/hermes-dashboard.md`)
 - `2026-05-20` — [[hermes-gateway]] (`wiki/entities/hermes-gateway.md`)
 - `2026-05-20` — [[copilot-session-checkpoint-hermes-dashboard-migration]] (`wiki/sources/copilot-session-checkpoint-hermes-dashboard-migration.md`)
-- `2026-05-20` — [[publishing-homelab-dashboards-safely-access-gates-dns]] (`wiki/synthesis/publishing-homelab-dashboards-safely-access-gates-dns.md`)
-- `2026-05-18` — [[task-specific-feature-profiles-memory-bounded-ml-training]] (`wiki/concepts/task-specific-feature-profiles-memory-bounded-ml-training.md`)
-- `2026-05-18` — [[trusted-domain-scope-reverse-proxied-nextcloud-checks]] (`wiki/concepts/trusted-domain-scope-reverse-proxied-nextcloud-checks.md`)
-- `2026-05-18` — [[nextcloud]] (`wiki/entities/nextcloud.md`)
 
 ## Recent Sources Captured
 
+- `2026-05-28` — `raw/2026-05-28-copilot-session-swapping-real-debrid-for-comet-torbox-122ac146.md`
 - `2026-05-20` — `raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md`
 - `2026-05-18` — `raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md`
 - `2026-05-18` — `raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md`
@@ -37,7 +38,6 @@ ttl_hours: 24
 - `2026-05-14` — `raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md`
 - `2026-05-14` — `raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md`
 - `2026-05-12` — `raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md`
-- `2026-05-12` — `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

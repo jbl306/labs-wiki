@@ -4760,4 +4760,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/full-dashboard-rewrite-vs-phased-ux-uplift-internal-tools.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-30T01:09:45Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md
+  targets:
+    - wiki/sources/copilot-session-implementing-automated-catalog-refresh-pipeline.md
+    - wiki/entities/automated-catalog-refresh-pipeline.md
+    - wiki/concepts/deterministic-public-web-catalog-refresh-benefits-apps.md
+    - wiki/concepts/validation-gated-catalog-diffing-auto-apply.md
+    - wiki/synthesis/deterministic-extraction-vs-validation-gates-catalog-automation.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

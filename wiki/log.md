@@ -4784,4 +4784,28 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/choosing-source-truth-edit-hotel-catalog.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-30T01:59:27Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md
+  targets:
+    - wiki/sources/copilot-session-building-jbl-dev-kit-multiagent-workflow.md
+    - wiki/entities/jbl-dev-kit.md
+    - wiki/concepts/managed-block-layering-cross-repo-agent-installs.md
+    - wiki/concepts/headless-worktree-orchestration-agent-runtimes.md
+    - wiki/synthesis/compiler-managed-agent-installs-vs-repo-local-custom-agents.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-30T02:06:29Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md
+  targets:
+    - wiki/sources/copilot-session-implementing-hotel-auto-population-pipeline.md
+    - wiki/entities/hotel-auto-population-pipeline.md
+    - wiki/concepts/resumable-geocoding-city-centroid-fallback-travel-catalogs.md
+    - wiki/concepts/provenance-aware-hotel-catalog-diffing-mixed-source-refresh.md
+    - wiki/synthesis/turning-sparse-hotel-sources-into-safe-geospatial-catalog.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

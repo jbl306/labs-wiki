@@ -2,25 +2,29 @@
 title: jbl-dev-kit
 type: entity
 created: 2026-05-30
-last_verified: 2026-05-30
-source_hash: 1e5d1918b741d826e423e9404d456c2e9d9b94ea731fae6a5591d18f7669ee34
+last_verified: 2026-05-31
+source_hash: fd9ede1ed7a38ab86c746f55d8624f394351d37f89e662d4d0854e423830f9f0
 sources:
   - raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md
   - raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md
+  - raw/2026-05-31-copilot-session-optimizing-dev-kit-instructions-3fbfec36.md
 concepts:
   - managed-block-layering-cross-repo-agent-installs
   - headless-worktree-orchestration-agent-runtimes
   - cross-platform-agent-plugin-conversion
   - provenance-stamped-managed-blocks-upgrade-safe-agent-installs
   - dry-run-llm-council-orchestration-multi-runtime-agents
+  - progressive-disclosure-context-loading
+  - agentic-ai-evaluation-software-engineering
 related:
   - "[[Copilot CLI]]"
   - "[[Claude Code]]"
   - "[[OpenCode]]"
   - "[[MemPalace]]"
   - "[[GitHub Copilot]]"
+  - "[[Task Observer]]"
 tier: hot
-tags: [multiagent, runtime-agnostic, developer-tooling, nodejs, worktrees, orchestration, compiler]
+tags: [multiagent, runtime-agnostic, developer-tooling, nodejs, worktrees, orchestration, evaluation, self-learning]
 ---
 
 # jbl-dev-kit
@@ -29,7 +33,7 @@ tags: [multiagent, runtime-agnostic, developer-tooling, nodejs, worktrees, orche
 
 jbl-dev-kit is a runtime-agnostic toolkit for agent-driven software development across sibling repositories in `~/projects`. Instead of hand-maintaining separate instructions, skills, and agent files for each host runtime, the project treats workflow content as normalized source material that can be compiled into runtime-specific outputs for Claude Code, Codex, Copilot CLI, and OpenCode.
 
-The newer checkpoint shows the repository has already moved beyond the initial compiler sketch. Two implementation batches are complete, the test suite has climbed to 47/47 green, and the remaining roadmap is focused on operational polish: provenance-stamped installs, stronger token accounting, Copilot custom-agent emission, and a dry-run-first LLM council mode. In that sense, jbl-dev-kit combines a workflow compiler, an installer, and a VM-native orchestration layer into one system.
+The later checkpoint shows the repository has moved well beyond the initial compiler sketch. The kit now includes a unified CLI, project/bootstrap install flows, self-learning lesson capture, runtime-neutral verification, golden-task and behavior evals, progressive-disclosure-aware instruction generation, and orchestration hardening validated through stacked PRs. In practice, jbl-dev-kit now behaves less like a speculative prompt compiler and more like a portable control plane for multi-runtime developer workflows.
 
 ## Key Facts
 
@@ -43,33 +47,43 @@ The newer checkpoint shows the repository has already moved beyond the initial c
 
 ## Architecture
 
-The checkpoint describes a compiler-first architecture. Neutral Markdown and YAML-frontmatter assets live in `source/`, then flow through `compile/targets/*` adapters that emit runtime-specific artifacts. The normalized artifact schema includes `name`, `kind`, `summary`, `targets`, `tier`, `model_hint`, and `tools`, giving the project one small contract that can be rendered into several host-specific file layouts.
+The checkpoints describe a compiler-first architecture. Neutral Markdown and YAML-frontmatter assets live in `source/`, then flow through `compile/targets/*` adapters that emit runtime-specific artifacts. The normalized artifact schema includes `name`, `kind`, `summary`, `targets`, `tier`, `model_hint`, and `tools`, giving the project one small contract that can be rendered into several host-specific file layouts.
 
-The emitted surfaces differ by runtime. Claude output folds context and skills into `CLAUDE.md` and companion `.claude/agents/` and `.claude/commands/` files. Codex uses a single `AGENTS.md`. Copilot initially targeted `.github/copilot-instructions.md` plus `.github/skills/<name>/SKILL.md`, and the newer checkpoint proposes extending that target to `.github/agents/<name>.agent.md` custom agents so GitHub Copilot can consume first-class specialized agents rather than only prose folding. OpenCode uses `.opencode/skills/<name>/SKILL.md` and `.opencode/opencode.json`. This keeps source authoring unified while preserving each runtime's conventions.
+The emitted surfaces differ by runtime. Claude output folds context and skills into `CLAUDE.md` and companion `.claude/agents/` and `.claude/commands/` files. Codex uses a single `AGENTS.md`. Copilot uses `.github/copilot-instructions.md`, `.github/skills/<name>/SKILL.md`, and a roadmap toward `.github/agents/<name>.agent.md` custom agents. OpenCode uses `.opencode/skills/<name>/SKILL.md` and `.opencode/opencode.json`. This keeps source authoring unified while preserving each runtime's conventions, and the newer checkpoint adds an explicit instruction-optimization focus on canonical sources rather than generated outputs.
 
 ## Install Model
 
-One of jbl-dev-kit's differentiators is its layered install model. The compiler supports `dist`, `global`, and `project` scopes. Global install targets are meant to turn the kit on across all `~/projects` repositories by writing into user-level runtime directories such as `~/.claude/` and `~/.codex/`.
+One of jbl-dev-kit's differentiators is its layered install model. The compiler supports `dist`, `global`, and `project` scopes, and the later checkpoint adds a unified `jbl-dev-kit` CLI plus an `init` wizard and private bootstrap install flow so the kit is easier to drop into new environments without publishing to npm. Global install targets are meant to turn the kit on across all `~/projects` repositories by writing into user-level runtime directories such as `~/.claude/` and `~/.codex/`.
 
-Project installs are more conservative. The checkpoints state that they use managed blocks of the form `<!-- jbl-dev-kit:start --> ... <!-- jbl-dev-kit:end -->`, written through `writeManagedFile()`, so generated content can be inserted idempotently without trampling repo-local hand-written material. The newer checkpoint extends that design with optional provenance stamps in the opening marker, allowing blocks to expose which toolkit version and date wrote them without changing payload comparisons.
+Project installs are more conservative. The checkpoints state that they use managed blocks of the form `<!-- jbl-dev-kit:start --> ... <!-- jbl-dev-kit:end -->`, written through `writeManagedFile()`, so generated content can be inserted idempotently without trampling repo-local hand-written material. The later work keeps that design, adds global default scope decisions, and extends the model with optional provenance stamps in the opening marker so blocks can expose writer/version metadata without changing payload comparisons.
 
 ## Orchestration Model
 
-The repo's second major surface beyond compilation is a headless orchestrator. The source lists `ledger.mjs`, `runner.mjs`, and `worktree.mjs` as the core modules: ledger stores run IDs and token metadata, runner builds headless commands for Claude, Codex, Copilot, and OpenCode, and worktree helpers isolate execution in sibling repositories.
+The repo's second major surface beyond compilation is a headless orchestrator. The source lists `ledger.mjs`, `runner.mjs`, and `worktree.mjs` as the core modules: ledger stores run IDs and token metadata, runner builds headless commands for Claude, Codex, Copilot, and OpenCode, and worktree helpers isolate execution in sibling repositories. Around that core, later phases add `task start`, cleanup support, timeout-aware execution, structured events, and lesson-aware blocked-run handling.
 
-This orchestration model is deliberately safety-biased. The initial checkpoint's intended next step was to rewrite `orchestrator.mjs` so it defaults to dry-run planning, only performs real work when `--execute` is present, checks for clean repositories before branching, and records the run before and after execution. The later checkpoint keeps that stance and extends it further with a planned council mode where multiple runtimes answer independently and a chairman runtime synthesizes only after an explicit execution gate.
+This orchestration model is deliberately safety-biased. The initial checkpoint's intended next step was to rewrite `orchestrator.mjs` so it defaults to dry-run planning, only performs real work when `--execute` is present, checks for clean repositories before branching, and records the run before and after execution. The later checkpoints keep that stance, add runtime-neutral `verify` and `eval` surfaces so quality gates are part of the toolkit itself, and extend the roadmap toward a council mode where multiple runtimes answer independently and a chairman runtime synthesizes only after an explicit execution gate.
+
+## Learning and Evaluation Loop
+
+The most important functional expansion in the newest checkpoint is that jbl-dev-kit now closes a learning loop instead of only emitting instructions. The `orchestrator/lib/lessons.mjs` subsystem captures lessons, deduplicates them, searches for relevant prior lessons, promotes strong candidates, and can auto-capture guidance when orchestrator runs block. That means workflow knowledge can accumulate across tasks rather than staying trapped in one-off sessions.
+
+The same checkpoint also turns evaluation into a built-in product surface. Phase 3 added a runtime-neutral `verify` gate and a golden-task `eval` harness, and the later PR stack adds behavior-focused checks and JSONL history recording. Together, those features make the toolkit responsible not only for emitting instruction surfaces, but also for proving that those surfaces still behave correctly after changes.
+
+Phase 4 tightens the prompt-budget side of that loop. Progressive disclosure, context-diet linting, lean model defaults, and token totals in CLI listing output make instruction weight measurable and enforceable. This is crucial for a repo whose whole value proposition depends on compiling large workflow knowledge into runtime-specific surfaces without burying the active task in irrelevant context.
 
 ## Implementation Progress
 
-The source history now documents two completed implementation batches beyond the original architecture work. The first batch added gate-aware orchestration, a pack selector, four new agent roles, five process skills, and a lessons/compound loop, bringing the suite to 33 tests. The second batch added policy-aware adapter outputs, Claude model/tool mapping, lint, doctor, sibling repo discovery, and CI, bringing the suite to 47 tests.
+The source history now documents a clear implementation ladder beyond the original architecture work. The first batch added gate-aware orchestration, a pack selector, four new agent roles, five process skills, and a lessons/compound loop, bringing the suite to 33 tests. The second batch added policy-aware adapter outputs, Claude model/tool mapping, lint, doctor, sibling repo discovery, and CI, bringing the suite to 47 tests.
 
-That progress matters because it changes the meaning of the repo. jbl-dev-kit is no longer just an idea for portable agent instructions. It already has a compiler pipeline, adapter-specific policy handling, operational tooling, and verification surfaces. The remaining work in the checkpoint is refinement rather than foundational rescue.
+The next implementation wave completed four explicit phases: unified CLI and installer ergonomics, self-learning lessons, runtime-neutral quality gates, and token-oriented instruction slimming. After that, the work was split into four isolated worktrees and stacked PRs covering release/docs, behavioral evals, learning/CLI hardening, and orchestrator hardening. Validation climbed from 59 passing tests in the main implementation batch to 103/103 tests plus eval, behavior checks, lint, pack smoke, CLI smoke, and cleanup smoke across the PR stack.
+
+That progress matters because it changes the meaning of the repo. jbl-dev-kit is no longer just an idea for portable agent instructions. It already has a compiler pipeline, adapter-specific policy handling, self-learning memory, operational tooling, and verification surfaces. The remaining work in the newest checkpoint is no longer about building the fundamentals; it is about refining instruction quality and choosing the right base branch for the next optimization pass.
 
 ## Current State
 
-At the time of the newer checkpoint, the repository had completed its first two implementation batches and was sitting at 47/47 passing tests with all changes still uncommitted on `master`. The outstanding final batch was clearly scoped: post-edit hooks, provenance-stamped managed blocks, harder ledger token parsing, Copilot custom-agent output, an LLM council prototype, two evaluation documents, a documentation refresh, and push hygiene.
+At the time of the newest checkpoint, the main capability waves were already implemented, committed, and pushed, with four additional validated PRs open as a stack for P0-P3 follow-on improvements. The active next task had shifted to instruction-surface review and token optimization across `AGENTS.md`, `source/skills/*.md`, `source/commands/*.md`, and compile targets, but that work was interrupted before any edits landed.
 
-That makes jbl-dev-kit a credible workspace control plane rather than a speculative toolkit. The repo already covers compile, install, lint, doctor, discover, CI, and headless orchestration primitives; the next steps are about making those primitives easier to trust, cheaper to evaluate, and better aligned with runtime-native agent surfaces.
+That makes jbl-dev-kit a credible workspace control plane rather than a speculative toolkit. The repo already covers compile, install, init, lessons, eval, lint, doctor, discover, CI, and headless orchestration primitives; the next steps are about making those primitives easier to trust, cheaper to load, and better aligned with runtime-native instruction surfaces.
 
 ## Related Work
 
@@ -77,4 +91,4 @@ jbl-dev-kit is closely aligned with [[Cross-Platform Agent Plugin Conversion]], 
 
 ## Impact
 
-If completed as described, jbl-dev-kit becomes the workspace's control plane for portable agent workflows: one place to define instructions, one compiler to emit them across runtimes, and one orchestrator to run them headlessly or escalate them into measured multi-runtime deliberation when higher answer quality is worth the cost.
+jbl-dev-kit now functions as the workspace's control plane for portable agent workflows: one place to define instructions, one compiler to emit them across runtimes, and one orchestrator to run them headlessly or escalate them into measured multi-runtime deliberation when higher answer quality is worth the cost.

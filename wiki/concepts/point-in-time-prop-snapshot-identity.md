@@ -5,6 +5,7 @@ created: 2026-05-31
 last_verified: 2026-05-31
 source_hash: "4789cd410f350d2cdd568e54d1046ea32d670d8e84f60dd954754b706b61ec98"
 sources:
+  - raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md
   - raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
 quality_score: 87
 related:
@@ -102,4 +103,4 @@ This concept is useful anywhere an analytics system needs to distinguish between
 ## Sources
 
 - [[Copilot Session Checkpoint: Canonical Props Implementation]] — records the 24,421-row identity failure, the new migration, and the append-only snapshot ingest rule.
-
+- [[Copilot Session Checkpoint: Sprint Accuracy Planning]] — preserves the earlier audit that first identified the one-row-per-coarse-identity failure and framed immutable snapshot identity as the prerequisite for trustworthy downstream analytics.

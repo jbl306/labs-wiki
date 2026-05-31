@@ -25,6 +25,7 @@ sources:
   - raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
   - raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
+  - raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md
   - raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
 quality_score: 95
 concepts:
@@ -104,6 +105,7 @@ The Sprint 62 canonical-props checkpoint adds the next layer of hardening: immut
 - [[Copilot Session Checkpoint: Sprint 12 Complete and Skills Installed]] — additional source
 - [[Copilot Session Checkpoint: Sprint 60 PTS Feature Planning]] — additional source
 - [[Copilot Session Checkpoint: Sprint 61 Planning + Audit]] — additional source
+- [[Copilot Session Checkpoint: Sprint Accuracy Planning]] — captures the pre-implementation audit evidence, Sprint 62 workstream split, and the first explicit push toward immutable snapshots plus a shared canonical settled population
 - [[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]] — additional source
 - [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] — completed backtest reconciliation and preserved the next prop-line integrity investigation
 - [[Copilot Session Checkpoint: Direct Sportsbook Ingestion]] — captures the direct-book adapter rollout, source-priority ingestion, generic sportsbook market storage, and DB-only historical metadata backfill

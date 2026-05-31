@@ -5,6 +5,7 @@ created: 2026-05-31
 last_verified: 2026-05-31
 source_hash: "4789cd410f350d2cdd568e54d1046ea32d670d8e84f60dd954754b706b61ec98"
 sources:
+  - raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md
   - raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
 quality_score: 88
 related:
@@ -102,4 +103,4 @@ This concept is useful in any analytics stack where multiple consumers summarize
 ## Sources
 
 - [[Copilot Session Checkpoint: Canonical Props Implementation]] — records the settled-population helper, the 3.80x fan-out evidence, and the cross-surface rewiring plan.
-
+- [[Copilot Session Checkpoint: Sprint Accuracy Planning]] — captures the earlier live audit that exposed the conflicting denominators and set the workstream order for canonical-helper, calibration-health, matviews, and dashboard contracts.

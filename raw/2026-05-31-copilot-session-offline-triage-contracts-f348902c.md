@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, graph, agents, 
 checkpoint_class: durable-architecture
 checkpoint_class_rule: "body:integration"
 retention_mode: retain
-status: pending
+status: ingested
 ---
 
 # Copilot Session Checkpoint Export

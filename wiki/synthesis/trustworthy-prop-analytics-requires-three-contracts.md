@@ -5,6 +5,7 @@ created: '2026-05-31'
 last_verified: '2026-05-31'
 source_hash: "synthesis-generated"
 sources:
+  - raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md
   - raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
   - raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
   - raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
@@ -71,6 +72,6 @@ This layered view also prevents the wrong repair reflex. When dashboard numbers 
 ## Sources
 
 - [[Copilot Session Checkpoint: Canonical Props Implementation]]
+- [[Copilot Session Checkpoint: Sprint Accuracy Planning]]
 - [[Copilot Session Checkpoint: Backtest Accuracy Contracts]]
 - [[Copilot Session Checkpoint: Dashboard Accuracy Fixes]]
-

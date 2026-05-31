@@ -4844,4 +4844,37 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/trustworthy-prop-analytics-requires-three-contracts.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-31T23:15:03Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-31-copilot-session-offline-triage-contracts-f348902c.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-offline-triage-contracts.md
+    - wiki/entities/agentic-triage.md
+    - wiki/concepts/offline-contract-validation-on-call-triage-artifacts.md
+    - wiki/concepts/signal-relevance-gate-infrastructure-triage.md
+    - wiki/synthesis/deterministic-evidence-gates-in-offline-on-call-triage.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-31T23:23:25Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-31-copilot-session-optimizing-dev-kit-instructions-3fbfec36.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-optimizing-dev-kit-instructions.md
+    - wiki/entities/jbl-dev-kit.md
+  status: success
+  notes: "Auto-ingested 2 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-31T23:26:12Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-sprint-accuracy-planning.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/concepts/point-in-time-prop-snapshot-identity.md
+    - wiki/concepts/shared-canonical-settled-prop-population-consistency.md
+    - wiki/synthesis/trustworthy-prop-analytics-requires-three-contracts.md
+  status: success
+  notes: "Auto-ingested 5 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
 ```

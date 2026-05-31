@@ -7,7 +7,7 @@ tags: [copilot-session, checkpoint, fileback, durable-knowledge, nba-ml-engine, 
 checkpoint_class: project-progress
 checkpoint_class_rule: "body:sprint 62"
 retention_mode: compress
-status: pending
+status: ingested
 ---
 
 # Copilot Session Checkpoint Export

@@ -4832,4 +4832,16 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/token-layer-redesign-vs-phased-ux-uplift.md
   status: success
   notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-05-31T23:07:53Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
+  targets:
+    - wiki/sources/copilot-session-checkpoint-canonical-props-implementation.md
+    - wiki/entities/nba-ml-engine.md
+    - wiki/concepts/point-in-time-prop-snapshot-identity.md
+    - wiki/concepts/shared-canonical-settled-prop-population-consistency.md
+    - wiki/synthesis/trustworthy-prop-analytics-requires-three-contracts.md
+  status: success
+  notes: "Auto-ingested 5 pages (2 concepts, 1 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

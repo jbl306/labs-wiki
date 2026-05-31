@@ -2,7 +2,7 @@
 title: "NBA ML Engine"
 type: entity
 created: 2026-04-18
-last_verified: 2026-04-25
+last_verified: 2026-05-31
 source_hash: "665c60129067f8fba29792521cb202b0e0ab91fc22982f1f58081019b034c549"
 sources:
   - raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md
@@ -25,12 +25,15 @@ sources:
   - raw/2026-04-18-copilot-session-sprint-55-implementation-and-deployment-2d04e4e0.md
   - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
   - raw/2026-04-18-copilot-session-sprint-57-ensemble-save-diagnosis-e2943da5.md
+  - raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
 quality_score: 95
 concepts:
   - nba-ml-engine
   - source-priority-canonical-prop-ingestion
   - generic-sportsbook-market-storage-non-canonical-props
   - local-db-only-prop-market-metadata-backfill
+  - point-in-time-prop-snapshot-identity
+  - shared-canonical-settled-prop-population-consistency
 related:
   - "[[Ensemble Model Save-Round-Trip Validation Gate]]"
   - "[[Root-Cause Analysis of Silent Ensemble Model Save Failures]]"
@@ -63,6 +66,8 @@ Central to the session history, the NBA ML Engine keeps accumulating durability 
 
 The newest ingestion checkpoint extends that trust contract from debugging into architecture. The engine now treats direct sportsbook adapters as first-class inputs, prefers explicit bookmaker-aware source priority over provider-only heuristics, stores non-canonical sportsbook markets outside `prop_lines`, and upgrades historical rows through a DB-only metadata backfill instead of spending external API quota.
 
+The Sprint 62 canonical-props checkpoint adds the next layer of hardening: immutable point-in-time snapshot identity, a shared canonical settled-prop helper reused across evaluation surfaces, and stricter suspicious-line quarantine before prop edges or dashboard summaries are allowed to reuse current-line data. The durable lesson is that prop trust is a cross-layer contract, not a one-query fix.
+
 ## Associated Concepts
 
 - **[[Ensemble Model Save-Round-Trip Validation Gate]]** — Validation gate is integrated into the NBA ML Engine's training loop.
@@ -72,6 +77,8 @@ The newest ingestion checkpoint extends that trust contract from debugging into 
 - **[[Source-Priority Canonical Prop Ingestion]]** — Captures the next-stage rule that prefers direct-book truth within each bookmaker family before heuristic tie-breaking.
 - **[[Generic Sportsbook Market Storage for Non-Canonical Props]]** — Explains why standard player O/U rows were separated from milestone and game markets.
 - **[[Local DB-Only Prop Market Metadata Backfill]]** — Describes the quota-safe migration path that upgrades older prop rows into the new market-aware schema.
+- **[[Point-in-Time Prop Snapshot Identity]]** — Explains why `prop_line_snapshots` must preserve each `fetched_at` observation instead of collapsing line history.
+- **[[Shared Canonical Settled-Prop Population for Analytics Consistency]]** — Captures the rule that backtests, calibration, model-health, and dashboard rollups must share one settled denominator.
 
 ## Related Entities
 
@@ -100,3 +107,4 @@ The newest ingestion checkpoint extends that trust contract from debugging into 
 - [[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]] — additional source
 - [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] — completed backtest reconciliation and preserved the next prop-line integrity investigation
 - [[Copilot Session Checkpoint: Direct Sportsbook Ingestion]] — captures the direct-book adapter rollout, source-priority ingestion, generic sportsbook market storage, and DB-only historical metadata backfill
+- [[Copilot Session Checkpoint: Canonical Props Implementation]] — records Sprint 62 hardening around immutable snapshots, canonical settled-population reuse, and prop-accuracy contract rewiring

@@ -811,6 +811,7 @@
 - [[Copilot Session Checkpoint: Sprint 8 retrain results collection]] — Copilot Session Checkpoint: Sprint 8 retrain results collection (T:archive, score: 69)
 - [[Copilot Session Checkpoint: Sprint 8 retrain with Optuna fix]] — Copilot Session Checkpoint: Sprint 8 retrain with Optuna fix (T:archive, score: 69)
 - [[Copilot Session Checkpoint: Sprint 9 implementation in progress]] — Copilot Session Checkpoint: Sprint 9 implementation in progress (T:archive, score: 69)
+- [[Copilot Session Checkpoint: Sprint Accuracy Planning]] — Copilot Session Checkpoint: Sprint Accuracy Planning (T:hot, score: 74)
 - [[Copilot Session Checkpoint: Swapping Real-Debrid for Comet+TorBox]] — Copilot Session Checkpoint: Swapping Real-Debrid for Comet+TorBox (T:hot, score: 77)
 - [[Copilot Session Checkpoint: Task-Observer Repo Rollout]] — Copilot Session Checkpoint: Task-Observer Repo Rollout (T:hot, score: 69)
 - [[Copilot Session Checkpoint: Training Status Tracker and OOM Fix]] — Copilot Session Checkpoint: Training Status Tracker and OOM Fix (T:hot, score: 90)

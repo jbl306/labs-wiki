@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-06-01T03:17:01+00:00
+generated: 2026-06-02T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,10 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-06-01T03:17:01+00:00
+> Regenerated: 2026-06-02T03:17:01+00:00
 
 ## Recent Wiki Edits
 
+- `2026-05-31` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-31` — [[offline-contract-validation-on-call-triage-artifacts]] (`wiki/concepts/offline-contract-validation-on-call-triage-artifacts.md`)
 - `2026-05-31` — [[point-in-time-prop-snapshot-identity]] (`wiki/concepts/point-in-time-prop-snapshot-identity.md`)
 - `2026-05-31` — [[shared-canonical-settled-prop-population-consistency]] (`wiki/concepts/shared-canonical-settled-prop-population-consistency.md`)
@@ -24,7 +25,6 @@ ttl_hours: 24
 - `2026-05-31` — [[nba-ml-engine]] (`wiki/entities/nba-ml-engine.md`)
 - `2026-05-31` — [[copilot-session-checkpoint-offline-triage-contracts]] (`wiki/sources/copilot-session-checkpoint-offline-triage-contracts.md`)
 - `2026-05-31` — [[copilot-session-checkpoint-optimizing-dev-kit-instructions]] (`wiki/sources/copilot-session-checkpoint-optimizing-dev-kit-instructions.md`)
-- `2026-05-31` — [[copilot-session-checkpoint-sprint-accuracy-planning]] (`wiki/sources/copilot-session-checkpoint-sprint-accuracy-planning.md`)
 
 ## Recent Sources Captured
 

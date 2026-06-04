@@ -4877,4 +4877,17 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/trustworthy-prop-analytics-requires-three-contracts.md
   status: success
   notes: "Auto-ingested 5 pages (0 concepts, 0 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+- timestamp: 2026-06-04T00:32:30Z
+  operation: ingest
+  agent: copilot-cli
+  source: raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md
+  targets:
+    - wiki/sources/doordash-going-out-sevenrooms-api-research.md
+    - wiki/entities/doordash-going-out.md
+    - wiki/entities/sevenrooms-api.md
+    - wiki/concepts/public-reservation-widget-availability-endpoints.md
+    - wiki/concepts/partner-gated-reservation-apis.md
+    - wiki/synthesis/public-widget-availability-vs-partner-gated-reservation-apis.md
+  status: success
+  notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
 ```

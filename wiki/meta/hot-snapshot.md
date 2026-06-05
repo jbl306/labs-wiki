@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-06-04T03:17:01+00:00
+generated: 2026-06-05T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,17 +11,17 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-06-04T03:17:01+00:00
+> Regenerated: 2026-06-05T03:17:01+00:00
 
 ## Recent Wiki Edits
 
+- `2026-06-03` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-06-03` — [[partner-gated-reservation-apis]] (`wiki/concepts/partner-gated-reservation-apis.md`)
 - `2026-06-03` — [[public-reservation-widget-availability-endpoints]] (`wiki/concepts/public-reservation-widget-availability-endpoints.md`)
 - `2026-06-03` — [[doordash-going-out]] (`wiki/entities/doordash-going-out.md`)
 - `2026-06-03` — [[sevenrooms-api]] (`wiki/entities/sevenrooms-api.md`)
 - `2026-06-03` — [[doordash-going-out-sevenrooms-api-research]] (`wiki/sources/doordash-going-out-sevenrooms-api-research.md`)
 - `2026-06-03` — [[public-widget-availability-vs-partner-gated-reservation-apis]] (`wiki/synthesis/public-widget-availability-vs-partner-gated-reservation-apis.md`)
-- `2026-06-02` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-05-31` — [[offline-contract-validation-on-call-triage-artifacts]] (`wiki/concepts/offline-contract-validation-on-call-triage-artifacts.md`)
 - `2026-05-31` — [[point-in-time-prop-snapshot-identity]] (`wiki/concepts/point-in-time-prop-snapshot-identity.md`)
 - `2026-05-31` — [[shared-canonical-settled-prop-population-consistency]] (`wiki/concepts/shared-canonical-settled-prop-population-consistency.md`)

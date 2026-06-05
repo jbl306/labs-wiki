@@ -19,6 +19,8 @@ from watchdog.events import FileCreatedEvent, FileModifiedEvent, FileSystemEvent
 from watchdog.observers import Observer
 
 from auto_ingest import (
+    _backend_requires_token,
+    _selected_backend,
     classify_ingest_route,
     ingest_raw_source,
     parse_frontmatter,
@@ -124,11 +126,17 @@ def main() -> None:
     )
 
     project_root = Path(os.environ.get("PROJECT_ROOT", ".")).resolve()
+    backend = _selected_backend()
     token = os.environ.get("GITHUB_MODELS_TOKEN", os.environ.get("GITHUB_TOKEN", ""))
-    model_override = os.environ.get("GITHUB_MODELS_MODEL_OVERRIDE", "").strip() or None
+    model_override = (
+        os.environ.get("WIKI_INGEST_MODEL_OVERRIDE", "").strip()
+        or os.environ.get("GITHUB_MODELS_MODEL_OVERRIDE", "").strip()
+        or os.environ.get("CODEX_MODEL_OVERRIDE", "").strip()
+        or None
+    )
 
-    if not token:
-        log.error("No API token. Set GITHUB_MODELS_TOKEN env var.")
+    if _backend_requires_token(backend) and not token:
+        log.error("No API token. Set GITHUB_MODELS_TOKEN/GITHUB_TOKEN for backend=%s.", backend)
         sys.exit(1)
 
     raw_dir = project_root / "raw"

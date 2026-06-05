@@ -2,8 +2,9 @@
 """
 Auto-ingest: Process raw wiki sources through an LLM pipeline.
 
-Reads a raw markdown source from raw/, extracts concepts/entities via
-GitHub Models API (GPT-4.1), generates wiki pages, and updates the index.
+Reads a raw markdown source from raw/, enriches deterministic source snapshots,
+then compiles wiki pages through the configured ingest backend. The default
+backend is Codex CLI; the legacy GitHub Models path remains available.
 """
 
 from __future__ import annotations
@@ -20,6 +21,7 @@ import os
 import re
 import subprocess
 import sys
+import tempfile
 import textwrap
 from collections import Counter
 from dataclasses import dataclass
@@ -68,6 +70,8 @@ GITHUB_MODELS_URL = os.environ.get(
     "GITHUB_MODELS_URL", "https://models.github.ai/inference"
 )
 DEFAULT_MODEL = "gpt-4.1"
+DEFAULT_CODEX_MODEL = "gpt-5.5"
+DEFAULT_COPILOT_MODEL = "gpt-5.4"
 MAX_RETRIES = 3
 URL_FETCH_TIMEOUT = 30
 MAX_DOCUMENT_DOWNLOAD_SIZE = 15 * 1024 * 1024  # 15MB max document download
@@ -3057,26 +3061,126 @@ def send_ntfy(title: str, message: str, tags: str = "books") -> None:
 
 
 # ---------------------------------------------------------------------------
-# Copilot CLI backend
+# Agent CLI backends (Codex default, Copilot compatibility)
 # ---------------------------------------------------------------------------
 
 
-def _compute_effort_for_raw(fm: dict) -> str:
+AGENT_CLI_BACKENDS = {"codex-cli", "copilot-cli"}
+
+
+def _selected_backend() -> str:
+    return os.environ.get("WIKI_INGEST_BACKEND", "codex-cli").strip().lower()
+
+
+def _backend_requires_token(backend: str) -> bool:
+    """Return True for backends that require a GitHub Models/Copilot token upfront."""
+    return backend in {"github-models", "openai", "legacy", "copilot-cli"}
+
+
+def _extract_last_json_object(text: str) -> dict | None:
+    """Return the last valid JSON object embedded in text, if any.
+
+    Agent CLIs often emit progress text around the final status object. Scanning
+    with JSONDecoder is more robust than a regex because the status report can
+    contain nested arrays/objects such as duplicates_avoided entries.
+    """
+    decoder = json.JSONDecoder()
+    last_obj: dict | None = None
+    for idx, char in enumerate(text):
+        if char != "{":
+            continue
+        try:
+            obj, _end = decoder.raw_decode(text[idx:])
+        except json.JSONDecodeError:
+            continue
+        if isinstance(obj, dict):
+            last_obj = obj
+    return last_obj
+
+
+def _build_agent_ingest_prompt(
+    *,
+    raw_path: Path,
+    project_root: Path,
+    model: str,
+    backend: str,
+) -> str:
+    prompt_template_path = project_root / "scripts" / "prompts" / "wiki_ingest_prompt.md"
+    if not prompt_template_path.exists():
+        raise FileNotFoundError(f"Prompt template not found: {prompt_template_path}")
+
+    prompt_template = prompt_template_path.read_text()
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    runtime_inputs = f"""
+
+## RUNTIME INPUTS
+
+- **RAW_PATH**: `{raw_path.resolve()}`
+- **MODEL_ID**: `{model}`
+- **INGEST_BACKEND**: `{backend}`
+- **WING**: `labs_wiki`
+- **TODAY**: `{today}`
+"""
+    return prompt_template + runtime_inputs
+
+
+def _parse_agent_status_output(output: str, backend_label: str, raw_path: Path) -> dict:
+    status_dict = _extract_last_json_object(output.strip())
+    if not status_dict:
+        log.warning(
+            "No JSON status found in %s output for %s. Assuming partial success.",
+            backend_label,
+            raw_path.name,
+        )
+        return {
+            "status": "partial",
+            "notes": "No JSON status report found in output",
+        }
+    log.info(
+        "%s ingest %s: %s",
+        backend_label,
+        status_dict.get("status", "unknown"),
+        status_dict.get("notes", ""),
+    )
+    return status_dict
+
+
+def _looks_like_pdf_reference(value: object) -> bool:
+    text = str(value or "").strip().lower()
+    if not text:
+        return False
+    return "/pdf/" in text or text.endswith(".pdf") or text == "application/pdf"
+
+
+def _compute_effort_for_raw(fm: dict, body: str | None = None) -> str:
     """Default reasoning effort: 'high' for PDFs and GitHub repos, 'medium' otherwise.
 
-    - PDFs: URL contains '/pdf/' (arxiv) or ends with '.pdf', or frontmatter
-      type is 'file' with a .pdf extension.
+    - PDFs: URL contains '/pdf/' (arxiv), ends with '.pdf', has PDF content
+      type in persisted extracted metadata, or a file raw points at / names a
+      PDF asset in the body.
     - GitHub repos: URL matches https://github.com/<owner>/<repo> (root only).
       These have long READMEs + tree-crawled file contents that need careful
       synthesis into Architecture / How-it-works / API-surface sections.
     Override with the WIKI_INGEST_EFFORT env var.
     """
     url = str(fm.get("url") or fm.get("source") or "").lower()
-    if "/pdf/" in url or url.endswith(".pdf"):
+    if _looks_like_pdf_reference(url):
         return "high"
     if str(fm.get("type", "")).lower() == "file":
-        body_ref = str(fm.get("source") or "").lower()
-        if body_ref.endswith(".pdf"):
+        references: list[object] = [fm.get("source")]
+        if body:
+            asset_path_ref, original_filename = parse_file_asset_reference(body)
+            _persisted_text, persisted_metadata = read_persisted_extracted_content(body)
+            references.extend(
+                [
+                    asset_path_ref,
+                    original_filename,
+                    persisted_metadata.get("asset_path"),
+                    persisted_metadata.get("original_filename"),
+                    persisted_metadata.get("content_type"),
+                ]
+            )
+        if any(_looks_like_pdf_reference(ref) for ref in references):
             return "high"
     if re.match(r"^https?://github\.com/[^/]+/[^/]+/?$", url):
         return "high"
@@ -3208,7 +3312,7 @@ def commit_wiki_changes(project_root: Path, title: str, notes: str) -> bool:
     short_notes = (notes or "auto-ingest").strip().splitlines()[0][:200]
     msg = (
         f"wiki(auto-ingest): {short_title}\n\n{short_notes}\n\n"
-        "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+        "Co-authored-by: Codex <codex@openai.com>"
     )
     commit = subprocess.run(
         [*git, "commit", "-m", msg, "--no-verify"],
@@ -3221,6 +3325,101 @@ def commit_wiki_changes(project_root: Path, title: str, notes: str) -> bool:
     return True
 
 
+def call_codex_cli_ingest(
+    raw_path: Path,
+    project_root: Path,
+    model: str,
+    effort: str,
+) -> dict:
+    """Call Codex CLI to execute the full wiki ingest workflow.
+
+    Returns a status dict with:
+    - status: "success" | "partial" | "failed"
+    - source_path, entities_created, concepts_created, synthesis_created
+    - duplicates_avoided, kg_facts_added, notes
+    """
+    final_prompt = _build_agent_ingest_prompt(
+        raw_path=raw_path,
+        project_root=project_root,
+        model=model,
+        backend="codex-cli",
+    )
+    log.info(
+        "Calling Codex CLI for %s (model=%s, effort=%s)",
+        raw_path.name,
+        model,
+        effort,
+    )
+
+    output_path: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w", prefix="labs-wiki-codex-status-", suffix=".txt", delete=False
+        ) as output_file:
+            output_path = Path(output_file.name)
+
+        cmd = [
+            "codex",
+            "-a", "never",
+            "exec",
+            "-m", model,
+            "-c", f'model_reasoning_effort="{effort}"',
+            "-C", str(project_root),
+            "--add-dir", str(project_root),
+            "-s", "workspace-write",
+            "--skip-git-repo-check",
+            "--output-last-message", str(output_path),
+            "-",
+        ]
+        env = {**os.environ, "CODEX_INGEST_AUTOMATION": "1"}
+        result = subprocess.run(
+            cmd,
+            input=final_prompt,
+            env=env,
+            capture_output=True,
+            text=True,
+            timeout=1200,  # 20 minutes max
+            cwd=str(project_root),
+        )
+    except subprocess.TimeoutExpired:
+        log.error("Codex CLI timed out after 1200s for %s", raw_path.name)
+        return {
+            "status": "failed",
+            "notes": "Codex CLI timed out after 20 minutes",
+        }
+    except Exception as e:
+        log.error("Codex CLI subprocess failed: %s", e)
+        return {
+            "status": "failed",
+            "notes": f"Subprocess error: {e}",
+        }
+
+    if result.returncode != 0:
+        log.error(
+            "Codex CLI exited with code %d for %s:\nSTDERR: %s",
+            result.returncode,
+            raw_path.name,
+            result.stderr,
+        )
+        return {
+            "status": "failed",
+            "notes": f"codex exec exited with code {result.returncode}",
+        }
+
+    output_parts = [result.stdout.strip()]
+    if output_path and output_path.exists():
+        try:
+            output_parts.append(output_path.read_text().strip())
+        finally:
+            try:
+                output_path.unlink()
+            except OSError:
+                pass
+    output = "\n".join(part for part in output_parts if part)
+    log.debug("Codex CLI output (last 500 chars): %s", output[-500:])
+    return _parse_agent_status_output(output, "Codex CLI", raw_path)
+
+
 def call_copilot_cli_ingest(
     raw_path: Path,
     project_root: Path,
@@ -3228,38 +3427,21 @@ def call_copilot_cli_ingest(
     effort: str,
 ) -> dict:
     """Call gh copilot CLI to execute the full wiki ingest workflow.
-    
-    Returns a status dict with:
-    - status: "success" | "partial" | "failed"
-    - source_path, entities_created, concepts_created, synthesis_created
-    - duplicates_avoided, kg_facts_added, notes
+
+    Kept as an explicit compatibility backend; Codex is now the default.
     """
-    prompt_template_path = project_root / "scripts" / "prompts" / "wiki_ingest_prompt.md"
-    if not prompt_template_path.exists():
-        raise FileNotFoundError(f"Prompt template not found: {prompt_template_path}")
-    
-    prompt_template = prompt_template_path.read_text()
-    
-    # Build runtime inputs section
-    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    runtime_inputs = f"""
+    final_prompt = _build_agent_ingest_prompt(
+        raw_path=raw_path,
+        project_root=project_root,
+        model=model,
+        backend="copilot-cli",
+    )
 
-## RUNTIME INPUTS
-
-- **RAW_PATH**: `{raw_path.resolve()}`
-- **MODEL_ID**: `{model}`
-- **WING**: `labs_wiki`
-- **TODAY**: `{today}`
-"""
-    
-    final_prompt = prompt_template + runtime_inputs
-    
-    # Invoke gh copilot CLI
     log.info(
         "Calling gh copilot CLI for %s (model=%s, effort=%s)",
         raw_path.name, model, effort,
     )
-    
+
     cmd = [
         "gh", "copilot", "-p", final_prompt,
         "--model", model,
@@ -3267,9 +3449,8 @@ def call_copilot_cli_ingest(
         "--allow-all-tools",
         "--add-dir", str(project_root),
     ]
-    
     env = {**os.environ, "COPILOT_ALLOW_ALL": "1"}
-    
+
     try:
         result = subprocess.run(
             cmd,
@@ -3291,7 +3472,7 @@ def call_copilot_cli_ingest(
             "status": "failed",
             "notes": f"Subprocess error: {e}",
         }
-    
+
     if result.returncode != 0:
         log.error(
             "Copilot CLI exited with code %d for %s:\nSTDERR: %s",
@@ -3301,41 +3482,10 @@ def call_copilot_cli_ingest(
             "status": "failed",
             "notes": f"gh copilot exited with code {result.returncode}",
         }
-    
-    # Parse JSON status from stdout (last JSON block)
+
     stdout = result.stdout.strip()
     log.debug("Copilot CLI stdout (last 500 chars): %s", stdout[-500:])
-    
-    # Extract last {...} block from stdout
-    json_match = None
-    for match in re.finditer(r'\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}', stdout):
-        json_match = match
-    
-    if not json_match:
-        log.warning(
-            "No JSON status found in Copilot CLI output for %s. "
-            "Assuming partial success.",
-            raw_path.name,
-        )
-        return {
-            "status": "partial",
-            "notes": "No JSON status report found in output",
-        }
-    
-    try:
-        status_dict = json.loads(json_match.group(0))
-        log.info(
-            "Copilot CLI ingest %s: %s",
-            status_dict.get("status", "unknown"),
-            status_dict.get("notes", ""),
-        )
-        return status_dict
-    except json.JSONDecodeError as e:
-        log.error("Failed to parse JSON status from Copilot CLI: %s", e)
-        return {
-            "status": "partial",
-            "notes": f"JSON parse error: {e}",
-        }
+    return _parse_agent_status_output(stdout, "Copilot CLI", raw_path)
 
 
 # ---------------------------------------------------------------------------
@@ -3372,9 +3522,9 @@ def ingest_raw_source(
     source_url = fm.get("url")
 
     # Check which backend to use
-    backend = os.environ.get("WIKI_INGEST_BACKEND", "copilot-cli")
-    if backend == "copilot-cli":
-        # Enrich raw URL/file sources before handing off to the copilot-cli
+    backend = _selected_backend()
+    if backend in AGENT_CLI_BACKENDS:
+        # Enrich raw URL/file sources before handing off to the agent CLI
         # compiler flow so prompt-side page generation sees the durable fetched /
         # extracted body instead of the original pointer-only raw stub.
         if source_type == "file":
@@ -3410,9 +3560,10 @@ def ingest_raw_source(
                             body = updated_raw
                             fm, body = parse_frontmatter(raw_path)
                             log.info(
-                                "Persisted %d chars of extracted file content for %s before copilot-cli ingest",
+                                "Persisted %d chars of extracted file content for %s before %s ingest",
                                 len(extracted_text.strip()),
                                 raw_path.name,
+                                backend,
                             )
         elif source_type == "url" and source_url:
             persisted_text, _persisted_metadata = read_persisted_fetched_content(body)
@@ -3421,7 +3572,7 @@ def ingest_raw_source(
                 try:
                     fetch_result = fetch_url_content(source_url)
                 except Exception as exc:
-                    log.error("Failed to fetch URL %s before copilot-cli ingest: %s", source_url, exc)
+                    log.error("Failed to fetch URL %s before %s ingest: %s", source_url, backend, exc)
                 else:
                     fetched_text = fetch_result.text.strip()
                     if is_meaningful_fetched_body(fetched_text, source_url) or _is_binary_url_placeholder(fetched_text):
@@ -3440,35 +3591,55 @@ def ingest_raw_source(
                         body = updated_raw
                         fm, body = parse_frontmatter(raw_path)
                         log.info(
-                            "Persisted %d chars of fetched content for %s before copilot-cli ingest",
+                            "Persisted %d chars of fetched content for %s before %s ingest",
                             len(fetched_text),
                             raw_path.name,
+                            backend,
                         )
                     else:
                         log.warning(
-                            "Fetched URL content for %s was not meaningful before copilot-cli ingest; leaving raw unchanged",
+                            "Fetched URL content for %s was not meaningful before %s ingest; leaving raw unchanged",
                             source_url,
+                            backend,
                         )
 
-        # New Copilot CLI backend
-        ingest_model = os.environ.get("WIKI_INGEST_MODEL", model or "gpt-5.4")
-        # Effort routing: env var wins; otherwise PDFs get 'high', everything
-        # else 'medium'. PDFs need extra reasoning for layout + math + abstract
-        # extraction; clean HTML/markdown does not.
+        # Agent CLI backend (Codex default, Copilot compatibility)
+        if backend == "codex-cli":
+            ingest_model = _env_str(
+                "WIKI_INGEST_MODEL",
+                "CODEX_MODEL",
+                default=model or DEFAULT_CODEX_MODEL,
+            )
+        else:
+            ingest_model = _env_str(
+                "WIKI_INGEST_MODEL",
+                default=model or DEFAULT_COPILOT_MODEL,
+            )
+        # Effort routing: env var wins; otherwise PDFs / root GitHub repos get
+        # 'high', everything else 'medium'. PDFs need extra reasoning for
+        # layout + math + abstract extraction; clean HTML/markdown does not.
         env_effort = os.environ.get("WIKI_INGEST_EFFORT", "").strip()
-        ingest_effort = env_effort or _compute_effort_for_raw(fm)
+        ingest_effort = env_effort or _compute_effort_for_raw(fm, body)
 
         log.info(
-            "Using copilot-cli backend (model=%s, effort=%s)",
-            ingest_model, ingest_effort,
+            "Using %s backend (model=%s, effort=%s)",
+            backend, ingest_model, ingest_effort,
         )
 
-        result = call_copilot_cli_ingest(
-            raw_path=raw_path,
-            project_root=project_root,
-            model=ingest_model,
-            effort=ingest_effort,
-        )
+        if backend == "codex-cli":
+            result = call_codex_cli_ingest(
+                raw_path=raw_path,
+                project_root=project_root,
+                model=ingest_model,
+                effort=ingest_effort,
+            )
+        else:
+            result = call_copilot_cli_ingest(
+                raw_path=raw_path,
+                project_root=project_root,
+                model=ingest_model,
+                effort=ingest_effort,
+            )
 
         success = result.get("status") in ("success", "partial")
 
@@ -3478,7 +3649,7 @@ def ingest_raw_source(
             if not validation_run:
                 send_ntfy(
                     f"Wiki: {title}",
-                    f"Ingested via copilot-cli: {result.get('notes', '')}",
+                    f"Ingested via {backend}: {result.get('notes', '')}",
                     tags="books,white_check_mark",
                 )
             # Rebuild index
@@ -3498,7 +3669,7 @@ def ingest_raw_source(
             except Exception as exc:
                 log.warning("git auto-commit failed (non-fatal): %s", exc)
         else:
-            log.error("Copilot CLI ingest failed: %s", result.get("notes", "Unknown error"))
+            log.error("%s ingest failed: %s", backend, result.get("notes", "Unknown error"))
 
         return success
 
@@ -3521,7 +3692,7 @@ def ingest_raw_source(
         persisted_text, persisted_metadata = read_persisted_extracted_content(body)
         if not original_filename:
             original_filename = str(persisted_metadata.get("original_filename") or "").strip() or None
-        should_extract = bool(asset_path_ref) and (force or not persisted_text)
+        should_extract = bool(asset_path_ref) and (refresh_fetch or force or not persisted_text)
         if asset_path_ref and should_extract:
             asset_path = (project_root / asset_path_ref).resolve()
             try:
@@ -4107,7 +4278,7 @@ def main() -> None:
     parser.add_argument(
         "--token",
         default=os.environ.get("GITHUB_MODELS_TOKEN", os.environ.get("GITHUB_TOKEN", "")),
-        help="GitHub Models API token",
+        help="GitHub Models/Copilot API token (not required for WIKI_INGEST_BACKEND=codex-cli)",
     )
     parser.add_argument(
         "--verbose", "-v", action="store_true", help="Enable debug logging",
@@ -4130,8 +4301,9 @@ def main() -> None:
         datefmt="%Y-%m-%d %H:%M:%S",
     )
 
-    if not args.token:
-        log.error("No API token. Set GITHUB_MODELS_TOKEN or pass --token")
+    backend = _selected_backend()
+    if _backend_requires_token(backend) and not args.token:
+        log.error("No API token. Set GITHUB_MODELS_TOKEN/GITHUB_TOKEN or pass --token for backend=%s", backend)
         sys.exit(1)
 
     project_root = Path(args.project_root).resolve()

@@ -2,7 +2,7 @@
 
 > How to add sources to labs-wiki from any device.
 
-All channels feed into the **Wiki Ingest API** (`wiki-ingest-api/`), which writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service then automatically processes them into wiki pages via GPT-4.1 within seconds.
+All channels feed into the **Wiki Ingest API** (`wiki-ingest-api/`), which writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service then automatically processes them into wiki pages via the default Codex CLI backend within seconds.
 
 ### Specially Handled URL Types
 
@@ -10,7 +10,7 @@ The auto-ingest pipeline routes certain URLs through specialized handlers for ri
 
 | URL Type | Handler | What's Extracted |
 |----------|---------|-----------------|
-| **Twitter/X** (`twitter.com`, `x.com`, `t.co`, `vxtwitter`, `fxtwitter`) | fxtwitter API | Tweet text, author, timestamp, media URLs + image analysis via GPT-4.1 vision |
+| **Twitter/X** (`twitter.com`, `x.com`, `t.co`, `vxtwitter`, `fxtwitter`) | fxtwitter API | Tweet text, author, timestamp, and media URLs for Codex-backed compilation |
 | **GitHub repos** (`github.com/<owner>/<repo>`) | GitHub REST API | Description, stars, language, topics, README content, file tree |
 | **Other URLs** | HTML fetch / MarkItDown | HTML pages get structure-aware fetch + image analysis; document binaries such as PDF, DOCX, PPTX, XLSX/XLS, and EPUB are converted to markdown before extraction |
 

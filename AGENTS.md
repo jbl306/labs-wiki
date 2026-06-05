@@ -36,7 +36,7 @@ Android Share / Browser / CLI / API
   wiki-auto-ingest (Docker sidecar, file watcher)
         ├── Detects new pending file (~5s)
         ├── Smart URL fetch (Twitter/GitHub/HTML+vision)
-        ├── LLM extraction via GPT-4.1 (GitHub Models API)
+        ├── LLM compilation via Codex CLI
         ├── Generates wiki pages from templates
         ├── Updates index, log, cross-references
         └── Marks raw source → status: ingested
@@ -50,7 +50,7 @@ Android Share / Browser / CLI / API
 | Service | Container | Purpose |
 |---------|-----------|---------|
 | `wiki-ingest-api` | Docker | HTTP API for capturing sources into `raw/` |
-| `wiki-auto-ingest` | Docker sidecar | Watches `raw/`, auto-processes pending sources via GPT-4.1 |
+| `wiki-auto-ingest` | Docker sidecar | Watches `raw/`, auto-processes pending sources via Codex CLI |
 
 ---
 
@@ -146,8 +146,8 @@ The `wiki-auto-ingest` Docker service handles source processing automatically:
    - **GitHub gists** → raw content fetch
    - **HTML pages** → fetch + structure-aware normalization + og:image/img extraction
    - **Document binaries** (PDF, DOCX, PPTX, XLSX/XLS, EPUB) → MarkItDown conversion to markdown
-3. **Vision processing** — downloads images (tweet photos, og:image), base64-encodes them, sends as multimodal content to GPT-4.1
-4. **LLM extraction** (GitHub Models, source-aware lanes) → structured JSON: concepts, entities, source summary
+3. **Source enrichment** — persists fetched/extracted markdown snapshots, including image URLs when present
+4. **LLM compilation** (Codex CLI, source-aware priority + effort routing) → wiki source/concept/entity/synthesis pages
 5. **Page generation** from templates → source page + concept pages + entity pages
 6. **Cross-referencing** — bidirectional `[[wikilinks]]` between related pages
 7. **Index + log** — rebuilds `wiki/index.md`, appends to `wiki/log.md`
@@ -155,8 +155,8 @@ The `wiki-auto-ingest` Docker service handles source processing automatically:
 9. **Status update** — marks raw source `status: ingested`
 10. **Notification** — sends ntfy alert on success/failure
 
-**Model routing:** session checkpoints / MemPalace exports → light text lane; standard sources → default lane; image-bearing sources → vision lane
-**Config:** `GITHUB_MODELS_TOKEN`, `GITHUB_MODELS_MODEL_DEFAULT`, `GITHUB_MODELS_MODEL_LIGHT`, `GITHUB_MODELS_MODEL_VISION`, `GITHUB_MODELS_MODEL_OVERRIDE`, `DEBOUNCE_SECONDS`
+**Backend routing:** default `WIKI_INGEST_BACKEND=codex-cli`; `copilot-cli` and legacy GitHub Models remain compatibility paths.
+**Config:** `WIKI_INGEST_BACKEND`, `WIKI_INGEST_MODEL`, `CODEX_MODEL`, `WIKI_INGEST_EFFORT`, `WIKI_INGEST_MODEL_OVERRIDE`, `CODEX_MODEL_OVERRIDE`, `GITHUB_MODELS_TOKEN`/`GITHUB_TOKEN` for token-requiring compatibility backends, `DEBOUNCE_SECONDS`
 
 ### Manual Ingest (`/wiki-ingest`)
 
@@ -180,8 +180,8 @@ For targeted re-processing or when auto-ingest is not running:
 **Deterministic checkpoint refresh:**
 - For Copilot checkpoint raws that already contain durable structured summaries,
   prefer `python3 scripts/reprocess_checkpoint_raws.py` when you need to refresh
-  `wiki/sources/copilot-session-checkpoint-*.md` without calling the GitHub
-  Models compile path.
+  `wiki/sources/copilot-session-checkpoint-*.md` without calling the Codex or
+  GitHub Models compile path.
 
 **Post-Ingest Entity Enrichment:**
 

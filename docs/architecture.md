@@ -69,7 +69,7 @@ The universal schema that all AI tools read. Defines conventions, workflows, fro
 
 ## Two-Phase Ingest Pipeline
 
-Sources are automatically processed by the `wiki-auto-ingest` service using **GitHub Models source-aware routing**. The pipeline can also be triggered manually via `/wiki-ingest` or `python3 scripts/auto_ingest.py`.
+Sources are automatically processed by the `wiki-auto-ingest` service using **Codex CLI source-aware routing**. The pipeline can also be triggered manually via `/wiki-ingest` or `python3 scripts/auto_ingest.py`.
 
 ```mermaid
 flowchart LR
@@ -85,9 +85,9 @@ flowchart LR
         HTML --> HASH
         HASH{Hash check} -->|unchanged| SKIP[Skip]
         HASH -->|new/changed| CLASSIFY{Source class}
-        CLASSIFY -->|session / mempalace export| LIGHT[Light text model]
-        CLASSIFY -->|standard text / URL| EXTRACT[Default text model]
-        CLASSIFY -->|images present| IMG[Vision-capable model]
+        CLASSIFY -->|session / mempalace export| LIGHT[Lower-effort Codex route]
+        CLASSIFY -->|standard text / URL| EXTRACT[Default Codex route]
+        CLASSIFY -->|PDF / complex repo| IMG[High-effort Codex route]
         LIGHT --> EXTRACT
         IMG --> EXTRACT
     end
@@ -103,7 +103,7 @@ flowchart LR
     style IDX fill:#f3e5f5
 ```
 
-**Phase 1** routes URLs through specialized handlers — Twitter/X URLs use the fxtwitter API (extracts tweet text, author, timestamps, and media), GitHub repo URLs use the REST API (README, metadata, file tree), and all other URLs use standard HTML fetch. Before the LLM call, the source is classified into a **light**, **default**, or **vision** lane. Copilot session checkpoint exports and MemPalace bridge exports prefer the light text lane; standard sources use the default lane; image-bearing sources are analyzed only on the vision lane. Shortened t.co URLs are auto-followed. **Phase 2** generates wiki pages from templates, updates cross-references, and rebuilds the index. Hash-based skip and fuzzy duplicate merging ensure sources aren't reprocessed unnecessarily.
+**Phase 1** routes URLs through specialized handlers — Twitter/X URLs use the fxtwitter API (extracts tweet text, author, timestamps, and media), GitHub repo URLs use the REST API (README, metadata, file tree), and all other URLs use standard HTML fetch. Before the LLM call, the source is classified for priority and reasoning effort. Copilot session checkpoint exports and MemPalace bridge exports prefer the lower-effort path; standard sources use the default path; PDFs and complex repositories receive higher reasoning effort. Shortened t.co URLs are auto-followed. **Phase 2** uses Codex CLI to generate wiki pages from templates, updates cross-references, and rebuilds the index. Hash-based skip and fuzzy duplicate merging ensure sources aren't reprocessed unnecessarily.
 
 ---
 
@@ -119,7 +119,7 @@ flowchart TB
 
     API[FastAPI Ingest API] --> RAW[raw/ inbox]
     RAW --> AUTO[wiki-auto-ingest service]
-    AUTO --> LLM[GitHub Models lanes: light / default / vision]
+    AUTO --> LLM[Codex CLI routes: lower / default / high effort]
     LLM --> WIKI[wiki/ compiled pages]
 
     style API fill:#e8f5e9
@@ -128,7 +128,7 @@ flowchart TB
     style WIKI fill:#f3e5f5
 ```
 
-All capture channels feed into a single FastAPI endpoint. The API writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service (watchdog file watcher) detects new files within 5 seconds and automatically processes them via GitHub Models, creating wiki pages with cross-references. It prioritizes interactive sources ahead of session backlog, routes Copilot checkpoint exports to a lighter text lane, and reserves the vision lane for image-bearing sources.
+All capture channels feed into a single FastAPI endpoint. The API writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service (watchdog file watcher) detects new files within 5 seconds and automatically processes them via Codex CLI, creating wiki pages with cross-references. It prioritizes interactive sources ahead of session backlog, routes Copilot checkpoint exports to lower effort, and raises effort for document-heavy or complex repository sources.
 
 Manual processing is also available via `/wiki-ingest` skill or `python3 scripts/auto_ingest.py`.
 

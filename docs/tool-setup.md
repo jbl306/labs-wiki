@@ -1,6 +1,6 @@
 # Tool Setup
 
-> How to configure VS Code Copilot, Copilot CLI, and OpenCode for labs-wiki.
+> How to configure Codex CLI, VS Code Copilot, and OpenCode for labs-wiki.
 
 ## VS Code + GitHub Copilot
 
@@ -147,16 +147,16 @@ Add to your workspace `.vscode/settings.json`:
 
 ---
 
-## Copilot CLI
+## Codex CLI
 
 ### Prerequisites
 
-- [GitHub CLI](https://cli.github.com/) (`gh`)
-- [Copilot CLI extension](https://docs.github.com/en/copilot/github-copilot-in-the-cli)
+- [Codex CLI](https://github.com/openai/codex) (`codex`)
+- Authenticated Codex environment for unattended `codex exec` runs
 
 ### How It Works
 
-Copilot CLI reads `AGENTS.md` at the repo root. All wiki conventions, workflows, and skill definitions are available automatically.
+Codex CLI is the primary unattended compile backend for `wiki-auto-ingest` (`WIKI_INGEST_BACKEND=codex-cli`). It runs non-interactively from the repository root, reads `AGENTS.md` and `scripts/prompts/wiki_ingest_prompt.md`, and writes wiki/source changes back into the repo.
 
 ### Usage
 
@@ -164,13 +164,15 @@ Copilot CLI reads `AGENTS.md` at the repo root. All wiki conventions, workflows,
 # Navigate to the repo
 cd ~/projects/labs-wiki
 
-# Use Copilot CLI — it reads AGENTS.md automatically
-gh copilot
+# Default manual processing path: Codex CLI backend, no GitHub Models token required
+python3 scripts/auto_ingest.py raw/<source>.md --project-root .
 
-# Skills are available as natural language commands
-# "Run wiki-ingest on the new raw source"
-# "Lint the wiki and fix issues"
-# "Query: what do we know about transformers?"
+# Optional model/effort overrides
+WIKI_INGEST_MODEL=gpt-5.5 WIKI_INGEST_EFFORT=high \
+  python3 scripts/auto_ingest.py raw/<source>.md --project-root . --force
+
+# Copilot CLI remains available only as a compatibility backend
+WIKI_INGEST_BACKEND=copilot-cli python3 scripts/auto_ingest.py raw/<source>.md --project-root .
 ```
 
 ---

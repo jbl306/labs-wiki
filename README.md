@@ -15,7 +15,7 @@ graph LR
     subgraph "Auto-Ingest"
         API --> RAW[raw/]
         RAW --> W[File Watcher]
-        W --> LLM[GPT-4.1 Extraction]
+        W --> LLM[Codex CLI Compilation]
     end
 
     subgraph "Wiki"
@@ -31,7 +31,7 @@ graph LR
     style API fill:#e8f5e9
 ```
 
-**Sources** are captured from any device via the Ingest API → written to `raw/` → **automatically processed** by the auto-ingest service (GPT-4.1 via GitHub Models API) → wiki pages created with cross-references. Twitter/X and GitHub repo URLs get specialized extraction; images are analyzed via GPT-4.1 vision. **AGENTS.md** defines the schema that all AI tools follow.
+**Sources** are captured from any device via the Ingest API → written to `raw/` → **automatically processed** by the auto-ingest service through Codex CLI → wiki pages created with cross-references. Twitter/X and GitHub repo URLs get specialized deterministic fetch/extraction before compilation. **AGENTS.md** defines the schema that all AI tools follow.
 
 ## Architecture
 
@@ -101,7 +101,7 @@ Add sources from anywhere — they're automatically processed into wiki pages:
 | 🐦 Twitter/X | Share tweet URL → fxtwitter API extracts text + images | ⚡ Auto |
 | 🐙 GitHub Repo | Share repo URL → REST API fetches README + metadata | ⚡ Auto |
 
-The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources via GitHub Models within seconds. It now uses **source-aware model routing**: lightweight text-only sources such as Copilot session checkpoint exports can run on a cheaper text model, standard URLs/repos use the default model, and image-bearing sources are routed to the vision-capable lane. Twitter/X and GitHub repo URLs are handled by specialized extractors; images are analyzed only when present. For `type: url` sources, the normalized fetched body is persisted back into a deterministic fetched-content block in `raw/` so later re-ingest can reuse the durable snapshot without a fresh network round-trip. For `type: file` sources that reference `raw/assets/...`, supported document formats are converted through MarkItDown and persisted back into a deterministic extracted-content block before wiki compilation.
+The `wiki-auto-ingest` Docker service watches `raw/` and processes new pending sources through the `codex-cli` backend by default. It preserves **source-aware routing** for priority, source class, and reasoning effort: checkpoint exports and MemPalace bridge exports use the lighter path, standard URLs/repos use the default path, and document-heavy sources such as PDFs receive higher reasoning effort. Twitter/X and GitHub repo URLs are handled by specialized deterministic extractors. For `type: url` sources, the normalized fetched body is persisted back into a deterministic fetched-content block in `raw/` so later re-ingest can reuse the durable snapshot without a fresh network round-trip. For `type: file` sources that reference `raw/assets/...`, supported document formats are converted through MarkItDown and persisted back into a deterministic extracted-content block before wiki compilation.
 
 For targeted reruns:
 
@@ -116,7 +116,7 @@ python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-r
 python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-root . --force --refresh-fetch --validation-run
 
 # Rebuild Copilot checkpoint source pages from durable raw summaries without
-# using the GitHub Models compile path
+# calling the Codex/GitHub Models compile path
 python3 scripts/reprocess_checkpoint_raws.py --only-pending
 ```
 
@@ -142,16 +142,16 @@ See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 | Service | Purpose |
 |---------|---------|
 | `wiki-ingest-api` | FastAPI — receives sources from all capture channels |
-| `wiki-auto-ingest` | File watcher — auto-processes pending sources via GitHub Models source-aware lanes |
+| `wiki-auto-ingest` | File watcher — auto-processes pending sources via Codex CLI |
 
 ## Toolchain
 
-Works with all three tools — they all read `AGENTS.md`:
+Works with Codex CLI for unattended processing plus the repo's interactive assistant surfaces — all read `AGENTS.md`:
 
 | Tool | Config |
 |------|--------|
+| Codex CLI | `AGENTS.md` + `scripts/prompts/wiki_ingest_prompt.md` |
 | VS Code Copilot | `.github/copilot-instructions.md` + `AGENTS.md` |
-| Copilot CLI | `AGENTS.md` |
 | OpenCode | `opencode.json` + `AGENTS.md` |
 
 ## Memory Model

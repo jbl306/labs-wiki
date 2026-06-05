@@ -1,21 +1,21 @@
 # Live Memory Loop
 
-> How labs-wiki and MemPalace stay in sync across VS Code Copilot, Copilot CLI, and OpenCode sessions — with no LLM API key beyond the existing GitHub Copilot Pro+ subscription.
+> How labs-wiki and MemPalace stay in sync across Codex CLI, VS Code Copilot, and OpenCode sessions while keeping the live memory loop local-first.
 
 ## Goals
 
 1. **Sub-minute freshness** — a decision made at 2:00pm is searchable via `mempalace_search` by 2:01pm.
-2. **Uniform behavior across clients** — VS Code, Copilot CLI, and OpenCode all read the same hot cache and follow the same retrieval ladder.
-3. **Zero additional LLM cost** — no paid API keys beyond Copilot Pro+.
+2. **Uniform behavior across clients** — Codex CLI, VS Code Copilot, and OpenCode all read the same hot cache and follow the same retrieval ladder.
+3. **Zero model calls in the live memory loop** — mining, embedding, and hot-cache refresh stay local; only source compilation uses the configured ingest backend.
 4. **Graceful degradation** — a periodic full-sweep catches anything the watcher missed.
 
 ## Architecture
 
 ```
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-│  Copilot CLI    │  │  VS Code Copilot│  │    OpenCode     │
-│  ~/.copilot/    │  │   workspace     │  │  ~/.opencode/   │
-│  session-state  │  │   storage       │  │  session logs   │
+│ Codex/Copilot   │  │  VS Code Copilot│  │    OpenCode     │
+│ CLI sessions    │  │   workspace     │  │  ~/.opencode/   │
+│ ~/.codex|copilot│  │   storage       │  │  session logs   │
 └────────┬────────┘  └────────┬────────┘  └────────┬────────┘
          │ inotify            │ inotify            │ inotify
          └────────────┬───────┴────────────────────┘
@@ -51,7 +51,7 @@
 - **Behavior:** debounced (60s default); per-path mine action; refreshes `wiki/hot.md` after every mine.
 - **Content-hash skip** (plan Part 5 Q1 proposed-answer): before each mine fires, a lightweight stat-based fingerprint of recently-modified files under the watched root is computed. If it matches the previous fire, the mine is skipped — this absorbs editor-metadata writes, `.git/` internal churn, and other noop events without hitting mempalace.
 - **Watched paths:**
-  - `~/.copilot/session-state` → wing `copilot_sessions` (convos mode)
+  - `~/.codex/sessions` and/or `~/.copilot/session-state` → wing `copilot_sessions` (convos mode)
   - `~/projects/labs-wiki/raw` → wing `labs_wiki` + wiki injection
   - `~/projects/labs-wiki/wiki` → wing `labs_wiki` + wiki injection (ignores `hot.md`)
   - `~/projects/homelab` → wing `homelab` (covers `homelab/config/opencode/` and `homelab/opencode/` — the two homelab opencode containers; user-level `~/.opencode/` is **not** watched, as it's not in use on this host)
@@ -86,7 +86,7 @@ Encoded in [agents-snippet.md](agents-snippet.md) and injected into every projec
 | [`/wiki-save`](../.github/skills/wiki-save/SKILL.md) | Stop hook | End-of-session capture |
 | [`/wiki-refresh-hot`](../.github/skills/wiki-refresh-hot/SKILL.md) | SessionStart hook | Manual hot cache refresh |
 
-Copilot CLI and VS Code Copilot have **no native SessionStart/Stop/PreCompact hooks**. The watcher + always-loaded `hot.md` + user-invoked skills give equivalent behavior without needing them.
+Codex/Copilot CLI and VS Code Copilot have **no native SessionStart/Stop/PreCompact hooks** in this repo. The watcher + always-loaded `hot.md` + user-invoked skills give equivalent behavior without needing them.
 
 ### 5. Weekly safety-net cron
 
@@ -131,7 +131,7 @@ bash /home/jbl/projects/labs-wiki/setup.sh --inject-snippet
 
 ## Why this works without an LLM key
 
-`mempalace mine` is pure local indexing: SHA hashing, markdown parsing, drawer generation, and embedding via local sentence-transformers into ChromaDB. No OpenAI/Anthropic calls. The only model-calling component — `auto_ingest.py`'s compile step — runs inside the `wiki-auto-ingest` Docker sidecar using GitHub Models (already covered by Copilot Pro+), with source-aware routing so session checkpoints can use a lighter text lane and image-bearing sources use the vision lane only when needed.
+`mempalace mine` is pure local indexing: SHA hashing, markdown parsing, drawer generation, and embedding via local sentence-transformers into ChromaDB. No OpenAI/Anthropic calls. The only model-calling component — `auto_ingest.py`'s compile step — runs inside the `wiki-auto-ingest` Docker sidecar through the configured ingest backend, now Codex CLI by default, with source-aware priority and reasoning-effort routing.
 
 ## Success criteria
 

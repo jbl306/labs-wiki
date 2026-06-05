@@ -2,32 +2,33 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-# Install gh CLI + GitHub Copilot CLI (needed for the copilot-cli ingest backend).
-# Copilot CLI is distributed via npm (@github/copilot), so we also need Node.
-RUN apt-get update && apt-get install -y curl ca-certificates gnupg && \
-    curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg && \
-    chmod go+r /usr/share/keyrings/githubcli-archive-keyring.gpg && \
-    echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null && \
+# Install Node + Codex CLI for the default codex-cli ingest backend.
+# Git/ripgrep are useful to Codex when it inspects and edits the mounted repo.
+RUN apt-get update && apt-get install -y curl ca-certificates gnupg git ripgrep && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
-    apt-get install -y gh nodejs && \
-    npm install -g @github/copilot && \
+    apt-get install -y nodejs && \
+    npm install -g @openai/codex && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY scripts/requirements-auto-ingest.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY scripts/auto_ingest.py scripts/watch_raw.py /app/scripts/
+COPY scripts/checkpoint_classifier.py scripts/checkpoint_state.py /app/scripts/
 COPY scripts/compile_index.py /app/scripts/
 COPY scripts/prompts/ /app/scripts/prompts/
 COPY templates/ /app/templates/
 
 ENV PROJECT_ROOT=/app
 ENV PYTHONUNBUFFERED=1
-# Copilot CLI needs a writable HOME for its cache (.cache, .copilot config).
-# Container runs as uid 1000 (set via compose); /tmp is the only guaranteed
-# writable path without changing image ownership. Pre-create the cache dir.
-ENV HOME=/tmp/copilot-home
-RUN mkdir -p /tmp/copilot-home/.cache /tmp/copilot-home/.copilot && \
-    chmod -R 777 /tmp/copilot-home
+ENV WIKI_INGEST_BACKEND=codex-cli
+# Codex needs writable HOME/CODEX_HOME for auth/config/session/cache state.
+# Container runs as uid 1000 (set via compose), so create a dedicated writable
+# home outside /app (which may be hidden by the project bind mount) and outside
+# /tmp (Codex refuses to install helper shims under temp dirs).
+ENV HOME=/home/codex
+ENV CODEX_HOME=/home/codex
+RUN mkdir -p /home/codex/.cache && \
+    chmod -R 777 /home/codex
 
 CMD ["python3", "scripts/watch_raw.py"]

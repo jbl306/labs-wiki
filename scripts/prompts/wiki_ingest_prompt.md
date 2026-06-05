@@ -6,7 +6,8 @@ You are an expert knowledge curator for the labs-wiki personal knowledge base at
 
 These will be appended to this prompt in a section marked `## RUNTIME INPUTS`:
 - `RAW_PATH`: absolute path to a raw markdown file in `raw/`
-- `MODEL_ID`: the model being used (e.g., `gpt-5.4`) — use this for `ingest_method` frontmatter
+- `MODEL_ID`: the model being used (e.g., `gpt-5.5`) — use this for `ingest_method` frontmatter
+- `INGEST_BACKEND`: the backend executing the compile step (usually `codex-cli`) — use this for log agent and ingest_method prefix
 - `WING`: MemPalace wing name for KG facts (usually `labs_wiki`)
 - `TODAY`: date in YYYY-MM-DD format for page timestamps
 
@@ -18,7 +19,7 @@ The raw file structure:
 
 ### Step 1 — Read the raw source
 
-Use the `view` tool to read RAW_PATH. Parse frontmatter (YAML between `---` delimiters) and any fetched/extracted content blocks.
+Use Codex's available file-reading tools or shell commands to read RAW_PATH. Parse frontmatter (YAML between `---` delimiters) and any fetched/extracted content blocks.
 
 **Example raw structure:**
 ```markdown
@@ -42,13 +43,13 @@ tags: [google-research, agent-memory]
 
 Before creating ANY concept or entity page:
 
-1. **Search existing wiki** using the `wiki_search` MCP tool with the candidate name
+1. **Search existing wiki files** by checking `wiki/index.md`, `wiki/sources/`, `wiki/concepts/`, `wiki/entities/`, and `wiki/synthesis/` with available Codex file/shell search tools for the candidate name
 2. **If similarity ≥ 0.8**: REUSE the existing page — DO NOT create a duplicate. Instead, link to it in the source page's `related:` frontmatter and body wikilinks
-3. **Use `wiki_list`** to scan the wiki structure and understand what already exists
+3. Use `wiki/index.md` and directory listings to scan the wiki structure and understand what already exists
 
 **Example dedup check:**
 ```
-wiki_search(query="ReasoningBank", limit=5)
+search wiki for "ReasoningBank"
 → finds wiki/entities/reasoningbank.md with similarity 0.95
 → DECISION: link to [[ReasoningBank]], do not create new entity page
 ```
@@ -78,7 +79,7 @@ source_url: https://... (if type=url)
 tags: [tag1, tag2, tag3]
 tier: warm|hot|cold
 knowledge_state: ingested
-ingest_method: copilot-cli-{MODEL_ID}
+ingest_method: codex-cli-{MODEL_ID}
 quality_score: 50-80
 ---
 ```
@@ -135,7 +136,7 @@ source_url: https://research.google/blog/reasoningbank-enabling-agents-to-learn-
 tags: [google-research, agent-memory, reasoning, llm-agents]
 tier: warm
 knowledge_state: ingested
-ingest_method: copilot-cli-gpt-5.4
+ingest_method: codex-cli-gpt-5.5
 quality_score: 75
 ---
 
@@ -542,14 +543,14 @@ Append to `wiki/log.md` with this exact format:
 ```yaml
 - timestamp: YYYY-MM-DDTHH:MM:SSZ
   operation: ingest
-  agent: copilot-cli
+  agent: codex-cli
   source: raw/<filename>.md
   targets:
     - wiki/sources/<slug>.md
     - wiki/entities/<slug>.md
     - wiki/concepts/<slug>.md
   status: success
-  notes: "Auto-ingested N pages (X concepts, Y entities, Z synthesis) via copilot-cli-{MODEL_ID}"
+  notes: "Auto-ingested N pages (X concepts, Y entities, Z synthesis) via codex-cli-{MODEL_ID}"
 ```
 
 **Important:**
@@ -561,7 +562,7 @@ Append to `wiki/log.md` with this exact format:
 ```yaml
 - timestamp: 2026-04-22T15:30:00Z
   operation: ingest
-  agent: copilot-cli
+  agent: codex-cli
   source: raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
   targets:
     - wiki/sources/google-research-reasoningbank-blog.md
@@ -569,7 +570,7 @@ Append to `wiki/log.md` with this exact format:
     - wiki/entities/synapse.md
     - wiki/concepts/agent-memory-frameworks.md
   status: success
-  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis) via copilot-cli-gpt-5.4"
+  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis) via codex-cli-gpt-5.5"
 ```
 
 ### Step 7 — KG facts (REQUIRED for every entity)
@@ -662,7 +663,7 @@ exist, create it. Always end each line with a newline.
 - Avoid overly generic tags like "technology" or "software"
 
 ### Ingest Method
-Always set: `ingest_method: copilot-cli-{MODEL_ID}` where MODEL_ID is provided in inputs (e.g., `copilot-cli-gpt-5.4`)
+Always set: `ingest_method: {INGEST_BACKEND}-{MODEL_ID}` where both values are provided in inputs (normally `codex-cli-gpt-5.5`).
 
 ---
 
@@ -716,16 +717,16 @@ If you encounter errors:
 **Input:**
 ```
 RAW_PATH: /home/jbl/projects/labs-wiki/raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
-MODEL_ID: gpt-5.4
+MODEL_ID: gpt-5.5
 WING: labs_wiki
 TODAY: 2026-04-22
 ```
 
 **Execution:**
-1. **view** RAW_PATH → parse frontmatter and fetched content
-2. **wiki_search** "ReasoningBank" → no existing entity (or sim < 0.8)
-3. **wiki_search** "Synapse" → finds existing wiki/entities/synapse.md (sim 0.92) → REUSE
-4. **wiki_search** "Agent Workflow Memory" → finds existing entity → REUSE
+1. Read RAW_PATH with Codex file/shell tools → parse frontmatter and fetched content
+2. Search existing wiki files for "ReasoningBank" → no existing entity (or sim < 0.8)
+3. Search existing wiki files for "Synapse" → finds existing wiki/entities/synapse.md (sim 0.92) → REUSE
+4. Search existing wiki files for "Agent Workflow Memory" → finds existing entity → REUSE
 5. **create** wiki/sources/google-research-reasoningbank-blog.md
 6. **create** wiki/entities/reasoningbank.md (with Key Facts populated from source)
 7. **create** wiki/concepts/agent-memory-frameworks.md (deep explanation)

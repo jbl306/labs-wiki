@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-06-20T03:17:01+00:00
+generated: 2026-06-21T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-06-20T03:17:01+00:00
+> Regenerated: 2026-06-21T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-06-18` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-06-19` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-06-03` — [[partner-gated-reservation-apis]] (`wiki/concepts/partner-gated-reservation-apis.md`)
 - `2026-06-03` — [[public-reservation-widget-availability-endpoints]] (`wiki/concepts/public-reservation-widget-availability-endpoints.md`)
 - `2026-06-03` — [[doordash-going-out]] (`wiki/entities/doordash-going-out.md`)

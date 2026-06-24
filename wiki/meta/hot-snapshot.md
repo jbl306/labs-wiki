@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-06-23T03:17:01+00:00
+generated: 2026-06-24T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-06-23T03:17:01+00:00
+> Regenerated: 2026-06-24T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-06-21` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-06-22` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-06-03` — [[partner-gated-reservation-apis]] (`wiki/concepts/partner-gated-reservation-apis.md`)
 - `2026-06-03` — [[public-reservation-widget-availability-endpoints]] (`wiki/concepts/public-reservation-widget-availability-endpoints.md`)
 - `2026-06-03` — [[doordash-going-out]] (`wiki/entities/doordash-going-out.md`)
@@ -67,43 +67,37 @@ ttl_hours: 24
 ### Wing: `labs_wiki`
 
 ```
-Wake-up text (~884 tokens):
+Wake-up text (~111 tokens):
 ==================================================
 I am jbl's AI assistant operating on a homelab server (Beelink GTi13 Ultra, Ubuntu 24.04 LTS).
 I help with infrastructure management, ML research, knowledge management, and home automation.
 Key projects: labs-wiki (LLM knowledge wiki), homelab (Docker service orchestration), nba-ml-engine (fantasy basketball ML).
 I value accuracy, provenance, and elegant solutions. I track lessons learned to avoid repeating mistakes.
-## L1 — ESSENTIAL STORY
-[agents]
-  ... (more in L3 search)
+## L1 — No memories yet.
 ```
 
 ### Wing: `copilot_sessions`
 
 ```
-Wake-up text (~894 tokens):
+Wake-up text (~111 tokens):
 ==================================================
 I am jbl's AI assistant operating on a homelab server (Beelink GTi13 Ultra, Ubuntu 24.04 LTS).
 I help with infrastructure management, ML research, knowledge management, and home automation.
 Key projects: labs-wiki (LLM knowledge wiki), homelab (Docker service orchestration), nba-ml-engine (fantasy basketball ML).
 I value accuracy, provenance, and elegant solutions. I track lessons learned to avoid repeating mistakes.
-## L1 — ESSENTIAL STORY
-[technical]
-  ... (more in L3 search)
+## L1 — No memories yet.
 ```
 
 ### Wing: `homelab`
 
 ```
-Wake-up text (~886 tokens):
+Wake-up text (~111 tokens):
 ==================================================
 I am jbl's AI assistant operating on a homelab server (Beelink GTi13 Ultra, Ubuntu 24.04 LTS).
 I help with infrastructure management, ML research, knowledge management, and home automation.
 Key projects: labs-wiki (LLM knowledge wiki), homelab (Docker service orchestration), nba-ml-engine (fantasy basketball ML).
 I value accuracy, provenance, and elegant solutions. I track lessons learned to avoid repeating mistakes.
-## L1 — ESSENTIAL STORY
-[compose]
-  ... (more in L3 search)
+## L1 — No memories yet.
 ```
 
 ---

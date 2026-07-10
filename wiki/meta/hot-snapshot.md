@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-07-09T03:17:01+00:00
+generated: 2026-07-10T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-07-09T03:17:01+00:00
+> Regenerated: 2026-07-10T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-07-07` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-07-08` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-06-03` — [[partner-gated-reservation-apis]] (`wiki/concepts/partner-gated-reservation-apis.md`)
 - `2026-06-03` — [[public-reservation-widget-availability-endpoints]] (`wiki/concepts/public-reservation-widget-availability-endpoints.md`)
 - `2026-06-03` — [[doordash-going-out]] (`wiki/entities/doordash-going-out.md`)
@@ -28,6 +28,7 @@ ttl_hours: 24
 
 ## Recent Sources Captured
 
+- `2026-07-10` — `raw/2026-07-09-github-ingestion-phase-3-delivery.md`
 - `2026-06-04` — `raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md`
 - `2026-05-31` — `raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md`
 - `2026-05-31` — `raw/2026-05-31-copilot-session-optimizing-dev-kit-instructions-3fbfec36.md`
@@ -37,7 +38,6 @@ ttl_hours: 24
 - `2026-05-30` — `raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md`
 - `2026-05-30` — `raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md`
 - `2026-05-30` — `raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md`
-- `2026-05-30` — `raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

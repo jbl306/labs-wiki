@@ -118,6 +118,10 @@ python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md --project-r
 # Rebuild Copilot checkpoint source pages from durable raw summaries without
 # calling the Codex/GitHub Models compile path
 python3 scripts/reprocess_checkpoint_raws.py --only-pending
+
+# Audit every synthesis page, or strictly validate one newly created page
+python3 scripts/audit_synthesis.py --json-out reports/synthesis-audit.json
+python3 scripts/audit_synthesis.py --page wiki/synthesis/example.md --strict
 ```
 
 `--validation-run` is intended for review-only reruns of a single already-ingested raw file (e.g. verifying
@@ -159,6 +163,9 @@ Works with Codex CLI for unattended processing plus the repo's interactive assis
 - **Provenance:** every wiki page traces to sources via `sources:` frontmatter
 - **Staleness:** pages not verified in 90+ days are flagged
 - **Quality:** 0-100 score based on structure (completeness, cross-refs, attribution, recency), not execution certainty
+- **Synthesis evidence:** new synthesis pages declare within- vs cross-source
+  scope and include a claim-level Evidence Map; `scripts/audit_synthesis.py`
+  evaluates provenance, grounding, depth, and title quality
 - **Tiers:** hot → established → core → workflow (consolidation over time)
 - **Checkpoint policy:** Copilot `project-progress` checkpoints are compressed into archived source pages; planning-only checkpoints keep the summary but do not mint standalone concept/entity pages, and checkpoint source pages carry `knowledge_state: planned|executed|validated` separately from structural quality
 

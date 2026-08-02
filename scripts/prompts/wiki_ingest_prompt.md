@@ -1,6 +1,6 @@
 # Labs-Wiki Ingest Workflow
 
-You are an expert knowledge curator for the labs-wiki personal knowledge base at /home/jbl/projects/labs-wiki. Your task is to ingest ONE raw source into the wiki by creating/updating source/concept/entity/synthesis pages, deduplicating against existing pages, and updating the ingest log.
+You are an expert knowledge curator for the labs-wiki personal knowledge base at /home/jbl/projects/labs-wiki. Your task is to ingest ONE raw source into the wiki by creating/updating source/concept/entity/synthesis pages and deduplicating against existing pages. The Python orchestrator, not you, finalizes raw status and the ingest log after validating your output.
 
 ## Inputs (provided per-call)
 
@@ -435,19 +435,31 @@ Specific real-world uses with enough detail to understand when and why to apply 
 
 #### Synthesis Pages (REQUIRED when criteria met): `wiki/synthesis/<slug>.md`
 
-**You MUST create a synthesis page when ANY of these conditions hold:**
-- You created 2+ new concept pages that share a common theme (e.g. multiple
-  workflow patterns, multiple memory architectures, multiple eval methods)
-- The new entity/concept clearly contrasts with 1+ **existing** wiki page on
-  the same topic (e.g. new memory framework vs. existing one)
-- The raw source explicitly compares 2+ approaches you can name
+Synthesis is an editorial product, not a page-count side effect. **Creating two
+concepts is not sufficient.** Create at most one synthesis page and only when
+all of these gates pass:
 
-**Default: if you created ≥2 concepts in the same family, create a synthesis.**
-The previous bar of "only when bridging" was too conservative — synthesis is
-the highest-value page type and should be the rule, not the exception.
+1. **Question gate:** state a decision, mechanism, trade-off, contradiction, or
+   recurring pattern that the source page alone does not answer.
+2. **Evidence gate:** assemble a targeted packet of 2-6 relevant concept,
+   entity, source, or synthesis pages. Read only the most relevant pages first;
+   expand the packet only to resolve a conflict or provenance gap.
+3. **Comparison gate:** at least two named subjects can be compared across 4-6
+   meaningful dimensions. "They share a theme" is not a comparison.
+4. **Novelty gate:** search `wiki/synthesis/` for the question and subjects. If
+   an existing page answers it, update/link that page instead of creating one.
+5. **Grounding gate:** every key insight can name supporting wiki pages and raw
+   provenance. Clearly label disagreement or weak evidence.
 
-Skip ONLY when the source is a single narrow topic with no comparable
-existing page.
+Prefer **cross-source** synthesis (2+ distinct raw files). A **within-source**
+synthesis is allowed only when the raw source explicitly compares multiple
+approaches and your analysis adds a useful decision or mechanism beyond its
+source summary. Do not turn a single checkpoint, status report, or broad topic
+list into synthesis merely because several concepts were extracted.
+
+Titles must be topic- or decision-shaped, at most 100 characters, and useful in
+search results. Never use pipeline-mechanism titles such as "Recurring
+checkpoint patterns: ..." or concatenate three concept titles.
 
 **Frontmatter schema:**
 ```yaml
@@ -460,6 +472,8 @@ source_hash: "synthesis-generated"
 sources:
   - raw/<filename>.md
   - (other raw sources from compared pages)
+evidence_scope: cross-source  # or within-source
+evidence_source_count: 2      # exact count of unique entries in sources
 concepts: [concept-slug-1, concept-slug-2]
 related:
   - "[[Concept A]]"
@@ -501,6 +515,19 @@ The cross-cutting question this synthesis answers.
 1. **Insight 1** — supported by [[Page 1]], [[Page 2]]
 2. **Insight 2** — ...
 
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---------|------------------|----------------|---------------------|
+| Insight 1 | [[Page 1]], [[Page 2]] | `raw/source-a.md`, `raw/source-b.md` | High; sources agree |
+| Insight 2 | [[Page 2]] | `raw/source-b.md` | Medium; single implementation |
+
+Use the exact Key Insight claim text in the first column so the deterministic
+strict audit can match one row to each insight. List only raw files that are
+declared in frontmatter, exist under `raw/`, and actually support that insight
+through the named supporting pages; never copy every page-level source into
+every row.
+
 ## Open Questions
 
 - Question 1 where more sources are needed
@@ -510,6 +537,14 @@ The cross-cutting question this synthesis answers.
 
 - [[Source 1]]
 - [[Source 2]]
+```
+
+Before reporting a new synthesis page, run this deterministic quality gate and
+fix every error until it passes:
+
+```bash
+python3 scripts/audit_synthesis.py --strict --fail-under 80 \
+  --page wiki/synthesis/<slug>.md
 ```
 
 ---
@@ -528,52 +563,15 @@ The cross-cutting question this synthesis answers.
 ReasoningBank builds on prior work like [[Synapse]] and [[Agent Workflow Memory]].
 ```
 
-### Step 5 — Update raw status
+### Step 5 — Leave finalization to the orchestrator
 
-Edit the raw file's frontmatter:
-- Change `status: pending` → `status: ingested`
-- OR `status: failed` → `status: ingested` (if reprocessing)
+Do **not** edit `RAW_PATH` status and do **not** append to `wiki/log.md`. The
+The Python orchestrator validates that every reported page exists, checks source
+provenance, runs the strict synthesis audit, then records the log and changes raw
+status to `ingested`. Report `partial` or `failed` if page work is incomplete;
+those statuses intentionally remain unfinalized for review/retry.
 
-Use the `edit` tool to make this change precisely.
-
-### Step 6 — Append log entry
-
-Append to `wiki/log.md` with this exact format:
-
-```yaml
-- timestamp: YYYY-MM-DDTHH:MM:SSZ
-  operation: ingest
-  agent: codex-cli
-  source: raw/<filename>.md
-  targets:
-    - wiki/sources/<slug>.md
-    - wiki/entities/<slug>.md
-    - wiki/concepts/<slug>.md
-  status: success
-  notes: "Auto-ingested N pages (X concepts, Y entities, Z synthesis) via codex-cli-{MODEL_ID}"
-```
-
-**Important:**
-- The log is wrapped in a YAML code fence (starts with ` ```yaml`, ends with ` ``` `)
-- Append your entry BEFORE the closing ` ``` ` fence
-- Preserve the fence structure
-
-**Example append:**
-```yaml
-- timestamp: 2026-04-22T15:30:00Z
-  operation: ingest
-  agent: codex-cli
-  source: raw/2026-04-22-reasoningbank-enabling-agents-to-learn-from-experience.md
-  targets:
-    - wiki/sources/google-research-reasoningbank-blog.md
-    - wiki/entities/reasoningbank.md
-    - wiki/entities/synapse.md
-    - wiki/concepts/agent-memory-frameworks.md
-  status: success
-  notes: "Auto-ingested 4 pages (1 concepts, 2 entities, 0 synthesis) via codex-cli-gpt-5.5"
-```
-
-### Step 7 — KG facts (REQUIRED for every entity)
+### Step 6 — KG facts (REQUIRED for every entity)
 
 **Do NOT call `mempalace_kg_add` directly.** The auto-ingest container has
 no MCP access. Instead, append one JSON object per fact to:
@@ -629,9 +627,10 @@ exist, create it. Always end each line with a newline.
 - Include formulas, algorithms, code examples where relevant
 
 ### Synthesis Pages
-- Only create when there's genuine overlap with existing wiki pages
+- Prefer cross-source synthesis; do not create it from concept count alone
 - Must answer a clear cross-cutting question
 - Include structured comparison table with 4-6 dimensions
+- Include claim-level Evidence Map and pass `audit_synthesis.py --strict`
 
 ---
 
@@ -678,6 +677,7 @@ After completing all steps, provide a JSON status report as your **last output**
   "entities_created": ["wiki/entities/<slug1>.md", "wiki/entities/<slug2>.md"],
   "concepts_created": ["wiki/concepts/<slug1>.md"],
   "synthesis_created": [],
+  "pages_updated": ["wiki/entities/<existing-slug>.md"],
   "duplicates_avoided": [
     {"candidate": "Synapse", "linked_to": "wiki/entities/synapse.md"}
   ],
@@ -687,8 +687,8 @@ After completing all steps, provide a JSON status report as your **last output**
 ```
 
 **Status values:**
-- `"success"`: All pages created, raw status updated, log appended
-- `"partial"`: Some pages created but encountered non-fatal issues
+- `"success"`: All reported pages exist and all required page-level checks pass
+- `"partial"`: Some pages were written but the ingest is not safe to finalize
 - `"failed"`: Critical error prevented ingest
 
 **Notes field:**
@@ -705,10 +705,10 @@ If you encounter errors:
 3. **Dedup conflicts**: When in doubt, prefer linking to existing page over creating duplicate
 4. **Malformed raw**: Extract what you can, note issues in JSON response
 
-**Never leave the workflow incomplete**:
-- Always update raw status (even if partial success)
-- Always append log entry (even if only source page created)
-- Always return JSON status report
+**Never conceal an incomplete workflow**:
+- Never update raw status or the log yourself
+- Return `partial` when any reported page or quality gate is incomplete
+- Always return the schema-conformant JSON status report
 
 ---
 
@@ -730,10 +730,9 @@ TODAY: 2026-04-22
 5. **create** wiki/sources/google-research-reasoningbank-blog.md
 6. **create** wiki/entities/reasoningbank.md (with Key Facts populated from source)
 7. **create** wiki/concepts/agent-memory-frameworks.md (deep explanation)
-8. **edit** RAW_PATH frontmatter: status → success
-9. **edit** wiki/log.md: append entry
-10. **append** wiki/.kg-pending.jsonl with 3 fact lines about ReasoningBank
-11. **Output JSON** with status report
+8. **append** wiki/.kg-pending.jsonl with 3 fact lines about ReasoningBank
+9. Run any required synthesis quality gate
+10. **Output JSON** with status report; the orchestrator owns raw/log finalization
 
 **Result:**
 ```json

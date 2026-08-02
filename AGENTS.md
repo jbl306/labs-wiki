@@ -94,11 +94,20 @@ related:                        # wikilinks for graph view
   - "[[Related Page]]"
 tier: established               # hot | established | core | workflow
 tags: [topic, subtopic]
+# Required on synthesis pages:
+evidence_scope: cross-source       # cross-source | within-source
+evidence_source_count: 2           # unique raw paths in sources
 ---
 ```
 
 **Required fields:** `title`, `type`, `created`, `sources`
 **Auto-populated by auto-ingest/skills:** `source_hash`, `quality_score`, `last_verified`, `concepts`, `related`
+
+Synthesis pages additionally require `evidence_scope`, `evidence_source_count`,
+and an `## Evidence Map` that maps each key insight to wiki pages, raw
+provenance, and confidence/limitations. Run
+`python3 scripts/audit_synthesis.py --page <path> --strict` before accepting a
+new synthesis page.
 
 ### Raw Source Frontmatter
 
@@ -150,10 +159,14 @@ The `wiki-auto-ingest` Docker service handles source processing automatically:
 4. **LLM compilation** (Codex CLI, source-aware priority + effort routing) → wiki source/concept/entity/synthesis pages
 5. **Page generation** from templates → source page + concept pages + entity pages
 6. **Cross-referencing** — bidirectional `[[wikilinks]]` between related pages
-7. **Index + log** — rebuilds `wiki/index.md`, appends to `wiki/log.md`
-8. **Raw snapshot update** — URL sources persist a deterministic fetched-content block back into `raw/`; file sources pointing at `raw/assets/...` persist document extraction in a deterministic extracted-content block
-9. **Status update** — marks raw source `status: ingested`
-10. **Notification** — sends ntfy alert on success/failure
+7. **Validation** — validates every backend result against the shared JSON Schema,
+   checks reported paths, contains provenance to existing `raw/*.md` files, and
+   enforces exact claim-level Evidence Map coverage for new synthesis
+8. **Index gate** — regenerates `wiki/index.md`; failures leave the raw source pending
+9. **Orchestrator finalization** — only after deterministic gates, append
+   `wiki/log.md`, mark the raw source `ingested`, and notify
+10. **Path-limited commit** — commits only the validated manifest paths even if
+    unrelated files were already staged
 
 **Backend routing:** default `WIKI_INGEST_BACKEND=codex-cli`; `copilot-cli` and legacy GitHub Models remain compatibility paths.
 **Config:** `WIKI_INGEST_BACKEND`, `WIKI_INGEST_MODEL`, `CODEX_MODEL`, `WIKI_INGEST_EFFORT`, `WIKI_INGEST_MODEL_OVERRIDE`, `CODEX_MODEL_OVERRIDE`, `GITHUB_MODELS_TOKEN`/`GITHUB_TOKEN` for token-requiring compatibility backends, `DEBOUNCE_SECONDS`
@@ -199,6 +212,25 @@ This is useful after manual ingest or when sources already have rich metadata th
 - Every fact in a wiki page must trace to a source via `sources:` field
 - One raw source may produce multiple wiki pages (concepts, entities)
 - Always update `wiki/log.md` with timestamp, operation, and targets, **unless running in `--validation-run` mode** (review-only reruns suppress log and notification noise)
+- The Codex subprocess must not update raw status or `wiki/log.md`; those are
+  transaction boundaries owned by the Python orchestrator after output and page
+  validation pass
+
+### Synthesis Workflow
+
+Create synthesis only when the source supports a defensible decision,
+trade-off, recurring pattern, mechanism, or contradiction. Two extracted
+concepts alone are not a synthesis trigger.
+
+1. Search existing synthesis pages before creating another.
+2. Build a targeted evidence packet of 2–6 relevant wiki pages.
+3. Prefer two or more independent raw sources; label a defensible single-source
+   comparison `evidence_scope: within-source` rather than overstating breadth.
+4. Use a topic- or decision-shaped title under 100 characters.
+5. Include 4–6 comparison dimensions, 3–5 grounded insights, and an Evidence
+   Map with explicit confidence/limitations.
+6. Run `python3 scripts/audit_synthesis.py --page <path> --strict` and fix all
+   failures before reporting success.
 
 ### Validation-Run Mode
 

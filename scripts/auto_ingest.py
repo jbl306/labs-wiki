@@ -31,6 +31,7 @@ from urllib.parse import urljoin, urlparse
 
 import httpx
 from bs4 import BeautifulSoup
+from jsonschema import Draft202012Validator
 from openai import OpenAI
 try:
     from markitdown import MarkItDown
@@ -70,7 +71,7 @@ GITHUB_MODELS_URL = os.environ.get(
     "GITHUB_MODELS_URL", "https://models.github.ai/inference"
 )
 DEFAULT_MODEL = "gpt-4.1"
-DEFAULT_CODEX_MODEL = "gpt-5.5"
+DEFAULT_CODEX_MODEL = "gpt-5.6-luna"
 DEFAULT_COPILOT_MODEL = "gpt-5.4"
 MAX_RETRIES = 3
 URL_FETCH_TIMEOUT = 30
@@ -2179,6 +2180,8 @@ SYNTHESIS_SYSTEM_PROMPT = textwrap.dedent("""\
        trade-offs, and practical decision criteria
     6. Key Insights should be non-obvious observations that emerge from the comparison
     7. Open Questions should identify genuine gaps where more sources are needed
+    8. Use a topic- or decision-shaped title under 100 characters; never use
+       pipeline-mechanism prefixes such as "Recurring checkpoint patterns"
 
     ## Output Format
     Return ONLY valid JSON (no markdown fencing):
@@ -2206,7 +2209,7 @@ SYNTHESIS_SYSTEM_PROMPT = textwrap.dedent("""\
 
 MAX_SYNTHESIS_PER_INGEST = max(
     0,
-    int(os.environ.get("AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST", "2")),
+    int(os.environ.get("AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST", "1")),
 )
 
 # Checkpoint-family synthesis trigger: minimum number of checkpoint sources
@@ -2686,11 +2689,13 @@ def generate_synthesis_page(
     today: str,
     *,
     extra_frontmatter: dict[str, str] | None = None,
+    source_provenance: dict[str, list[str]] | None = None,
 ) -> tuple[str, str]:
     """Generate a synthesis wiki page. Returns (filename, content)."""
     title = synthesis.get("title", "Untitled Synthesis")
     slug = slugify(title)
     filename = f"{slug}.md"
+    raw_paths = list(dict.fromkeys(str(path) for path in raw_paths))
 
     # Build comparison table
     comparison = synthesis.get("comparison", [])
@@ -2718,6 +2723,45 @@ def generate_synthesis_page(
         + ", ".join(f'[[{p}]]' for p in ins.get("supporting_pages", []))
         for i, ins in enumerate(insights)
     ) or "No key insights identified."
+
+    provenance_by_page = {
+        str(page): [str(raw) for raw in sources if str(raw) in raw_paths]
+        for page, sources in (source_provenance or {}).items()
+    }
+    if not provenance_by_page:
+        provenance_by_page = {
+            str(title): [raw_paths[index]]
+            for index, title in enumerate(source_titles)
+            if index < len(raw_paths)
+        }
+    evidence_rows = []
+    for ins in insights:
+        supporting_pages = [str(page) for page in ins.get("supporting_pages", [])]
+        support = ", ".join(f'[[{page}]]' for page in supporting_pages)
+        supporting_raw: list[str] = []
+        for page in supporting_pages:
+            for raw_path in provenance_by_page.get(page, []):
+                if raw_path not in supporting_raw:
+                    supporting_raw.append(raw_path)
+        provenance = ", ".join(f"`{raw_path}`" for raw_path in supporting_raw)
+        evidence_confidence = (
+            "Medium-high; multiple supporting raw sources"
+            if len(supporting_raw) >= 2
+            else "Medium; one supporting raw source"
+            if supporting_raw
+            else "Unresolved; no mapped raw provenance"
+        )
+        evidence_rows.append(
+            f'| {ins.get("insight", "Insight")} | {support or "Unresolved"} | '
+            f'{provenance or "Unresolved"} | {evidence_confidence} |'
+        )
+    evidence_map = "\n".join(
+        [
+            "| Insight | Supporting pages | Raw provenance | Confidence / limits |",
+            "|---------|------------------|----------------|---------------------|",
+            *evidence_rows,
+        ]
+    )
 
     # Open questions
     open_qs = synthesis.get("open_questions", [])
@@ -2759,6 +2803,8 @@ last_verified: {today}
 source_hash: "synthesis-generated"
 sources:
 {sources_fm}
+evidence_scope: {'cross-source' if len(raw_paths) >= 2 else 'within-source'}
+evidence_source_count: {len(raw_paths)}
 concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
@@ -2788,6 +2834,10 @@ tags: [{', '.join(tags)}]
 ## Key Insights
 
 {insights_section}
+
+## Evidence Map
+
+{evidence_map}
 
 ## Open Questions
 
@@ -3077,6 +3127,46 @@ def _backend_requires_token(backend: str) -> bool:
     return backend in {"github-models", "openai", "legacy", "copilot-cli"}
 
 
+INGEST_STATUS_SCHEMA = {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "additionalProperties": False,
+    "properties": {
+        "status": {"type": "string", "enum": ["success", "partial", "failed"]},
+        "source_path": {"type": "string"},
+        "entities_created": {"type": "array", "items": {"type": "string"}},
+        "concepts_created": {"type": "array", "items": {"type": "string"}},
+        "synthesis_created": {"type": "array", "items": {"type": "string"}},
+        "pages_updated": {"type": "array", "items": {"type": "string"}},
+        "duplicates_avoided": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "additionalProperties": False,
+                "properties": {
+                    "candidate": {"type": "string"},
+                    "linked_to": {"type": "string"},
+                },
+                "required": ["candidate", "linked_to"],
+            },
+        },
+        "kg_facts_added": {"type": "integer", "minimum": 0},
+        "notes": {"type": "string"},
+    },
+    "required": [
+        "status",
+        "source_path",
+        "entities_created",
+        "concepts_created",
+        "synthesis_created",
+        "pages_updated",
+        "duplicates_avoided",
+        "kg_facts_added",
+        "notes",
+    ],
+}
+
+
 def _extract_last_json_object(text: str) -> dict | None:
     """Return the last valid JSON object embedded in text, if any.
 
@@ -3104,6 +3194,9 @@ def _build_agent_ingest_prompt(
     project_root: Path,
     model: str,
     backend: str,
+    checkpoint_class: str = "",
+    retention_mode: str = "",
+    planning_only: bool = False,
 ) -> str:
     prompt_template_path = project_root / "scripts" / "prompts" / "wiki_ingest_prompt.md"
     if not prompt_template_path.exists():
@@ -3120,6 +3213,16 @@ def _build_agent_ingest_prompt(
 - **INGEST_BACKEND**: `{backend}`
 - **WING**: `labs_wiki`
 - **TODAY**: `{today}`
+- **CHECKPOINT_CLASS**: `{checkpoint_class or 'not-a-checkpoint'}`
+- **RETENTION_MODE**: `{retention_mode or 'standard'}`
+- **PLANNING_ONLY**: `{str(planning_only).lower()}`
+
+The checkpoint policy above was computed deterministically by the Python
+orchestrator. If `PLANNING_ONLY` is true, create or update only the source
+summary: report empty entity, concept, and synthesis arrays. Do not promote a
+plan or progress narrative into canonical knowledge. A `compress` retention
+mode likewise requires a terse source summary and no synthesis unless the raw
+contains an explicit completed result with durable evidence.
 """
     return prompt_template + runtime_inputs
 
@@ -3128,13 +3231,18 @@ def _parse_agent_status_output(output: str, backend_label: str, raw_path: Path) 
     status_dict = _extract_last_json_object(output.strip())
     if not status_dict:
         log.warning(
-            "No JSON status found in %s output for %s. Assuming partial success.",
+            "No JSON status found in %s output for %s. Treating the ingest as failed.",
             backend_label,
             raw_path.name,
         )
         return {
-            "status": "partial",
+            "status": "failed",
             "notes": "No JSON status report found in output",
+        }
+    if status_dict.get("status") not in {"success", "partial", "failed"}:
+        return {
+            "status": "failed",
+            "notes": f"Invalid agent status value: {status_dict.get('status')!r}",
         }
     log.info(
         "%s ingest %s: %s",
@@ -3143,6 +3251,165 @@ def _parse_agent_status_output(output: str, backend_label: str, raw_path: Path) 
         status_dict.get("notes", ""),
     )
     return status_dict
+
+
+def _resolve_reported_wiki_path(
+    value: object,
+    project_root: Path,
+    expected_directory: Path,
+) -> Path | None:
+    """Resolve an agent-reported path and enforce its expected wiki directory."""
+    raw_value = str(value or "").strip()
+    if not raw_value:
+        return None
+    candidate = Path(raw_value)
+    if not candidate.is_absolute():
+        candidate = project_root / candidate
+    candidate = candidate.resolve()
+    try:
+        candidate.relative_to(expected_directory.resolve())
+    except ValueError:
+        return None
+    return candidate
+
+
+def _snapshot_agent_write_scope(project_root: Path) -> dict[str, tuple[int, int]]:
+    """Capture a cheap pre/post manifest for unexpected agent writes."""
+    snapshot: dict[str, tuple[int, int]] = {}
+    root = project_root.resolve()
+    excluded_roots = {root / ".git", root / "raw" / "assets"}
+    for path in root.rglob("*"):
+        if not path.is_file():
+            continue
+        if any(excluded == path or excluded in path.parents for excluded in excluded_roots):
+            continue
+        stat = path.stat()
+        snapshot[str(path.relative_to(root))] = (stat.st_size, stat.st_mtime_ns)
+    return snapshot
+
+
+def _unexpected_agent_changes(
+    before: dict[str, tuple[int, int]],
+    after: dict[str, tuple[int, int]],
+    result: dict,
+    project_root: Path,
+) -> list[str]:
+    """Return changed paths not declared by the typed agent status manifest."""
+    changed = {
+        path
+        for path in before.keys() | after.keys()
+        if before.get(path) != after.get(path)
+    }
+    allowed = {"wiki/.kg-pending.jsonl"}
+    for field in (
+        "source_path",
+        "entities_created",
+        "concepts_created",
+        "synthesis_created",
+        "pages_updated",
+    ):
+        values = result.get(field, [])
+        if field == "source_path":
+            values = [values]
+        if not isinstance(values, list):
+            continue
+        for value in values:
+            text = str(value or "").strip()
+            if not text:
+                continue
+            candidate = Path(text)
+            if candidate.is_absolute():
+                try:
+                    text = str(candidate.resolve().relative_to(project_root.resolve()))
+                except ValueError:
+                    continue
+            else:
+                text = str(candidate)
+            allowed.add(text)
+    return sorted(changed - allowed)
+
+
+def _validate_agent_ingest_result(
+    result: dict,
+    raw_path: Path,
+    project_root: Path,
+) -> dict:
+    """Validate the agent's end state before finalizing raw status or the log."""
+    validated = dict(result)
+    errors: list[str] = []
+    schema_errors = sorted(
+        Draft202012Validator(INGEST_STATUS_SCHEMA).iter_errors(result),
+        key=lambda error: tuple(str(part) for part in error.absolute_path),
+    )
+    for error in schema_errors:
+        location = ".".join(str(part) for part in error.absolute_path) or "<root>"
+        errors.append(f"schema validation failed at {location}: {error.message}")
+    if result.get("status") != "success":
+        errors.append(f"agent returned status={result.get('status')!r}")
+
+    source_page = _resolve_reported_wiki_path(
+        result.get("source_path"),
+        project_root,
+        project_root / "wiki" / "sources",
+    )
+    if source_page is None:
+        errors.append("source_path is missing or outside wiki/sources")
+    elif not source_page.is_file():
+        errors.append(f"reported source page does not exist: {source_page}")
+    else:
+        source_frontmatter, _ = parse_frontmatter(source_page)
+        try:
+            expected_raw = str(raw_path.resolve().relative_to(project_root.resolve()))
+        except ValueError:
+            expected_raw = str(raw_path.resolve())
+        reported_sources = source_frontmatter.get("sources")
+        if not isinstance(reported_sources, list) or expected_raw not in {
+            str(source) for source in reported_sources
+        }:
+            errors.append(f"source page provenance does not include {expected_raw}")
+
+    output_fields = {
+        "entities_created": project_root / "wiki" / "entities",
+        "concepts_created": project_root / "wiki" / "concepts",
+        "synthesis_created": project_root / "wiki" / "synthesis",
+        "pages_updated": project_root / "wiki",
+    }
+    synthesis_paths: list[Path] = []
+    for field, expected_directory in output_fields.items():
+        values = result.get(field, [])
+        if not isinstance(values, list):
+            errors.append(f"{field} must be an array")
+            continue
+        for value in values:
+            resolved = _resolve_reported_wiki_path(value, project_root, expected_directory)
+            if resolved is None:
+                errors.append(f"{field} contains an invalid path: {value!r}")
+            elif not resolved.is_file():
+                errors.append(f"{field} path does not exist: {value!r}")
+            elif field == "synthesis_created" or resolved.parent == project_root / "wiki" / "synthesis":
+                synthesis_paths.append(resolved)
+
+    if synthesis_paths:
+        try:
+            from audit_synthesis import audit_page
+
+            for synthesis_path in synthesis_paths:
+                audit = audit_page(synthesis_path, project_root, strict=True)
+                if not audit.passed:
+                    codes = ", ".join(finding.code for finding in audit.findings)
+                    errors.append(
+                        f"synthesis quality gate failed for {synthesis_path.name}: "
+                        f"score={audit.score}; findings={codes}"
+                    )
+        except Exception as exc:
+            errors.append(f"synthesis quality gate crashed: {exc}")
+
+    if errors:
+        validated["status"] = "failed"
+        validated["validation_errors"] = errors
+        prior_notes = str(validated.get("notes") or "").strip()
+        validated["notes"] = "; ".join(filter(None, [prior_notes, *errors]))
+    return validated
 
 
 def _looks_like_pdf_reference(value: object) -> bool:
@@ -3185,6 +3452,16 @@ def _compute_effort_for_raw(fm: dict, body: str | None = None) -> str:
     if re.match(r"^https?://github\.com/[^/]+/[^/]+/?$", url):
         return "high"
     return "medium"
+
+
+def _compute_agent_effort(fm: dict, body: str | None, route: IngestRoute) -> str:
+    """Choose Codex/Copilot reasoning effort after deterministic source routing."""
+    env_effort = os.environ.get("WIKI_INGEST_EFFORT", "").strip()
+    if env_effort:
+        return env_effort
+    if route.lane == "light":
+        return "low"
+    return _compute_effort_for_raw(fm, body)
 
 
 def replay_pending_kg_facts(project_root: Path) -> int:
@@ -3273,8 +3550,13 @@ def replay_pending_kg_facts(project_root: Path) -> int:
     return replayed
 
 
-def commit_wiki_changes(project_root: Path, title: str, notes: str) -> bool:
-    """Stage and commit wiki/* changes after a successful ingest.
+def commit_wiki_changes(
+    project_root: Path,
+    title: str,
+    notes: str,
+    paths: list[str] | None = None,
+) -> bool:
+    """Stage and commit only manifest-listed ingest changes.
 
     Returns True when a commit was created, False when there was nothing to
     commit or git is unavailable. Raises only on subprocess invocation
@@ -3294,14 +3576,33 @@ def commit_wiki_changes(project_root: Path, title: str, notes: str) -> bool:
         log.info("Skipping git commit: git unavailable")
         return False
 
-    # Stage wiki/ + raw/ status updates (raw status changes are part of the
-    # ingest unit of work). Don't touch anything else (e.g. uncommitted
-    # script edits the user is working on).
-    subprocess.run([*git, "add", "wiki/", "raw/"], check=False, timeout=30)
+    # Stage only paths validated and finalized by this ingest. This avoids
+    # accidentally committing unrelated or concurrent wiki/raw work.
+    requested_paths = paths or []
+    stage_paths: list[str] = []
+    root_resolved = project_root.resolve()
+    for value in requested_paths:
+        candidate = (project_root / value).resolve()
+        try:
+            relative = candidate.relative_to(root_resolved)
+        except ValueError:
+            log.warning("Refusing to stage out-of-tree ingest path: %s", value)
+            continue
+        relative_text = str(relative)
+        if relative_text not in stage_paths and candidate.exists():
+            stage_paths.append(relative_text)
+    if not stage_paths:
+        log.warning("Skipping git commit: ingest manifest had no existing paths")
+        return False
+    subprocess.run(
+        [*git, "add", "--", *stage_paths],
+        check=False,
+        timeout=30,
+    )
 
     # Anything to commit?
     diff = subprocess.run(
-        [*git, "diff", "--cached", "--quiet"],
+        [*git, "diff", "--cached", "--quiet", "--", *stage_paths],
         capture_output=True, timeout=10,
     )
     if diff.returncode == 0:
@@ -3315,7 +3616,7 @@ def commit_wiki_changes(project_root: Path, title: str, notes: str) -> bool:
         "Co-authored-by: Codex <codex@openai.com>"
     )
     commit = subprocess.run(
-        [*git, "commit", "-m", msg, "--no-verify"],
+        [*git, "commit", "--only", "-m", msg, "--no-verify", "--", *stage_paths],
         capture_output=True, text=True, timeout=30,
     )
     if commit.returncode != 0:
@@ -3330,6 +3631,9 @@ def call_codex_cli_ingest(
     project_root: Path,
     model: str,
     effort: str,
+    checkpoint_class: str = "",
+    retention_mode: str = "",
+    planning_only: bool = False,
 ) -> dict:
     """Call Codex CLI to execute the full wiki ingest workflow.
 
@@ -3343,6 +3647,9 @@ def call_codex_cli_ingest(
         project_root=project_root,
         model=model,
         backend="codex-cli",
+        checkpoint_class=checkpoint_class,
+        retention_mode=retention_mode,
+        planning_only=planning_only,
     )
     log.info(
         "Calling Codex CLI for %s (model=%s, effort=%s)",
@@ -3351,36 +3658,54 @@ def call_codex_cli_ingest(
         effort,
     )
 
-    output_path: Path | None = None
     try:
-        with tempfile.NamedTemporaryFile(
-            "w", prefix="labs-wiki-codex-status-", suffix=".txt", delete=False
-        ) as output_file:
-            output_path = Path(output_file.name)
+        with tempfile.TemporaryDirectory(prefix="labs-wiki-codex-") as tmp:
+            temp_dir = Path(tmp)
+            output_path = temp_dir / "status.json"
+            schema_path = temp_dir / "status-schema.json"
+            schema_path.write_text(json.dumps(INGEST_STATUS_SCHEMA))
+            cmd = [
+                "codex",
+                "-a", "never",
+                "exec",
+                "-m", model,
+                "-c", f'model_reasoning_effort="{effort}"',
+                "-C", str(project_root),
+                "--add-dir", str(project_root),
+                "-s", "workspace-write",
+                "--skip-git-repo-check",
+                "--ephemeral",
+                "--ignore-user-config",
+                "--output-schema", str(schema_path),
+                "--output-last-message", str(output_path),
+                "-",
+            ]
+            env = {**os.environ, "CODEX_INGEST_AUTOMATION": "1"}
+            result = subprocess.run(
+                cmd,
+                input=final_prompt,
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=1200,  # 20 minutes max
+                cwd=str(project_root),
+            )
+            if result.returncode != 0:
+                log.error(
+                    "Codex CLI exited with code %d for %s:\nSTDERR: %s",
+                    result.returncode,
+                    raw_path.name,
+                    result.stderr,
+                )
+                return {
+                    "status": "failed",
+                    "notes": f"codex exec exited with code {result.returncode}",
+                }
 
-        cmd = [
-            "codex",
-            "-a", "never",
-            "exec",
-            "-m", model,
-            "-c", f'model_reasoning_effort="{effort}"',
-            "-C", str(project_root),
-            "--add-dir", str(project_root),
-            "-s", "workspace-write",
-            "--skip-git-repo-check",
-            "--output-last-message", str(output_path),
-            "-",
-        ]
-        env = {**os.environ, "CODEX_INGEST_AUTOMATION": "1"}
-        result = subprocess.run(
-            cmd,
-            input=final_prompt,
-            env=env,
-            capture_output=True,
-            text=True,
-            timeout=1200,  # 20 minutes max
-            cwd=str(project_root),
-        )
+            output_parts = [result.stdout.strip()]
+            if output_path.exists():
+                output_parts.append(output_path.read_text().strip())
+            output = "\n".join(part for part in output_parts if part)
     except subprocess.TimeoutExpired:
         log.error("Codex CLI timed out after 1200s for %s", raw_path.name)
         return {
@@ -3394,28 +3719,6 @@ def call_codex_cli_ingest(
             "notes": f"Subprocess error: {e}",
         }
 
-    if result.returncode != 0:
-        log.error(
-            "Codex CLI exited with code %d for %s:\nSTDERR: %s",
-            result.returncode,
-            raw_path.name,
-            result.stderr,
-        )
-        return {
-            "status": "failed",
-            "notes": f"codex exec exited with code {result.returncode}",
-        }
-
-    output_parts = [result.stdout.strip()]
-    if output_path and output_path.exists():
-        try:
-            output_parts.append(output_path.read_text().strip())
-        finally:
-            try:
-                output_path.unlink()
-            except OSError:
-                pass
-    output = "\n".join(part for part in output_parts if part)
     log.debug("Codex CLI output (last 500 chars): %s", output[-500:])
     return _parse_agent_status_output(output, "Codex CLI", raw_path)
 
@@ -3425,6 +3728,9 @@ def call_copilot_cli_ingest(
     project_root: Path,
     model: str,
     effort: str,
+    checkpoint_class: str = "",
+    retention_mode: str = "",
+    planning_only: bool = False,
 ) -> dict:
     """Call gh copilot CLI to execute the full wiki ingest workflow.
 
@@ -3435,6 +3741,9 @@ def call_copilot_cli_ingest(
         project_root=project_root,
         model=model,
         backend="copilot-cli",
+        checkpoint_class=checkpoint_class,
+        retention_mode=retention_mode,
+        planning_only=planning_only,
     )
 
     log.info(
@@ -3603,6 +3912,23 @@ def ingest_raw_source(
                             backend,
                         )
 
+        agent_route = classify_ingest_route(fm, model_override=model, body=body)
+        agent_planning_only = is_planning_only_checkpoint(
+            str(title),
+            body,
+            agent_route.checkpoint_class,
+            agent_route.retention_mode,
+        )
+        if agent_route.retention_mode == SKIP:
+            log.info(
+                "Skipping %s before %s execution (checkpoint_class=%s retention=skip)",
+                raw_path.name,
+                backend,
+                agent_route.checkpoint_class or "-",
+            )
+            update_raw_status(raw_path, "ingested-skipped")
+            return True
+
         # Agent CLI backend (Codex default, Copilot compatibility)
         if backend == "codex-cli":
             ingest_model = _env_str(
@@ -3615,16 +3941,16 @@ def ingest_raw_source(
                 "WIKI_INGEST_MODEL",
                 default=model or DEFAULT_COPILOT_MODEL,
             )
-        # Effort routing: env var wins; otherwise PDFs / root GitHub repos get
-        # 'high', everything else 'medium'. PDFs need extra reasoning for
-        # layout + math + abstract extraction; clean HTML/markdown does not.
-        env_effort = os.environ.get("WIKI_INGEST_EFFORT", "").strip()
-        ingest_effort = env_effort or _compute_effort_for_raw(fm, body)
+        # Effort routing: env var wins; lightweight checkpoint/MemPalace lanes
+        # use 'low', PDFs/root GitHub repos use 'high', and ordinary sources use
+        # 'medium'.
+        ingest_effort = _compute_agent_effort(fm, body, agent_route)
 
         log.info(
             "Using %s backend (model=%s, effort=%s)",
             backend, ingest_model, ingest_effort,
         )
+        agent_write_snapshot = _snapshot_agent_write_scope(project_root)
 
         if backend == "codex-cli":
             result = call_codex_cli_ingest(
@@ -3632,6 +3958,9 @@ def ingest_raw_source(
                 project_root=project_root,
                 model=ingest_model,
                 effort=ingest_effort,
+                checkpoint_class=agent_route.checkpoint_class or "",
+                retention_mode=agent_route.retention_mode,
+                planning_only=agent_planning_only,
             )
         else:
             result = call_copilot_cli_ingest(
@@ -3639,11 +3968,92 @@ def ingest_raw_source(
                 project_root=project_root,
                 model=ingest_model,
                 effort=ingest_effort,
+                checkpoint_class=agent_route.checkpoint_class or "",
+                retention_mode=agent_route.retention_mode,
+                planning_only=agent_planning_only,
             )
 
-        success = result.get("status") in ("success", "partial")
+        unexpected_changes = _unexpected_agent_changes(
+            agent_write_snapshot,
+            _snapshot_agent_write_scope(project_root),
+            result,
+            project_root,
+        )
+        if unexpected_changes:
+            result = {
+                **result,
+                "status": "failed",
+                "notes": (
+                    "agent changed paths outside its typed result manifest: "
+                    + ", ".join(unexpected_changes)
+                ),
+            }
+
+        if agent_planning_only:
+            promoted_fields = {
+                field: result.get(field, [])
+                for field in (
+                    "entities_created",
+                    "concepts_created",
+                    "synthesis_created",
+                    "pages_updated",
+                )
+                if result.get(field)
+            }
+            if promoted_fields:
+                result = {
+                    **result,
+                    "status": "failed",
+                    "notes": (
+                        "planning-only checkpoint promoted canonical outputs despite "
+                        f"deterministic retention policy: {sorted(promoted_fields)}"
+                    ),
+                }
+
+        result = _validate_agent_ingest_result(result, raw_path, project_root)
+        success = result.get("status") == "success"
 
         if success:
+            raw_relative = str(raw_path.resolve().relative_to(project_root.resolve()))
+            targets = [result.get("source_path", "")]
+            for field in (
+                "entities_created",
+                "concepts_created",
+                "synthesis_created",
+                "pages_updated",
+            ):
+                values = result.get(field, [])
+                if isinstance(values, list):
+                    targets.extend(str(value) for value in values)
+            # Derived artifacts must succeed before finalizing success. If the
+            # index cannot be rebuilt, leave the raw source pending so the
+            # watcher can retry after the deterministic failure is corrected.
+            try:
+                rebuild_index(project_root)
+            except Exception as exc:
+                log.error("Index rebuild failed; leaving raw source pending: %s", exc)
+                return False
+            # KG replay is explicitly best-effort and is not part of the
+            # success gate.
+            try:
+                replay_pending_kg_facts(project_root)
+            except Exception as exc:
+                log.warning("KG replay failed (non-fatal): %s", exc)
+            if not validation_run:
+                append_log(
+                    project_root / "wiki" / "log.md",
+                    {
+                        "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                        "operation": "ingest",
+                        "agent": backend,
+                        "source": raw_relative,
+                        "targets": [target for target in targets if target],
+                        "status": "success",
+                        "notes": result.get("notes", ""),
+                    },
+                )
+            else:
+                log.info("Validation run — skipping log.md append")
             update_raw_status(raw_path, "ingested")
             # Notify
             if not validation_run:
@@ -3652,22 +4062,24 @@ def ingest_raw_source(
                     f"Ingested via {backend}: {result.get('notes', '')}",
                     tags="books,white_check_mark",
                 )
-            # Rebuild index
-            rebuild_index(project_root)
-            # Drain KG-pending JSONL into MemPalace (best-effort, non-blocking)
-            try:
-                replay_pending_kg_facts(project_root)
-            except Exception as exc:
-                log.warning("KG replay failed (non-fatal): %s", exc)
-            # Auto-commit wiki changes so on-disk graph + pages stay versioned
-            try:
-                commit_wiki_changes(
-                    project_root,
-                    title=title,
-                    notes=result.get("notes", ""),
-                )
-            except Exception as exc:
-                log.warning("git auto-commit failed (non-fatal): %s", exc)
+            # Auto-commit only normal ingests. Validation runs intentionally
+            # leave their page changes visible for review without creating an
+            # audit-history commit.
+            if not validation_run:
+                try:
+                    commit_wiki_changes(
+                        project_root,
+                        title=title,
+                        notes=result.get("notes", ""),
+                        paths=[
+                            *[target for target in targets if target],
+                            raw_relative,
+                            "wiki/log.md",
+                            "wiki/index.md",
+                        ],
+                    )
+                except Exception as exc:
+                    log.warning("git auto-commit failed (non-fatal): %s", exc)
         else:
             log.error("%s ingest failed: %s", backend, result.get("notes", "Unknown error"))
 
@@ -4137,7 +4549,9 @@ def ingest_raw_source(
         # Collect raw paths from the compared pages' sources
         syn_raw_paths = [raw_rel]
         syn_source_titles = [source_title]
+        syn_source_provenance: dict[str, list[str]] = {source_title: [raw_rel]}
         for concept_title in concept_pages:
+            concept_sources: list[str] = []
             cslug = slugify(concept_title)
             for category in ("concepts", "entities", "sources"):
                 candidate = wiki_dir / category / f"{cslug}.md"
@@ -4146,12 +4560,16 @@ def ingest_raw_source(
                     for src in cfm.get("sources", []):
                         if src not in syn_raw_paths:
                             syn_raw_paths.append(src)
+                        if src not in concept_sources:
+                            concept_sources.append(src)
                     break
             if concept_title not in syn_source_titles:
                 syn_source_titles.append(concept_title)
+            syn_source_provenance[concept_title] = concept_sources
 
         syn_filename, syn_content = generate_synthesis_page(
             synthesis_result, syn_raw_paths, syn_source_titles, today,
+            source_provenance=syn_source_provenance,
         )
         syn_path = wiki_dir / "synthesis" / syn_filename
         syn_path.parent.mkdir(parents=True, exist_ok=True)
@@ -4174,6 +4592,7 @@ def ingest_raw_source(
         append_log(log_path, {
             "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
             "operation": "ingest",
+            "agent": backend,
             "targets": created_pages,
             "source": raw_rel,
             "status": "success",

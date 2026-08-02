@@ -165,18 +165,20 @@ processed by the `wiki-auto-ingest` Docker service.
 
 1. **Android share / API** creates `raw/YYYY-MM-DD-slug.md` with `status: pending`
 2. **File watcher** (watchdog) detects the new file within 5 seconds
-3. **LLM pipeline** (GitHub Models API, source-routed):
+3. **LLM pipeline** (Codex CLI, source-routed):
    - Fetches URL content for `type: url` sources with specialized handlers:
      - **Twitter/X:** extracts tweet text, author, timestamps, and images via fxtwitter API (supports twitter.com, x.com, t.co, vxtwitter, fxtwitter URLs)
      - **GitHub repos:** fetches README, metadata (description, stars, language, topics), and file tree via REST API
       - **HTML pages:** structure-aware fetch with headings/lists/code/table preservation
-    - **Source-aware routing:** Copilot session checkpoint exports and MemPalace bridge exports prefer a lighter text-only model; standard URLs/repos use the default model
+    - **Source-aware routing:** agent-session checkpoint exports and MemPalace bridge exports prefer lower reasoning effort; standard URLs/repos use medium effort; PDFs and complex inputs use high effort
     - **Checkpoint classification:** Copilot session checkpoints are classified by `scripts/checkpoint_classifier.py` into one of `durable-architecture`, `durable-debugging`, `durable-workflow`, `project-progress`, or `low-signal`. The class is stamped into raw frontmatter by `homelab/scripts/mempalace-session-curator.py` and propagated into the source page as `checkpoint_class` + `retention_mode`. Retention defaults: durable → `retain`, project-progress → `compress` (page lands in `tier: archive` so it's excluded from hot-tier surfacing), low-signal → `skip`. Override per-class via `LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES="class=mode,..."`.
     - **Vision support:** downloads images from tweets and pages, analyzes charts/diagrams/screenshots only on the vision-capable lane
    - Auto-follows t.co shortened URLs
    - Extracts concepts, entities, and facts
    - Generates wiki pages from templates
-4. **Post-processing**: updates cross-references, log, and index
+4. **Validation/finalization**: validates Codex's schema-constrained status,
+   reported paths, source provenance, and any new synthesis page; only then the
+   orchestrator updates raw status, log, and index
 5. **Notification**: sends ntfy alert on completion
 
 ### Manual Trigger
@@ -199,6 +201,12 @@ AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST=0 python3 scripts/auto_ingest.py raw/2025-0
 
 # Process all pending files
 python3 scripts/auto_ingest.py --project-root .
+
+# Measure synthesis quality across the corpus
+python3 scripts/audit_synthesis.py --json-out reports/synthesis-audit.json
+
+# Gate a newly created synthesis page
+python3 scripts/audit_synthesis.py --page wiki/synthesis/example.md --strict
 ```
 
 ### Validation-Run Policy
@@ -210,6 +218,7 @@ already-ingested file without generating audit noise. A validation run:
 - rewrites the raw snapshot and wiki source pages normally
 - **does not** append an entry to `wiki/log.md`
 - **does not** send an ntfy notification
+- **does not** auto-commit the review output
 
 This keeps the production audit trail clean for review-only reruns, such as verifying improved article-body
 extraction or image ranking after a follow-up pass.
@@ -232,14 +241,13 @@ docker compose -f compose.wiki.yml restart wiki-auto-ingest
 
 | Variable | Default | Purpose |
 |----------|---------|---------|
-| `GITHUB_MODELS_TOKEN` | — | GitHub PAT with Models API access (required) |
-| `GITHUB_MODELS_MODEL` | `gpt-4.1` | Backward-compatible default model fallback |
-| `GITHUB_MODELS_MODEL_DEFAULT` | `GITHUB_MODELS_MODEL` | Default text extraction lane |
-| `GITHUB_MODELS_MODEL_LIGHT` | `GITHUB_MODELS_MODEL_DEFAULT` | Cheaper lane for session checkpoints / MemPalace exports |
-| `GITHUB_MODELS_MODEL_VISION` | `GITHUB_MODELS_MODEL_DEFAULT` | Vision-capable lane for image-bearing sources |
-| `GITHUB_MODELS_MODEL_OVERRIDE` | — | Force one model for debugging/manual runs |
+| `WIKI_INGEST_BACKEND` | `codex-cli` | Processing backend; legacy `copilot-cli` and API backends remain explicit compatibility options |
+| `WIKI_INGEST_MODEL` | `gpt-5.6-luna` | Default Codex model when no override is supplied |
+| `WIKI_INGEST_MODEL_OVERRIDE` | — | Force one model for debugging/manual runs |
+| `CODEX_HOME` | `~/.codex` | Writable Codex auth/config directory; treat `auth.json` as a secret and persist refreshed auth securely |
+| `GITHUB_MODELS_TOKEN` | — | Required only for the explicit legacy GitHub Models backend |
 | `LABS_WIKI_CHECKPOINT_RETENTION_OVERRIDES` | — | Comma-list `class=mode` overrides for checkpoint retention (e.g. `project-progress=retain,low-signal=compress`) |
-| `AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST` | `2` | Cap follow-on synthesis calls per ingest; set `0` for quota-sensitive backlog imports |
+| `AUTO_INGEST_MAX_SYNTHESIS_PER_INGEST` | `1` | Cap follow-on synthesis creation per ingest; set `0` for quota-sensitive backlog imports |
 | `AUTO_INGEST_INCLUDE_EXISTING_PAGES_CONTEXT` | `1` | Include the existing wiki page list in extraction prompts; set `0` for faster, cheaper backlog imports |
 | `AUTO_INGEST_CHECKPOINT_FAMILY_MIN` | `3` | Minimum checkpoints (incl. the new one) sharing concepts that triggers a "recurring patterns" synthesis suggestion |
 | `AUTO_INGEST_CHECKPOINT_FAMILY_SHARED` | `1` | Minimum number of concepts a checkpoint must share with the new one to count as a family member |

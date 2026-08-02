@@ -39,6 +39,12 @@ KNOWLEDGE_STATE_NEUTRAL = 5  # awarded when the field is absent
 _NUM_RE = re.compile(r"\b\d[\d,\.]*\b")
 _CODE_FENCE_RE = re.compile(r"^```", re.MULTILINE)
 _BLOCKQUOTE_RE = re.compile(r"^>", re.MULTILINE)
+_FENCED_BLOCK_RE = re.compile(r"^```[^\n]*\n.*?^```\s*$", re.MULTILINE | re.DOTALL)
+
+
+def strip_fenced_code(text: str) -> str:
+    """Remove fenced code before interpreting double brackets as wikilinks."""
+    return _FENCED_BLOCK_RE.sub("", text)
 
 
 def slugify_wikilink(text: str) -> str:
@@ -244,7 +250,7 @@ def build_inbound_counter(pages: list[Path]) -> Counter:
             text = p.read_text(errors="ignore")
         except OSError:
             continue
-        for target in re.findall(r"\[\[([^\]]+)\]\]", text):
+        for target in re.findall(r"\[\[([^\]]+)\]\]", strip_fenced_code(text)):
             slug = slugify_wikilink(target)
             counter[slug] += 1
     return counter
@@ -252,7 +258,7 @@ def build_inbound_counter(pages: list[Path]) -> Counter:
 
 def find_wikilinks(path: Path) -> list[str]:
     """Extract all [[wikilink]] targets from a file."""
-    content = path.read_text()
+    content = strip_fenced_code(path.read_text())
     return re.findall(r"\[\[([^\]]+)\]\]", content)
 
 
@@ -330,7 +336,7 @@ def lint_wiki(
             if expected_dir not in str(rel):
                 errors.append(f"{rel}: type '{page_type}' should be in wiki/{expected_dir}/")
 
-        wikilinks = re.findall(r"\[\[([^\]]+)\]\]", body)
+        wikilinks = re.findall(r"\[\[([^\]]+)\]\]", strip_fenced_code(body))
         for link in wikilinks:
             if not wikilink_exists(link, page_titles, page_slugs):
                 errors.append(f"{rel}: broken wikilink [[{link}]]")

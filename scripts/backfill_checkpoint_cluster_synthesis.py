@@ -78,21 +78,25 @@ def resolve_cluster_paths(wiki_dir: Path, node_ids: list[str]) -> list[Path]:
     return paths
 
 
-def collect_cluster_inputs(cluster_paths: list[Path]) -> tuple[list[str], list[str], Counter[str], Counter[str], dict[str, str]]:
+def collect_cluster_inputs(
+    cluster_paths: list[Path],
+) -> tuple[list[str], list[str], Counter[str], Counter[str], dict[str, tuple[str, list[str]]]]:
     source_titles: list[str] = []
     raw_paths: list[str] = []
     concept_counts: Counter[str] = Counter()
     tag_counts: Counter[str] = Counter()
-    source_pages: dict[str, str] = {}
+    source_pages: dict[str, tuple[str, list[str]]] = {}
 
     for path in cluster_paths:
         fm, body = parse_frontmatter(path)
         title = str(fm.get("title") or path.stem.replace("-", " ").title())
         source_titles.append(title)
-        source_pages[title] = body
 
-        sources = fm.get("sources") if isinstance(fm.get("sources"), list) else []
-        for raw_path in sources:
+        sources_value = fm.get("sources")
+        sources = list(sources_value) if isinstance(sources_value, list) else []
+        normalized_sources = [str(source) for source in sources if str(source).strip()]
+        source_pages[title] = (body, normalized_sources)
+        for raw_path in normalized_sources:
             if raw_path not in raw_paths:
                 raw_paths.append(raw_path)
 
@@ -105,9 +109,29 @@ def collect_cluster_inputs(cluster_paths: list[Path]) -> tuple[list[str], list[s
     return source_titles, raw_paths, concept_counts, tag_counts, source_pages
 
 
-def resolve_compare_pages(wiki_dir: Path, concept_counts: Counter[str], source_pages: dict[str, str]) -> tuple[dict[str, str], list[str]]:
+def resolve_compare_pages(
+    wiki_dir: Path,
+    concept_counts: Counter[str],
+    source_pages: dict[str, tuple[str, list[str]]],
+) -> tuple[dict[str, str], list[str], list[str], dict[str, list[str]]]:
     compare_pages: dict[str, str] = {}
     compare_labels: list[str] = []
+    evidence_raw_paths: list[str] = []
+    source_provenance: dict[str, list[str]] = {}
+
+    def add_evidence_sources(label: str, sources: object) -> None:
+        if not isinstance(sources, list):
+            return
+        page_sources: list[str] = []
+        for source in sources:
+            source_text = str(source).strip()
+            if not source_text.startswith("raw/"):
+                continue
+            if source_text not in evidence_raw_paths:
+                evidence_raw_paths.append(source_text)
+            if source_text not in page_sources:
+                page_sources.append(source_text)
+        source_provenance[label] = page_sources
 
     for slug, _ in concept_counts.most_common():
         for category in ("concepts", "entities"):
@@ -120,29 +144,51 @@ def resolve_compare_pages(wiki_dir: Path, concept_counts: Counter[str], source_p
                 break
             compare_pages[title] = body
             compare_labels.append(title)
+            add_evidence_sources(title, fm.get("sources"))
             break
         if len(compare_pages) >= MAX_COMPARE_PAGES:
             break
 
     if len(compare_pages) >= MIN_COMPARE_PAGES:
-        return compare_pages, compare_labels
+        return compare_pages, compare_labels, evidence_raw_paths, source_provenance
 
-    for title, body in source_pages.items():
+    for title, (body, sources) in source_pages.items():
         if title in compare_pages:
             continue
         compare_pages[title] = body
         compare_labels.append(title)
+        add_evidence_sources(title, sources)
         if len(compare_pages) >= MIN_COMPARE_PAGES:
             break
 
-    return compare_pages, compare_labels
+    return compare_pages, compare_labels, evidence_raw_paths, source_provenance
+
+
+def strict_synthesis_gate(page_path: Path, repo_root: Path = ROOT) -> tuple[bool, str]:
+    """Apply the deterministic strict contract before accepting a generated page."""
+    from audit_synthesis import audit_page
+
+    result = audit_page(page_path, repo_root, strict=True)
+    if result.passed:
+        return True, ""
+    codes = ", ".join(finding.code for finding in result.findings)
+    return False, f"strict audit failed: score={result.score}; findings={codes}"
+
+
+def truncate_title(text: str, max_length: int = 100) -> str:
+    """Trim a generated title at a word boundary without leaving punctuation."""
+    if len(text) <= max_length:
+        return text
+    shortened = text[: max_length + 1].rsplit(" ", 1)[0].rstrip(" :,-")
+    return shortened or text[:max_length].rstrip(" :,-")
 
 
 def build_synthesis_title(community: int, compare_labels: list[str]) -> str:
+    if len(compare_labels) >= 2:
+        return truncate_title(f"{compare_labels[0]} vs. {compare_labels[1]}: Shared Patterns and Trade-offs")
     if compare_labels:
-        anchor = ", ".join(compare_labels[:3])
-        return f"Recurring checkpoint patterns: {anchor}"
-    return f"Recurring checkpoint patterns: Cluster {community}"
+        return truncate_title(f"Durable Patterns Around {compare_labels[0]}")
+    return f"Cross-Checkpoint Synthesis for Community {community}"
 
 
 def ensure_unique_title(wiki_dir: Path, title: str, community: int) -> str:
@@ -157,7 +203,7 @@ def ensure_unique_title(wiki_dir: Path, title: str, community: int) -> str:
 
 
 def build_cluster_signature(raw_paths: list[str]) -> str:
-    payload = "\n".join(sorted(raw_paths))
+    payload = "checkpoint-cluster:v2\n" + "\n".join(sorted(raw_paths))
     return hashlib.sha256(payload.encode()).hexdigest()[:16]
 
 
@@ -202,8 +248,6 @@ def find_existing_cluster_synthesis(
             return page, "signature"
         if sorted(page["sources"]) == desired_sources:
             return page, "sources"
-        if page["community"] == community:
-            return page, "community"
     return None
 
 
@@ -345,22 +389,29 @@ def main() -> int:
     existing_syntheses = load_existing_cluster_syntheses(wiki_dir)
     llm_needed = False
     if not args.dry_run:
+        preflight_consumed_paths: set[Path] = set()
         for cluster in clusters:
             community = int(cluster.get("community", -1))
             cluster_paths = resolve_cluster_paths(wiki_dir, list(cluster.get("checkpoints", [])))
             _, raw_paths, _, _, _ = collect_cluster_inputs(cluster_paths)
-            if not find_existing_cluster_synthesis(existing_syntheses, community, raw_paths):
+            match = find_existing_cluster_synthesis(existing_syntheses, community, raw_paths)
+            if match and match[0]["path"] not in preflight_consumed_paths:
+                preflight_consumed_paths.add(match[0]["path"])
+            else:
                 llm_needed = True
                 break
         if llm_needed and not args.token:
             print("No API token. Set GITHUB_MODELS_TOKEN or pass --token.", file=sys.stderr)
             return 1
 
+    consumed_existing_paths: set[Path] = set()
     for cluster in clusters:
         community = int(cluster.get("community", -1))
         cluster_paths = resolve_cluster_paths(wiki_dir, list(cluster.get("checkpoints", [])))
         source_titles, raw_paths, concept_counts, tag_counts, source_pages = collect_cluster_inputs(cluster_paths)
-        compare_pages, compare_labels = resolve_compare_pages(wiki_dir, concept_counts, source_pages)
+        compare_pages, compare_labels, evidence_raw_paths, source_provenance = resolve_compare_pages(
+            wiki_dir, concept_counts, source_pages
+        )
 
         title = ensure_unique_title(wiki_dir, build_synthesis_title(community, compare_labels), community)
         cluster_info = cluster_summary(community, cluster_paths, source_titles, compare_labels, title)
@@ -369,8 +420,11 @@ def main() -> int:
         cluster_info["mode"] = "dry-run" if args.dry_run else "run"
 
         existing = find_existing_cluster_synthesis(existing_syntheses, community, raw_paths)
+        if existing and existing[0]["path"] in consumed_existing_paths:
+            existing = None
         if existing:
             existing_page, matched_by = existing
+            consumed_existing_paths.add(existing_page["path"])
             rel_path = str(existing_page["path"].relative_to(ROOT))
             cluster_info["status"] = "existing"
             cluster_info["matched_by"] = matched_by
@@ -430,22 +484,41 @@ def main() -> int:
         )
         synthesis["tags"] = tags
 
+        # `compare_pages` is the complete bounded packet supplied to the model.
+        # Do not present every checkpoint in the broader graph cluster as model
+        # evidence: that would make frontmatter breadth exceed actual context.
+        if not evidence_raw_paths:
+            cluster_info["status"] = "skipped"
+            cluster_info["reason"] = "model evidence packet has no raw provenance"
+            report["clusters"].append(cluster_info)
+            continue
+
         today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
         filename, content = generate_synthesis_page(
             synthesis,
-            raw_paths,
-            source_titles,
+            evidence_raw_paths,
+            compare_labels,
             today,
             extra_frontmatter={
                 "checkpoint_cluster_community": str(community),
                 "checkpoint_cluster_checkpoint_count": str(len(cluster_paths)),
                 "checkpoint_cluster_signature": cluster_info["signature"],
+                "checkpoint_cluster_evidence_input_count": str(len(compare_pages)),
             },
+            source_provenance=source_provenance,
         )
         rel_path = f"wiki/synthesis/{filename}"
         out_path = ROOT / rel_path
         out_path.parent.mkdir(parents=True, exist_ok=True)
         out_path.write_text(content)
+        audit_passed, audit_reason = strict_synthesis_gate(out_path, ROOT)
+        if not audit_passed:
+            out_path.unlink(missing_ok=True)
+            cluster_info["status"] = "skipped"
+            cluster_info["reason"] = audit_reason
+            report["clusters"].append(cluster_info)
+            print(f"[skipped] community={community}: {audit_reason}")
+            continue
         created_pages.append(rel_path)
         existing_syntheses.append(
             {
@@ -471,6 +544,7 @@ def main() -> int:
             {
                 "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
                 "operation": "checkpoint-cluster-synthesis",
+                "agent": f"github-models:{args.model}",
                 "targets": created_pages,
                 "source": "plans/checkpoint-curation-phase5-report.md",
                 "status": "success",

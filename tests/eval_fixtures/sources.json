@@ -2,7 +2,7 @@
   {
     "name": "karpathy-llm-wiki-gist",
     "raw_md_path": "raw/2026-04-07-llm-wiki.md",
-    "expected_concepts": ["llm-wiki-pattern", "schema-guided-llm-knowledge-base-maintenance"],
+    "expected_concepts": ["karpathy-llm-wiki-pattern", "schema-guided-llm-knowledge-base-maintenance"],
     "expected_entities": ["karpathy"],
     "expected_min_sources": 1,
     "expected_dates": ["2026-04-21"]

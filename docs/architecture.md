@@ -94,8 +94,11 @@ flowchart LR
 
     subgraph "Phase 2: COMPILE"
         EXTRACT --> GEN[Generate wiki pages with cross-refs]
-        GEN --> IDX[Update index.md + log.md]
-        IDX --> STATUS[Mark raw source ingested]
+        GEN --> SCHEMA[Validate structured status + reported paths]
+        SCHEMA --> QUALITY[Strict audit of new synthesis]
+        QUALITY --> IDX[Rebuild index.md]
+        IDX --> FINALIZE[Orchestrator appends log + marks raw ingested]
+        FINALIZE --> COMMIT[Path-limited git commit]
     end
 
     style SKIP fill:#f0f0f0
@@ -103,7 +106,7 @@ flowchart LR
     style IDX fill:#f3e5f5
 ```
 
-**Phase 1** routes URLs through specialized handlers — Twitter/X URLs use the fxtwitter API (extracts tweet text, author, timestamps, and media), GitHub repo URLs use the REST API (README, metadata, file tree), and all other URLs use standard HTML fetch. Before the LLM call, the source is classified for priority and reasoning effort. Copilot session checkpoint exports and MemPalace bridge exports prefer the lower-effort path; standard sources use the default path; PDFs and complex repositories receive higher reasoning effort. Shortened t.co URLs are auto-followed. **Phase 2** uses Codex CLI to generate wiki pages from templates, updates cross-references, and rebuilds the index. Hash-based skip and fuzzy duplicate merging ensure sources aren't reprocessed unnecessarily.
+**Phase 1** routes URLs through specialized handlers — Twitter/X URLs use the fxtwitter API (extracts tweet text, author, timestamps, and media), GitHub repo URLs use the REST API (README, metadata, file tree), and all other URLs use standard HTML fetch. Before the model call, the source is classified for priority, checkpoint retention, and reasoning effort. Agent-session checkpoint exports and MemPalace bridge exports prefer the lower-effort path; standard sources use the default path; PDFs and complex repositories receive higher reasoning effort. Shortened t.co URLs are auto-followed. **Phase 2** uses `codex exec` with a JSON output schema and explicit workspace-write sandbox. The Python orchestrator checks the pre/post checkout manifest, validates every backend result against the same schema, contains provenance to existing `raw/*.md` files, applies exact claim-level synthesis gates, and rebuilds the index before owning raw-status/log/notification finalization. Git commits use path-limited `--only` semantics so unrelated staged files are excluded. The current Codex branch is still write-first: Codex edits the checkout before validation, while deterministic hash/fuzzy merge rendering remains in the legacy backend. The target architecture is a read-only typed Codex proposal rendered and published by the backend-neutral Python orchestrator.
 
 ---
 

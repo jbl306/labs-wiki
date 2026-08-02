@@ -429,7 +429,7 @@ meaning and breaking high-degree links.
 
 ## Verification after implementation
 
-- Unit tests: 30 passed.
+- Unit tests: 31 passed.
 - Ingest evaluation: 3/3 fixtures passed after correcting the stale expected
   Karpathy concept slug.
 - Wiki lint: 964 pages, 0 errors, 974 warnings, 0 contradictions. The 974 warnings
@@ -451,6 +451,10 @@ meaning and breaking high-degree links.
   the capability-dropped container as the outer Codex sandbox. A real
   subscription-authenticated shell/read schema smoke then returned
   `{"status":"ok"}` without the nested bubblewrap failure.
+- The first end-to-end ingest then exposed a structured-output parser bug: the
+  generic JSON scan selected the final nested `duplicates_avoided` object rather
+  than its outer typed result. The parser now prefers objects containing the
+  top-level `status`, with a regression test covering nested duplicate entries.
 - Checkpoint-cluster dry run: five changed clusters were planned, one exact-source
   match was reused, and no cluster matched by unstable community number.
 - Python compilation, Markdown fence balance, and `git diff --check` passed.

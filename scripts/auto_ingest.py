@@ -3184,6 +3184,7 @@ def _extract_last_json_object(text: str) -> dict | None:
     """
     decoder = json.JSONDecoder()
     last_obj: dict | None = None
+    last_status_obj: dict | None = None
     for idx, char in enumerate(text):
         if char != "{":
             continue
@@ -3193,7 +3194,12 @@ def _extract_last_json_object(text: str) -> dict | None:
             continue
         if isinstance(obj, dict):
             last_obj = obj
-    return last_obj
+            # Nested objects (notably duplicates_avoided entries) are also
+            # decodable from their opening brace. Prefer the outer typed status
+            # object instead of accidentally returning its final nested child.
+            if "status" in obj:
+                last_status_obj = obj
+    return last_status_obj or last_obj
 
 
 def _runtime_scripts_dir(project_root: Path) -> Path:

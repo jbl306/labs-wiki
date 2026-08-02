@@ -76,7 +76,7 @@ Completed 2026-08-02.
 
 ### Verification
 
-- Unit tests: **30 passed**.
+- Unit tests: **31 passed**.
 - Ingest evaluation: **3/3 fixtures passed** after correcting the stale expected
   slug.
 - Wiki lint: **964 pages, 0 errors, 974 warnings, 0 contradictions**. The warnings
@@ -103,6 +103,11 @@ worktree separately, and selects `danger-full-access` only for the inner Codex
 CLI while retaining the capability-dropped, no-new-privileges container as the
 outer sandbox. A real containerized shell/read schema smoke returned
 `{"status":"ok"}`.
+
+The first full ingest exposed a second runtime-only issue: the JSON scanner
+returned a nested `duplicates_avoided` entry instead of the outer typed result.
+It now prefers objects carrying the top-level `status`; a regression test covers
+the exact nested-object shape.
 
 ### Safety boundary
 

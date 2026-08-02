@@ -1,3 +1,4 @@
+import json
 import os
 from pathlib import Path
 import subprocess
@@ -101,6 +102,29 @@ Original filename: notes.docx
             ROOT / "raw" / "example.md",
         )
         self.assertEqual(result["status"], "failed")
+
+    def test_status_parser_prefers_outer_result_over_nested_duplicate(self) -> None:
+        output = json.dumps(
+            {
+                "status": "success",
+                "source_path": "wiki/sources/example.md",
+                "entities_created": [],
+                "concepts_created": [],
+                "synthesis_created": [],
+                "pages_updated": [],
+                "duplicates_avoided": [
+                    {"candidate": "Example", "linked_to": "Existing Example"}
+                ],
+                "kg_facts_added": 0,
+                "notes": "ok",
+            }
+        )
+
+        result = auto_ingest._extract_last_json_object(output)
+
+        self.assertIsNotNone(result)
+        self.assertEqual(result["status"], "success")
+        self.assertEqual(result["duplicates_avoided"][0]["candidate"], "Example")
 
     def test_agent_prompt_carries_deterministic_checkpoint_policy(self) -> None:
         prompt = auto_ingest._build_agent_ingest_prompt(

@@ -1,20 +1,30 @@
 ---
-title: "Recursive Language Models vs. Block Masking for Long-Context Scaling"
+title: Recursive Language Models vs. Block Masking for Long-Context Scaling
 type: synthesis
 created: 2026-04-23
 last_verified: 2026-04-23
-source_hash: "synthesis-generated"
+source_hash: 220f08eba6327454ae941e97fb89c1323e4976818f5c3944ca2b889f4d69fdda
 sources:
-  - raw/2026-04-23-251224601v2pdf.md
-  - raw/2026-04-21-httpsgithubcommicrosoftmemento.md
-concepts: [recursive-language-models, block-masking-for-llm-kv-cache-compaction]
+- raw/2026-04-23-251224601v2pdf.md
+- raw/2026-04-21-httpsgithubcommicrosoftmemento.md
+concepts:
+- recursive-language-models
+- block-masking-for-llm-kv-cache-compaction
 related:
-  - "[[Recursive Language Models]]"
-  - "[[Block Masking for LLM KV Cache Compaction]]"
-  - "[[Memento Blockwise Summarization for LLMs]]"
+- '[[Recursive Language Models]]'
+- '[[Block Masking for LLM KV Cache Compaction]]'
+- '[[Memento Blockwise Summarization for LLMs]]'
 tier: hot
-tags: [long-context, llm-systems, recursion, kv-cache, compaction]
+tags:
+- long-context
+- llm-systems
+- recursion
+- kv-cache
+- compaction
 quality_score: 67
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # Recursive Language Models vs. Block Masking for Long-Context Scaling
@@ -53,14 +63,27 @@ They are not mutually exclusive. An advanced long-context system could use RLM-s
 
 ## Key Insights
 
-1. **RLMs buy access, not just memory** — they let the model perform structured work over an external prompt instead of merely squeezing more tokens into active state, as shown by [[Recursive Language Models]].
-2. **Block masking buys continuity, not navigation** — it preserves a longer reasoning horizon by replacing detailed history with summaries, as shown by [[Block Masking for LLM KV Cache Compaction]] and [[Memento Blockwise Summarization for LLMs]].
-3. **The right abstraction depends on the failure mode** — if the model fails because it cannot inspect enough of the source material, use recursive prompt access; if it fails because active reasoning state grows too large, use summary-backed compaction.
+
+1. **RLMs buy access, not just memory** — they let the model perform structured work over an external prompt instead of merely squeezing more tokens into active state, as shown by [[Recursive Language Models]]. — supported by [[Recursive Language Models]]
+2. **Block masking buys continuity, not navigation** — it preserves a longer reasoning horizon by replacing detailed history with summaries, as shown by [[Block Masking for LLM KV Cache Compaction]] and [[Memento Blockwise Summarization for LLMs]]. — supported by [[Block Masking for LLM KV Cache Compaction]], [[Memento Blockwise Summarization for LLMs]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **RLMs buy access, not just memory** — they let the model perform structured work over an external prompt instead of merely squeezing more tokens into active state, as shown by [[Recursive Language Models]]. | [[Recursive Language Models]] | `raw/2026-04-23-251224601v2pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Block masking buys continuity, not navigation** — it preserves a longer reasoning horizon by replacing detailed history with summaries, as shown by [[Block Masking for LLM KV Cache Compaction]] and [[Memento Blockwise Summarization for LLMs]]. | [[Block Masking for LLM KV Cache Compaction]], [[Memento Blockwise Summarization for LLMs]] | `raw/2026-04-21-httpsgithubcommicrosoftmemento.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - Can a single model be trained to do both high-quality recursive prompt decomposition and high-fidelity self-summarization for cache compaction?
 - What is the best handoff boundary between external symbolic querying and internal compressed reasoning for real production agent systems?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- The right abstraction depends on the failure mode — if the model fails because it cannot inspect enough of the source material, use recursive prompt access; if it fails because active reasoning state grows too large, use summary-backed compaction.
 
 ## Sources
 

@@ -1,21 +1,30 @@
 ---
-title: "Training-Time Segmentation vs. Inference-Time Compaction in Memento"
+title: Training-Time Segmentation vs. Inference-Time Compaction in Memento
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: 5e7126805c5dce83a57aa0a42066affabc6f55718071f10e63c19eaa29d9232d
 sources:
-  - raw/2026-04-21-httpsgithubcommicrosoftmemento.md
+- raw/2026-04-21-httpsgithubcommicrosoftmemento.md
 concepts:
-  - reasoning-trace-segmentation-and-iterative-summarization
-  - block-masking-for-llm-kv-cache-compaction
+- reasoning-trace-segmentation-and-iterative-summarization
+- block-masking-for-llm-kv-cache-compaction
 related:
-  - "[[Memento Blockwise Summarization for LLMs]]"
-  - "[[Reasoning Trace Segmentation and Iterative Summarization]]"
-  - "[[Block Masking for LLM KV Cache Compaction]]"
+- '[[Memento Blockwise Summarization for LLMs]]'
+- '[[Reasoning Trace Segmentation and Iterative Summarization]]'
+- '[[Block Masking for LLM KV Cache Compaction]]'
 tier: hot
-tags: [llm, memento, training, inference, kv-cache, summarization]
+tags:
+- llm
+- memento
+- training
+- inference
+- kv-cache
+- summarization
 quality_score: 59
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Training-Time Segmentation vs. Inference-Time Compaction in Memento
@@ -53,15 +62,27 @@ For our own use, the split is a good mental model for evaluating "long-thinking"
 
 ## Key Insights
 
-1. **Memento is a co-design, not a patch** — the training pipeline and runtime overlay only make full sense together, as shown by [[Reasoning Trace Segmentation and Iterative Summarization]] and [[Block Masking for LLM KV Cache Compaction]].
-2. **Compression quality is the real safety margin** — the runtime can only be aggressive because the pipeline spends effort finding good boundaries and refining summaries.
-3. **Longer reasoning comes from state replacement, not raw retention** — Memento extends usable reasoning depth by swapping detailed old blocks for concise summaries rather than keeping all prior tokens active.
+
+1. **Memento is a co-design, not a patch** — the training pipeline and runtime overlay only make full sense together, as shown by [[Reasoning Trace Segmentation and Iterative Summarization]] and [[Block Masking for LLM KV Cache Compaction]]. — supported by [[Reasoning Trace Segmentation and Iterative Summarization]], [[Block Masking for LLM KV Cache Compaction]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Memento is a co-design, not a patch** — the training pipeline and runtime overlay only make full sense together, as shown by [[Reasoning Trace Segmentation and Iterative Summarization]] and [[Block Masking for LLM KV Cache Compaction]]. | [[Reasoning Trace Segmentation and Iterative Summarization]], [[Block Masking for LLM KV Cache Compaction]] | `raw/2026-04-21-httpsgithubcommicrosoftmemento.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - How well does the Memento training pipeline transfer across model families that use different reasoning styles or different special-token conventions?
 - At what point does repeated block summarization introduce more error than simply allocating a larger native context window?
 - How should Memento-style compaction interact with tool use, retrieval, or external memory systems where not all relevant state lives inside the token stream?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- Compression quality is the real safety margin — the runtime can only be aggressive because the pipeline spends effort finding good boundaries and refining summaries.
+- Longer reasoning comes from state replacement, not raw retention — Memento extends usable reasoning depth by swapping detailed old blocks for concise summaries rather than keeping all prior tokens active.
 
 ## Sources
 

@@ -1,26 +1,34 @@
 ---
-title: "Agent Context Compression Layers in Tool-Using Systems"
+title: Agent Context Compression Layers in Tool-Using Systems
 type: synthesis
 created: 2026-04-23
 last_verified: 2026-04-23
-source_hash: "synthesis-generated"
+source_hash: 25d6d8876c8f4e68555a2b444e5cf18f8184e1ecb61ed6f18858269390f797c2
 sources:
-  - raw/2026-04-23-260419572v1pdf.md
-  - raw/2026-04-18-260414228v1pdf.md
-  - raw/2026-04-21-httpsgithubcommicrosoftmemento.md
+- raw/2026-04-23-260419572v1pdf.md
+- raw/2026-04-18-260414228v1pdf.md
+- raw/2026-04-21-httpsgithubcommicrosoftmemento.md
 concepts:
-  - terminal-observation-compression
-  - self-evolving-rule-pools-agent-compression
-  - context-management-compaction-pipeline-claude-code
-  - reasoning-trace-segmentation-and-iterative-summarization
+- terminal-observation-compression
+- self-evolving-rule-pools-agent-compression
+- context-management-compaction-pipeline-claude-code
+- reasoning-trace-segmentation-and-iterative-summarization
 related:
-  - "[[Terminal Observation Compression]]"
-  - "[[Self-Evolving Rule Pools for Agent Compression]]"
-  - "[[Context Management and Compaction Pipeline in Claude Code]]"
-  - "[[Reasoning Trace Segmentation and Iterative Summarization]]"
+- '[[Terminal Observation Compression]]'
+- '[[Self-Evolving Rule Pools for Agent Compression]]'
+- '[[Context Management and Compaction Pipeline in Claude Code]]'
+- '[[Reasoning Trace Segmentation and Iterative Summarization]]'
 tier: hot
-tags: [context-compression, terminal-agents, llm-agents, long-horizon-reasoning, synthesis]
+tags:
+- context-compression
+- terminal-agents
+- llm-agents
+- long-horizon-reasoning
+- synthesis
 quality_score: 75
+evidence_scope: cross-source
+evidence_source_count: 3
+evidence_origin_family_count: 2
 ---
 
 # Agent Context Compression Layers in Tool-Using Systems
@@ -58,15 +66,28 @@ For practical system design, the choice should follow the dominant source of blo
 
 ## Key Insights
 
-1. **Compression should be placed where the noise originates** — TACO works because it attacks terminal noise before it contaminates the next reasoning step, while Claude Code's pipeline solves a different, broader runtime problem.
-2. **Learning reusable compression rules is a distinct capability layer** — [[Self-Evolving Rule Pools for Agent Compression]] adds durable adaptation on top of [[Terminal Observation Compression]] instead of replacing it.
-3. **Runtime and training-time compression are complementary** — [[Reasoning Trace Segmentation and Iterative Summarization]] solves a model-preparation problem that neither TACO nor generic session compaction can fully cover by themselves.
+
+1. **Learning reusable compression rules is a distinct capability layer** — [[Self-Evolving Rule Pools for Agent Compression]] adds durable adaptation on top of [[Terminal Observation Compression]] instead of replacing it. — supported by [[Self-Evolving Rule Pools for Agent Compression]], [[Terminal Observation Compression]]
+2. **Runtime and training-time compression are complementary** — [[Reasoning Trace Segmentation and Iterative Summarization]] solves a model-preparation problem that neither TACO nor generic session compaction can fully cover by themselves. — supported by [[Reasoning Trace Segmentation and Iterative Summarization]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Learning reusable compression rules is a distinct capability layer** — [[Self-Evolving Rule Pools for Agent Compression]] adds durable adaptation on top of [[Terminal Observation Compression]] instead of replacing it. | [[Self-Evolving Rule Pools for Agent Compression]], [[Terminal Observation Compression]] | `raw/2026-04-23-260419572v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Runtime and training-time compression are complementary** — [[Reasoning Trace Segmentation and Iterative Summarization]] solves a model-preparation problem that neither TACO nor generic session compaction can fully cover by themselves. | [[Reasoning Trace Segmentation and Iterative Summarization]] | `raw/2026-04-21-httpsgithubcommicrosoftmemento.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - Can a single agent stack safely combine command-aware observation filters, session-level compaction, and model-native reasoning summaries without compounding information loss?
 - How should implicit over-compression complaints be validated so that rule-pool updates do not react to unrelated agent failures?
 - What evaluation setup best separates "token savings" from "better reasoning" when multiple compression layers are enabled at once?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- Compression should be placed where the noise originates — TACO works because it attacks terminal noise before it contaminates the next reasoning step, while Claude Code's pipeline solves a different, broader runtime problem.
 
 ## Sources
 

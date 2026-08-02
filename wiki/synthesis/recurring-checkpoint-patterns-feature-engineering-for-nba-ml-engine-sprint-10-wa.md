@@ -1,34 +1,48 @@
 ---
-title: "Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint 10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted Expanding Mean for Time-Series Features"
+title: 'Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint
+  10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted
+  Expanding Mean for Time-Series Features'
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: 7df12a16e3129cf681f4db294c624e7e1abe1140271fa75ce624b0e4f1adc938
 sources:
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md
 concepts:
-  - feature-engineering-for-nba-ml-engine-sprint-10
-  - walk-forward-cross-validation-for-model-selection
-  - warmstarting-hyperparameter-tuning-with-optuna
-  - target-encoding-with-shifted-expanding-mean-for-time-series-features
+- feature-engineering-for-nba-ml-engine-sprint-10
+- walk-forward-cross-validation-for-model-selection
+- warmstarting-hyperparameter-tuning-with-optuna
+- target-encoding-with-shifted-expanding-mean-for-time-series-features
 related:
-  - "[[Warmstarting Hyperparameter Tuning with Optuna]]"
-  - "[[Copilot Session Checkpoint: Sprint 10 Retrain In Progress]]"
-  - "[[Feature Engineering for NBA ML Engine Sprint 10]]"
-  - "[[Target Encoding with Shifted Expanding Mean for Time-Series Features]]"
-  - "[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]"
-  - "[[Copilot Session Checkpoint: Sprint 10 Implementation and Deployment]]"
-  - "[[Copilot Session Checkpoint: Sprint 10 Complete and Deployed]]"
-  - "[[Walk-Forward Cross-Validation for Model Selection]]"
+- '[[Warmstarting Hyperparameter Tuning with Optuna]]'
+- '[[Copilot Session Checkpoint: Sprint 10 Retrain In Progress]]'
+- '[[Feature Engineering for NBA ML Engine Sprint 10]]'
+- '[[Target Encoding with Shifted Expanding Mean for Time-Series Features]]'
+- '[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]'
+- '[[Copilot Session Checkpoint: Sprint 10 Implementation and Deployment]]'
+- '[[Copilot Session Checkpoint: Sprint 10 Complete and Deployed]]'
+- '[[Walk-Forward Cross-Validation for Model Selection]]'
 tier: hot
 checkpoint_cluster_community: 7
 checkpoint_cluster_checkpoint_count: 4
 checkpoint_cluster_signature: 7df12a16e3129cf6
-tags: [checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, machine learning, nba-ml-engine]
+tags:
+- checkpoint
+- checkpoint-synthesis
+- copilot-session
+- dashboard
+- durable-knowledge
+- fileback
+- homelab
+- machine learning
+- nba-ml-engine
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 4
+evidence_origin_family_count: 1
 ---
 
 # Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint 10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted Expanding Mean for Time-Series Features
@@ -64,9 +78,18 @@ The NaN-handling fix in Sprint 10's rest-category feature is small in code (`ast
 
 ## Key Insights
 
+
 1. **The Sprint 10 cluster is the wiki's clearest demonstration of a 'feature + paired discipline' pattern: every feature addition (target encoding, B2B, season phase) shipped with a leak/stability guard (shifted expanding mean, walk-forward CV, NaN coercion).** — supported by [[Feature Engineering for NBA ML Engine Sprint 10]], [[Target Encoding with Shifted Expanding Mean for Time-Series Features]], [[Walk-Forward Cross-Validation for Model Selection]]
 2. **Warmstarting via study.enqueue_trial isn't an optimization—it's what makes per-sprint retraining tractable; without it, every sprint pays full Optuna cost from scratch and the iteration loop breaks.** — supported by [[Warmstarting Hyperparameter Tuning with Optuna]]
 3. **The model-selection fallback chain (cv_avg_val_mse → val_mse → test_mse → train_mse) encodes a temporal-honesty hierarchy that survives missing metrics in early folds—it's a defensive design, not just a default.** — supported by [[Walk-Forward Cross-Validation for Model Selection]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The Sprint 10 cluster is the wiki's clearest demonstration of a 'feature + paired discipline' pattern: every feature addition (target encoding, B2B, season phase) shipped with a leak/stability guard (shifted expanding mean, walk-forward CV, NaN coercion).** | [[Feature Engineering for NBA ML Engine Sprint 10]], [[Target Encoding with Shifted Expanding Mean for Time-Series Features]], [[Walk-Forward Cross-Validation for Model Selection]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Warmstarting via study.enqueue_trial isn't an optimization—it's what makes per-sprint retraining tractable; without it, every sprint pays full Optuna cost from scratch and the iteration loop breaks.** | [[Warmstarting Hyperparameter Tuning with Optuna]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-complete-and-deployed-cb380016.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-implementation-and-deployment-693c9264.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-10-retrain-in-progress-742b0d94.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The model-selection fallback chain (cv_avg_val_mse → val_mse → test_mse → train_mse) encodes a temporal-honesty hierarchy that survives missing metrics in early folds—it's a defensive design, not just a default.** | [[Walk-Forward Cross-Validation for Model Selection]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,32 +1,46 @@
 ---
-title: "Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library, Dashboard Chart Strategy and Data-Driven Refinement"
+title: 'Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern
+  Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library,
+  Dashboard Chart Strategy and Data-Driven Refinement'
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: 8fdfc351df90067b4f3b270eb4c8a70b464f00736baac291056e91f447b25e7f
 sources:
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
 concepts:
-  - handling-postgresql-numeric-type-in-nodejs-with-pg-library
-  - backend-for-frontend-bff-pattern-in-modern-dashboard-architecture
-  - dashboard-chart-strategy-and-data-driven-refinement
-  - replacing-fastapi-proxy-with-direct-postgresql-query-for-historical-props-data
+- handling-postgresql-numeric-type-in-nodejs-with-pg-library
+- backend-for-frontend-bff-pattern-in-modern-dashboard-architecture
+- dashboard-chart-strategy-and-data-driven-refinement
+- replacing-fastapi-proxy-with-direct-postgresql-query-for-historical-props-data
 related:
-  - "[[Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture]]"
-  - "[[Replacing FastAPI Proxy with Direct PostgreSQL Query for Historical Props Data]]"
-  - "[[Handling PostgreSQL NUMERIC Type in Node.js with pg Library]]"
-  - "[[Copilot Session Checkpoint: Rankings Page and Performance Optimization]]"
-  - "[[Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built]]"
-  - "[[Copilot Session Checkpoint: Props DB Query and Chart Refinement]]"
-  - "[[Dashboard Chart Strategy and Data-Driven Refinement]]"
+- '[[Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture]]'
+- '[[Replacing FastAPI Proxy with Direct PostgreSQL Query for Historical Props Data]]'
+- '[[Handling PostgreSQL NUMERIC Type in Node.js with pg Library]]'
+- '[[Copilot Session Checkpoint: Rankings Page and Performance Optimization]]'
+- '[[Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built]]'
+- '[[Copilot Session Checkpoint: Props DB Query and Chart Refinement]]'
+- '[[Dashboard Chart Strategy and Data-Driven Refinement]]'
 tier: hot
 checkpoint_cluster_community: 11
 checkpoint_cluster_checkpoint_count: 3
 checkpoint_cluster_signature: 8fdfc351df90067b
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, nba-ml-engine]
+tags:
+- agents
+- checkpoint
+- checkpoint-synthesis
+- copilot-session
+- dashboard
+- durable-knowledge
+- fileback
+- homelab
+- nba-ml-engine
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library, Dashboard Chart Strategy and Data-Driven Refinement
@@ -62,9 +76,18 @@ Chart refinement is the product layer's version of the same discipline. Backtest
 
 ## Key Insights
 
+
 1. **The BFF pattern wins here specifically because it gives the team a single place to own response shape, type coercion, and data sourcing—decisions that would otherwise drift across FastAPI handlers and React components.** — supported by [[Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture]], [[Replacing FastAPI Proxy with Direct PostgreSQL Query for Historical Props Data]]
 2. **numericRow() is a per-endpoint convention not a global middleware—because the pg library returns NUMERIC as strings for good reasons (precision), and only the BFF knows which columns the frontend will treat as numbers.** — supported by [[Handling PostgreSQL NUMERIC Type in Node.js with pg Library]]
 3. **Chart strategy is treated as a product artifact: backtest insights gate inclusion, low-signal charts are removed, and the roster is maintained—dashboards that don't do this drift toward chart-clutter.** — supported by [[Dashboard Chart Strategy and Data-Driven Refinement]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The BFF pattern wins here specifically because it gives the team a single place to own response shape, type coercion, and data sourcing—decisions that would otherwise drift across FastAPI handlers and React components.** | [[Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture]], [[Replacing FastAPI Proxy with Direct PostgreSQL Query for Historical Props Data]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-rankings-page-and-performance-optimization-8063e05f.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **numericRow() is a per-endpoint convention not a global middleware—because the pg library returns NUMERIC as strings for good reasons (precision), and only the BFF knows which columns the frontend will treat as numbers.** | [[Handling PostgreSQL NUMERIC Type in Node.js with pg Library]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Chart strategy is treated as a product artifact: backtest insights gate inclusion, low-signal charts are removed, and the roster is maintained—dashboards that don't do this drift toward chart-clutter.** | [[Dashboard Chart Strategy and Data-Driven Refinement]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-props-db-query-and-chart-refinement-402d70da.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

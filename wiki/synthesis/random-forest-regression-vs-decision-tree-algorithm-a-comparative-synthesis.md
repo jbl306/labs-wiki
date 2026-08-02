@@ -1,22 +1,32 @@
 ---
-title: "Random Forest Regression vs. Decision Tree Algorithm: A Comparative Synthesis"
+title: 'Random Forest Regression vs. Decision Tree Algorithm: A Comparative Synthesis'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 77d6e18f37e06027c2a5014c4ee74497e14e6653a8ec604022564d3c78be0fc7
 sources:
-  - raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
-  - raw/2026-04-08-decision-tree-geeksforgeeks.md
+- raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
+- raw/2026-04-08-decision-tree-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - random-forest-regression
-  - decision-tree-algorithm
+- random-forest-regression
+- decision-tree-algorithm
 related:
-  - "[[Random Forest Regression in Python - GeeksforGeeks]]"
-  - "[[Random Forest Regression]]"
-  - "[[Decision Tree Algorithm]]"
+- '[[Random Forest Regression in Python - GeeksforGeeks]]'
+- '[[Random Forest Regression]]'
+- '[[Decision Tree Algorithm]]'
 tier: hot
-tags: [machine-learning, regression, ensemble-methods, decision-trees, random-forest, interpretability, computational-complexity]
+tags:
+- machine-learning
+- regression
+- ensemble-methods
+- decision-trees
+- random-forest
+- interpretability
+- computational-complexity
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Random Forest Regression vs. Decision Tree Algorithm: A Comparative Synthesis
@@ -53,9 +63,18 @@ A common misconception is that Decision Trees are always preferable for interpre
 
 ## Key Insights
 
+
 1. **Random Forest Regression's OOB estimation provides a built-in mechanism for unbiased performance evaluation, which standalone Decision Trees lack.** — supported by [[Random Forest Regression]]
 2. **While Random Forest Regression sacrifices interpretability for accuracy and robustness, it can still offer feature importance metrics, partially bridging the gap.** — supported by [[Random Forest Regression]], [[Decision Tree Algorithm]]
 3. **Decision Trees may become biased toward features with many categories, a problem mitigated in Random Forests by random feature selection at each split.** — supported by [[Decision Tree Algorithm]], [[Random Forest Regression]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Random Forest Regression's OOB estimation provides a built-in mechanism for unbiased performance evaluation, which standalone Decision Trees lack.** | [[Random Forest Regression]] | `raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **While Random Forest Regression sacrifices interpretability for accuracy and robustness, it can still offer feature importance metrics, partially bridging the gap.** | [[Random Forest Regression]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Decision Trees may become biased toward features with many categories, a problem mitigated in Random Forests by random feature selection at each split.** | [[Decision Tree Algorithm]], [[Random Forest Regression]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

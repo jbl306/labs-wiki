@@ -1,23 +1,32 @@
 ---
-title: "Comet Resolver Workflow vs Real-Debrid Magnet Polling"
+title: Comet Resolver Workflow vs Real-Debrid Magnet Polling
 type: synthesis
 created: '2026-05-28'
 last_verified: '2026-05-28'
-source_hash: "synthesis-generated"
+source_hash: 59c8a3f4a18a07b44da812f00ad0eee0561eb7c9a3f3fd41437b4c68773303f6
 sources:
-  - raw/2026-05-28-copilot-session-swapping-real-debrid-for-comet-torbox-122ac146.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
+- raw/2026-05-28-copilot-session-swapping-real-debrid-for-comet-torbox-122ac146.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
 concepts:
-  - comet-resolver-workflow-torbox-backed-downloads
-  - real-debrid-instantavailability-api-playback-issues
+- comet-resolver-workflow-torbox-backed-downloads
+- real-debrid-instantavailability-api-playback-issues
 related:
-  - "[[Comet Resolver Workflow for TorBox-Backed Downloads]]"
-  - "[[Real-Debrid InstantAvailability API and Playback Issues]]"
-  - "[[Comet]]"
-  - "[[Debrid Downloader Web]]"
+- '[[Comet Resolver Workflow for TorBox-Backed Downloads]]'
+- '[[Real-Debrid InstantAvailability API and Playback Issues]]'
+- '[[Comet]]'
+- '[[Debrid Downloader Web]]'
 tier: hot
-tags: [comet, real-debrid, debrid, workflow, homelab, media-ingest]
+tags:
+- comet
+- real-debrid
+- debrid
+- workflow
+- homelab
+- media-ingest
 quality_score: 83
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Comet Resolver Workflow vs Real-Debrid Magnet Polling
@@ -55,9 +64,18 @@ The two approaches are not mutually exclusive in principle. A downloader could k
 
 ## Key Insights
 
-1. **Resolver-first design is a state-machine reduction strategy** — [[Comet Resolver Workflow for TorBox-Backed Downloads]] cuts the downloader's owned lifecycle down to query, choose, and occasionally re-query.
-2. **RD problems in this wiki are mostly orchestration problems, not just vendor problems** — [[Real-Debrid InstantAvailability API and Playback Issues]] documents how disabled cache checks and wrong file indices can break an app that directly owns too much provider lifecycle logic.
-3. **Self-hosted addon infrastructure can become a backend API, not just a playback accessory** — the checkpoint elevates [[Comet]] from "something Stremio uses" to a reusable internal resolver for downloader workflows.
+
+1. **Resolver-first design is a state-machine reduction strategy** — [[Comet Resolver Workflow for TorBox-Backed Downloads]] cuts the downloader's owned lifecycle down to query, choose, and occasionally re-query. — supported by [[Comet Resolver Workflow for TorBox-Backed Downloads]]
+2. **RD problems in this wiki are mostly orchestration problems, not just vendor problems** — [[Real-Debrid InstantAvailability API and Playback Issues]] documents how disabled cache checks and wrong file indices can break an app that directly owns too much provider lifecycle logic. — supported by [[Real-Debrid InstantAvailability API and Playback Issues]]
+3. **Self-hosted addon infrastructure can become a backend API, not just a playback accessory** — the checkpoint elevates [[Comet]] from "something Stremio uses" to a reusable internal resolver for downloader workflows. — supported by [[Comet]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Resolver-first design is a state-machine reduction strategy** — [[Comet Resolver Workflow for TorBox-Backed Downloads]] cuts the downloader's owned lifecycle down to query, choose, and occasionally re-query. | [[Comet Resolver Workflow for TorBox-Backed Downloads]] | `raw/2026-05-28-copilot-session-swapping-real-debrid-for-comet-torbox-122ac146.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **RD problems in this wiki are mostly orchestration problems, not just vendor problems** — [[Real-Debrid InstantAvailability API and Playback Issues]] documents how disabled cache checks and wrong file indices can break an app that directly owns too much provider lifecycle logic. | [[Real-Debrid InstantAvailability API and Playback Issues]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Self-hosted addon infrastructure can become a backend API, not just a playback accessory** — the checkpoint elevates [[Comet]] from "something Stremio uses" to a reusable internal resolver for downloader workflows. | [[Comet]] | `raw/2026-05-28-copilot-session-swapping-real-debrid-for-comet-torbox-122ac146.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

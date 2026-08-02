@@ -1,23 +1,32 @@
 ---
-title: "Distribution Safety vs. Deliberative Escalation in jbl-dev-kit"
+title: Distribution Safety vs. Deliberative Escalation in jbl-dev-kit
 type: synthesis
 created: 2026-05-30
 last_verified: 2026-05-30
-source_hash: "synthesis-generated"
+source_hash: 6c21ba27458b236d3416a6949b4c4227c7ce7c183d545e614fdd7fad7b4f3aa5
 sources:
-  - raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md
-  - raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md
+- raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md
+- raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md
 concepts:
-  - managed-block-layering-cross-repo-agent-installs
-  - provenance-stamped-managed-blocks-upgrade-safe-agent-installs
-  - dry-run-llm-council-orchestration-multi-runtime-agents
+- managed-block-layering-cross-repo-agent-installs
+- provenance-stamped-managed-blocks-upgrade-safe-agent-installs
+- dry-run-llm-council-orchestration-multi-runtime-agents
 related:
-  - "[[Managed-Block Layering for Cross-Repo Agent Installs]]"
-  - "[[Provenance-Stamped Managed Blocks for Upgrade-Safe Agent Installs]]"
-  - "[[Dry-Run LLM Council Orchestration for Multi-Runtime Agents]]"
-  - "[[Headless Worktree Orchestration for Agent Runtimes]]"
+- '[[Managed-Block Layering for Cross-Repo Agent Installs]]'
+- '[[Provenance-Stamped Managed Blocks for Upgrade-Safe Agent Installs]]'
+- '[[Dry-Run LLM Council Orchestration for Multi-Runtime Agents]]'
+- '[[Headless Worktree Orchestration for Agent Runtimes]]'
 tier: hot
-tags: [jbl-dev-kit, workflow-toolkit, orchestration, provenance, llm-council, agent-installation]
+tags:
+- jbl-dev-kit
+- workflow-toolkit
+- orchestration
+- provenance
+- llm-council
+- agent-installation
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Distribution Safety vs. Deliberative Escalation in jbl-dev-kit
@@ -53,10 +62,20 @@ The practical design lesson is that jbl-dev-kit should not flatten all sophistic
 
 ## Key Insights
 
+
 1. **Distribution safety compounds value when it stays simple.** — supported by [[Managed-Block Layering for Cross-Repo Agent Installs]], [[Provenance-Stamped Managed Blocks for Upgrade-Safe Agent Installs]]
 2. **Provenance is an operational trust feature, not merely a metadata nicety.** — supported by [[Provenance-Stamped Managed Blocks for Upgrade-Safe Agent Installs]], [[Managed-Block Layering for Cross-Repo Agent Installs]]
-3. **Council execution should be treated as a measured escalation path, not a default architecture.** — supported by [[Dry-Run LLM Council Orchestration for Multi-Runtime Agents]], [[The Token Economy Principle]]
+3. **Council execution should be treated as a measured escalation path, not a default architecture.** — supported by [[Dry-Run LLM Council Orchestration for Multi-Runtime Agents]]
 4. **jbl-dev-kit becomes more robust when install-time determinism and execution-time diversity are deliberately separated.** — supported by [[Headless Worktree Orchestration for Agent Runtimes]], [[Dry-Run LLM Council Orchestration for Multi-Runtime Agents]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Distribution safety compounds value when it stays simple.** | [[Managed-Block Layering for Cross-Repo Agent Installs]], [[Provenance-Stamped Managed Blocks for Upgrade-Safe Agent Installs]] | `raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md`, `raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Provenance is an operational trust feature, not merely a metadata nicety.** | [[Provenance-Stamped Managed Blocks for Upgrade-Safe Agent Installs]], [[Managed-Block Layering for Cross-Repo Agent Installs]] | `raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md`, `raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Council execution should be treated as a measured escalation path, not a default architecture.** | [[Dry-Run LLM Council Orchestration for Multi-Runtime Agents]] | `raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **jbl-dev-kit becomes more robust when install-time determinism and execution-time diversity are deliberately separated.** | [[Headless Worktree Orchestration for Agent Runtimes]], [[Dry-Run LLM Council Orchestration for Multi-Runtime Agents]] | `raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md`, `raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -68,4 +87,3 @@ The practical design lesson is that jbl-dev-kit should not flatten all sophistic
 
 - [[Copilot Session Checkpoint: Building jbl-dev-kit multiagent workflow]]
 - [[Copilot Session Checkpoint: Extending jbl-dev-kit workflow toolkit]]
-

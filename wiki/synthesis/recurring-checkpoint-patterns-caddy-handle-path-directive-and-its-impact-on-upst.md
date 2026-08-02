@@ -1,44 +1,59 @@
 ---
-title: "Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing and Optimization, PostgreSQL Materialized Views for Dashboard Optimization"
+title: 'Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact
+  on Upstream URL Construction, Docker Container Resource Auditing and Optimization,
+  PostgreSQL Materialized Views for Dashboard Optimization'
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: 9d2fa73a863dd2d2b0db53688da9da5d3428444013f700a912b551969a1b41d4
 sources:
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md
-  - raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md
-  - raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-optimizing-snipe-book-then-retry-flow-a86837aa.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
-  - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md
+- raw/2026-04-18-copilot-session-homepage-overhaul-and-resource-tuning-79cdb38d.md
+- raw/2026-04-18-copilot-session-knightcrawler-done-routing-traced-7bbbddcd.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-nba-ml-agents-and-homelab-fixes-646cf99a.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-optimizing-snipe-book-then-retry-flow-a86837aa.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md
+- raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
 concepts:
-  - postgresql-materialized-views-for-dashboard-optimization
-  - docker-container-resource-auditing-and-optimization
-  - concurrent-refresh-of-postgresql-materialized-views
-  - caddy-handle-path-directive-and-its-impact-on-upstream-url-construction
+- postgresql-materialized-views-for-dashboard-optimization
+- docker-container-resource-auditing-and-optimization
+- concurrent-refresh-of-postgresql-materialized-views
+- caddy-handle-path-directive-and-its-impact-on-upstream-url-construction
 related:
-  - "[[Docker Container Resource Auditing and Optimization]]"
-  - "[[Concurrent Refresh of PostgreSQL Materialized Views]]"
-  - "[[Copilot Session Checkpoint: Homepage Overhaul And Resource Tuning]]"
-  - "[[Copilot Session Checkpoint: Resource Optimization, Opencode Bash Fix]]"
-  - "[[Caddy handle_path Directive and Its Impact on Upstream URL Construction]]"
-  - "[[Copilot Session Checkpoint: Knightcrawler done, routing traced]]"
-  - "[[Copilot Session Checkpoint: NBA-ML Agents and Homelab Fixes]]"
-  - "[[Copilot Session Checkpoint: Dashboard Matviews Implementation In Progress]]"
-  - "[[PostgreSQL Materialized Views for Dashboard Optimization]]"
-  - "[[Copilot Session Checkpoint: KnightCrawler Gating Fix, Opencode Bash Config]]"
-  - "[[Copilot Session Checkpoint: Optimizing Snipe Book-Then-Retry Flow]]"
-  - "[[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]]"
-  - "[[Copilot Session Checkpoint: ntfy Notifications, Galloping-Bot Alerts, Monitor Fixes]]"
+- '[[Docker Container Resource Auditing and Optimization]]'
+- '[[Concurrent Refresh of PostgreSQL Materialized Views]]'
+- '[[Copilot Session Checkpoint: Homepage Overhaul And Resource Tuning]]'
+- '[[Copilot Session Checkpoint: Resource Optimization, Opencode Bash Fix]]'
+- '[[Caddy handle_path Directive and Its Impact on Upstream URL Construction]]'
+- '[[Copilot Session Checkpoint: Knightcrawler done, routing traced]]'
+- '[[Copilot Session Checkpoint: NBA-ML Agents and Homelab Fixes]]'
+- '[[Copilot Session Checkpoint: Dashboard Matviews Implementation In Progress]]'
+- '[[PostgreSQL Materialized Views for Dashboard Optimization]]'
+- '[[Copilot Session Checkpoint: KnightCrawler Gating Fix, Opencode Bash Config]]'
+- '[[Copilot Session Checkpoint: Optimizing Snipe Book-Then-Retry Flow]]'
+- '[[Copilot Session Checkpoint: Scheduler DNS Agents Cleanup]]'
+- '[[Copilot Session Checkpoint: ntfy Notifications, Galloping-Bot Alerts, Monitor
+  Fixes]]'
 tier: hot
 checkpoint_cluster_community: 2
 checkpoint_cluster_checkpoint_count: 9
 checkpoint_cluster_signature: 9d2fa73a863dd2d2
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, dashboard, durable-knowledge, fileback, homelab, mempalace]
+tags:
+- agents
+- checkpoint
+- checkpoint-synthesis
+- copilot-session
+- dashboard
+- durable-knowledge
+- fileback
+- homelab
+- mempalace
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 9
+evidence_origin_family_count: 1
 ---
 
 # Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing and Optimization, PostgreSQL Materialized Views for Dashboard Optimization
@@ -74,9 +89,18 @@ What ties the cluster together is **observability before optimization**: in ever
 
 ## Key Insights
 
+
 1. **Caddy `handle_path` and PostgreSQL `REFRESH MATERIALIZED VIEW CONCURRENTLY` are the same shape of leak: a wrapper-promise that fails on a precondition (upstream URL builder, unique index on non-empty data), and the durable fix is to teach the upstream layer about that precondition explicitly.** — supported by [[Caddy handle_path Directive and Its Impact on Upstream URL Construction]], [[Concurrent Refresh of PostgreSQL Materialized Views]]
 2. **On a single homelab host, container resource limits are a fixed-sum budget—optimization means audit-driven reallocation (30%/28% reclaimed and partly redistributed), not blanket increases.** — supported by [[Docker Container Resource Auditing and Optimization]]
 3. **Matviews succeeded as a dashboard optimization specifically because the refresh hook was already in the pipeline; introducing a new cron would have been the architectural debt that killed adoption.** — supported by [[PostgreSQL Materialized Views for Dashboard Optimization]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Caddy `handle_path` and PostgreSQL `REFRESH MATERIALIZED VIEW CONCURRENTLY` are the same shape of leak: a wrapper-promise that fails on a precondition (upstream URL builder, unique index on non-empty data), and the durable fix is to teach the upstream layer about that precondition explicitly.** | [[Caddy handle_path Directive and Its Impact on Upstream URL Construction]], [[Concurrent Refresh of PostgreSQL Materialized Views]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-knightcrawler-gating-fix-opencode-bash-config-b0a35301.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **On a single homelab host, container resource limits are a fixed-sum budget—optimization means audit-driven reallocation (30%/28% reclaimed and partly redistributed), not blanket increases.** | [[Docker Container Resource Auditing and Optimization]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-ntfy-notifications-galloping-bot-alerts-monitor--27e974be.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-resource-optimization-opencode-bash-fix-c00d8543.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Matviews succeeded as a dashboard optimization specifically because the refresh hook was already in the pipeline; introducing a new cron would have been the architectural debt that killed adoption.** | [[PostgreSQL Materialized Views for Dashboard Optimization]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-dashboard-matviews-implementation-in-progress-afa2957e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

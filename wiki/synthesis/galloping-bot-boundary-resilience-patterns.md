@@ -1,25 +1,34 @@
 ---
-title: "Galloping-Bot Boundary Resilience Patterns"
+title: Galloping-Bot Boundary Resilience Patterns
 type: synthesis
 created: 2026-05-01
 last_verified: 2026-05-01
-source_hash: "synthesis-generated"
+source_hash: c0a3411ad785790afd7fafb12dd6ed79eccc181902a54678451154f2f8f8a69e
 sources:
-  - raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md
-  - raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md
+- raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md
+- raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md
 concepts:
-  - api-cloudflare-clearance-keepalive-403-recovery
-  - browser-backed-http-anti-bot-session-fidelity
-  - resilient-payment-encryption-fallback-chains
+- api-cloudflare-clearance-keepalive-403-recovery
+- browser-backed-http-anti-bot-session-fidelity
+- resilient-payment-encryption-fallback-chains
 related:
-  - "[[API-Level Cloudflare Clearance Keepalive and 403 Recovery]]"
-  - "[[Browser-Backed HTTP for Anti-Bot Session Fidelity]]"
-  - "[[Resilient Payment Encryption Fallback Chains]]"
-  - "[[Galloping-Bot]]"
-  - "[[EZLinks API]]"
+- '[[API-Level Cloudflare Clearance Keepalive and 403 Recovery]]'
+- '[[Browser-Backed HTTP for Anti-Bot Session Fidelity]]'
+- '[[Resilient Payment Encryption Fallback Chains]]'
+- '[[Galloping-Bot]]'
+- '[[EZLinks API]]'
 tier: hot
-tags: [automation, resilience, anti-bot, payments, browser-automation, galloping-bot]
+tags:
+- automation
+- resilience
+- anti-bot
+- payments
+- browser-automation
+- galloping-bot
 quality_score: 82
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Galloping-Bot Boundary Resilience Patterns
@@ -57,9 +66,18 @@ For future work, the strongest next improvement would be more structured telemet
 
 ## Key Insights
 
+
 1. **Galloping-Bot's brittle points are layered, not singular.** — supported by [[Browser-Backed HTTP for Anti-Bot Session Fidelity]], [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]], [[Resilient Payment Encryption Fallback Chains]]
-2. **Authentic browser context does not eliminate freshness problems.** — supported by [[Browser-Backed HTTP for Anti-Bot Session Fidelity]] and [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]]
-3. **The bot gets more durable when each boundary is defended by the invariant that boundary actually cares about.** — supported by [[Resilient Payment Encryption Fallback Chains]] and [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]]
+2. **Authentic browser context does not eliminate freshness problems.** — supported by [[Browser-Backed HTTP for Anti-Bot Session Fidelity]], [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]]
+3. **The bot gets more durable when each boundary is defended by the invariant that boundary actually cares about.** — supported by [[Resilient Payment Encryption Fallback Chains]], [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Galloping-Bot's brittle points are layered, not singular.** | [[Browser-Backed HTTP for Anti-Bot Session Fidelity]], [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]], [[Resilient Payment Encryption Fallback Chains]] | `raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md`, `raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Authentic browser context does not eliminate freshness problems.** | [[Browser-Backed HTTP for Anti-Bot Session Fidelity]], [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]] | `raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The bot gets more durable when each boundary is defended by the invariant that boundary actually cares about.** | [[Resilient Payment Encryption Fallback Chains]], [[API-Level Cloudflare Clearance Keepalive and 403 Recovery]] | `raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md`, `raw/2026-05-01-copilot-session-galloping-bot-cf-clearance-recovery-e0655b3d.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -71,4 +89,3 @@ For future work, the strongest next improvement would be more structured telemet
 
 - [[Copilot Session Checkpoint: Galloping bot CF clearance recovery]]
 - [[Copilot Session Checkpoint: Galloping bot payment resilience fix]]
-

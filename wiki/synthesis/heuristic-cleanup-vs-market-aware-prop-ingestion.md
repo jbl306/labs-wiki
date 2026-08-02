@@ -1,27 +1,35 @@
 ---
-title: "Heuristic Cleanup vs Market-Aware Prop Ingestion"
+title: Heuristic Cleanup vs Market-Aware Prop Ingestion
 type: synthesis
 created: 2026-04-25
 last_verified: 2026-04-25
-source_hash: "synthesis-generated"
+source_hash: 8abe24a6d88f2734f84756030bd39856fcf14a6f5c15622569f33044bf451d8a
 sources:
-  - raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md
-  - raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md
-  - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
+- raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md
+- raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md
+- raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
 concepts:
-  - primary-prop-line-selection-to-avoid-alternate-line-contamination
-  - source-priority-canonical-prop-ingestion
-  - generic-sportsbook-market-storage-non-canonical-props
-  - local-db-only-prop-market-metadata-backfill
+- primary-prop-line-selection-to-avoid-alternate-line-contamination
+- source-priority-canonical-prop-ingestion
+- generic-sportsbook-market-storage-non-canonical-props
+- local-db-only-prop-market-metadata-backfill
 related:
-  - "[[Primary Prop Line Selection to Avoid Alternate Line Contamination]]"
-  - "[[Source-Priority Canonical Prop Ingestion]]"
-  - "[[Generic Sportsbook Market Storage for Non-Canonical Props]]"
-  - "[[Local DB-Only Prop Market Metadata Backfill]]"
-  - "[[Heuristic Prop-Line Selection vs Direct Sportsbook Validation]]"
+- '[[Primary Prop Line Selection to Avoid Alternate Line Contamination]]'
+- '[[Source-Priority Canonical Prop Ingestion]]'
+- '[[Generic Sportsbook Market Storage for Non-Canonical Props]]'
+- '[[Local DB-Only Prop Market Metadata Backfill]]'
+- '[[Heuristic Prop-Line Selection vs Direct Sportsbook Validation]]'
 tier: hot
-tags: [sports-betting, synthesis, data-ingestion, prop-lines, nba-ml-engine]
+tags:
+- sports-betting
+- synthesis
+- data-ingestion
+- prop-lines
+- nba-ml-engine
 quality_score: 87
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Heuristic Cleanup vs Market-Aware Prop Ingestion
@@ -59,9 +67,18 @@ For a production system like the [[NBA ML Engine]], the practical choice is ther
 
 ## Key Insights
 
-1. **Heuristics are most reliable after market taxonomy has already narrowed the candidate set** — supported by [[Primary Prop Line Selection to Avoid Alternate Line Contamination]] and [[Generic Sportsbook Market Storage for Non-Canonical Props]].
-2. **Direct-book truth becomes operationally valuable only when source trust is encoded in the ingestion contract** — supported by [[Source-Priority Canonical Prop Ingestion]] and [[Copilot Session Checkpoint: Direct Sportsbook Sources]].
-3. **Schema upgrades need rate-limit-safe migration paths, not just better live ingests** — supported by [[Local DB-Only Prop Market Metadata Backfill]].
+
+1. **Heuristics are most reliable after market taxonomy has already narrowed the candidate set** — supported by [[Primary Prop Line Selection to Avoid Alternate Line Contamination]], [[Generic Sportsbook Market Storage for Non-Canonical Props]]
+2. **Direct-book truth becomes operationally valuable only when source trust is encoded in the ingestion contract** — supported by [[Source-Priority Canonical Prop Ingestion]], [[Copilot Session Checkpoint: Direct Sportsbook Sources]]
+3. **Schema upgrades need rate-limit-safe migration paths, not just better live ingests** — supported by [[Local DB-Only Prop Market Metadata Backfill]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Heuristics are most reliable after market taxonomy has already narrowed the candidate set** | [[Primary Prop Line Selection to Avoid Alternate Line Contamination]], [[Generic Sportsbook Market Storage for Non-Canonical Props]] | `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md`, `raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Direct-book truth becomes operationally valuable only when source trust is encoded in the ingestion contract** | [[Source-Priority Canonical Prop Ingestion]], [[Copilot Session Checkpoint: Direct Sportsbook Sources]] | `raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md`, `raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Schema upgrades need rate-limit-safe migration paths, not just better live ingests** | [[Local DB-Only Prop Market Metadata Backfill]] | `raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -73,4 +90,3 @@ For a production system like the [[NBA ML Engine]], the practical choice is ther
 - [[Copilot Session Checkpoint: Direct Sportsbook Ingestion]]
 - [[Copilot Session Checkpoint: Direct Sportsbook Sources]]
 - [[Copilot Session Checkpoint: Backtest Completion Props Investigation]]
-

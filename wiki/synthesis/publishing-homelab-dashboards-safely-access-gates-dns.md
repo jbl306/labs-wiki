@@ -1,24 +1,34 @@
 ---
-title: "Publishing Homelab Dashboards Safely: Host Services, Access Gates, and DNS Pathing"
+title: 'Publishing Homelab Dashboards Safely: Host Services, Access Gates, and DNS
+  Pathing'
 type: synthesis
 created: 2026-05-20
 last_verified: 2026-05-20
-source_hash: "synthesis-generated"
+source_hash: 5014c27cdcedfd4c5d7bbb5471c9e3e02157847ee566a89f5b58916eed75726a
 sources:
-  - raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md
-  - raw/2026-04-07-jbl306homelab.md
-  - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
+- raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md
+- raw/2026-04-07-jbl306homelab.md
+- raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
 concepts:
-  - host-managed-cli-dashboard-migration-homelab-services
-  - cloudflare-access-gating-unauthenticated-homelab-dashboards
-  - split-dns-routing-cloudflare-tunnel-overrides-homelab-services
+- host-managed-cli-dashboard-migration-homelab-services
+- cloudflare-access-gating-unauthenticated-homelab-dashboards
+- split-dns-routing-cloudflare-tunnel-overrides-homelab-services
 related:
-  - "[[Host-Managed CLI Dashboard Migration for Homelab Services]]"
-  - "[[Cloudflare Access Gating for Unauthenticated Homelab Dashboards]]"
-  - "[[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]"
+- '[[Host-Managed CLI Dashboard Migration for Homelab Services]]'
+- '[[Cloudflare Access Gating for Unauthenticated Homelab Dashboards]]'
+- '[[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]'
 tier: hot
-tags: [homelab, dashboard, systemd, cloudflare, caddy, dns]
+tags:
+- homelab
+- dashboard
+- systemd
+- cloudflare
+- caddy
+- dns
 quality_score: 79
+evidence_scope: cross-source
+evidence_source_count: 3
+evidence_origin_family_count: 2
 ---
 
 # Publishing Homelab Dashboards Safely: Host Services, Access Gates, and DNS Pathing
@@ -56,14 +66,27 @@ This also explains why the unresolved "still seeing the old WebUI" report remain
 
 ## Key Insights
 
-1. **Safe dashboard publication is a three-layer problem, not a single reverse-proxy tweak** — the current Hermes checkpoint only makes full sense when combined with [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]].
-2. **Identity gating belongs at the edge when the app has no auth of its own** — supported by [[Cloudflare Access Gating for Unauthenticated Homelab Dashboards]] and the Hermes Caddy route design.
-3. **Runtime supervision bugs and routing bugs can look similar from the browser** — the synthesis is useful because it separates service-lifecycle failures from pathing and cache failures.
+
+1. **Safe dashboard publication is a three-layer problem, not a single reverse-proxy tweak** — the current Hermes checkpoint only makes full sense when combined with [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]. — supported by [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]
+2. **Identity gating belongs at the edge when the app has no auth of its own** — supported by [[Cloudflare Access Gating for Unauthenticated Homelab Dashboards]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Safe dashboard publication is a three-layer problem, not a single reverse-proxy tweak** — the current Hermes checkpoint only makes full sense when combined with [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]. | [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]] | `raw/2026-04-07-jbl306homelab.md`, `raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Identity gating belongs at the edge when the app has no auth of its own** | [[Cloudflare Access Gating for Unauthenticated Homelab Dashboards]] | `raw/2026-05-11-copilot-session-hermes-dashboard-migration-09a570cf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - When should a homelab operator choose local auth in the application instead of depending on Cloudflare Access at the edge?
 - Which cache-control headers or Cloudflare cache rules are worth standardizing for authless admin dashboards to reduce stale-content incidents?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- Runtime supervision bugs and routing bugs can look similar from the browser — the synthesis is useful because it separates service-lifecycle failures from pathing and cache failures.
 
 ## Sources
 

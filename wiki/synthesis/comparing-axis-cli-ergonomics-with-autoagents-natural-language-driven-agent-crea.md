@@ -1,23 +1,33 @@
 ---
-title: "Comparing AXI's CLI Ergonomics with AutoAgent's Natural Language-Driven Agent Creation"
+title: Comparing AXI's CLI Ergonomics with AutoAgent's Natural Language-Driven Agent
+  Creation
 type: synthesis
 created: 2026-04-12
 last_verified: 2026-04-12
-source_hash: "synthesis-generated"
+source_hash: 2259c2102253d16ca1f9a2580122d6fffabdf8ef292a4f1a40b570de3c84de18
 sources:
-  - raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
-  - raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
+- raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md
+- raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
 quality_score: 67
 concepts:
-  - autoagent
-  - axi
+- autoagent
+- axi
 related:
-  - "[[AutoAgent]]"
-  - "[[HKUDS/AutoAgent]]"
-  - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[Natural Language-Driven Agent Creation]]"
+- '[[AutoAgent]]'
+- '[[HKUDS/AutoAgent]]'
+- '[[AXI Design Principles for Agent-Ergonomic CLI Tools]]'
+- '[[Natural Language-Driven Agent Creation]]'
 tier: hot
-tags: [agent ergonomics, CLI, natural language, zero-code, workflow management, token efficiency]
+tags:
+- agent ergonomics
+- CLI
+- natural language
+- zero-code
+- workflow management
+- token efficiency
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Comparing AXI's CLI Ergonomics with AutoAgent's Natural Language-Driven Agent Creation
@@ -54,9 +64,18 @@ The two paradigms can complement each other: AXI's CLI tools could be integrated
 
 ## Key Insights
 
+
 1. **AXI's token-efficient output (TOON) yields significant cost and performance gains for agent-driven CLI tasks, but its benefits are maximized only when agents—not humans—are the primary consumers.** — supported by [[AXI Design Principles for Agent-Ergonomic CLI Tools]]
 2. **AutoAgent's zero-code, natural language paradigm enables rapid prototyping and broad participation, but its reliance on LLM interpretation introduces variability and potential for misconfiguration, especially in edge cases.** — supported by [[Natural Language-Driven Agent Creation]]
 3. **AXI and AutoAgent are not mutually exclusive; integrating AXI's CLI tools as backend components in AutoAgent workflows could combine token efficiency with conversational accessibility.** — supported by [[AXI Design Principles for Agent-Ergonomic CLI Tools]], [[Natural Language-Driven Agent Creation]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **AXI's token-efficient output (TOON) yields significant cost and performance gains for agent-driven CLI tasks, but its benefits are maximized only when agents—not humans—are the primary consumers.** | [[AXI Design Principles for Agent-Ergonomic CLI Tools]] | `raw/2026-04-10-httpsgithubcomkunchenguidaxi.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **AutoAgent's zero-code, natural language paradigm enables rapid prototyping and broad participation, but its reliance on LLM interpretation introduces variability and potential for misconfiguration, especially in edge cases.** | [[Natural Language-Driven Agent Creation]] | `raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **AXI and AutoAgent are not mutually exclusive; integrating AXI's CLI tools as backend components in AutoAgent workflows could combine token efficiency with conversational accessibility.** | [[AXI Design Principles for Agent-Ergonomic CLI Tools]], [[Natural Language-Driven Agent Creation]] | `raw/2026-04-10-httpsgithubcomkunchenguidaxi.md`, `raw/2026-04-12-httpsgithubcomhkudsautoagent-1.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

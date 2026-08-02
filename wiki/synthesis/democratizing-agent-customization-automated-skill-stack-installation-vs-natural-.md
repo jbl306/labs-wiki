@@ -1,22 +1,32 @@
 ---
-title: "Democratizing Agent Customization: Automated Skill Stack Installation vs. Natural Language-Driven Agent Building"
+title: 'Democratizing Agent Customization: Automated Skill Stack Installation vs.
+  Natural Language-Driven Agent Building'
 type: synthesis
 created: 2026-04-12
 last_verified: 2026-04-12
-source_hash: "synthesis-generated"
+source_hash: 05507764834a5d630037fd94959222bb2e057a17170ab18fa805efb3beaf24ce
 sources:
-  - raw/2026-04-12-httpsgithubcomhkudsautoagent.md
-  - raw/2026-04-10-httpsgithubcommidudevautoskills.md
+- raw/2026-04-12-httpsgithubcomhkudsautoagent.md
+- raw/2026-04-10-httpsgithubcommidudevautoskills.md
 quality_score: 64
 concepts:
-  - natural-language-driven-agent-building
-  - automated-ai-skill-stack-installation
+- natural-language-driven-agent-building
+- automated-ai-skill-stack-installation
 related:
-  - "[[Automated AI Skill Stack Installation]]"
-  - "[[Natural Language-Driven Agent Building]]"
-  - "[[HKUDS/AutoAgent]]"
+- '[[Automated AI Skill Stack Installation]]'
+- '[[Natural Language-Driven Agent Building]]'
+- '[[HKUDS/AutoAgent]]'
 tier: hot
-tags: [agent customization, automation, natural language, AI skills, democratization, security]
+tags:
+- agent customization
+- automation
+- natural language
+- AI skills
+- democratization
+- security
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Democratizing Agent Customization: Automated Skill Stack Installation vs. Natural Language-Driven Agent Building
@@ -54,9 +64,18 @@ Common misconceptions include assuming that automated skill stack installation i
 
 ## Key Insights
 
+
 1. **Automated skill stack installation's opinionated defaults and supply chain hardening make it more suitable for enterprise-grade projects, while natural language-driven agent building's iterative conversational interface empowers non-technical users and supports rapid prototyping.** — supported by [[Automated AI Skill Stack Installation]], [[Natural Language-Driven Agent Building]]
 2. **The deterministic nature of skill stack installation ensures reproducibility and security, but limits customization, whereas natural language-driven agent building trades determinism for flexibility and accessibility.** — supported by [[Automated AI Skill Stack Installation]], [[Natural Language-Driven Agent Building]]
 3. **Combining both approaches—using automated skill stack installation as a secure foundation and layering natural language-driven customization—could address both enterprise and democratization needs.** — supported by [[Automated AI Skill Stack Installation]], [[Natural Language-Driven Agent Building]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Automated skill stack installation's opinionated defaults and supply chain hardening make it more suitable for enterprise-grade projects, while natural language-driven agent building's iterative conversational interface empowers non-technical users and supports rapid prototyping.** | [[Automated AI Skill Stack Installation]], [[Natural Language-Driven Agent Building]] | `raw/2026-04-10-httpsgithubcommidudevautoskills.md`, `raw/2026-04-12-httpsgithubcomhkudsautoagent.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The deterministic nature of skill stack installation ensures reproducibility and security, but limits customization, whereas natural language-driven agent building trades determinism for flexibility and accessibility.** | [[Automated AI Skill Stack Installation]], [[Natural Language-Driven Agent Building]] | `raw/2026-04-10-httpsgithubcommidudevautoskills.md`, `raw/2026-04-12-httpsgithubcomhkudsautoagent.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Combining both approaches—using automated skill stack installation as a secure foundation and layering natural language-driven customization—could address both enterprise and democratization needs.** | [[Automated AI Skill Stack Installation]], [[Natural Language-Driven Agent Building]] | `raw/2026-04-10-httpsgithubcommidudevautoskills.md`, `raw/2026-04-12-httpsgithubcomhkudsautoagent.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

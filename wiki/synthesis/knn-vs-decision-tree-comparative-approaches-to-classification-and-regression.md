@@ -1,22 +1,31 @@
 ---
-title: "KNN vs Decision Tree: Comparative Approaches to Classification and Regression"
+title: 'KNN vs Decision Tree: Comparative Approaches to Classification and Regression'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 2f388daa15ef8340f2f3a9c0792e881d9590f923ebc6a82c1a9c98eb1533c3dd
 sources:
-  - raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
-  - raw/2026-04-08-decision-tree-geeksforgeeks.md
+- raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md
+- raw/2026-04-08-decision-tree-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - knn
-  - decision-tree
+- knn
+- decision-tree
 related:
-  - "[[K-Nearest Neighbor(KNN) Algorithm - GeeksforGeeks]]"
-  - "[[K-Nearest Neighbor Algorithm]]"
-  - "[[Decision Tree Algorithm]]"
+- '[[K-Nearest Neighbor(KNN) Algorithm - GeeksforGeeks]]'
+- '[[K-Nearest Neighbor Algorithm]]'
+- '[[Decision Tree Algorithm]]'
 tier: hot
-tags: [machine learning, classification, regression, KNN, decision tree, algorithm comparison]
+tags:
+- machine learning
+- classification
+- regression
+- KNN
+- decision tree
+- algorithm comparison
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # KNN vs Decision Tree: Comparative Approaches to Classification and Regression
@@ -52,9 +61,18 @@ A common misconception is that KNN is always simpler; while it is easy to implem
 
 ## Key Insights
 
+
 1. **KNN's non-parametric nature allows it to adapt to complex boundaries, but its performance deteriorates rapidly as feature dimensionality increases, making it less suitable for high-dimensional datasets.** — supported by [[K-Nearest Neighbor Algorithm]]
 2. **Decision Trees require no feature scaling and can natively handle both categorical and numerical data, making them more versatile in heterogeneous datasets compared to KNN.** — supported by [[Decision Tree Algorithm]], [[K-Nearest Neighbor Algorithm]]
 3. **While both algorithms can overfit noisy data, KNN's sensitivity is governed by the choice of 'k', whereas Decision Trees rely on pruning techniques to combat overfitting.** — supported by [[K-Nearest Neighbor Algorithm]], [[Decision Tree Algorithm]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **KNN's non-parametric nature allows it to adapt to complex boundaries, but its performance deteriorates rapidly as feature dimensionality increases, making it less suitable for high-dimensional datasets.** | [[K-Nearest Neighbor Algorithm]] | `raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Decision Trees require no feature scaling and can natively handle both categorical and numerical data, making them more versatile in heterogeneous datasets compared to KNN.** | [[Decision Tree Algorithm]], [[K-Nearest Neighbor Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **While both algorithms can overfit noisy data, KNN's sensitivity is governed by the choice of 'k', whereas Decision Trees rely on pruning techniques to combat overfitting.** | [[K-Nearest Neighbor Algorithm]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-k-nearest-neighborknn-algorithm-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

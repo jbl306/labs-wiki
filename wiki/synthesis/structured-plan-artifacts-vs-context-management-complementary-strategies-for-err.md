@@ -1,23 +1,33 @@
 ---
-title: "Structured Plan Artifacts vs. Context Management: Complementary Strategies for Error Reduction in Agentic Workflows"
+title: 'Structured Plan Artifacts vs. Context Management: Complementary Strategies
+  for Error Reduction in Agentic Workflows'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 3abcb313b3dd4457ba42d5aff8a40b87807c85da53665794ff9ad8b81abcfc6c
 sources:
-  - raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md
-  - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
-  - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
+- raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md
+- raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
+- raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
 quality_score: 69
 concepts:
-  - context-hygiene-principle
-  - disposable-blueprint-principle
+- context-hygiene-principle
+- disposable-blueprint-principle
 related:
-  - "[[The Disposable Blueprint Principle | 10 Claude Code Principles]]"
-  - "[[The Context Hygiene Principle]]"
-  - "[[The Disposable Blueprint Principle]]"
+- '[[The Disposable Blueprint Principle | 10 Claude Code Principles]]'
+- '[[The Context Hygiene Principle]]'
+- '[[The Disposable Blueprint Principle]]'
 tier: hot
-tags: [agentic workflows, error reduction, plan artifacts, context management, prompt engineering, auditability]
+tags:
+- agentic workflows
+- error reduction
+- plan artifacts
+- context management
+- prompt engineering
+- auditability
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Structured Plan Artifacts vs. Context Management: Complementary Strategies for Error Reduction in Agentic Workflows
@@ -52,9 +62,18 @@ A common misconception is that context management alone suffices for error reduc
 
 ## Key Insights
 
+
 1. **Structured plan artifacts provide resilience and auditability that context management alone cannot, making them essential for workflows where reproducibility and recovery from context loss are critical.** — supported by [[The Disposable Blueprint Principle]], [[The Context Hygiene Principle]]
 2. **Error reduction benefits are additive: externalized plans reduce implementation errors by ~40%, while context hygiene can further improve model accuracy by >30% when instructions are optimally placed.** — supported by [[The Disposable Blueprint Principle]], [[The Context Hygiene Principle]]
 3. **Context hygiene is most effective when paired with structured artifacts, as it ensures that the most current and relevant version of the plan is always foregrounded in the prompt.** — supported by [[The Disposable Blueprint Principle]], [[The Context Hygiene Principle]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Structured plan artifacts provide resilience and auditability that context management alone cannot, making them essential for workflows where reproducibility and recovery from context loss are critical.** | [[The Disposable Blueprint Principle]], [[The Context Hygiene Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Error reduction benefits are additive: externalized plans reduce implementation errors by ~40%, while context hygiene can further improve model accuracy by >30% when instructions are optimally placed.** | [[The Disposable Blueprint Principle]], [[The Context Hygiene Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Context hygiene is most effective when paired with structured artifacts, as it ensures that the most current and relevant version of the plan is always foregrounded in the prompt.** | [[The Disposable Blueprint Principle]], [[The Context Hygiene Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-disposable-blueprint-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,21 +1,29 @@
 ---
-title: "Compiler-Managed Agent Installs vs. Repo-Local Custom Agents"
+title: Compiler-Managed Agent Installs vs. Repo-Local Custom Agents
 type: synthesis
 created: 2026-05-30
 last_verified: 2026-05-30
-source_hash: "synthesis-generated"
+source_hash: e6ee006bef8e9df50e794d78919b70ba1ead3c6b408fae21f0e2e3558fd4f40c
 sources:
-  - raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
+- raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
 concepts:
-  - managed-block-layering-cross-repo-agent-installs
-  - custom-copilot-cli-agents
+- managed-block-layering-cross-repo-agent-installs
+- custom-copilot-cli-agents
 related:
-  - "[[Managed-Block Layering for Cross-Repo Agent Installs]]"
-  - "[[Custom Copilot CLI Agents]]"
-  - "[[Cross-Platform Agent Plugin Conversion]]"
+- '[[Managed-Block Layering for Cross-Repo Agent Installs]]'
+- '[[Custom Copilot CLI Agents]]'
+- '[[Cross-Platform Agent Plugin Conversion]]'
 tier: hot
-tags: [agent-installation, workflow-design, portability, multi-repo, copilot-cli]
+tags:
+- agent-installation
+- workflow-design
+- portability
+- multi-repo
+- copilot-cli
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Compiler-Managed Agent Installs vs. Repo-Local Custom Agents
@@ -53,9 +61,18 @@ In practice, the approaches can complement each other. A workspace can use compi
 
 ## Key Insights
 
-1. **Central compilation is primarily a maintenance strategy, not just a formatting strategy.** — supported by [[Managed-Block Layering for Cross-Repo Agent Installs]], [[Cross-Platform Agent Plugin Conversion]]
+
+1. **Central compilation is primarily a maintenance strategy, not just a formatting strategy.** — supported by [[Managed-Block Layering for Cross-Repo Agent Installs]]
 2. **Repo-local agents win on domain sharpness, but they accumulate drift faster in a multi-repo workspace.** — supported by [[Custom Copilot CLI Agents]], [[Managed-Block Layering for Cross-Repo Agent Installs]]
 3. **The most durable design is usually layered: shared compiled base plus local repo-owned extensions.** — supported by [[Managed-Block Layering for Cross-Repo Agent Installs]], [[Custom Copilot CLI Agents]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Central compilation is primarily a maintenance strategy, not just a formatting strategy.** | [[Managed-Block Layering for Cross-Repo Agent Installs]] | `raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Repo-local agents win on domain sharpness, but they accumulate drift faster in a multi-repo workspace.** | [[Custom Copilot CLI Agents]], [[Managed-Block Layering for Cross-Repo Agent Installs]] | `raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The most durable design is usually layered: shared compiled base plus local repo-owned extensions.** | [[Managed-Block Layering for Cross-Repo Agent Installs]], [[Custom Copilot CLI Agents]] | `raw/2026-05-30-copilot-session-building-jbl-dev-kit-multiagent-workflow-697863e5.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

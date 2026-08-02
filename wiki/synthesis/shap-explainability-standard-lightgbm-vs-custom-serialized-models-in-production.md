@@ -1,22 +1,31 @@
 ---
-title: "SHAP Explainability: Standard LightGBM vs Custom Serialized Models in Production"
+title: 'SHAP Explainability: Standard LightGBM vs Custom Serialized Models in Production'
 type: synthesis
 created: 2026-04-18
 last_verified: 2026-04-18
-source_hash: "synthesis-generated"
+source_hash: c27ce10c7d2a26aa4409da9355352f03c26caaec81679cb4d7ac8e11e4801de8
 sources:
-  - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
-  - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
+- raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
+- raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - lightgbm-feature-importance-and-shap-values
-  - shap-analysis-bug-root-cause-and-remediation
+- lightgbm-feature-importance-and-shap-values
+- shap-analysis-bug-root-cause-and-remediation
 related:
-  - "[[LightGBM Feature Importance and SHAP Values]]"
-  - "[[SHAP Analysis Bug Root Cause and Remediation]]"
-  - "[[Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning]]"
+- '[[LightGBM Feature Importance and SHAP Values]]'
+- '[[SHAP Analysis Bug Root Cause and Remediation]]'
+- '[[Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning]]'
 tier: hot
-tags: [SHAP, LightGBM, explainability, model serialization, production ML, schema drift]
+tags:
+- SHAP
+- LightGBM
+- explainability
+- model serialization
+- production ML
+- schema drift
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # SHAP Explainability: Standard LightGBM vs Custom Serialized Models in Production
@@ -51,9 +60,18 @@ A common misconception is that SHAP explainability is universally applicable to 
 
 ## Key Insights
 
+
 1. **Schema drift and custom serialization formats are the primary sources of explainability failures, not SHAP itself; maintaining schema stability is more critical than SHAP integration.** — supported by [[SHAP Analysis Bug Root Cause and Remediation]]
 2. **Graceful skipping and stub results for unsupported models (e.g., Ridge, Ensemble) are essential for workflow robustness, preventing explainability failures from cascading into pipeline errors.** — supported by [[SHAP Analysis Bug Root Cause and Remediation]]
 3. **Standard LightGBM serialization offers a 'plug-and-play' SHAP workflow, while custom pipelines require schema-aware mapping and class resolution, making explainability maintenance an ongoing engineering task.** — supported by [[LightGBM Feature Importance and SHAP Values]], [[SHAP Analysis Bug Root Cause and Remediation]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Schema drift and custom serialization formats are the primary sources of explainability failures, not SHAP itself; maintaining schema stability is more critical than SHAP integration.** | [[SHAP Analysis Bug Root Cause and Remediation]] | `raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Graceful skipping and stub results for unsupported models (e.g., Ridge, Ensemble) are essential for workflow robustness, preventing explainability failures from cascading into pipeline errors.** | [[SHAP Analysis Bug Root Cause and Remediation]] | `raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Standard LightGBM serialization offers a 'plug-and-play' SHAP workflow, while custom pipelines require schema-aware mapping and class resolution, making explainability maintenance an ongoing engineering task.** | [[LightGBM Feature Importance and SHAP Values]], [[SHAP Analysis Bug Root Cause and Remediation]] | `raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md`, `raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

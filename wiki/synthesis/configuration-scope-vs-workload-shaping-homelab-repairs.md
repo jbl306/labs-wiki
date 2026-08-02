@@ -1,27 +1,36 @@
 ---
-title: "Configuration Scope vs Workload Shaping in Homelab Repairs"
+title: Configuration Scope vs Workload Shaping in Homelab Repairs
 type: synthesis
 created: '2026-05-18'
 last_verified: '2026-05-18'
-source_hash: "synthesis-generated"
+source_hash: 4045c5f2fd62ccc0548893e9a6ad4fada9e3de4ce49672ef83d6859a902b1597
 sources:
-  - raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md
-  - raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
-  - raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md
+- raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md
+- raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
+- raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md
 concepts:
-  - trusted-domain-scope-reverse-proxied-nextcloud-checks
-  - task-specific-feature-profiles-memory-bounded-ml-training
-  - oom-failure-diagnosis-remediation-ml-containers
+- trusted-domain-scope-reverse-proxied-nextcloud-checks
+- task-specific-feature-profiles-memory-bounded-ml-training
+- oom-failure-diagnosis-remediation-ml-containers
 related:
-  - "[[Trusted-Domain Scope for Reverse-Proxied Nextcloud Checks]]"
-  - "[[Task-Specific Feature Profiles for Memory-Bounded ML Training]]"
-  - "[[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]]"
-  - "[[Nextcloud]]"
-  - "[[NBA ML Engine]]"
-  - "[[Homelab]]"
+- '[[Trusted-Domain Scope for Reverse-Proxied Nextcloud Checks]]'
+- '[[Task-Specific Feature Profiles for Memory-Bounded ML Training]]'
+- '[[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]]'
+- '[[Nextcloud]]'
+- '[[NBA ML Engine]]'
+- '[[Homelab]]'
 tier: hot
-tags: [synthesis, homelab, nextcloud, nba-ml-engine, reliability, ml-ops]
+tags:
+- synthesis
+- homelab
+- nextcloud
+- nba-ml-engine
+- reliability
+- ml-ops
 quality_score: 79
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Configuration Scope vs Workload Shaping in Homelab Repairs
@@ -59,9 +68,18 @@ The durable operating rule is therefore layered. First, prove what failed. Secon
 
 ## Key Insights
 
-1. **Over-broad declarations create real failures even when the underlying subsystem is mostly healthy** — supported by [[Trusted-Domain Scope for Reverse-Proxied Nextcloud Checks]] and [[Copilot Session Checkpoint: Homelab NBA repairs]].
-2. **Workload shaping is strongest when it reflects semantic task boundaries rather than generic "lighter mode" switches** — supported by [[Task-Specific Feature Profiles for Memory-Bounded ML Training]] and [[Copilot Session Checkpoint: Homelab NBA repairs]].
-3. **Evidence should decide whether you narrow config scope or compute scope** — supported by [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]] and [[Copilot Session Checkpoint: Training Status Tracker and OOM Fix]].
+
+1. **Over-broad declarations create real failures even when the underlying subsystem is mostly healthy** — supported by [[Trusted-Domain Scope for Reverse-Proxied Nextcloud Checks]], [[Copilot Session Checkpoint: Homelab NBA repairs]]
+2. **Workload shaping is strongest when it reflects semantic task boundaries rather than generic "lighter mode" switches** — supported by [[Task-Specific Feature Profiles for Memory-Bounded ML Training]], [[Copilot Session Checkpoint: Homelab NBA repairs]]
+3. **Evidence should decide whether you narrow config scope or compute scope** — supported by [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]], [[Copilot Session Checkpoint: Training Status Tracker and OOM Fix]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Over-broad declarations create real failures even when the underlying subsystem is mostly healthy** | [[Trusted-Domain Scope for Reverse-Proxied Nextcloud Checks]], [[Copilot Session Checkpoint: Homelab NBA repairs]] | `raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Workload shaping is strongest when it reflects semantic task boundaries rather than generic "lighter mode" switches** | [[Task-Specific Feature Profiles for Memory-Bounded ML Training]], [[Copilot Session Checkpoint: Homelab NBA repairs]] | `raw/2026-05-18-copilot-session-homelab-nba-repairs-e405020e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Evidence should decide whether you narrow config scope or compute scope** | [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]], [[Copilot Session Checkpoint: Training Status Tracker and OOM Fix]] | `raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -73,4 +91,3 @@ The durable operating rule is therefore layered. First, prove what failed. Secon
 - [[Copilot Session Checkpoint: Homelab NBA repairs]]
 - [[Copilot Session Checkpoint: Training Status Tracker and OOM Fix]]
 - [[Copilot Session Checkpoint: Weekly Retrain OOM Debugging]]
-

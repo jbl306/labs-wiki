@@ -1,21 +1,30 @@
 ---
-title: "Foundation Hardening vs Completion Closeout in Spatial Design Studio S6"
+title: Foundation Hardening vs Completion Closeout in Spatial Design Studio S6
 type: synthesis
 created: '2026-05-14'
 last_verified: '2026-05-14'
-source_hash: "synthesis-generated"
+source_hash: 2af7a6b275b35ff2499373878fba4109dc0e55cac61064c25a298eaaf2925719
 sources:
-  - raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md
-  - raw/2026-05-14-copilot-session-completing-s6-roadmap-212ec880.md
+- raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md
+- raw/2026-05-14-copilot-session-completing-s6-roadmap-212ec880.md
 concepts:
-  - staged-toolchain-baseline-hardening-active-monorepos
-  - behavior-preserving-monolith-decomposition-live-services
+- staged-toolchain-baseline-hardening-active-monorepos
+- behavior-preserving-monolith-decomposition-live-services
 related:
-  - "[[Spatial Design Studio]]"
-  - "[[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]"
-  - "[[Copilot Session Checkpoint: Completing S6 Roadmap]]"
+- '[[Spatial Design Studio]]'
+- '[[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]'
+- '[[Copilot Session Checkpoint: Completing S6 Roadmap]]'
 tier: hot
-tags: [spatial-design-studio, roadmap, refactoring, tooling, deployment, synthesis]
+tags:
+- spatial-design-studio
+- roadmap
+- refactoring
+- tooling
+- deployment
+- synthesis
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Foundation Hardening vs Completion Closeout in Spatial Design Studio S6
@@ -51,9 +60,18 @@ The closeout details are what turn the second checkpoint from "refactor diary" i
 
 ## Key Insights
 
+
 1. **Baseline hardening is most valuable when it creates room for later high-risk refactors.** — supported by [[Staged Toolchain Baseline Hardening for Active Monorepos]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]
 2. **Large-file decomposition should preserve contracts first and improve purity second.** — supported by [[Behavior-Preserving Monolith Decomposition for Live Services]], [[Copilot Session Checkpoint: Completing S6 Roadmap]]
 3. **A sprint is only truly closed when code, roadmap state, deployment state, and branch state all agree.** — supported by [[Copilot Session Checkpoint: Completing S6 Roadmap]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Baseline hardening is most valuable when it creates room for later high-risk refactors.** | [[Staged Toolchain Baseline Hardening for Active Monorepos]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]] | `raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Large-file decomposition should preserve contracts first and improve purity second.** | [[Behavior-Preserving Monolith Decomposition for Live Services]], [[Copilot Session Checkpoint: Completing S6 Roadmap]] | `raw/2026-05-14-copilot-session-completing-s6-roadmap-212ec880.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A sprint is only truly closed when code, roadmap state, deployment state, and branch state all agree.** | [[Copilot Session Checkpoint: Completing S6 Roadmap]] | `raw/2026-05-14-copilot-session-completing-s6-roadmap-212ec880.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,24 +1,32 @@
 ---
-title: "ACE Context Adaptation Failure Modes and Countermeasures"
+title: ACE Context Adaptation Failure Modes and Countermeasures
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: e9fada6aa2c3847891a39f87b8981fbd06dd339c4485ad24a274f0cbb6b82d88
 sources:
-  - raw/2026-04-22-test-pdf-arxiv-2510-04618.md
-  - raw/2026-04-16-251004618v3pdf.md
+- raw/2026-04-22-test-pdf-arxiv-2510-04618.md
+- raw/2026-04-16-251004618v3pdf.md
 concepts:
-  - brevity-bias-context-collapse-llm-context-adaptation
-  - incremental-delta-updates
-  - grow-and-refine-mechanism-context-engineering
+- brevity-bias-context-collapse-llm-context-adaptation
+- incremental-delta-updates
+- grow-and-refine-mechanism-context-engineering
 related:
-  - "[[ACE (Agentic Context Engineering)]]"
-  - "[[Brevity Bias and Context Collapse in LLM Context Adaptation]]"
-  - "[[Incremental Delta Updates]]"
-  - "[[Grow-and-Refine Mechanism in Context Engineering]]"
+- '[[ACE (Agentic Context Engineering)]]'
+- '[[Brevity Bias and Context Collapse in LLM Context Adaptation]]'
+- '[[Incremental Delta Updates]]'
+- '[[Grow-and-Refine Mechanism in Context Engineering]]'
 tier: hot
-tags: [ace, context-adaptation, llm-agents, failure-modes, synthesis]
+tags:
+- ace
+- context-adaptation
+- llm-agents
+- failure-modes
+- synthesis
 quality_score: 70
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # ACE Context Adaptation Failure Modes and Countermeasures
@@ -56,9 +64,18 @@ The practical takeaway is that these mechanisms are complements, not substitutes
 
 ## Key Insights
 
-1. **ACE wins by changing the unit of adaptation** — it adapts bullet-level playbook entries instead of whole prompts, which directly addresses the collapse pattern described in [[Brevity Bias and Context Collapse in LLM Context Adaptation]].
-2. **Preservation and pruning are separate jobs** — [[Incremental Delta Updates]] protects accumulated knowledge, while [[Grow-and-Refine Mechanism in Context Engineering]] keeps that accumulation from turning into clutter.
-3. **Self-improvement depends on structure, not just feedback** — execution feedback is only useful when the system has a stable place to store and revise the lessons it extracts, which is exactly what [[ACE (Agentic Context Engineering)]] provides.
+
+1. **ACE wins by changing the unit of adaptation** — it adapts bullet-level playbook entries instead of whole prompts, which directly addresses the collapse pattern described in [[Brevity Bias and Context Collapse in LLM Context Adaptation]]. — supported by [[Brevity Bias and Context Collapse in LLM Context Adaptation]]
+2. **Preservation and pruning are separate jobs** — [[Incremental Delta Updates]] protects accumulated knowledge, while [[Grow-and-Refine Mechanism in Context Engineering]] keeps that accumulation from turning into clutter. — supported by [[Incremental Delta Updates]], [[Grow-and-Refine Mechanism in Context Engineering]]
+3. **Self-improvement depends on structure, not just feedback** — execution feedback is only useful when the system has a stable place to store and revise the lessons it extracts, which is exactly what [[ACE (Agentic Context Engineering)]] provides. — supported by [[ACE (Agentic Context Engineering)]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **ACE wins by changing the unit of adaptation** — it adapts bullet-level playbook entries instead of whole prompts, which directly addresses the collapse pattern described in [[Brevity Bias and Context Collapse in LLM Context Adaptation]]. | [[Brevity Bias and Context Collapse in LLM Context Adaptation]] | `raw/2026-04-16-251004618v3pdf.md`, `raw/2026-04-22-test-pdf-arxiv-2510-04618.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Preservation and pruning are separate jobs** — [[Incremental Delta Updates]] protects accumulated knowledge, while [[Grow-and-Refine Mechanism in Context Engineering]] keeps that accumulation from turning into clutter. | [[Incremental Delta Updates]], [[Grow-and-Refine Mechanism in Context Engineering]] | `raw/2026-04-16-251004618v3pdf.md`, `raw/2026-04-22-test-pdf-arxiv-2510-04618.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Self-improvement depends on structure, not just feedback** — execution feedback is only useful when the system has a stable place to store and revise the lessons it extracts, which is exactly what [[ACE (Agentic Context Engineering)]] provides. | [[ACE (Agentic Context Engineering)]] | `raw/2026-04-16-251004618v3pdf.md`, `raw/2026-04-22-test-pdf-arxiv-2510-04618.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

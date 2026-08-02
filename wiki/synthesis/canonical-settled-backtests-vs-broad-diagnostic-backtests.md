@@ -1,24 +1,33 @@
 ---
-title: "Canonical Settled Backtests vs Broad Diagnostic Backtests"
+title: Canonical Settled Backtests vs Broad Diagnostic Backtests
 type: synthesis
 created: 2026-04-25
 last_verified: 2026-04-25
-source_hash: "synthesis-generated"
+source_hash: 6442bf91da1d028dc346fbe731768ae98d1b0284ef0cae20255dc5585c321a13
 sources:
-  - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
-  - raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
+- raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
+- raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
 concepts:
-  - canonical-settled-prop-backtesting-trustworthy-ml-dashboards
-  - broad-diagnostic-backtesting-secondary-model-evidence
-  - dashboard-metrics-consistency-and-hit-rate-discrepancy-analysis
+- canonical-settled-prop-backtesting-trustworthy-ml-dashboards
+- broad-diagnostic-backtesting-secondary-model-evidence
+- dashboard-metrics-consistency-and-hit-rate-discrepancy-analysis
 related:
-  - "[[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]]"
-  - "[[Broad Diagnostic Backtesting as Secondary Model Evidence]]"
-  - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"
+- '[[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]]'
+- '[[Broad Diagnostic Backtesting as Secondary Model Evidence]]'
+- '[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]'
 tier: hot
-tags: [backtesting, dashboard, trust, canonical-data, diagnostics, ml-ops]
+tags:
+- backtesting
+- dashboard
+- trust
+- canonical-data
+- diagnostics
+- ml-ops
 quality_score: 91
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Canonical Settled Backtests vs Broad Diagnostic Backtests
@@ -58,10 +67,20 @@ The practical design choice is therefore hierarchical duality: canonical settled
 
 ## Key Insights
 
+
 1. **Population correctness is not enough; interpretation correctness matters too.** — supported by [[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]], [[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]
 2. **Broad diagnostics are valuable when they are demoted from headline truth to contextual evidence.** — supported by [[Broad Diagnostic Backtesting as Secondary Model Evidence]]
 3. **A recurring discrepancy investigation can usually be converted into a durable product contract.** — supported by [[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]], [[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]]
 4. **Failure policy is part of trust design: primary evidence must fail honestly, while secondary evidence may degrade gracefully.** — supported by [[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]], [[Broad Diagnostic Backtesting as Secondary Model Evidence]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Population correctness is not enough; interpretation correctness matters too.** | [[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]], [[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]] | `raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md`, `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Broad diagnostics are valuable when they are demoted from headline truth to contextual evidence.** | [[Broad Diagnostic Backtesting as Secondary Model Evidence]] | `raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A recurring discrepancy investigation can usually be converted into a durable product contract.** | [[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]], [[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]] | `raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md`, `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Failure policy is part of trust design: primary evidence must fail honestly, while secondary evidence may degrade gracefully.** | [[Canonical Settled-Prop Backtesting for Trustworthy ML Dashboards]], [[Broad Diagnostic Backtesting as Secondary Model Evidence]] | `raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md`, `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

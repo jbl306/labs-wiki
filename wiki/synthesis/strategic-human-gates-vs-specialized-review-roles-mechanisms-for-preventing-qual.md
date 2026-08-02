@@ -1,22 +1,31 @@
 ---
-title: "Strategic Human Gates vs. Specialized Review Roles: Mechanisms for Preventing Quality Failures in Automated Agent Pipelines"
+title: 'Strategic Human Gates vs. Specialized Review Roles: Mechanisms for Preventing
+  Quality Failures in Automated Agent Pipelines'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 84442e77db43b3c1f5c0e16f89adad114d0a98c91bc0d172eed84fe3eef97684
 sources:
-  - raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
-  - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
+- raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md
+- raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
 quality_score: 64
 concepts:
-  - specialized-review-principle
-  - strategic-human-gate-principle
+- specialized-review-principle
+- strategic-human-gate-principle
 related:
-  - "[[The Strategic Human Gate Principle | 10 Claude Code Principles]]"
-  - "[[The Strategic Human Gate Principle]]"
-  - "[[The Specialized Review Principle]]"
+- '[[The Strategic Human Gate Principle | 10 Claude Code Principles]]'
+- '[[The Strategic Human Gate Principle]]'
+- '[[The Specialized Review Principle]]'
 tier: hot
-tags: [agent pipelines, quality assurance, human-in-the-loop, LLM review, workflow design]
+tags:
+- agent pipelines
+- quality assurance
+- human-in-the-loop
+- LLM review
+- workflow design
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Strategic Human Gates vs. Specialized Review Roles: Mechanisms for Preventing Quality Failures in Automated Agent Pipelines
@@ -53,9 +62,18 @@ Decision criteria hinge on the workflow's risk profile: high-stakes, irreversibl
 
 ## Key Insights
 
+
 1. **Human gates not only catch critical errors but also improve agent output quality upstream, as agents anticipate human review and organize their analysis more rigorously.** — supported by [[The Strategic Human Gate Principle]]
 2. **Specialist panels dramatically increase issue detection rates without significantly increasing review time, due to parallelization and focused domain coverage.** — supported by [[The Specialized Review Principle]]
 3. **Rubber-stamp approval is a structural failure mode in both agent and human reviews; both principles require evidence-backed justification to counteract this, but human gates provide explicit authority to reject, while specialist panels rely on domain expertise.** — supported by [[The Strategic Human Gate Principle]], [[The Specialized Review Principle]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Human gates not only catch critical errors but also improve agent output quality upstream, as agents anticipate human review and organize their analysis more rigorously.** | [[The Strategic Human Gate Principle]] | `raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Specialist panels dramatically increase issue detection rates without significantly increasing review time, due to parallelization and focused domain coverage.** | [[The Specialized Review Principle]] | `raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Rubber-stamp approval is a structural failure mode in both agent and human reviews; both principles require evidence-backed justification to counteract this, but human gates provide explicit authority to reject, while specialist panels rely on domain expertise.** | [[The Strategic Human Gate Principle]], [[The Specialized Review Principle]] | `raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-strategic-human-gate-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

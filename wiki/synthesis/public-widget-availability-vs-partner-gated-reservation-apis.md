@@ -1,20 +1,30 @@
 ---
-title: "Public Reservation Widgets vs. Partner-Gated Reservation APIs"
+title: Public Reservation Widgets vs. Partner-Gated Reservation APIs
 type: synthesis
 created: 2026-06-04
 last_verified: 2026-06-04
-source_hash: "synthesis-generated"
+source_hash: e0597da3ab961bbc89509e52a53e5ee524929214d1e9fa34265f1992aeb70475
 sources:
-  - raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md
+- raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md
 quality_score: 72
-concepts: [public-reservation-widget-availability-endpoints, partner-gated-reservation-apis]
+concepts:
+- public-reservation-widget-availability-endpoints
+- partner-gated-reservation-apis
 related:
-  - "[[Public Reservation Widget Availability Endpoints]]"
-  - "[[Partner-Gated Reservation APIs]]"
-  - "[[DoorDash Going Out]]"
-  - "[[SevenRooms API]]"
+- '[[Public Reservation Widget Availability Endpoints]]'
+- '[[Partner-Gated Reservation APIs]]'
+- '[[DoorDash Going Out]]'
+- '[[SevenRooms API]]'
 tier: hot
-tags: [reservations, api-design, access-control, sevenrooms, doordash]
+tags:
+- reservations
+- api-design
+- access-control
+- sevenrooms
+- doordash
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Public Reservation Widgets vs. Partner-Gated Reservation APIs
@@ -52,9 +62,18 @@ For labs-wiki, this synthesis is a useful pattern template for other marketplace
 
 ## Key Insights
 
+
 1. **Public observability clusters around search, not control.** The most reliable public evidence in this source concerns widget discovery and slot metadata, not reservation mutation. — supported by [[Public Reservation Widget Availability Endpoints]], [[DoorDash Going Out and SevenRooms API Reverse Engineering Discovery]]
 2. **Partnership gating is itself an architectural signal.** When docs, credentials, and venue scoping are approval-driven, the API is being positioned as an operational backend rather than a public developer surface. — supported by [[Partner-Gated Reservation APIs]], [[SevenRooms API]]
 3. **Marketplace reservation products usually bridge both layers.** Consumer-facing apps can feel public and simple while depending on private partner contracts underneath. — supported by [[DoorDash Going Out]], [[SevenRooms API]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Public observability clusters around search, not control.** The most reliable public evidence in this source concerns widget discovery and slot metadata, not reservation mutation. | [[Public Reservation Widget Availability Endpoints]], [[DoorDash Going Out and SevenRooms API Reverse Engineering Discovery]] | `raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Partnership gating is itself an architectural signal.** When docs, credentials, and venue scoping are approval-driven, the API is being positioned as an operational backend rather than a public developer surface. | [[Partner-Gated Reservation APIs]], [[SevenRooms API]] | `raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Marketplace reservation products usually bridge both layers.** Consumer-facing apps can feel public and simple while depending on private partner contracts underneath. | [[DoorDash Going Out]], [[SevenRooms API]] | `raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

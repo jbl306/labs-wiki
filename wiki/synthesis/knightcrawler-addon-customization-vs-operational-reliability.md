@@ -1,21 +1,30 @@
 ---
-title: "KnightCrawler Addon Customization vs Operational Reliability"
+title: KnightCrawler Addon Customization vs Operational Reliability
 type: synthesis
 created: 2026-05-18
 last_verified: 2026-05-18
-source_hash: "synthesis-generated"
+source_hash: ba90442ac6f0501b0ac7d25595c1ea7912e4625118f693ceaea025bc9052a7cb
 sources:
-  - raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md
+- raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md
 concepts:
-  - dual-surface-provider-registration-minified-addon-bundles
-  - reliable-recent-scrape-automation-media-ingestion
+- dual-surface-provider-registration-minified-addon-bundles
+- reliable-recent-scrape-automation-media-ingestion
 related:
-  - "[[Dual-Surface Provider Registration in Minified Addon Bundles]]"
-  - "[[Reliable Recent-Scrape Automation for Media Ingestion]]"
-  - "[[KnightCrawler]]"
-  - "[[TorBox]]"
+- '[[Dual-Surface Provider Registration in Minified Addon Bundles]]'
+- '[[Reliable Recent-Scrape Automation for Media Ingestion]]'
+- '[[KnightCrawler]]'
+- '[[TorBox]]'
 tier: hot
-tags: [knightcrawler, runtime-patching, automation, reliability, stremio, homelab]
+tags:
+- knightcrawler
+- runtime-patching
+- automation
+- reliability
+- stremio
+- homelab
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # KnightCrawler Addon Customization vs Operational Reliability
@@ -53,9 +62,18 @@ A common misconception is that infrastructure reliability can compensate for bun
 
 ## Key Insights
 
-1. **Capability and configurability are separate deliverables** — the TorBox runtime patch proved backend support can exist before the configure UI is wired. Supported by [[Dual-Surface Provider Registration in Minified Addon Bundles]].
-2. **Reliability work is mostly state management** — durable cursors, run tables, and targeted invalidation matter more than extra scraping logic once the core importer exists. Supported by [[Reliable Recent-Scrape Automation for Media Ingestion]].
-3. **Validation must mirror the system boundary you changed** — request-path smoke tests belong to addon patches, while run-history and metric checks belong to ingestion automation. Supported by [[Dual-Surface Provider Registration in Minified Addon Bundles]], [[Reliable Recent-Scrape Automation for Media Ingestion]].
+
+1. **Capability and configurability are separate deliverables** — the TorBox runtime patch proved backend support can exist before the configure UI is wired. — supported by [[Dual-Surface Provider Registration in Minified Addon Bundles]]
+2. **Reliability work is mostly state management** — durable cursors, run tables, and targeted invalidation matter more than extra scraping logic once the core importer exists. — supported by [[Reliable Recent-Scrape Automation for Media Ingestion]]
+3. **Validation must mirror the system boundary you changed** — request-path smoke tests belong to addon patches, while run-history and metric checks belong to ingestion automation. — supported by [[Dual-Surface Provider Registration in Minified Addon Bundles]], [[Reliable Recent-Scrape Automation for Media Ingestion]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Capability and configurability are separate deliverables** — the TorBox runtime patch proved backend support can exist before the configure UI is wired. | [[Dual-Surface Provider Registration in Minified Addon Bundles]] | `raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Reliability work is mostly state management** — durable cursors, run tables, and targeted invalidation matter more than extra scraping logic once the core importer exists. | [[Reliable Recent-Scrape Automation for Media Ingestion]] | `raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Validation must mirror the system boundary you changed** — request-path smoke tests belong to addon patches, while run-history and metric checks belong to ingestion automation. | [[Dual-Surface Provider Registration in Minified Addon Bundles]], [[Reliable Recent-Scrape Automation for Media Ingestion]] | `raw/2026-05-18-copilot-session-knightcrawler-torbox-backend-865a8571.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -67,4 +85,3 @@ A common misconception is that infrastructure reliability can compensate for bun
 - [[Copilot Session Checkpoint: Knightcrawler TorBox Backend]]
 - [[Dual-Surface Provider Registration in Minified Addon Bundles]]
 - [[Reliable Recent-Scrape Automation for Media Ingestion]]
-

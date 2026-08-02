@@ -1,22 +1,31 @@
 ---
-title: "RNNs vs Transformers: Handling Sequential Data, Memory, and Long-Term Dependencies"
+title: 'RNNs vs Transformers: Handling Sequential Data, Memory, and Long-Term Dependencies'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 4f3d1c9e6cf70f79430bbb3e526f367679634b960a50cfa7fafac051ea9b6857
 sources:
-  - raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md
-  - raw/2026-04-07-transformer-architecture-note.md
+- raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md
+- raw/2026-04-07-transformer-architecture-note.md
 quality_score: 64
 concepts:
-  - recurrent-neural-network-architecture
-  - transformer-architecture
+- recurrent-neural-network-architecture
+- transformer-architecture
 related:
-  - "[[Recurrent Neural Network Architecture]]"
-  - "[[Introduction to Recurrent Neural Networks - GeeksforGeeks]]"
-  - "[[Transformer Architecture]]"
+- '[[Recurrent Neural Network Architecture]]'
+- '[[Introduction to Recurrent Neural Networks - GeeksforGeeks]]'
+- '[[Transformer Architecture]]'
 tier: hot
-tags: [neural networks, sequential data, memory, deep learning, NLP, architecture comparison]
+tags:
+- neural networks
+- sequential data
+- memory
+- deep learning
+- NLP
+- architecture comparison
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # RNNs vs Transformers: Handling Sequential Data, Memory, and Long-Term Dependencies
@@ -51,8 +60,16 @@ A common misconception is that Transformers universally outperform RNNs; while t
 
 ## Key Insights
 
+
 1. **Transformers' parallelism and self-attention enable them to model long-range dependencies without the vanishing gradient problem, but their quadratic complexity makes them less efficient for extremely long sequences compared to RNNs with gating.** — supported by [[Transformer Architecture]], [[Recurrent Neural Network Architecture]]
 2. **RNNs inherently encode sequence order, while Transformers must explicitly inject this information via positional encoding, which can affect performance on tasks with strict temporal requirements.** — supported by [[Transformer Architecture]], [[Recurrent Neural Network Architecture]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Transformers' parallelism and self-attention enable them to model long-range dependencies without the vanishing gradient problem, but their quadratic complexity makes them less efficient for extremely long sequences compared to RNNs with gating.** | [[Transformer Architecture]], [[Recurrent Neural Network Architecture]] | `raw/2026-04-07-transformer-architecture-note.md`, `raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **RNNs inherently encode sequence order, while Transformers must explicitly inject this information via positional encoding, which can affect performance on tasks with strict temporal requirements.** | [[Transformer Architecture]], [[Recurrent Neural Network Architecture]] | `raw/2026-04-07-transformer-architecture-note.md`, `raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

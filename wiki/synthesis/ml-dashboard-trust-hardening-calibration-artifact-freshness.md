@@ -1,26 +1,37 @@
 ---
-title: "ML Dashboard Trust Hardening: Calibration, Artifact Safety, and Freshness Alignment"
+title: 'ML Dashboard Trust Hardening: Calibration, Artifact Safety, and Freshness
+  Alignment'
 type: synthesis
 created: 2026-04-25
 last_verified: 2026-04-25
-source_hash: "synthesis-generated"
+source_hash: 21a43ce972d33124ee80181706120809cbe38bd1244fade29f2391c538d4763c
 sources:
-  - raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md
-  - raw/2026-04-25-copilot-session-dashboard-accuracy-finalization-f5b87e0e.md
-  - raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
+- raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md
+- raw/2026-04-25-copilot-session-dashboard-accuracy-finalization-f5b87e0e.md
+- raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
 concepts:
-  - serving-signal-aligned-calibration-reporting
-  - reference-safe-artifact-pruning-shared-model-registries
-  - freshness-gate-alignment-between-ml-apis-and-dashboards
-  - honest-fallback-metadata-accuracy-warnings-ml-dashboards
+- serving-signal-aligned-calibration-reporting
+- reference-safe-artifact-pruning-shared-model-registries
+- freshness-gate-alignment-between-ml-apis-and-dashboards
+- honest-fallback-metadata-accuracy-warnings-ml-dashboards
 related:
-  - "[[Serving-Signal-Aligned Calibration Reporting]]"
-  - "[[Reference-Safe Artifact Pruning in Shared Model Registries]]"
-  - "[[Freshness-Gate Alignment Between ML APIs and Dashboards]]"
-  - "[[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]]"
+- '[[Serving-Signal-Aligned Calibration Reporting]]'
+- '[[Reference-Safe Artifact Pruning in Shared Model Registries]]'
+- '[[Freshness-Gate Alignment Between ML APIs and Dashboards]]'
+- '[[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]]'
 tier: hot
-tags: [dashboard, trust, model-calibration, artifact-registry, freshness, ml-ops, synthesis]
+tags:
+- dashboard
+- trust
+- model-calibration
+- artifact-registry
+- freshness
+- ml-ops
+- synthesis
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # ML Dashboard Trust Hardening: Calibration, Artifact Safety, and Freshness Alignment
@@ -58,10 +69,20 @@ These concepts complement rather than replace one another. Provenance transparen
 
 ## Key Insights
 
+
 1. **Dashboard trust breaks at multiple stack layers, not just in the frontend.** — supported by [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]], [[Serving-Signal-Aligned Calibration Reporting]], [[Reference-Safe Artifact Pruning in Shared Model Registries]]
 2. **A metric is only trustworthy when it evaluates the exact object the product serves.** — supported by [[Serving-Signal-Aligned Calibration Reporting]]
 3. **Background maintenance logic can silently invalidate otherwise healthy-looking production dashboards.** — supported by [[Reference-Safe Artifact Pruning in Shared Model Registries]], [[Copilot Session Checkpoint: Dashboard Accuracy Hardening]]
 4. **Warnings should communicate backend policy, not compete with it.** — supported by [[Freshness-Gate Alignment Between ML APIs and Dashboards]], [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Dashboard trust breaks at multiple stack layers, not just in the frontend.** | [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]], [[Serving-Signal-Aligned Calibration Reporting]], [[Reference-Safe Artifact Pruning in Shared Model Registries]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md`, `raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A metric is only trustworthy when it evaluates the exact object the product serves.** | [[Serving-Signal-Aligned Calibration Reporting]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Background maintenance logic can silently invalidate otherwise healthy-looking production dashboards.** | [[Reference-Safe Artifact Pruning in Shared Model Registries]], [[Copilot Session Checkpoint: Dashboard Accuracy Hardening]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Warnings should communicate backend policy, not compete with it.** | [[Freshness-Gate Alignment Between ML APIs and Dashboards]], [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md`, `raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

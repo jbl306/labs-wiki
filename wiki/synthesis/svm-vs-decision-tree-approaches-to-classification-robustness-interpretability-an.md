@@ -1,22 +1,32 @@
 ---
-title: "SVM vs Decision Tree: Approaches to Classification, Robustness, Interpretability, and Performance"
+title: 'SVM vs Decision Tree: Approaches to Classification, Robustness, Interpretability,
+  and Performance'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 036c752ce7e68fb423ab2a2686a4392b48da749475b6b5ab20596d3d62934a76
 sources:
-  - raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
-  - raw/2026-04-08-decision-tree-geeksforgeeks.md
+- raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md
+- raw/2026-04-08-decision-tree-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - support-vector-machine
-  - decision-tree
+- support-vector-machine
+- decision-tree
 related:
-  - "[[Support Vector Machine Algorithm]]"
-  - "[[Support Vector Machine (SVM) Algorithm - GeeksforGeeks]]"
-  - "[[Decision Tree Algorithm]]"
+- '[[Support Vector Machine Algorithm]]'
+- '[[Support Vector Machine (SVM) Algorithm - GeeksforGeeks]]'
+- '[[Decision Tree Algorithm]]'
 tier: hot
-tags: [machine learning, classification, SVM, decision tree, interpretability, robustness]
+tags:
+- machine learning
+- classification
+- SVM
+- decision tree
+- interpretability
+- robustness
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # SVM vs Decision Tree: Approaches to Classification, Robustness, Interpretability, and Performance
@@ -51,9 +61,18 @@ Choosing between SVM and Decision Tree depends on the problem context. SVM is pr
 
 ## Key Insights
 
+
 1. **SVM's robustness to outliers stems from its reliance on support vectors, whereas Decision Trees' sensitivity to outliers is mitigated only through pruning.** — supported by [[Support Vector Machine Algorithm]], [[Decision Tree Algorithm]]
 2. **Decision Trees require no feature scaling, simplifying preprocessing, while SVMs are highly sensitive to feature scaling, affecting boundary placement.** — supported by [[Support Vector Machine Algorithm]], [[Decision Tree Algorithm]]
 3. **Interpretability is inversely related to boundary flexibility: SVMs offer flexible, complex boundaries but low interpretability, while Decision Trees provide transparent, axis-aligned splits.** — supported by [[Support Vector Machine Algorithm]], [[Decision Tree Algorithm]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **SVM's robustness to outliers stems from its reliance on support vectors, whereas Decision Trees' sensitivity to outliers is mitigated only through pruning.** | [[Support Vector Machine Algorithm]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Decision Trees require no feature scaling, simplifying preprocessing, while SVMs are highly sensitive to feature scaling, affecting boundary placement.** | [[Support Vector Machine Algorithm]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Interpretability is inversely related to boundary flexibility: SVMs offer flexible, complex boundaries but low interpretability, while Decision Trees provide transparent, axis-aligned splits.** | [[Support Vector Machine Algorithm]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-support-vector-machine-svm-algorithm-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

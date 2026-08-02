@@ -1,24 +1,33 @@
 ---
-title: "Turning Sparse Hotel Sources into a Safe Geospatial Catalog"
+title: Turning Sparse Hotel Sources into a Safe Geospatial Catalog
 type: synthesis
 created: '2026-05-30'
 last_verified: '2026-05-30'
-source_hash: "synthesis-generated"
+source_hash: 14f942419bb014ea5d63af066edc6f5ef33eee105d208d166706c910d457dcc5
 sources:
-  - raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md
-  - raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md
+- raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md
+- raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md
 concepts:
-  - third-party-map-ingestion-location-rich-travel-catalogs
-  - resumable-geocoding-city-centroid-fallback-travel-catalogs
-  - provenance-aware-hotel-catalog-diffing-mixed-source-refresh
+- third-party-map-ingestion-location-rich-travel-catalogs
+- resumable-geocoding-city-centroid-fallback-travel-catalogs
+- provenance-aware-hotel-catalog-diffing-mixed-source-refresh
 related:
-  - "[[The Edit by Chase Travel]]"
-  - "[[Chase Sapphire Benefits v2]]"
-  - "[[Hotel Auto-Population Pipeline]]"
-  - "[[Choosing a Source of Truth for The Edit Hotel Catalog]]"
-  - "[[Automated Catalog Refresh Pipeline]]"
+- '[[The Edit by Chase Travel]]'
+- '[[Chase Sapphire Benefits v2]]'
+- '[[Hotel Auto-Population Pipeline]]'
+- '[[Choosing a Source of Truth for The Edit Hotel Catalog]]'
+- '[[Automated Catalog Refresh Pipeline]]'
 tier: hot
-tags: [hotel-catalog, synthesis, geocoding, chase-travel, provenance, automation]
+tags:
+- hotel-catalog
+- synthesis
+- geocoding
+- chase-travel
+- provenance
+- automation
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Turning Sparse Hotel Sources into a Safe Geospatial Catalog
@@ -56,9 +65,18 @@ Taken together, the three concepts describe a staged conversion pipeline: broad 
 
 ## Key Insights
 
+
 1. **Broad candidate coverage is only the first half of the problem; geospatial products need coordinate recovery before a source is actually usable.** — supported by [[Third-Party Map Ingestion for Location-Rich Travel Catalogs]], [[Resumable Geocoding with City-Centroid Fallback for Travel Catalogs]]
 2. **Imperfect coordinates can still be productively useful if the system records their lower confidence and keeps the workflow resumable.** — supported by [[Resumable Geocoding with City-Centroid Fallback for Travel Catalogs]], [[Hotel Auto-Population Pipeline]]
 3. **Mixed-source catalogs stay stable only when provenance constrains overwrite and removal authority.** — supported by [[Provenance-Aware Hotel Catalog Diffing for Mixed-Source Refresh]], [[Authenticated Export for Private Travel Catalogs]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Broad candidate coverage is only the first half of the problem; geospatial products need coordinate recovery before a source is actually usable.** | [[Third-Party Map Ingestion for Location-Rich Travel Catalogs]], [[Resumable Geocoding with City-Centroid Fallback for Travel Catalogs]] | `raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md`, `raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Imperfect coordinates can still be productively useful if the system records their lower confidence and keeps the workflow resumable.** | [[Resumable Geocoding with City-Centroid Fallback for Travel Catalogs]], [[Hotel Auto-Population Pipeline]] | `raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Mixed-source catalogs stay stable only when provenance constrains overwrite and removal authority.** | [[Provenance-Aware Hotel Catalog Diffing for Mixed-Source Refresh]], [[Authenticated Export for Private Travel Catalogs]] | `raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md`, `raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,23 +1,32 @@
 ---
-title: "Vision Policy vs Extraction vs Acceptance in Spatial Reference Workflows"
+title: Vision Policy vs Extraction vs Acceptance in Spatial Reference Workflows
 type: synthesis
 created: 2026-05-12
 last_verified: 2026-05-12
-source_hash: "synthesis-generated"
+source_hash: 79906cbb5379a9a9365ff02178eb3d3f264ecbc1f5c56417f2dda9ab31118774
 sources:
-  - raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md
-  - raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
+- raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md
+- raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
 concepts:
-  - free-first-vision-pipeline-modes-spatial-planning-apps
-  - deterministic-reference-artifact-pipeline
-  - review-first-candidate-acceptance-reference-jobs
+- free-first-vision-pipeline-modes-spatial-planning-apps
+- deterministic-reference-artifact-pipeline
+- review-first-candidate-acceptance-reference-jobs
 related:
-  - "[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]"
-  - "[[Deterministic Reference Artifact Pipeline]]"
-  - "[[Review-First Candidate Acceptance for Reference Jobs]]"
-  - "[[Spatial Design Studio]]"
+- '[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]'
+- '[[Deterministic Reference Artifact Pipeline]]'
+- '[[Review-First Candidate Acceptance for Reference Jobs]]'
+- '[[Spatial Design Studio]]'
 tier: hot
-tags: [spatial-design-studio, synthesis, computer-vision, workflow, homelab, no-llm]
+tags:
+- spatial-design-studio
+- synthesis
+- computer-vision
+- workflow
+- homelab
+- no-llm
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Vision Policy vs Extraction vs Acceptance in Spatial Reference Workflows
@@ -53,9 +62,18 @@ The checkpoint's worker hotfix also reinforces why these layers matter. A missin
 
 ## Key Insights
 
-1. **Local-first policy is only the first layer** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] sets the boundary, but the no-LLM checkpoint shows that boundary must be followed by a concrete artifact pipeline.
-2. **Evidence is more valuable than premature certainty** — [[Deterministic Reference Artifact Pipeline]] improves trust by persisting previews, overlays, OCR text, and candidate lists before any room mutation happens.
-3. **Acceptance is the real modeling step** — [[Review-First Candidate Acceptance for Reference Jobs]] is where the app decides a candidate deserves to become a scene object or product.
+
+1. **Local-first policy is only the first layer** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] sets the boundary, but the no-LLM checkpoint shows that boundary must be followed by a concrete artifact pipeline. — supported by [[Free-First Vision Pipeline Modes for Spatial Planning Apps]]
+2. **Evidence is more valuable than premature certainty** — [[Deterministic Reference Artifact Pipeline]] improves trust by persisting previews, overlays, OCR text, and candidate lists before any room mutation happens. — supported by [[Deterministic Reference Artifact Pipeline]]
+3. **Acceptance is the real modeling step** — [[Review-First Candidate Acceptance for Reference Jobs]] is where the app decides a candidate deserves to become a scene object or product. — supported by [[Review-First Candidate Acceptance for Reference Jobs]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Local-first policy is only the first layer** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] sets the boundary, but the no-LLM checkpoint shows that boundary must be followed by a concrete artifact pipeline. | [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] | `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Evidence is more valuable than premature certainty** — [[Deterministic Reference Artifact Pipeline]] improves trust by persisting previews, overlays, OCR text, and candidate lists before any room mutation happens. | [[Deterministic Reference Artifact Pipeline]] | `raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Acceptance is the real modeling step** — [[Review-First Candidate Acceptance for Reference Jobs]] is where the app decides a candidate deserves to become a scene object or product. | [[Review-First Candidate Acceptance for Reference Jobs]] | `raw/2026-05-12-copilot-session-no-llm-reference-workflow-0264677a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

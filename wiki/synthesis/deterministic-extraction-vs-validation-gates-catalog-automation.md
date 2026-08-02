@@ -1,20 +1,28 @@
 ---
-title: "Deterministic Extraction vs Validation Gates in Catalog Automation"
+title: Deterministic Extraction vs Validation Gates in Catalog Automation
 type: synthesis
 created: '2026-05-30'
 last_verified: '2026-05-30'
-source_hash: "synthesis-generated"
+source_hash: 85781a7869953a180ce4a6818c1f7f22de07c85bf25e50a594b53effe6b3acc3
 sources:
-  - raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md
+- raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md
 concepts:
-  - deterministic-public-web-catalog-refresh-benefits-apps
-  - validation-gated-catalog-diffing-auto-apply
+- deterministic-public-web-catalog-refresh-benefits-apps
+- validation-gated-catalog-diffing-auto-apply
 related:
-  - "[[Automated Catalog Refresh Pipeline]]"
-  - "[[Chase Sapphire Benefits v2]]"
-  - "[[Copilot Session Checkpoint: Implementing automated catalog refresh pipeline]]"
+- '[[Automated Catalog Refresh Pipeline]]'
+- '[[Chase Sapphire Benefits v2]]'
+- '[[Copilot Session Checkpoint: Implementing automated catalog refresh pipeline]]'
 tier: hot
-tags: [catalog-refresh, synthesis, deterministic-extraction, guardrails, automation]
+tags:
+- catalog-refresh
+- synthesis
+- deterministic-extraction
+- guardrails
+- automation
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Deterministic Extraction vs Validation Gates in Catalog Automation
@@ -50,9 +58,18 @@ For privacy-preserving internal tools, this layered model is especially attracti
 
 ## Key Insights
 
+
 1. **Deterministic parsing and safe mutation are separate engineering problems, even when they live in one script stack.** — supported by [[Deterministic Public-Web Catalog Refresh for Benefits Apps]], [[Validation-Gated Catalog Diffing and Auto-Apply]]
 2. **Dry-run artifacts are a product feature, not just a debugging aid, because they let automation surface useful partial truth without forcing a write.** — supported by [[Validation-Gated Catalog Diffing and Auto-Apply]], [[Copilot Session Checkpoint: Implementing automated catalog refresh pipeline]]
 3. **A privacy-preserving app can automate public catalog maintenance effectively when rule-based extraction is paired with explicit hold policies instead of blind synchronization.** — supported by [[Deterministic Public-Web Catalog Refresh for Benefits Apps]], [[Automated Catalog Refresh Pipeline]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Deterministic parsing and safe mutation are separate engineering problems, even when they live in one script stack.** | [[Deterministic Public-Web Catalog Refresh for Benefits Apps]], [[Validation-Gated Catalog Diffing and Auto-Apply]] | `raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Dry-run artifacts are a product feature, not just a debugging aid, because they let automation surface useful partial truth without forcing a write.** | [[Validation-Gated Catalog Diffing and Auto-Apply]], [[Copilot Session Checkpoint: Implementing automated catalog refresh pipeline]] | `raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A privacy-preserving app can automate public catalog maintenance effectively when rule-based extraction is paired with explicit hold policies instead of blind synchronization.** | [[Deterministic Public-Web Catalog Refresh for Benefits Apps]], [[Automated Catalog Refresh Pipeline]] | `raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

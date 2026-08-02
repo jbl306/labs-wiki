@@ -1,22 +1,31 @@
 ---
-title: "AdaBoost vs. Standalone Decision Trees: Performance and Limitations"
+title: 'AdaBoost vs. Standalone Decision Trees: Performance and Limitations'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 97ad7b38df321654c5207373963c3a0c7560f96e26e511b6b3fadd1791613e8f
 sources:
-  - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
-  - raw/2026-04-08-decision-tree-geeksforgeeks.md
+- raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
+- raw/2026-04-08-decision-tree-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - adaboost
-  - decision-tree
+- adaboost
+- decision-tree
 related:
-  - "[[AdaBoost Algorithm]]"
-  - "[[Decision Tree Algorithm]]"
-  - "[[Implementing the AdaBoost Algorithm From Scratch - GeeksforGeeks]]"
+- '[[AdaBoost Algorithm]]'
+- '[[Decision Tree Algorithm]]'
+- '[[Implementing the AdaBoost Algorithm From Scratch - GeeksforGeeks]]'
 tier: hot
-tags: [ensemble learning, decision trees, AdaBoost, machine learning, classification, overfitting]
+tags:
+- ensemble learning
+- decision trees
+- AdaBoost
+- machine learning
+- classification
+- overfitting
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # AdaBoost vs. Standalone Decision Trees: Performance and Limitations
@@ -51,8 +60,16 @@ In practice, AdaBoost is preferred when accuracy and generalization are paramoun
 
 ## Key Insights
 
+
 1. **AdaBoost's sequential weighting mechanism directly targets the overfitting and instability of standalone decision trees, but introduces a new vulnerability to noisy data by upweighting misclassified (potentially noisy) samples.** — supported by [[AdaBoost Algorithm]], [[Decision Tree Algorithm]]
 2. **While AdaBoost reduces overfitting with simple learners, its interpretability is fundamentally limited by the aggregation of multiple models, contrasting with the transparent structure of a single decision tree.** — supported by [[AdaBoost Algorithm]], [[Decision Tree Algorithm]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **AdaBoost's sequential weighting mechanism directly targets the overfitting and instability of standalone decision trees, but introduces a new vulnerability to noisy data by upweighting misclassified (potentially noisy) samples.** | [[AdaBoost Algorithm]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **While AdaBoost reduces overfitting with simple learners, its interpretability is fundamentally limited by the aggregation of multiple models, contrasting with the transparent structure of a single decision tree.** | [[AdaBoost Algorithm]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

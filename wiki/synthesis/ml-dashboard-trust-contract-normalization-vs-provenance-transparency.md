@@ -1,23 +1,32 @@
 ---
-title: "ML Dashboard Trust: Contract Normalization vs Provenance Transparency"
+title: 'ML Dashboard Trust: Contract Normalization vs Provenance Transparency'
 type: synthesis
 created: 2026-04-25
 last_verified: 2026-04-25
-source_hash: "synthesis-generated"
+source_hash: 9d12f6b8d9bfdf485751707a4575a721f54d637be190f386e74293d2898a70fb
 sources:
-  - raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
+- raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md
 concepts:
-  - shared-contract-normalization-dashboard-apis
-  - honest-fallback-metadata-accuracy-warnings-ml-dashboards
-  - dashboard-metrics-consistency-and-hit-rate-discrepancy-analysis
+- shared-contract-normalization-dashboard-apis
+- honest-fallback-metadata-accuracy-warnings-ml-dashboards
+- dashboard-metrics-consistency-and-hit-rate-discrepancy-analysis
 related:
-  - "[[Shared Contract Normalization for Dashboard APIs]]"
-  - "[[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]]"
-  - "[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]"
+- '[[Shared Contract Normalization for Dashboard APIs]]'
+- '[[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]]'
+- '[[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]'
 tier: hot
-tags: [dashboard, trust, api-contracts, data-quality, provenance, ml-ops]
+tags:
+- dashboard
+- trust
+- api-contracts
+- data-quality
+- provenance
+- ml-ops
 quality_score: 70
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # ML Dashboard Trust: Contract Normalization vs Provenance Transparency
@@ -55,10 +64,20 @@ The concepts also complement each other. Normalization creates a stable place to
 
 ## Key Insights
 
+
 1. **Dashboard trust fails at multiple layers, so single-layer fixes are rarely enough.** — supported by [[Shared Contract Normalization for Dashboard APIs]], [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]]
 2. **A resilient fallback that hides its provenance is operationally useful but epistemically dangerous.** — supported by [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]]
 3. **Many “wrong metric” incidents are actually population-mismatch incidents.** — supported by [[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]]
-4. **The BFF is the leverage point where structure, provenance, and user-facing semantics can be aligned together.** — supported by [[Shared Contract Normalization for Dashboard APIs]], [[Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture]]
+4. **The BFF is the leverage point where structure, provenance, and user-facing semantics can be aligned together.** — supported by [[Shared Contract Normalization for Dashboard APIs]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Dashboard trust fails at multiple layers, so single-layer fixes are rarely enough.** | [[Shared Contract Normalization for Dashboard APIs]], [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A resilient fallback that hides its provenance is operationally useful but epistemically dangerous.** | [[Honest Fallback Metadata and Accuracy Warnings in ML Dashboards]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Many “wrong metric” incidents are actually population-mismatch incidents.** | [[Dashboard Metrics Consistency and Hit Rate Discrepancy Analysis]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-resilience-fixes-dashboard-metrics-inve-3ea0d6d8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The BFF is the leverage point where structure, provenance, and user-facing semantics can be aligned together.** | [[Shared Contract Normalization for Dashboard APIs]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

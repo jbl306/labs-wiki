@@ -1,23 +1,33 @@
 ---
-title: "AdaBoost vs Random Forests: Ensemble Learning Approaches and Practical Trade-offs"
+title: 'AdaBoost vs Random Forests: Ensemble Learning Approaches and Practical Trade-offs'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 1fca16e35764b0a2c5898106333b58ff82d32a8082ef1a89fd427719c9d64ed7
 sources:
-  - raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
-  - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
-  - raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
+- raw/2026-04-08-top-15-machine-learning-algorithms-every-data-scientist-shou.md
+- raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
+- raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md
 quality_score: 69
 concepts:
-  - adaboost
-  - random-forests
+- adaboost
+- random-forests
 related:
-  - "[[Top 15 Machine Learning Algorithms Every Data Scientist Should Know in 2025]]"
-  - "[[Random Forest Regression]]"
-  - "[[AdaBoost Algorithm]]"
+- '[[Top 15 Machine Learning Algorithms Every Data Scientist Should Know in 2025]]'
+- '[[Random Forest Regression]]'
+- '[[AdaBoost Algorithm]]'
 tier: hot
-tags: [ensemble learning, AdaBoost, Random Forests, accuracy, robustness, interpretability, machine learning]
+tags:
+- ensemble learning
+- AdaBoost
+- Random Forests
+- accuracy
+- robustness
+- interpretability
+- machine learning
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # AdaBoost vs Random Forests: Ensemble Learning Approaches and Practical Trade-offs
@@ -55,9 +65,18 @@ A common misconception is that boosting always outperforms bagging, but in noisy
 
 ## Key Insights
 
+
 1. **AdaBoost's sequential reweighting mechanism makes it highly sensitive to outliers, whereas Random Forests' averaging across trees inherently dampens the effect of noisy samples.** — supported by [[AdaBoost Algorithm]], [[Random Forest Regression]]
 2. **Interpretability in AdaBoost is tied to the simplicity of its weak learners and explicit alpha weights, while Random Forests sacrifice transparency for robustness and performance on complex data.** — supported by [[AdaBoost Algorithm]], [[Random Forest Regression]]
 3. **Random Forests' use of out-of-bag (OOB) estimation provides a built-in mechanism for unbiased performance evaluation, which AdaBoost lacks.** — supported by [[Random Forest Regression]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **AdaBoost's sequential reweighting mechanism makes it highly sensitive to outliers, whereas Random Forests' averaging across trees inherently dampens the effect of noisy samples.** | [[AdaBoost Algorithm]], [[Random Forest Regression]] | `raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md`, `raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Interpretability in AdaBoost is tied to the simplicity of its weak learners and explicit alpha weights, while Random Forests sacrifice transparency for robustness and performance on complex data.** | [[AdaBoost Algorithm]], [[Random Forest Regression]] | `raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md`, `raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Random Forests' use of out-of-bag (OOB) estimation provides a built-in mechanism for unbiased performance evaluation, which AdaBoost lacks.** | [[Random Forest Regression]] | `raw/2026-04-08-random-forest-regression-in-python-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

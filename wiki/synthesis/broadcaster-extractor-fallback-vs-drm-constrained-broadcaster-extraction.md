@@ -1,24 +1,33 @@
 ---
-title: "Broadcaster Extractor Fallback vs DRM-Constrained Broadcaster Extraction"
+title: Broadcaster Extractor Fallback vs DRM-Constrained Broadcaster Extraction
 type: synthesis
 created: 2026-04-24
 last_verified: 2026-04-24
-source_hash: "synthesis-generated"
+source_hash: ba1d95f310f66f73107db13d5e808a0ce50530bb14640ce72737d2e2ce7f3fc7
 sources:
-  - raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md
-  - raw/2026-04-24-copilot-session-beddybyes-rt-ingest-drm-wall-179cf44c.md
+- raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md
+- raw/2026-04-24-copilot-session-beddybyes-rt-ingest-drm-wall-179cf44c.md
 concepts:
-  - broadcaster-extractor-fallback-missing-torrent-titles
-  - drm-wall-broadcaster-extraction-workflows
-  - anonymous-token-ip-bound-manifest-handoff
+- broadcaster-extractor-fallback-missing-torrent-titles
+- drm-wall-broadcaster-extraction-workflows
+- anonymous-token-ip-bound-manifest-handoff
 related:
-  - "[[Broadcaster Extractor Fallback for Missing Torrent Titles]]"
-  - "[[DRM Wall in Broadcaster Extraction Workflows]]"
-  - "[[Anonymous Token to IP-Bound Manifest Handoff]]"
-  - "[[Homelab]]"
+- '[[Broadcaster Extractor Fallback for Missing Torrent Titles]]'
+- '[[DRM Wall in Broadcaster Extraction Workflows]]'
+- '[[Anonymous Token to IP-Bound Manifest Handoff]]'
+- '[[Homelab]]'
 tier: hot
-tags: [media-ingest, yt-dlp, drm, streaming, homelab, vpn]
+tags:
+- media-ingest
+- yt-dlp
+- drm
+- streaming
+- homelab
+- vpn
 quality_score: 70
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Broadcaster Extractor Fallback vs DRM-Constrained Broadcaster Extraction
@@ -56,9 +65,18 @@ The practical complementarity is strong. The older concept remains the right esc
 
 ## Key Insights
 
-1. **Changing substrates is not the same as guaranteeing acquisition** — [[Broadcaster Extractor Fallback for Missing Torrent Titles]] is often the right next move, but it only changes where the operator looks for content, not whether the content is clear.
-2. **Manifest success can be a negative result** — [[DRM Wall in Broadcaster Extraction Workflows]] shows that the most informative outcome may be a final, well-evidenced impossibility rather than a file download.
-3. **Entitlement debugging and DRM diagnosis should be treated as separate phases** — [[Anonymous Token to IP-Bound Manifest Handoff]] belongs to the "get to the manifest" phase, while DRM-wall reasoning belongs to the "decide whether acquisition is still legal and technically possible" phase.
+
+1. **Changing substrates is not the same as guaranteeing acquisition** — [[Broadcaster Extractor Fallback for Missing Torrent Titles]] is often the right next move, but it only changes where the operator looks for content, not whether the content is clear. — supported by [[Broadcaster Extractor Fallback for Missing Torrent Titles]]
+2. **Manifest success can be a negative result** — [[DRM Wall in Broadcaster Extraction Workflows]] shows that the most informative outcome may be a final, well-evidenced impossibility rather than a file download. — supported by [[DRM Wall in Broadcaster Extraction Workflows]]
+3. **Entitlement debugging and DRM diagnosis should be treated as separate phases** — [[Anonymous Token to IP-Bound Manifest Handoff]] belongs to the "get to the manifest" phase, while DRM-wall reasoning belongs to the "decide whether acquisition is still legal and technically possible" phase. — supported by [[Anonymous Token to IP-Bound Manifest Handoff]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Changing substrates is not the same as guaranteeing acquisition** — [[Broadcaster Extractor Fallback for Missing Torrent Titles]] is often the right next move, but it only changes where the operator looks for content, not whether the content is clear. | [[Broadcaster Extractor Fallback for Missing Torrent Titles]] | `raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Manifest success can be a negative result** — [[DRM Wall in Broadcaster Extraction Workflows]] shows that the most informative outcome may be a final, well-evidenced impossibility rather than a file download. | [[DRM Wall in Broadcaster Extraction Workflows]] | `raw/2026-04-24-copilot-session-beddybyes-rt-ingest-drm-wall-179cf44c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Entitlement debugging and DRM diagnosis should be treated as separate phases** — [[Anonymous Token to IP-Bound Manifest Handoff]] belongs to the "get to the manifest" phase, while DRM-wall reasoning belongs to the "decide whether acquisition is still legal and technically possible" phase. | [[Anonymous Token to IP-Bound Manifest Handoff]] | `raw/2026-04-24-copilot-session-beddybyes-rt-ingest-drm-wall-179cf44c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

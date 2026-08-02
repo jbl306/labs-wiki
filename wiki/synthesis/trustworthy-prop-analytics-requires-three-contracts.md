@@ -1,26 +1,35 @@
 ---
-title: "Trustworthy Prop Analytics Requires Three Contracts"
+title: Trustworthy Prop Analytics Requires Three Contracts
 type: synthesis
 created: '2026-05-31'
 last_verified: '2026-05-31'
-source_hash: "synthesis-generated"
+source_hash: 760baa9db4981a345a5194dd8a838c416745218038590dc1747bbce393d7a34c
 sources:
-  - raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md
-  - raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
-  - raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
-  - raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
+- raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md
+- raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md
+- raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md
+- raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
 concepts:
-  - point-in-time-prop-snapshot-identity
-  - shared-canonical-settled-prop-population-consistency
-  - shared-contract-normalization-dashboard-apis
+- point-in-time-prop-snapshot-identity
+- shared-canonical-settled-prop-population-consistency
+- shared-contract-normalization-dashboard-apis
 related:
-  - "[[Point-in-Time Prop Snapshot Identity]]"
-  - "[[Shared Canonical Settled-Prop Population for Analytics Consistency]]"
-  - "[[Shared Contract Normalization for Dashboard APIs]]"
-  - "[[NBA ML Engine]]"
+- '[[Point-in-Time Prop Snapshot Identity]]'
+- '[[Shared Canonical Settled-Prop Population for Analytics Consistency]]'
+- '[[Shared Contract Normalization for Dashboard APIs]]'
+- '[[NBA ML Engine]]'
 tier: hot
-tags: [synthesis, nba-ml-engine, prop-accuracy, dashboard, backtesting, data-contracts]
+tags:
+- synthesis
+- nba-ml-engine
+- prop-accuracy
+- dashboard
+- backtesting
+- data-contracts
 quality_score: 84
+evidence_scope: within-source
+evidence_source_count: 4
+evidence_origin_family_count: 1
 ---
 
 # Trustworthy Prop Analytics Requires Three Contracts
@@ -60,9 +69,18 @@ This layered view also prevents the wrong repair reflex. When dashboard numbers 
 
 ## Key Insights
 
-1. **Immutable history is a prerequisite, not an optimization** — supported by [[Copilot Session Checkpoint: Canonical Props Implementation]] and [[Point-in-Time Prop Snapshot Identity]].
-2. **Canonical denominator reuse is what converts a one-off backtest fix into a stable analytics architecture** — supported by [[Copilot Session Checkpoint: Backtest Accuracy Contracts]] and [[Shared Canonical Settled-Prop Population for Analytics Consistency]].
-3. **A truthful dashboard requires semantic normalization in addition to correct SQL** — supported by [[Copilot Session Checkpoint: Dashboard Accuracy Fixes]] and [[Shared Contract Normalization for Dashboard APIs]].
+
+1. **Immutable history is a prerequisite, not an optimization** — supported by [[Copilot Session Checkpoint: Canonical Props Implementation]], [[Point-in-Time Prop Snapshot Identity]]
+2. **Canonical denominator reuse is what converts a one-off backtest fix into a stable analytics architecture** — supported by [[Copilot Session Checkpoint: Backtest Accuracy Contracts]], [[Shared Canonical Settled-Prop Population for Analytics Consistency]]
+3. **A truthful dashboard requires semantic normalization in addition to correct SQL** — supported by [[Copilot Session Checkpoint: Dashboard Accuracy Fixes]], [[Shared Contract Normalization for Dashboard APIs]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Immutable history is a prerequisite, not an optimization** | [[Copilot Session Checkpoint: Canonical Props Implementation]], [[Point-in-Time Prop Snapshot Identity]] | `raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md`, `raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Canonical denominator reuse is what converts a one-off backtest fix into a stable analytics architecture** | [[Copilot Session Checkpoint: Backtest Accuracy Contracts]], [[Shared Canonical Settled-Prop Population for Analytics Consistency]] | `raw/2026-04-25-copilot-session-backtest-accuracy-contracts-a089eefe.md`, `raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md`, `raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A truthful dashboard requires semantic normalization in addition to correct SQL** | [[Copilot Session Checkpoint: Dashboard Accuracy Fixes]], [[Shared Contract Normalization for Dashboard APIs]] | `raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

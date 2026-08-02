@@ -1,23 +1,31 @@
 ---
-title: "Richer vs. Signal-Preserving GitHub Repository Ingestion"
+title: Richer vs. Signal-Preserving GitHub Repository Ingestion
 type: synthesis
 created: 2026-04-30
 last_verified: 2026-04-30
-source_hash: "synthesis-generated"
+source_hash: a6122a5c17fc05359aa0606991a2644a049c00b961a15edda09c4996471f756d
 sources:
-  - raw/2026-04-22-copilot-session-github-ingest-depth-fetcher-trim-732c3907.md
-  - raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md
+- raw/2026-04-22-copilot-session-github-ingest-depth-fetcher-trim-732c3907.md
+- raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md
 concepts:
-  - richer-github-repository-ingestion-workflow
-  - signal-preserving-github-repository-ingestion
+- richer-github-repository-ingestion-workflow
+- signal-preserving-github-repository-ingestion
 related:
-  - "[[Richer GitHub Repository Ingestion Workflow]]"
-  - "[[Signal-Preserving GitHub Repository Ingestion]]"
-  - "[[GitHub Repository Deep Crawling for Wiki Ingestion]]"
-  - "[[Richer Concept Extraction Prompt for LLM Wiki Pages]]"
+- '[[Richer GitHub Repository Ingestion Workflow]]'
+- '[[Signal-Preserving GitHub Repository Ingestion]]'
+- '[[GitHub Repository Deep Crawling for Wiki Ingestion]]'
+- '[[Richer Concept Extraction Prompt for LLM Wiki Pages]]'
 tier: hot
-tags: [github-ingestion, synthesis, prompt-engineering, technical-briefs, knowledge-curation]
+tags:
+- github-ingestion
+- synthesis
+- prompt-engineering
+- technical-briefs
+- knowledge-curation
 quality_score: 88
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Richer vs. Signal-Preserving GitHub Repository Ingestion
@@ -55,14 +63,26 @@ For Labs-Wiki specifically, the strongest design is hybrid: retain the deep craw
 
 ## Key Insights
 
-1. **Coverage and curation solve different bottlenecks** — [[GitHub Repository Deep Crawling for Wiki Ingestion]] and [[Richer GitHub Repository Ingestion Workflow]] fix missing input; [[Signal-Preserving GitHub Repository Ingestion]] fixes misallocated attention.
-2. **LLM-friendly structure can be harmful** — commit and issue lists are easy for a model to rewrite, which makes them disproportionately attractive despite their weak long-term knowledge value.
-3. **Prompt schema is part of retrieval quality** — requiring `Architecture / Technical model`, `How it works`, and `API / interface surface` changes the *usefulness* of the same fetched corpus.
+
+1. **Coverage and curation solve different bottlenecks** — [[GitHub Repository Deep Crawling for Wiki Ingestion]] and [[Richer GitHub Repository Ingestion Workflow]] fix missing input; [[Signal-Preserving GitHub Repository Ingestion]] fixes misallocated attention. — supported by [[Richer GitHub Repository Ingestion Workflow]], [[Signal-Preserving GitHub Repository Ingestion]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Coverage and curation solve different bottlenecks** — [[GitHub Repository Deep Crawling for Wiki Ingestion]] and [[Richer GitHub Repository Ingestion Workflow]] fix missing input; [[Signal-Preserving GitHub Repository Ingestion]] fixes misallocated attention. | [[Richer GitHub Repository Ingestion Workflow]], [[Signal-Preserving GitHub Repository Ingestion]] | `raw/2026-04-22-copilot-session-github-ingest-depth-fetcher-trim-732c3907.md`, `raw/2026-04-22-copilot-session-mobile-node-viewer-and-richer-github-ingestion-8b1dee20.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - Is `medium` effort sufficient once the GitHub-specific prompt contract is added, or should GitHub repo URLs be routed to `high` by default?
 - Should the pipeline preserve a lightweight operational view somewhere else, rather than deleting issue and PR activity from the repository source package entirely?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- LLM-friendly structure can be harmful — commit and issue lists are easy for a model to rewrite, which makes them disproportionately attractive despite their weak long-term knowledge value.
+- Prompt schema is part of retrieval quality — requiring `Architecture / Technical model`, `How it works`, and `API / interface surface` changes the *usefulness* of the same fetched corpus.
 
 ## Sources
 

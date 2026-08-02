@@ -1,24 +1,33 @@
 ---
-title: "Local Vision Policy vs Planning vs Wiring in Spatial Design Studio"
+title: Local Vision Policy vs Planning vs Wiring in Spatial Design Studio
 type: synthesis
 created: 2026-05-14
 last_verified: 2026-05-14
-source_hash: "synthesis-generated"
+source_hash: ac01d60cfdcdb4a1c9173dad87cb172e42c0e00967eb9cb3515d6fc6b7738758
 sources:
-  - raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
-  - raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md
-  - raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md
+- raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
+- raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md
+- raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md
 concepts:
-  - free-first-vision-pipeline-modes-spatial-planning-apps
-  - cpu-bound-ai-stack-planning-homelab-spatial-apps
-  - metadata-first-local-vision-capability-surfacing
+- free-first-vision-pipeline-modes-spatial-planning-apps
+- cpu-bound-ai-stack-planning-homelab-spatial-apps
+- metadata-first-local-vision-capability-surfacing
 related:
-  - "[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]"
-  - "[[CPU-Bound AI Stack Planning for Homelab Spatial Apps]]"
-  - "[[Metadata-First Local Vision Capability Surfacing]]"
-  - "[[Spatial Design Studio]]"
+- '[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]'
+- '[[CPU-Bound AI Stack Planning for Homelab Spatial Apps]]'
+- '[[Metadata-First Local Vision Capability Surfacing]]'
+- '[[Spatial Design Studio]]'
 tier: hot
-tags: [spatial-design-studio, synthesis, local-vision, homelab, planning, implementation]
+tags:
+- spatial-design-studio
+- synthesis
+- local-vision
+- homelab
+- planning
+- implementation
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Local Vision Policy vs Planning vs Wiring in Spatial Design Studio
@@ -56,9 +65,18 @@ The combination is stronger than any single page. Policy without planning stays 
 
 ## Key Insights
 
-1. **Boundary discipline should come before model enthusiasm** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] keeps privacy and cost rules explicit before implementation details take over.
-2. **Hardware realism is a roadmap tool, not just an ops note** — [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] changes what should ship first, not just what feels fast in a benchmark.
-3. **Metadata can be a real product milestone** — [[Metadata-First Local Vision Capability Surfacing]] shows that config, profile, and UI truth are meaningful deliverables even before every heavy model path is active.
+
+1. **Boundary discipline should come before model enthusiasm** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] keeps privacy and cost rules explicit before implementation details take over. — supported by [[Free-First Vision Pipeline Modes for Spatial Planning Apps]]
+2. **Hardware realism is a roadmap tool, not just an ops note** — [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] changes what should ship first, not just what feels fast in a benchmark. — supported by [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]]
+3. **Metadata can be a real product milestone** — [[Metadata-First Local Vision Capability Surfacing]] shows that config, profile, and UI truth are meaningful deliverables even before every heavy model path is active. — supported by [[Metadata-First Local Vision Capability Surfacing]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Boundary discipline should come before model enthusiasm** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] keeps privacy and cost rules explicit before implementation details take over. | [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] | `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Hardware realism is a roadmap tool, not just an ops note** — [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] changes what should ship first, not just what feels fast in a benchmark. | [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] | `raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Metadata can be a real product milestone** — [[Metadata-First Local Vision Capability Surfacing]] shows that config, profile, and UI truth are meaningful deliverables even before every heavy model path is active. | [[Metadata-First Local Vision Capability Surfacing]] | `raw/2026-05-14-copilot-session-implementing-s9-features-fe18e8fa.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

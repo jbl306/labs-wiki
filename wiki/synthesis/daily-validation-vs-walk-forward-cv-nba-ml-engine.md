@@ -1,24 +1,33 @@
 ---
-title: "Daily Validation vs Walk-Forward Cross-Validation in NBA ML Engine"
+title: Daily Validation vs Walk-Forward Cross-Validation in NBA ML Engine
 type: synthesis
 created: 2026-04-23
 last_verified: 2026-04-23
-source_hash: "synthesis-generated"
+source_hash: 6d610581d087e6a9b5dc65582cb3c9cd7b29df5f4a37639f22291a9fc010cea7
 sources:
-  - raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
+- raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md
 concepts:
-  - daily-weekly-validation-split-nba-ml-pipelines
-  - walk-forward-cross-validation-for-model-selection
+- daily-weekly-validation-split-nba-ml-pipelines
+- walk-forward-cross-validation-for-model-selection
 related:
-  - "[[Daily/Weekly Validation Split for NBA ML Pipelines]]"
-  - "[[Walk-Forward Cross-Validation for Model Selection]]"
-  - "[[Per-Stat Model Selection and Ensemble Learning in NBA ML Engine]]"
-  - "[[Copilot Session Checkpoint: NBA ML Pipeline OOM Fixes]]"
-  - "[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]"
+- '[[Daily/Weekly Validation Split for NBA ML Pipelines]]'
+- '[[Walk-Forward Cross-Validation for Model Selection]]'
+- '[[Per-Stat Model Selection and Ensemble Learning in NBA ML Engine]]'
+- '[[Copilot Session Checkpoint: NBA ML Pipeline OOM Fixes]]'
+- '[[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]'
 tier: hot
-tags: [nba-ml-engine, machine-learning, ml-ops, walk-forward-cv, model-selection, checkpoint-synthesis]
+tags:
+- nba-ml-engine
+- machine-learning
+- ml-ops
+- walk-forward-cv
+- model-selection
+- checkpoint-synthesis
 quality_score: 67
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Daily Validation vs Walk-Forward Cross-Validation in NBA ML Engine
@@ -54,9 +63,18 @@ The trade-off is real. Daily single-split validation can make poorer choices dur
 
 ## Key Insights
 
+
 1. **Registration timing is the decisive operational difference.** Once model promotion depends on walk-forward completion, a late-stage OOM can waste an otherwise successful retrain. — supported by [[Daily/Weekly Validation Split for NBA ML Pipelines]], [[Walk-Forward Cross-Validation for Model Selection]]
 2. **Walk-forward CV belongs in the system even when it leaves the daily path.** The fix is not to abandon time-series-honest evaluation, but to put it on a cadence that can tolerate its cost. — supported by [[Walk-Forward Cross-Validation for Model Selection]], [[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]]
 3. **Operational reliability can justify a weaker nightly selector when the alternative is stale production models.** In a constrained homelab, freshness plus bounded failure scope is often the right first-order optimization. — supported by [[Copilot Session Checkpoint: NBA ML Pipeline OOM Fixes]], [[Daily/Weekly Validation Split for NBA ML Pipelines]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Registration timing is the decisive operational difference.** Once model promotion depends on walk-forward completion, a late-stage OOM can waste an otherwise successful retrain. | [[Daily/Weekly Validation Split for NBA ML Pipelines]], [[Walk-Forward Cross-Validation for Model Selection]] | `raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Walk-forward CV belongs in the system even when it leaves the daily path.** The fix is not to abandon time-series-honest evaluation, but to put it on a cadence that can tolerate its cost. | [[Walk-Forward Cross-Validation for Model Selection]], [[Copilot Session Checkpoint: Implementing Sprint 29 ML Improvements]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-sprint-29-ml-improvements-986267e7.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Operational reliability can justify a weaker nightly selector when the alternative is stale production models.** In a constrained homelab, freshness plus bounded failure scope is often the right first-order optimization. | [[Copilot Session Checkpoint: NBA ML Pipeline OOM Fixes]], [[Daily/Weekly Validation Split for NBA ML Pipelines]] | `raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

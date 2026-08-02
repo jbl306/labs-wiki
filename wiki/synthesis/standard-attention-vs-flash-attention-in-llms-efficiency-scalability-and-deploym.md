@@ -1,21 +1,31 @@
 ---
-title: "Standard Attention vs. Flash Attention in LLMs: Efficiency, Scalability, and Deployment"
+title: 'Standard Attention vs. Flash Attention in LLMs: Efficiency, Scalability, and
+  Deployment'
 type: synthesis
 created: 2026-04-13
 last_verified: 2026-04-13
-source_hash: "synthesis-generated"
+source_hash: 24354a71973355d032f329cbefa169b3ed6ec485bbd442ed1a02da02ee011506
 sources:
-  - raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md
+- raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md
 quality_score: 59
 concepts:
-  - flash-attention
-  - standard-attention
+- flash-attention
+- standard-attention
 related:
-  - "[[Flash Attention in Large Language Models]]"
-  - "[[amitshekhariitbhu/llm-internals]]"
-  - "[[Attention Mechanism in Large Language Models]]"
+- '[[Flash Attention in Large Language Models]]'
+- '[[amitshekhariitbhu/llm-internals]]'
+- '[[Attention Mechanism in Large Language Models]]'
 tier: hot
-tags: [attention, LLM, efficiency, scalability, deployment, GPU]
+tags:
+- attention
+- LLM
+- efficiency
+- scalability
+- deployment
+- GPU
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Standard Attention vs. Flash Attention in LLMs: Efficiency, Scalability, and Deployment
@@ -52,9 +62,18 @@ A common misconception is that Flash Attention changes the mathematical formulat
 
 ## Key Insights
 
+
 1. **Flash Attention's primary gains stem from memory architecture alignment, not algorithmic changes to attention itself, enabling practical scaling without altering model behavior.** — supported by [[Attention Mechanism in Large Language Models]], [[Flash Attention in Large Language Models]]
 2. **The recomputation strategy in Flash Attention trades off increased computation for dramatic memory savings, which is especially valuable on GPU-constrained workloads.** — supported by [[Flash Attention in Large Language Models]]
 3. **Despite theoretical O(n^2) complexity, Flash Attention's practical speedups make long-sequence LLM deployment feasible where standard attention would be prohibitive.** — supported by [[Attention Mechanism in Large Language Models]], [[Flash Attention in Large Language Models]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Flash Attention's primary gains stem from memory architecture alignment, not algorithmic changes to attention itself, enabling practical scaling without altering model behavior.** | [[Attention Mechanism in Large Language Models]], [[Flash Attention in Large Language Models]] | `raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The recomputation strategy in Flash Attention trades off increased computation for dramatic memory savings, which is especially valuable on GPU-constrained workloads.** | [[Flash Attention in Large Language Models]] | `raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Despite theoretical O(n^2) complexity, Flash Attention's practical speedups make long-sequence LLM deployment feasible where standard attention would be prohibitive.** | [[Attention Mechanism in Large Language Models]], [[Flash Attention in Large Language Models]] | `raw/2026-04-13-amitshekhariitbhullm-internals-learn-llm-internals-step-by-s.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,22 +1,30 @@
 ---
-title: "Debrid-First Acquisition vs Broadcaster Extractor Fallback"
+title: Debrid-First Acquisition vs Broadcaster Extractor Fallback
 type: synthesis
 created: 2026-04-24
 last_verified: 2026-04-24
-source_hash: "synthesis-generated"
+source_hash: 8b1019b0097c578b8f0809114963936dd73e93f802f8ae9144b5842450f6aeff
 sources:
-  - raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
+- raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md
 concepts:
-  - broadcaster-extractor-fallback-missing-torrent-titles
-  - real-debrid-instantavailability-api-playback-issues
+- broadcaster-extractor-fallback-missing-torrent-titles
+- real-debrid-instantavailability-api-playback-issues
 related:
-  - "[[Broadcaster Extractor Fallback for Missing Torrent Titles]]"
-  - "[[Real-Debrid InstantAvailability API and Playback Issues]]"
-  - "[[Homelab]]"
+- '[[Broadcaster Extractor Fallback for Missing Torrent Titles]]'
+- '[[Real-Debrid InstantAvailability API and Playback Issues]]'
+- '[[Homelab]]'
 tier: hot
-tags: [media-ingest, real-debrid, yt-dlp, homelab, streaming]
+tags:
+- media-ingest
+- real-debrid
+- yt-dlp
+- homelab
+- streaming
 quality_score: 78
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Debrid-First Acquisition vs Broadcaster Extractor Fallback
@@ -54,14 +62,27 @@ In practice the best homelab design is not choosing one forever. It is adopting 
 
 ## Key Insights
 
-1. **Metadata presence does not imply acquisition viability** — [[Knightcrawler Metadata Service and IMDB Data Refresh]] can know a title that neither the public swarm nor Real-Debrid can actually deliver.
-2. **Debrid failures and no-swarm failures are different classes of problem** — [[Real-Debrid InstantAvailability API and Playback Issues]] is about hash-based workflows malfunctioning, while [[Broadcaster Extractor Fallback for Missing Torrent Titles]] is about switching away from hash-based workflows entirely.
-3. **The right pivot point is operationally knowable** — the BeddyByes checkpoint shows that repeated negative results across Torrentio, apibay, 1337x, and web search are enough evidence to stop treating torrent search as the main path.
+
+1. **Metadata presence does not imply acquisition viability** — [[Knightcrawler Metadata Service and IMDB Data Refresh]] can know a title that neither the public swarm nor Real-Debrid can actually deliver. — supported by [[Knightcrawler Metadata Service and IMDB Data Refresh]]
+2. **Debrid failures and no-swarm failures are different classes of problem** — [[Real-Debrid InstantAvailability API and Playback Issues]] is about hash-based workflows malfunctioning, while [[Broadcaster Extractor Fallback for Missing Torrent Titles]] is about switching away from hash-based workflows entirely. — supported by [[Real-Debrid InstantAvailability API and Playback Issues]], [[Broadcaster Extractor Fallback for Missing Torrent Titles]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Metadata presence does not imply acquisition viability** — [[Knightcrawler Metadata Service and IMDB Data Refresh]] can know a title that neither the public swarm nor Real-Debrid can actually deliver. | [[Knightcrawler Metadata Service and IMDB Data Refresh]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Debrid failures and no-swarm failures are different classes of problem** — [[Real-Debrid InstantAvailability API and Playback Issues]] is about hash-based workflows malfunctioning, while [[Broadcaster Extractor Fallback for Missing Torrent Titles]] is about switching away from hash-based workflows entirely. | [[Real-Debrid InstantAvailability API and Playback Issues]], [[Broadcaster Extractor Fallback for Missing Torrent Titles]] | `raw/2026-04-24-copilot-session-homelab-memory-optimization-beddybyes-ingest-9a440dbe.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-fixing-knightcrawler-populate-cron-and-rd-playba-85f07550.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - How should broadcaster-downloaded files be normalized and named so they coexist cleanly with debrid-fed libraries and future torrent-based copies of the same title?
 - Which minimum proxy, cookie, or VPN setup should be standardized in the homelab so geo-restricted extractor workflows can be repeated without ad hoc operator intervention?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- The right pivot point is operationally knowable — the BeddyByes checkpoint shows that repeated negative results across Torrentio, apibay, 1337x, and web search are enough evidence to stop treating torrent search as the main path.
 
 ## Sources
 

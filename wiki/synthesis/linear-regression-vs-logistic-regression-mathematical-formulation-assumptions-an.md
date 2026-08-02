@@ -1,22 +1,32 @@
 ---
-title: "Linear Regression vs Logistic Regression: Mathematical Formulation, Assumptions, and Applications"
+title: 'Linear Regression vs Logistic Regression: Mathematical Formulation, Assumptions,
+  and Applications'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: b29e91dd5b815b8a2e55bde1fa69327775d050ea164082afc1c35479c303243a
 sources:
-  - raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md
-  - raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
+- raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md
+- raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - linear-regression
-  - logistic-regression
+- linear-regression
+- logistic-regression
 related:
-  - "[[Logistic Regression]]"
-  - "[[Linear Regression]]"
-  - "[[Logistic Regression in Machine Learning - GeeksforGeeks]]"
+- '[[Logistic Regression]]'
+- '[[Linear Regression]]'
+- '[[Logistic Regression in Machine Learning - GeeksforGeeks]]'
 tier: hot
-tags: [regression, classification, machine learning, mathematical formulation, assumptions, applications]
+tags:
+- regression
+- classification
+- machine learning
+- mathematical formulation
+- assumptions
+- applications
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Linear Regression vs Logistic Regression: Mathematical Formulation, Assumptions, and Applications
@@ -54,9 +64,18 @@ In practice, the choice between linear and logistic regression hinges on the nat
 
 ## Key Insights
 
+
 1. **Both models use a linear predictor, but logistic regression's use of the sigmoid function fundamentally changes the output from a continuous value to a probability, enabling classification.** — supported by [[Linear Regression]], [[Logistic Regression]]
 2. **The estimation methods are conceptually similar (both use gradient-based optimization), but linear regression minimizes squared error while logistic regression maximizes likelihood, reflecting their different output types.** — supported by [[Linear Regression]], [[Logistic Regression]]
 3. **Violations of assumptions (e.g., multicollinearity, outliers) affect both models, but the consequences and mitigation strategies differ due to the nature of their outputs and cost functions.** — supported by [[Linear Regression]], [[Logistic Regression]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Both models use a linear predictor, but logistic regression's use of the sigmoid function fundamentally changes the output from a continuous value to a probability, enabling classification.** | [[Linear Regression]], [[Logistic Regression]] | `raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md`, `raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The estimation methods are conceptually similar (both use gradient-based optimization), but linear regression minimizes squared error while logistic regression maximizes likelihood, reflecting their different output types.** | [[Linear Regression]], [[Logistic Regression]] | `raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md`, `raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Violations of assumptions (e.g., multicollinearity, outliers) affect both models, but the consequences and mitigation strategies differ due to the nature of their outputs and cost functions.** | [[Linear Regression]], [[Logistic Regression]] | `raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md`, `raw/2026-04-08-logistic-regression-in-machine-learning-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

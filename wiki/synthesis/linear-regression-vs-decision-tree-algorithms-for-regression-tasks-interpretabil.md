@@ -1,22 +1,31 @@
 ---
-title: "Linear Regression vs Decision Tree Algorithms for Regression Tasks: Interpretability, Robustness, and Modeling Non-Linearity"
+title: 'Linear Regression vs Decision Tree Algorithms for Regression Tasks: Interpretability,
+  Robustness, and Modeling Non-Linearity'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 59d8f8670e64fbe285f6fae441a446689d66742177b37578f49aa8fe92e27090
 sources:
-  - raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
-  - raw/2026-04-08-decision-tree-geeksforgeeks.md
+- raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md
+- raw/2026-04-08-decision-tree-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - linear-regression
-  - decision-tree-algorithm
+- linear-regression
+- decision-tree-algorithm
 related:
-  - "[[Linear Regression in Machine Learning - GeeksforGeeks]]"
-  - "[[Decision Tree Algorithm]]"
-  - "[[Linear Regression]]"
+- '[[Linear Regression in Machine Learning - GeeksforGeeks]]'
+- '[[Decision Tree Algorithm]]'
+- '[[Linear Regression]]'
 tier: hot
-tags: [regression, machine learning, interpretability, robustness, non-linear modeling]
+tags:
+- regression
+- machine learning
+- interpretability
+- robustness
+- non-linear modeling
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Linear Regression vs Decision Tree Algorithms for Regression Tasks: Interpretability, Robustness, and Modeling Non-Linearity
@@ -53,9 +62,18 @@ Stability is often overlooked: linear regression models are stable, with small c
 
 ## Key Insights
 
+
 1. **Decision trees' interpretability is more visual and procedural, allowing users to trace decisions, while linear regression's interpretability is mathematical and quantitative, directly linking coefficients to variable influence.** — supported by [[Linear Regression]], [[Decision Tree Algorithm]]
 2. **Decision trees offer natural robustness to outliers and non-linear relationships, making them more versatile for messy, real-world data, whereas linear regression requires strict assumptions and preprocessing.** — supported by [[Linear Regression]], [[Decision Tree Algorithm]]
 3. **Despite both being interpretable, decision trees can be unstable and prone to overfitting, which is less of a concern with linear regression, highlighting a trade-off between flexibility and reliability.** — supported by [[Linear Regression]], [[Decision Tree Algorithm]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Decision trees' interpretability is more visual and procedural, allowing users to trace decisions, while linear regression's interpretability is mathematical and quantitative, directly linking coefficients to variable influence.** | [[Linear Regression]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Decision trees offer natural robustness to outliers and non-linear relationships, making them more versatile for messy, real-world data, whereas linear regression requires strict assumptions and preprocessing.** | [[Linear Regression]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Despite both being interpretable, decision trees can be unstable and prone to overfitting, which is less of a concern with linear regression, highlighting a trade-off between flexibility and reliability.** | [[Linear Regression]], [[Decision Tree Algorithm]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-linear-regression-in-machine-learning-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

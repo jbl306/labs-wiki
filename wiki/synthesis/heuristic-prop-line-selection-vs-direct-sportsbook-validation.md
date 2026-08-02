@@ -1,24 +1,32 @@
 ---
-title: "Heuristic Prop-Line Selection vs Direct Sportsbook Validation"
+title: Heuristic Prop-Line Selection vs Direct Sportsbook Validation
 type: synthesis
 created: 2026-04-25
 last_verified: 2026-04-25
-source_hash: "synthesis-generated"
+source_hash: a48dbbee8c9b6af7d7eaeb41e11cf43314f9b603fab2e5b0b407f741eeb290f2
 sources:
-  - raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md
-  - raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
+- raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md
+- raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md
 concepts:
-  - browser-backed-sportsbook-truth-validation
-  - standard-over-under-vs-milestone-prop-market-identity
-  - primary-prop-line-selection-to-avoid-alternate-line-contamination
+- browser-backed-sportsbook-truth-validation
+- standard-over-under-vs-milestone-prop-market-identity
+- primary-prop-line-selection-to-avoid-alternate-line-contamination
 related:
-  - "[[Browser-Backed Sportsbook Truth Validation]]"
-  - "[[Primary Prop Line Selection to Avoid Alternate Line Contamination]]"
-  - "[[SportsGameOdds (SGO) API Data Extraction Challenges]]"
-  - "[[Standard Over/Under vs Milestone Prop Market Identity]]"
+- '[[Browser-Backed Sportsbook Truth Validation]]'
+- '[[Primary Prop Line Selection to Avoid Alternate Line Contamination]]'
+- '[[SportsGameOdds (SGO) API Data Extraction Challenges]]'
+- '[[Standard Over/Under vs Milestone Prop Market Identity]]'
 tier: hot
-tags: [sports-betting, synthesis, data-validation, sportsbook-data, dashboard-accuracy]
+tags:
+- sports-betting
+- synthesis
+- data-validation
+- sportsbook-data
+- dashboard-accuracy
 quality_score: 90
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Heuristic Prop-Line Selection vs Direct Sportsbook Validation
@@ -56,9 +64,18 @@ For a production system like the [[NBA ML Engine]], the practical answer is to u
 
 ## Key Insights
 
-1. **Heuristics are cleanup tools, not truth oracles** — supported by [[Primary Prop Line Selection to Avoid Alternate Line Contamination]] and [[Copilot Session Checkpoint: Backtest Completion Props Investigation]].
-2. **Direct validation is most valuable when it discovers interface changes, not just final line values** — supported by [[Copilot Session Checkpoint: Direct Sportsbook Sources]].
-3. **Market taxonomy must be solved before line ranking can be trusted** — supported by [[Standard Over/Under vs Milestone Prop Market Identity]] and [[SportsGameOdds (SGO) API Data Extraction Challenges]].
+
+1. **Heuristics are cleanup tools, not truth oracles** — supported by [[Primary Prop Line Selection to Avoid Alternate Line Contamination]], [[Copilot Session Checkpoint: Backtest Completion Props Investigation]]
+2. **Direct validation is most valuable when it discovers interface changes, not just final line values** — supported by [[Copilot Session Checkpoint: Direct Sportsbook Sources]]
+3. **Market taxonomy must be solved before line ranking can be trusted** — supported by [[Standard Over/Under vs Milestone Prop Market Identity]], [[SportsGameOdds (SGO) API Data Extraction Challenges]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Heuristics are cleanup tools, not truth oracles** | [[Primary Prop Line Selection to Avoid Alternate Line Contamination]], [[Copilot Session Checkpoint: Backtest Completion Props Investigation]] | `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Direct validation is most valuable when it discovers interface changes, not just final line values** | [[Copilot Session Checkpoint: Direct Sportsbook Sources]] | `raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Market taxonomy must be solved before line ranking can be trusted** | [[Standard Over/Under vs Milestone Prop Market Identity]], [[SportsGameOdds (SGO) API Data Extraction Challenges]] | `raw/2026-04-25-copilot-session-backtest-completion-props-investigation-ed8d6cc6.md`, `raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -69,4 +86,3 @@ For a production system like the [[NBA ML Engine]], the practical answer is to u
 
 - [[Copilot Session Checkpoint: Direct Sportsbook Sources]]
 - [[Copilot Session Checkpoint: Backtest Completion Props Investigation]]
-

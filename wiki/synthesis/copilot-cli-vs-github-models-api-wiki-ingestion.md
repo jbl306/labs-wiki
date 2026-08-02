@@ -1,22 +1,33 @@
 ---
-title: "Copilot CLI vs GitHub Models API for Wiki Ingestion"
+title: Copilot CLI vs GitHub Models API for Wiki Ingestion
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: 92a703df61bf9db9c804a5c53ad93e3da34cdb02ee0a972d669ccc5471302af1
 sources:
-  - raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
-concepts: [copilot-cli-backend-wiki-ingestion, source-aware-model-routing-wiki-ingestion-pipelines]
+- raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
+concepts:
+- copilot-cli-backend-wiki-ingestion
+- source-aware-model-routing-wiki-ingestion-pipelines
 related:
-  - "[[Copilot CLI Backend for Wiki Ingestion]]"
-  - "[[GitHub Models API]]"
-  - "[[Auto-Ingest Pipeline for LLM-Powered Knowledge Wiki]]"
-  - "[[Source-Aware Model Routing in Wiki Ingestion Pipelines]]"
+- '[[Copilot CLI Backend for Wiki Ingestion]]'
+- '[[GitHub Models API]]'
+- '[[Auto-Ingest Pipeline for LLM-Powered Knowledge Wiki]]'
+- '[[Source-Aware Model Routing in Wiki Ingestion Pipelines]]'
 tier: hot
-tags: [wiki-ingestion, copilot-cli, github-models-api, backend, auto-ingest, docker]
+tags:
+- wiki-ingestion
+- copilot-cli
+- github-models-api
+- backend
+- auto-ingest
+- docker
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Copilot CLI vs GitHub Models API for Wiki Ingestion
@@ -54,15 +65,27 @@ The most robust long-term design may be plural rather than exclusive. [[Source-A
 
 ## Key Insights
 
-1. **Backend choice is an infrastructure choice** — the Copilot CLI path only worked after image-level fixes in [[Dockerfile.auto-ingest]], while the API path lives mostly in application code and config.
-2. **User-aligned tooling can simplify account strategy while complicating deployment** — Copilot CLI removes one layer of separate API integration but adds launcher, cache, and writable-HOME concerns.
-3. **Routing should eventually span backends, not just models** — [[Source-Aware Model Routing in Wiki Ingestion Pipelines]] provides a natural place to encode backend-specific decisions per source type and operational maturity.
+
+1. **Backend choice is an infrastructure choice** — the Copilot CLI path only worked after image-level fixes in [[Dockerfile.auto-ingest]], while the API path lives mostly in application code and config. — supported by [[Dockerfile.auto-ingest]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Backend choice is an infrastructure choice** — the Copilot CLI path only worked after image-level fixes in [[Dockerfile.auto-ingest]], while the API path lives mostly in application code and config. | [[Dockerfile.auto-ingest]] | `raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - Does the Copilot CLI path handle PDF and image-heavy raws as reliably as the previously documented GitHub Models pipeline?
 - Should backend selection become an explicit route dimension in `auto_ingest.py`, with fallbacks between CLI and API paths?
 - How much premium-request consumption does `gpt-5.4` at `high` effort create for full wiki ingests compared with the older API-based flow?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- User-aligned tooling can simplify account strategy while complicating deployment — Copilot CLI removes one layer of separate API integration but adds launcher, cache, and writable-HOME concerns.
+- Routing should eventually span backends, not just models — [[Source-Aware Model Routing in Wiki Ingestion Pipelines]] provides a natural place to encode backend-specific decisions per source type and operational maturity.
 
 ## Sources
 

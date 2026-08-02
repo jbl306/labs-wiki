@@ -1,22 +1,31 @@
 ---
-title: "LLM-Centric Architectures: Operating Systems vs. Persistent Wiki Environments"
+title: 'LLM-Centric Architectures: Operating Systems vs. Persistent Wiki Environments'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 95154167ca76ad400e0a296f6ca058db6fcdefa55101f35fd3a2bae79cebcf7b
 sources:
-  - raw/2026-04-07-test-tweet.md
-  - raw/2026-04-07-llm-wiki.md
+- raw/2026-04-07-test-tweet.md
+- raw/2026-04-07-llm-wiki.md
 quality_score: 64
 concepts:
-  - llm-operating-system-architecture
-  - llm-wiki-architecture
+- llm-operating-system-architecture
+- llm-wiki-architecture
 related:
-  - "[[LLM Wiki Architecture]]"
-  - "[[LLM Operating System Architecture]]"
-  - "[[Karpathy LLM OS Tweet]]"
+- '[[LLM Wiki Architecture]]'
+- '[[LLM Operating System Architecture]]'
+- '[[Karpathy LLM OS Tweet]]'
 tier: hot
-tags: [LLM, architecture, operating system, wiki, knowledge management, system design]
+tags:
+- LLM
+- architecture
+- operating system
+- wiki
+- knowledge management
+- system design
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # LLM-Centric Architectures: Operating Systems vs. Persistent Wiki Environments
@@ -52,9 +61,18 @@ These architectures can complement each other: an LLM OS could serve as the fron
 
 ## Key Insights
 
+
 1. **The operating system architecture's reliance on the LLM's context window for active memory creates a bottleneck for complex workflows, making persistent storage via embeddings essential, whereas the wiki architecture sidesteps this limitation by externalizing memory to markdown files and git.** — supported by [[LLM Operating System Architecture]], [[LLM Wiki Architecture]]
 2. **Schema-driven workflows in the wiki architecture enforce consistency and traceability, which are less emphasized in the OS architecture, suggesting that persistent environments benefit from explicit governance structures.** — supported by [[LLM Wiki Architecture]], [[LLM Operating System Architecture]]
 3. **Multimodal interaction is natively supported in the OS architecture through peripheral integration, but in the wiki environment, modality expansion is dependent on external plugins and is not a core architectural feature.** — supported by [[LLM Operating System Architecture]], [[LLM Wiki Architecture]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The operating system architecture's reliance on the LLM's context window for active memory creates a bottleneck for complex workflows, making persistent storage via embeddings essential, whereas the wiki architecture sidesteps this limitation by externalizing memory to markdown files and git.** | [[LLM Operating System Architecture]], [[LLM Wiki Architecture]] | `raw/2026-04-07-llm-wiki.md`, `raw/2026-04-07-test-tweet.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Schema-driven workflows in the wiki architecture enforce consistency and traceability, which are less emphasized in the OS architecture, suggesting that persistent environments benefit from explicit governance structures.** | [[LLM Wiki Architecture]], [[LLM Operating System Architecture]] | `raw/2026-04-07-llm-wiki.md`, `raw/2026-04-07-test-tweet.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Multimodal interaction is natively supported in the OS architecture through peripheral integration, but in the wiki environment, modality expansion is dependent on external plugins and is not a core architectural feature.** | [[LLM Operating System Architecture]], [[LLM Wiki Architecture]] | `raw/2026-04-07-llm-wiki.md`, `raw/2026-04-07-test-tweet.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

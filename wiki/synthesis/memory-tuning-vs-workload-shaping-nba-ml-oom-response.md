@@ -1,26 +1,34 @@
 ---
-title: "Memory Tuning vs Workload Shaping in NBA ML OOM Response"
+title: Memory Tuning vs Workload Shaping in NBA ML OOM Response
 type: synthesis
 created: '2026-04-26'
 last_verified: '2026-04-26'
-source_hash: "synthesis-generated"
+source_hash: 79d0e2372d265da3ea1e164730bcea8cd1f5019d560b48ee3e1bf6ee933a4458
 sources:
-  - raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
-  - raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md
-  - raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
+- raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
+- raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md
+- raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
 concepts:
-  - oom-failure-diagnosis-remediation-ml-containers
-  - daily-weekly-validation-split-nba-ml-pipelines
-  - skip-training-daily-pipeline-guardrails-ml-containers
+- oom-failure-diagnosis-remediation-ml-containers
+- daily-weekly-validation-split-nba-ml-pipelines
+- skip-training-daily-pipeline-guardrails-ml-containers
 related:
-  - "[[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]]"
-  - "[[Daily/Weekly Validation Split for NBA ML Pipelines]]"
-  - "[[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]]"
-  - "[[nba-ml-api]]"
-  - "[[Ofelia Scheduler]]"
+- '[[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]]'
+- '[[Daily/Weekly Validation Split for NBA ML Pipelines]]'
+- '[[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]]'
+- '[[nba-ml-api]]'
+- '[[Ofelia Scheduler]]'
 tier: hot
-tags: [ml-ops, oom, synthesis, nba-ml-engine, homelab]
+tags:
+- ml-ops
+- oom
+- synthesis
+- nba-ml-engine
+- homelab
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Memory Tuning vs Workload Shaping in NBA ML OOM Response
@@ -58,9 +66,18 @@ The follow-up OOM after deployment is why these approaches should be treated as 
 
 ## Key Insights
 
-1. **Diagnosis comes before mitigation choice** — supported by [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]] and [[Copilot Session Checkpoint: OOM Mitigation and Follow-Up]].
-2. **Workload shaping is usually more durable than repeated memory bumps on a shared host** — supported by [[Daily/Weekly Validation Split for NBA ML Pipelines]] and [[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]].
-3. **Scheduler labels are intent, not proof** — supported by [[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]] and [[Copilot Session Checkpoint: OOM Mitigation and Follow-Up]].
+
+1. **Diagnosis comes before mitigation choice** — supported by [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]], [[Copilot Session Checkpoint: OOM Mitigation and Follow-Up]]
+2. **Workload shaping is usually more durable than repeated memory bumps on a shared host** — supported by [[Daily/Weekly Validation Split for NBA ML Pipelines]], [[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]]
+3. **Scheduler labels are intent, not proof** — supported by [[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]], [[Copilot Session Checkpoint: OOM Mitigation and Follow-Up]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Diagnosis comes before mitigation choice** | [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]], [[Copilot Session Checkpoint: OOM Mitigation and Follow-Up]] | `raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md`, `raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Workload shaping is usually more durable than repeated memory bumps on a shared host** | [[Daily/Weekly Validation Split for NBA ML Pipelines]], [[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]] | `raw/2026-04-23-copilot-session-nba-ml-pipeline-oom-fixes-2781c1dc.md`, `raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Scheduler labels are intent, not proof** | [[Skip-Training Daily Pipeline Guardrails in Shared ML Containers]], [[Copilot Session Checkpoint: OOM Mitigation and Follow-Up]] | `raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

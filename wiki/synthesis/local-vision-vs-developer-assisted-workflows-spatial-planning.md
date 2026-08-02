@@ -1,23 +1,32 @@
 ---
-title: "Local Vision vs Developer-Assisted Workflows for Spatial Planning Apps"
+title: Local Vision vs Developer-Assisted Workflows for Spatial Planning Apps
 type: synthesis
 created: 2026-05-12
 last_verified: 2026-05-12
-source_hash: "synthesis-generated"
+source_hash: 05dd82a53356d0424224ebe1c96ca30d10bdcf5b9212d9e559cf8fade9fdbfaa
 sources:
-  - raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
+- raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
 concepts:
-  - free-first-vision-pipeline-modes-spatial-planning-apps
-  - developer-assisted-vision-workflows-spatial-planning-apps
-  - vision-support-in-llm-knowledge-ingestion-using-gpt-4-1
+- free-first-vision-pipeline-modes-spatial-planning-apps
+- developer-assisted-vision-workflows-spatial-planning-apps
+- vision-support-in-llm-knowledge-ingestion-using-gpt-4-1
 related:
-  - "[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]"
-  - "[[Developer-Assisted Vision Workflows for Spatial Planning Apps]]"
-  - "[[Vision Support in LLM Knowledge Ingestion Using GPT-4.1]]"
-  - "[[Spatial Design Studio]]"
+- '[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]'
+- '[[Developer-Assisted Vision Workflows for Spatial Planning Apps]]'
+- '[[Vision Support in LLM Knowledge Ingestion Using GPT-4.1]]'
+- '[[Spatial Design Studio]]'
 tier: hot
-tags: [vision, synthesis, spatial-design-studio, self-hosting, multimodal, cost-model]
+tags:
+- vision
+- synthesis
+- spatial-design-studio
+- self-hosting
+- multimodal
+- cost-model
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Local Vision vs Developer-Assisted Workflows for Spatial Planning Apps
@@ -53,9 +62,18 @@ The real decision rule, then, is not "Which vision system is best?" but "Which b
 
 ## Key Insights
 
-1. **Mode selection is an architecture decision, not a convenience toggle** — the new spatial-planning design encodes privacy and cost boundaries up front in [[Free-First Vision Pipeline Modes for Spatial Planning Apps]].
-2. **Developer-tool multimodality is most valuable as critique, not as serving infrastructure** — [[Developer-Assisted Vision Workflows for Spatial Planning Apps]] turns image-capable coding agents into an engineering accelerator without making them the product backend.
-3. **The older wiki-ingest vision pipeline remains a valid counterexample, not a contradiction** — [[Vision Support in LLM Knowledge Ingestion Using GPT-4.1]] succeeds because compile-time wiki enrichment has a narrower operational contract than live user-facing spatial inference.
+
+1. **Mode selection is an architecture decision, not a convenience toggle** — the new spatial-planning design encodes privacy and cost boundaries up front in [[Free-First Vision Pipeline Modes for Spatial Planning Apps]]. — supported by [[Free-First Vision Pipeline Modes for Spatial Planning Apps]]
+2. **Developer-tool multimodality is most valuable as critique, not as serving infrastructure** — [[Developer-Assisted Vision Workflows for Spatial Planning Apps]] turns image-capable coding agents into an engineering accelerator without making them the product backend. — supported by [[Developer-Assisted Vision Workflows for Spatial Planning Apps]]
+3. **The older wiki-ingest vision pipeline remains a valid counterexample, not a contradiction** — [[Vision Support in LLM Knowledge Ingestion Using GPT-4.1]] succeeds because compile-time wiki enrichment has a narrower operational contract than live user-facing spatial inference. — supported by [[Vision Support in LLM Knowledge Ingestion Using GPT-4.1]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Mode selection is an architecture decision, not a convenience toggle** — the new spatial-planning design encodes privacy and cost boundaries up front in [[Free-First Vision Pipeline Modes for Spatial Planning Apps]]. | [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] | `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Developer-tool multimodality is most valuable as critique, not as serving infrastructure** — [[Developer-Assisted Vision Workflows for Spatial Planning Apps]] turns image-capable coding agents into an engineering accelerator without making them the product backend. | [[Developer-Assisted Vision Workflows for Spatial Planning Apps]] | `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The older wiki-ingest vision pipeline remains a valid counterexample, not a contradiction** — [[Vision Support in LLM Knowledge Ingestion Using GPT-4.1]] succeeds because compile-time wiki enrichment has a narrower operational contract than live user-facing spatial inference. | [[Vision Support in LLM Knowledge Ingestion Using GPT-4.1]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -67,4 +85,3 @@ The real decision rule, then, is not "Which vision system is best?" but "Which b
 
 - [[Copilot Session Checkpoint: Clarifying Vision Options]]
 - [[Copilot Session Checkpoint: Pipeline Enhancements and Vision Support Deployed]]
-

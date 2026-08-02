@@ -1,21 +1,30 @@
 ---
-title: "Vision Policy vs Hardware Reality in Spatial Planning Apps"
+title: Vision Policy vs Hardware Reality in Spatial Planning Apps
 type: synthesis
 created: 2026-05-14
 last_verified: 2026-05-14
-source_hash: "synthesis-generated"
+source_hash: ea8e09583769b053c10248a9cbdf1310a98fc40c7a33e58721679c391615fd4b
 sources:
-  - raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md
-  - raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
+- raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md
+- raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md
 concepts:
-  - free-first-vision-pipeline-modes-spatial-planning-apps
-  - cpu-bound-ai-stack-planning-homelab-spatial-apps
+- free-first-vision-pipeline-modes-spatial-planning-apps
+- cpu-bound-ai-stack-planning-homelab-spatial-apps
 related:
-  - "[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]"
-  - "[[CPU-Bound AI Stack Planning for Homelab Spatial Apps]]"
-  - "[[Spatial Design Studio]]"
+- '[[Free-First Vision Pipeline Modes for Spatial Planning Apps]]'
+- '[[CPU-Bound AI Stack Planning for Homelab Spatial Apps]]'
+- '[[Spatial Design Studio]]'
 tier: hot
-tags: [spatial-design-studio, synthesis, self-hosting, vision, homelab, hardware-constraints]
+tags:
+- spatial-design-studio
+- synthesis
+- self-hosting
+- vision
+- homelab
+- hardware-constraints
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Vision Policy vs Hardware Reality in Spatial Planning Apps
@@ -51,15 +60,28 @@ Together, the two pages form a better decision stack than either alone. Policy p
 
 ## Key Insights
 
-1. **Policy is necessary but not sufficient** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] sets safe runtime boundaries, but the newer checkpoint shows that local mode still needs host-specific feasibility filtering.
-2. **Self-hosted can still be the wrong default** — [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] shows that GPU-hungry local stacks may violate user-experience expectations even when they satisfy privacy goals.
-3. **Roadmaps improve when constraints are pushed upstream** — the best time to annotate cost, licenses, and hardware viability is before a sprint plan turns aspirational tooling into committed architecture.
+
+1. **Policy is necessary but not sufficient** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] sets safe runtime boundaries, but the newer checkpoint shows that local mode still needs host-specific feasibility filtering. — supported by [[Free-First Vision Pipeline Modes for Spatial Planning Apps]]
+2. **Self-hosted can still be the wrong default** — [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] shows that GPU-hungry local stacks may violate user-experience expectations even when they satisfy privacy goals. — supported by [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Policy is necessary but not sufficient** — [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] sets safe runtime boundaries, but the newer checkpoint shows that local mode still needs host-specific feasibility filtering. | [[Free-First Vision Pipeline Modes for Spatial Planning Apps]] | `raw/2026-05-12-copilot-session-clarifying-vision-options-3cbd5600.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Self-hosted can still be the wrong default** — [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] shows that GPU-hungry local stacks may violate user-experience expectations even when they satisfy privacy goals. | [[CPU-Bound AI Stack Planning for Homelab Spatial Apps]] | `raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - What minimum hardware profile should let a spatial-planning app graduate from CPU-first extraction to practical local generation or heavier multimodal models?
 - Which local tasks should always remain asynchronous, even on stronger hardware, to preserve a good interactive planning experience?
 - If the homelab later adds a discrete GPU, which deferred features should move first: image restyling, ControlNet-guided structure extraction, or richer local multimodal interpretation?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- Roadmaps improve when constraints are pushed upstream — the best time to annotate cost, licenses, and hardware viability is before a sprint plan turns aspirational tooling into committed architecture.
 
 ## Sources
 

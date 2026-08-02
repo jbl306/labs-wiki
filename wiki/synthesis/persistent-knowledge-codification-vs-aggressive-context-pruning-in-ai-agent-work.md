@@ -1,23 +1,32 @@
 ---
-title: "Persistent Knowledge Codification vs. Aggressive Context Pruning in AI Agent Workflows"
+title: Persistent Knowledge Codification vs. Aggressive Context Pruning in AI Agent
+  Workflows
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 8c9072cba2562579595230fe962417595a4f02ccae7b92f675f87074bd3fbaa6
 sources:
-  - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
-  - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
-  - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
+- raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
+- raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
+- raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
 quality_score: 69
 concepts:
-  - context-hygiene-principle
-  - institutional-memory-principle
+- context-hygiene-principle
+- institutional-memory-principle
 related:
-  - "[[The Context Hygiene Principle]]"
-  - "[[The Institutional Memory Principle | 10 Claude Code Principles]]"
-  - "[[The Institutional Memory Principle]]"
+- '[[The Context Hygiene Principle]]'
+- '[[The Institutional Memory Principle | 10 Claude Code Principles]]'
+- '[[The Institutional Memory Principle]]'
 tier: hot
-tags: [AI agent workflows, knowledge management, prompt engineering, context hygiene, institutional memory]
+tags:
+- AI agent workflows
+- knowledge management
+- prompt engineering
+- context hygiene
+- institutional memory
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Persistent Knowledge Codification vs. Aggressive Context Pruning in AI Agent Workflows
@@ -54,9 +63,18 @@ In practice, teams should codify only those rules that are both critical and gen
 
 ## Key Insights
 
+
 1. **The requirement for regular pruning in the Institutional Memory Principle is not just for maintainability—it directly supports context hygiene by preventing context bloat and ensuring only critical knowledge persists.** — supported by [[The Institutional Memory Principle]], [[The Context Hygiene Principle]]
 2. **Explicit rationales ('BECAUSE' clauses) in codified rules enable both generalization and more effective context pruning, as rules without clear rationales are more likely to become obsolete or irrelevant.** — supported by [[The Institutional Memory Principle]]
 3. **Aggressive context pruning can conflict with knowledge persistence if not coordinated; removing too much from context risks losing valuable institutional knowledge, while retaining too much can degrade model accuracy.** — supported by [[The Context Hygiene Principle]], [[The Institutional Memory Principle]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The requirement for regular pruning in the Institutional Memory Principle is not just for maintainability—it directly supports context hygiene by preventing context bloat and ensuring only critical knowledge persists.** | [[The Institutional Memory Principle]], [[The Context Hygiene Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Explicit rationales ('BECAUSE' clauses) in codified rules enable both generalization and more effective context pruning, as rules without clear rationales are more likely to become obsolete or irrelevant.** | [[The Institutional Memory Principle]] | `raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Aggressive context pruning can conflict with knowledge persistence if not coordinated; removing too much from context risks losing valuable institutional knowledge, while retaining too much can degrade model accuracy.** | [[The Context Hygiene Principle]], [[The Institutional Memory Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

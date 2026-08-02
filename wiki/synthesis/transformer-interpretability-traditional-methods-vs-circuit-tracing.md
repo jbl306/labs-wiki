@@ -1,22 +1,30 @@
 ---
-title: "Transformer Interpretability: Traditional Methods vs. Circuit Tracing"
+title: 'Transformer Interpretability: Traditional Methods vs. Circuit Tracing'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 883ea1f2b57adac1ae8ade9ffe69a629299493d7243fe6b4840b24f00c8e31b5
 sources:
-  - raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
-  - raw/2026-04-07-transformer-architecture-note.md
+- raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md
+- raw/2026-04-07-transformer-architecture-note.md
 quality_score: 64
 concepts:
-  - traditional-transformer-interpretability
-  - circuit-tracing
+- traditional-transformer-interpretability
+- circuit-tracing
 related:
-  - "[[Circuit Tracing in Language Models]]"
-  - "[[Transformer Architecture]]"
-  - "[[Tracing the Thoughts of a Large Language Model]]"
+- '[[Circuit Tracing in Language Models]]'
+- '[[Transformer Architecture]]'
+- '[[Tracing the Thoughts of a Large Language Model]]'
 tier: hot
-tags: [transformer, interpretability, circuit tracing, causal analysis, reliability]
+tags:
+- transformer
+- interpretability
+- circuit tracing
+- causal analysis
+- reliability
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # Transformer Interpretability: Traditional Methods vs. Circuit Tracing
@@ -51,9 +59,18 @@ For practical decision-making, circuit tracing is preferable when reliability, t
 
 ## Key Insights
 
+
 1. **Circuit tracing can reveal compositional and parallel reasoning pathways that traditional interpretability methods only suggest, enabling direct intervention and causal testing.** — supported by [[Circuit Tracing in Language Models]]
 2. **Despite its superior granularity and causal power, circuit tracing is currently limited by scalability, making traditional methods more practical for large models and datasets.** — supported by [[Circuit Tracing in Language Models]], [[Transformer Architecture]]
 3. **Traditional interpretability methods are unable to audit reliability at the reasoning-chain level, whereas circuit tracing can directly flag fabricated explanations and motivated reasoning.** — supported by [[Circuit Tracing in Language Models]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Circuit tracing can reveal compositional and parallel reasoning pathways that traditional interpretability methods only suggest, enabling direct intervention and causal testing.** | [[Circuit Tracing in Language Models]] | `raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Despite its superior granularity and causal power, circuit tracing is currently limited by scalability, making traditional methods more practical for large models and datasets.** | [[Circuit Tracing in Language Models]], [[Transformer Architecture]] | `raw/2026-04-07-transformer-architecture-note.md`, `raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Traditional interpretability methods are unable to audit reliability at the reasoning-chain level, whereas circuit tracing can directly flag fabricated explanations and motivated reasoning.** | [[Circuit Tracing in Language Models]] | `raw/2026-04-08-httpswwwanthropiccomresearchtracing-thoughts-language-model.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

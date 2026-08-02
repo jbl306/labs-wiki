@@ -1,24 +1,34 @@
 ---
-title: "Roadmap Planning vs Deployment Hardening vs Foundation Baselines in Spatial Design Studio"
+title: Roadmap Planning vs Deployment Hardening vs Foundation Baselines in Spatial
+  Design Studio
 type: synthesis
 created: '2026-05-14'
 last_verified: '2026-05-14'
-source_hash: "synthesis-generated"
+source_hash: 32e0da1c686ec2c09be4e494ed3b25fe6b0e7599ece6c2f2ef4b893436f09083
 sources:
-  - raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md
-  - raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md
-  - raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md
+- raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md
+- raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md
+- raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md
 concepts:
-  - cpu-bound-ai-stack-planning-homelab-spatial-apps
-  - staged-toolchain-baseline-hardening-active-monorepos
-  - phased-progress-tracking-validation-gates
+- cpu-bound-ai-stack-planning-homelab-spatial-apps
+- staged-toolchain-baseline-hardening-active-monorepos
+- phased-progress-tracking-validation-gates
 related:
-  - "[[Spatial Design Studio]]"
-  - "[[Copilot Session Checkpoint: Spatial Studio Production Roadmap]]"
-  - "[[Copilot Session Checkpoint: Spatial Production Deployment]]"
-  - "[[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]"
+- '[[Spatial Design Studio]]'
+- '[[Copilot Session Checkpoint: Spatial Studio Production Roadmap]]'
+- '[[Copilot Session Checkpoint: Spatial Production Deployment]]'
+- '[[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]'
 tier: hot
-tags: [spatial-design-studio, roadmap, deployment, tooling, synthesis, homelab]
+tags:
+- spatial-design-studio
+- roadmap
+- deployment
+- tooling
+- synthesis
+- homelab
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Roadmap Planning vs Deployment Hardening vs Foundation Baselines in Spatial Design Studio
@@ -54,9 +64,18 @@ Together, the three pages describe a maturity ladder. First, constrain the roadm
 
 ## Key Insights
 
+
 1. **Roadmap realism, runtime realism, and repo realism are separate problems.** — supported by [[Copilot Session Checkpoint: Spatial Studio Production Roadmap]], [[Copilot Session Checkpoint: Spatial Production Deployment]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]
 2. **The highest-leverage "foundation" work is often workflow and tooling, not new product surface.** — supported by [[Staged Toolchain Baseline Hardening for Active Monorepos]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]
 3. **Strictness should follow architecture, not fight it.** — supported by [[Copilot Session Checkpoint: Spatial Production Deployment]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Roadmap realism, runtime realism, and repo realism are separate problems.** | [[Copilot Session Checkpoint: Spatial Studio Production Roadmap]], [[Copilot Session Checkpoint: Spatial Production Deployment]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]] | `raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md`, `raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md`, `raw/2026-05-14-copilot-session-spatial-studio-production-roadmap-9170f546.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The highest-leverage "foundation" work is often workflow and tooling, not new product surface.** | [[Staged Toolchain Baseline Hardening for Active Monorepos]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]] | `raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Strictness should follow architecture, not fight it.** | [[Copilot Session Checkpoint: Spatial Production Deployment]], [[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]] | `raw/2026-05-11-copilot-session-spatial-production-deployment-56f1f521.md`, `raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

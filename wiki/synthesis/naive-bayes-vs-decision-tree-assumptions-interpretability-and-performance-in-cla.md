@@ -1,22 +1,32 @@
 ---
-title: "Naive Bayes vs Decision Tree: Assumptions, Interpretability, and Performance in Classification"
+title: 'Naive Bayes vs Decision Tree: Assumptions, Interpretability, and Performance
+  in Classification'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: baa2d38779ccf8445ac52fe7d13708ec503f38641eddaeb185f2081aff676d58
 sources:
-  - raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
-  - raw/2026-04-08-decision-tree-geeksforgeeks.md
+- raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md
+- raw/2026-04-08-decision-tree-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - naive-bayes
-  - decision-tree
+- naive-bayes
+- decision-tree
 related:
-  - "[[Naive Bayes Classifiers - GeeksforGeeks]]"
-  - "[[Naive Bayes Classifier]]"
-  - "[[Decision Tree Algorithm]]"
+- '[[Naive Bayes Classifiers - GeeksforGeeks]]'
+- '[[Naive Bayes Classifier]]'
+- '[[Decision Tree Algorithm]]'
 tier: hot
-tags: [classification, machine learning, algorithm comparison, interpretability, feature independence, overfitting]
+tags:
+- classification
+- machine learning
+- algorithm comparison
+- interpretability
+- feature independence
+- overfitting
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Naive Bayes vs Decision Tree: Assumptions, Interpretability, and Performance in Classification
@@ -54,9 +64,18 @@ A common misconception is that Naive Bayes always underperforms when its assumpt
 
 ## Key Insights
 
+
 1. **Despite its strong independence assumption, Naive Bayes often performs well in high-dimensional spaces (e.g., text classification) where feature correlations are less impactful, making it a surprisingly effective baseline.** — supported by [[Naive Bayes Classifier]]
 2. **Decision Trees' interpretability comes at the cost of stability; small changes in data can lead to drastically different tree structures, unlike the consistent output of Naive Bayes.** — supported by [[Decision Tree Algorithm]], [[Naive Bayes Classifier]]
 3. **Naive Bayes is more resistant to overfitting due to its simplicity, whereas Decision Trees require explicit pruning or ensemble methods to generalize well.** — supported by [[Decision Tree Algorithm]], [[Naive Bayes Classifier]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Despite its strong independence assumption, Naive Bayes often performs well in high-dimensional spaces (e.g., text classification) where feature correlations are less impactful, making it a surprisingly effective baseline.** | [[Naive Bayes Classifier]] | `raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Decision Trees' interpretability comes at the cost of stability; small changes in data can lead to drastically different tree structures, unlike the consistent output of Naive Bayes.** | [[Decision Tree Algorithm]], [[Naive Bayes Classifier]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Naive Bayes is more resistant to overfitting due to its simplicity, whereas Decision Trees require explicit pruning or ensemble methods to generalize well.** | [[Decision Tree Algorithm]], [[Naive Bayes Classifier]] | `raw/2026-04-08-decision-tree-geeksforgeeks.md`, `raw/2026-04-08-naive-bayes-classifiers-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

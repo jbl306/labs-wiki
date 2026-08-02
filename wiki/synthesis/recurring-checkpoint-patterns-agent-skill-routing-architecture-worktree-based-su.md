@@ -1,32 +1,46 @@
 ---
-title: "Recurring checkpoint patterns: Agent Skill Routing Architecture, Worktree-Based Subagent-Driven Development, Automated Skill Path Generation for Containerized Agent Systems"
+title: 'Recurring checkpoint patterns: Agent Skill Routing Architecture, Worktree-Based
+  Subagent-Driven Development, Automated Skill Path Generation for Containerized Agent
+  Systems'
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: bae1fea89061419aee06c5414ea9ebecebb796d48a9782b2f44651fcdbf50de1
 sources:
-  - raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
-  - raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md
-  - raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
+- raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
+- raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md
+- raw/2026-04-20-copilot-session-url-followup-pass-b53bba3e.md
 concepts:
-  - worktree-based-baseline-verification-for-durable-workflow-pilots
-  - worktree-based-subagent-driven-development
-  - agent-skill-routing-architecture
-  - automated-skill-path-generation-for-containerized-agent-systems
+- worktree-based-baseline-verification-for-durable-workflow-pilots
+- worktree-based-subagent-driven-development
+- agent-skill-routing-architecture
+- automated-skill-path-generation-for-containerized-agent-systems
 related:
-  - "[[Copilot Session Checkpoint: Pilot Worktree Baseline]]"
-  - "[[Automated Skill Path Generation for Containerized Agent Systems]]"
-  - "[[Worktree-Based Subagent-Driven Development]]"
-  - "[[Worktree-Based Baseline Verification for Durable Workflow Pilots]]"
-  - "[[Agent Skill Routing Architecture]]"
-  - "[[Copilot Session Checkpoint: URL Followup Pass]]"
-  - "[[Copilot Session Checkpoint: Integrating Agent Skill Routing]]"
+- '[[Copilot Session Checkpoint: Pilot Worktree Baseline]]'
+- '[[Automated Skill Path Generation for Containerized Agent Systems]]'
+- '[[Worktree-Based Subagent-Driven Development]]'
+- '[[Worktree-Based Baseline Verification for Durable Workflow Pilots]]'
+- '[[Agent Skill Routing Architecture]]'
+- '[[Copilot Session Checkpoint: URL Followup Pass]]'
+- '[[Copilot Session Checkpoint: Integrating Agent Skill Routing]]'
 tier: hot
 checkpoint_cluster_community: 14
 checkpoint_cluster_checkpoint_count: 3
 checkpoint_cluster_signature: bae1fea89061419a
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, durable-knowledge, fileback, graph, labs-wiki, mempalace]
+tags:
+- agents
+- checkpoint
+- checkpoint-synthesis
+- copilot-session
+- durable-knowledge
+- fileback
+- graph
+- labs-wiki
+- mempalace
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Recurring checkpoint patterns: Agent Skill Routing Architecture, Worktree-Based Subagent-Driven Development, Automated Skill Path Generation for Containerized Agent Systems
@@ -62,10 +76,20 @@ Baseline verification is the meta-discipline. Before any code is edited, the pil
 
 ## Key Insights
 
+
 1. **Share-once-route-locally is the architectural primitive that lets one skill upgrade propagate to all consuming repos without copy-paste drift, because the trigger surface (AGENTS.md table) and the content (SKILL.md) are deliberately decoupled.** — supported by [[Agent Skill Routing Architecture]], [[Automated Skill Path Generation for Containerized Agent Systems]]
 2. **The path-generation script's defenses against collection-root and `.worktrees` leaks aren't lint—they're load-bearing. A leaked path silently mis-routes every agent that reads the config until someone notices, which can be days.** — supported by [[Automated Skill Path Generation for Containerized Agent Systems]]
 3. **Worktrees + plan-review subagents create a cheap rollback boundary: the plan can drift from code, but the worktree confines drift consequences and the review loop catches it before it merges.** — supported by [[Worktree-Based Subagent-Driven Development]], [[Worktree-Based Baseline Verification for Durable Workflow Pilots]]
 4. **Baseline verification as a *first* step (not a smoke test at the end) is what made these integrations reproducible—every later step assumes the baseline already passes, which means failures land in the new code, not in unvalidated existing state.** — supported by [[Worktree-Based Baseline Verification for Durable Workflow Pilots]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Share-once-route-locally is the architectural primitive that lets one skill upgrade propagate to all consuming repos without copy-paste drift, because the trigger surface (AGENTS.md table) and the content (SKILL.md) are deliberately decoupled.** | [[Agent Skill Routing Architecture]], [[Automated Skill Path Generation for Containerized Agent Systems]] | `raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The path-generation script's defenses against collection-root and `.worktrees` leaks aren't lint—they're load-bearing. A leaked path silently mis-routes every agent that reads the config until someone notices, which can be days.** | [[Automated Skill Path Generation for Containerized Agent Systems]] | `raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Worktrees + plan-review subagents create a cheap rollback boundary: the plan can drift from code, but the worktree confines drift consequences and the review loop catches it before it merges.** | [[Worktree-Based Subagent-Driven Development]], [[Worktree-Based Baseline Verification for Durable Workflow Pilots]] | `raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md`, `raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Baseline verification as a *first* step (not a smoke test at the end) is what made these integrations reproducible—every later step assumes the baseline already passes, which means failures land in the new code, not in unvalidated existing state.** | [[Worktree-Based Baseline Verification for Durable Workflow Pilots]] | `raw/2026-04-20-copilot-session-pilot-worktree-baseline-10f2a2a8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

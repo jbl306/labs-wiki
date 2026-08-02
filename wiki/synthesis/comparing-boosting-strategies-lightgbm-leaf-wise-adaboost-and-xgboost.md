@@ -1,24 +1,34 @@
 ---
-title: "Comparing Boosting Strategies: LightGBM Leaf-Wise, AdaBoost, and XGBoost"
+title: 'Comparing Boosting Strategies: LightGBM Leaf-Wise, AdaBoost, and XGBoost'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: f917d7da2f516fb71023490a590f5ab527f6ce6507012d7da8f4ecb75576497f
 sources:
-  - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
-  - raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
+- raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
+- raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md
 quality_score: 67
 concepts:
-  - adaboost
-  - xgboost
-  - lightgbm
+- adaboost
+- xgboost
+- lightgbm
 related:
-  - "[[LightGBM Leaf-Wise Tree Growth]]"
-  - "[[AdaBoost Algorithm]]"
-  - "[[LightGBM]]"
-  - "[[LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks]]"
+- '[[LightGBM Leaf-Wise Tree Growth]]'
+- '[[AdaBoost Algorithm]]'
+- '[[LightGBM]]'
+- '[[LightGBM (Light Gradient Boosting Machine) - GeeksforGeeks]]'
 tier: hot
-tags: [boosting, ensemble learning, LightGBM, AdaBoost, XGBoost, tree algorithms, machine learning]
+tags:
+- boosting
+- ensemble learning
+- LightGBM
+- AdaBoost
+- XGBoost
+- tree algorithms
+- machine learning
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Comparing Boosting Strategies: LightGBM Leaf-Wise, AdaBoost, and XGBoost
@@ -55,9 +65,18 @@ A common misconception is that all boosting algorithms behave similarly; in real
 
 ## Key Insights
 
+
 1. **LightGBM's leaf-wise growth allows for deeper, more complex trees in regions of high loss reduction, which can improve accuracy but risks overfitting—especially compared to AdaBoost's shallow, interpretable stumps.** — supported by [[LightGBM Leaf-Wise Tree Growth]], [[AdaBoost Algorithm]]
 2. **AdaBoost's sequential reweighting is unique among boosting algorithms, directly targeting misclassified samples, which can improve accuracy but also makes it sensitive to noise.** — supported by [[AdaBoost Algorithm]]
 3. **Histogram-based binning in LightGBM provides a significant speed advantage for large datasets, a feature not present in AdaBoost.** — supported by [[LightGBM Leaf-Wise Tree Growth]], [[AdaBoost Algorithm]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **LightGBM's leaf-wise growth allows for deeper, more complex trees in regions of high loss reduction, which can improve accuracy but risks overfitting—especially compared to AdaBoost's shallow, interpretable stumps.** | [[LightGBM Leaf-Wise Tree Growth]], [[AdaBoost Algorithm]] | `raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md`, `raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **AdaBoost's sequential reweighting is unique among boosting algorithms, directly targeting misclassified samples, which can improve accuracy but also makes it sensitive to noise.** | [[AdaBoost Algorithm]] | `raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Histogram-based binning in LightGBM provides a significant speed advantage for large datasets, a feature not present in AdaBoost.** | [[LightGBM Leaf-Wise Tree Growth]], [[AdaBoost Algorithm]] | `raw/2026-04-08-implementing-the-adaboost-algorithm-from-scratch-geeksforgee.md`, `raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

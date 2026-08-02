@@ -1,18 +1,28 @@
 ---
-title: "Explicit vs Internalized Multi-Agent Debate"
+title: Explicit vs Internalized Multi-Agent Debate
 type: synthesis
 created: 2026-04-29
 last_verified: 2026-04-29
-source_hash: "synthesis-generated"
+source_hash: 2d18ec4db0a0c49181b3d0a08b64a90f3d126d5044b2f88cc1c552316f3f3476
 sources:
-  - raw/2026-04-29-260424881v1pdf.md
-concepts: [multi-agent-debate, internalized-multi-agent-debate]
+- raw/2026-04-29-260424881v1pdf.md
+concepts:
+- multi-agent-debate
+- internalized-multi-agent-debate
 related:
-  - "[[Multi-Agent Debate]]"
-  - "[[Internalized Multi-Agent Debate]]"
-  - "[[Agent-Specific Activation Subspaces]]"
+- '[[Multi-Agent Debate]]'
+- '[[Internalized Multi-Agent Debate]]'
+- '[[Agent-Specific Activation Subspaces]]'
 tier: hot
-tags: [llm, multi-agent-debate, post-training, reasoning, efficiency]
+tags:
+- llm
+- multi-agent-debate
+- post-training
+- reasoning
+- efficiency
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Explicit vs Internalized Multi-Agent Debate
@@ -50,16 +60,28 @@ The most interesting complementarity is that explicit debate and internalized de
 
 ## Key Insights
 
-1. **Explicit debate is a supervision factory** — Its biggest long-term value may be the structured traces it produces for later distillation, not just the immediate answer quality.
-2. **Internalization preserves more than output quality** — Supported by [[Internalized Multi-Agent Debate]] and [[Agent-Specific Activation Subspaces]], the paper shows that role structure can remain recoverable after compression.
-3. **Efficiency and controllability can align** — The same training that reduces token cost also appears to create cleaner internal targets for steering-based control.
-4. **Not all behaviors internalize equally cleanly** — Malicious "evil" traits become sharply suppressible, while hallucination remains more distributed, implying uneven separability across behavior types.
+
+1. **Internalization preserves more than output quality** — supported by [[Internalized Multi-Agent Debate]], [[Agent-Specific Activation Subspaces]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Internalization preserves more than output quality** | [[Internalized Multi-Agent Debate]], [[Agent-Specific Activation Subspaces]] | `raw/2026-04-29-260424881v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - How well does internalized debate scale to longer-context, less structured tasks than arithmetic-style transcript generation?
 - What is the best way to preserve auditability once debate has moved from text into hidden states?
 - Which behavior families become linearly separable under structured training, and which remain too distributed for reliable steering?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- Explicit debate is a supervision factory — Its biggest long-term value may be the structured traces it produces for later distillation, not just the immediate answer quality.
+- Efficiency and controllability can align — The same training that reduces token cost also appears to create cleaner internal targets for steering-based control.
+- Not all behaviors internalize equally cleanly — Malicious "evil" traits become sharply suppressible, while hallucination remains more distributed, implying uneven separability across behavior types.
 
 ## Sources
 

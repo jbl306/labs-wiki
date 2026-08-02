@@ -1,23 +1,33 @@
 ---
-title: "Autoreason vs. Critique-and-Revise: Structural Approaches to Bias, Scope Creep, and Restraint in Iterative Agentic Workflows"
+title: 'Autoreason vs. Critique-and-Revise: Structural Approaches to Bias, Scope Creep,
+  and Restraint in Iterative Agentic Workflows'
 type: synthesis
 created: 2026-04-13
 last_verified: 2026-04-13
-source_hash: "synthesis-generated"
+source_hash: c2ab447fbcfe1cd9ea5b58c2bf6cee7746f9b644e2d36bbdd9183a3926a9f205
 sources:
-  - raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
-  - raw/2026-04-10-260206176v1pdf.md
+- raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md
+- raw/2026-04-10-260206176v1pdf.md
 quality_score: 67
 concepts:
-  - critique-and-revise
-  - autoreason
+- critique-and-revise
+- autoreason
 related:
-  - "[[Taxonomy Of LLM Reasoning Failures]]"
-  - "[[NousResearch/autoreason]]"
-  - "[[Autoreason Iterative Self-Refinement Framework]]"
-  - "[[Autoreason]]"
+- '[[Taxonomy Of LLM Reasoning Failures]]'
+- '[[NousResearch/autoreason]]'
+- '[[Autoreason Iterative Self-Refinement Framework]]'
+- '[[Autoreason]]'
 tier: hot
-tags: [iterative refinement, prompt bias, scope creep, LLM evaluation, agentic workflows, subjective tasks]
+tags:
+- iterative refinement
+- prompt bias
+- scope creep
+- LLM evaluation
+- agentic workflows
+- subjective tasks
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # Autoreason vs. Critique-and-Revise: Structural Approaches to Bias, Scope Creep, and Restraint in Iterative Agentic Workflows
@@ -52,9 +62,18 @@ A common misconception is that more iterations or more critique always lead to b
 
 ## Key Insights
 
+
 1. **Autoreason's explicit inclusion of a 'do nothing' (unchanged incumbent) option and blind judging directly operationalize restraint and bias mitigation, which are only theoretical concerns in the taxonomy of LLM reasoning failures.** — supported by [[Autoreason Iterative Self-Refinement Framework]], [[Taxonomy Of LLM Reasoning Failures]]
 2. **Increasing the number of blind judges in Autoreason not only improves evaluation robustness but also accelerates convergence, a non-linear benefit not available in critique-and-revise workflows.** — supported by [[Autoreason Iterative Self-Refinement Framework]]
 3. **Critique-and-revise cycles can actively degrade output quality in weaker models due to compounding prompt bias and lack of stopping criteria, while Autoreason's structure prevents this collapse.** — supported by [[Autoreason Iterative Self-Refinement Framework]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Autoreason's explicit inclusion of a 'do nothing' (unchanged incumbent) option and blind judging directly operationalize restraint and bias mitigation, which are only theoretical concerns in the taxonomy of LLM reasoning failures.** | [[Autoreason Iterative Self-Refinement Framework]], [[Taxonomy Of LLM Reasoning Failures]] | `raw/2026-04-10-260206176v1pdf.md`, `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Increasing the number of blind judges in Autoreason not only improves evaluation robustness but also accelerates convergence, a non-linear benefit not available in critique-and-revise workflows.** | [[Autoreason Iterative Self-Refinement Framework]] | `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Critique-and-revise cycles can actively degrade output quality in weaker models due to compounding prompt bias and lack of stopping criteria, while Autoreason's structure prevents this collapse.** | [[Autoreason Iterative Self-Refinement Framework]] | `raw/2026-04-13-nousresearchautoreason-autoresearch-for-subjective-domains.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

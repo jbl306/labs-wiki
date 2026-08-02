@@ -1,23 +1,36 @@
 ---
-title: "Hardening Unattended Wiki Ingest Pipelines"
+title: Hardening Unattended Wiki Ingest Pipelines
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: d7402b1d4279c7ed96c7b2592857464c14d72610f0c8cf662659052cea98cd1c
 sources:
-  - raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md
-  - raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md
-  - raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
-concepts: [copilot-cli-backend-wiki-ingestion, post-ingest-quality-fixes-auto-ingest-pipelines, jsonl-sidecar-kg-fact-replay-containerized-ingest, automatic-git-commits-after-successful-wiki-ingest]
+- raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md
+- raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md
+- raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
+concepts:
+- copilot-cli-backend-wiki-ingestion
+- post-ingest-quality-fixes-auto-ingest-pipelines
+- jsonl-sidecar-kg-fact-replay-containerized-ingest
+- automatic-git-commits-after-successful-wiki-ingest
 related:
-  - "[[Copilot CLI Backend for Wiki Ingestion]]"
-  - "[[Post-Ingest Quality Fixes in Auto-Ingest Pipelines]]"
-  - "[[JSONL Sidecar Knowledge-Graph Fact Replay for Containerized Ingest Pipelines]]"
-  - "[[Automatic Git Commits After Successful Wiki Ingest]]"
+- '[[Copilot CLI Backend for Wiki Ingestion]]'
+- '[[Post-Ingest Quality Fixes in Auto-Ingest Pipelines]]'
+- '[[JSONL Sidecar Knowledge-Graph Fact Replay for Containerized Ingest Pipelines]]'
+- '[[Automatic Git Commits After Successful Wiki Ingest]]'
 tier: hot
-tags: [auto-ingest, pipeline-hardening, copilot-cli, knowledge-graph, git-automation, labs-wiki]
+tags:
+- auto-ingest
+- pipeline-hardening
+- copilot-cli
+- knowledge-graph
+- git-automation
+- labs-wiki
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 4
+evidence_origin_family_count: 1
 ---
 
 # Hardening Unattended Wiki Ingest Pipelines
@@ -55,9 +68,18 @@ The key choice is not which one concept to use, but which layer is currently mis
 
 ## Key Insights
 
+
 1. **Reliable ingest pipelines harden progressively outward: runtime first, content second, cross-system side effects third, and repository durability last.** — supported by [[Copilot CLI Backend for Wiki Ingestion]], [[Post-Ingest Quality Fixes in Auto-Ingest Pipelines]], [[JSONL Sidecar Knowledge-Graph Fact Replay for Containerized Ingest Pipelines]], [[Automatic Git Commits After Successful Wiki Ingest]]
 2. **Deferred replay is the right design when a container can extract knowledge but not safely persist it into a privileged downstream system.** — supported by [[JSONL Sidecar Knowledge-Graph Fact Replay for Containerized Ingest Pipelines]], [[MemPalace]]
 3. **Git commits are not merely bookkeeping in a compile-once wiki; they are the final durability boundary of the ingest.** — supported by [[Automatic Git Commits After Successful Wiki Ingest]], [[Durable Copilot Session Checkpoint Promotion]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Reliable ingest pipelines harden progressively outward: runtime first, content second, cross-system side effects third, and repository durability last.** | [[Copilot CLI Backend for Wiki Ingestion]], [[Post-Ingest Quality Fixes in Auto-Ingest Pipelines]], [[JSONL Sidecar Knowledge-Graph Fact Replay for Containerized Ingest Pipelines]], [[Automatic Git Commits After Successful Wiki Ingest]] | `raw/2026-04-22-copilot-session-copilot-cli-container-deployment-fixes-3fd4b3d0.md`, `raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Deferred replay is the right design when a container can extract knowledge but not safely persist it into a privileged downstream system.** | [[JSONL Sidecar Knowledge-Graph Fact Replay for Containerized Ingest Pipelines]], [[MemPalace]] | `raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md`, `raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Git commits are not merely bookkeeping in a compile-once wiki; they are the final durability boundary of the ingest.** | [[Automatic Git Commits After Successful Wiki Ingest]], [[Durable Copilot Session Checkpoint Promotion]] | `raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md`, `raw/2026-04-22-copilot-session-wiki-ingest-pipeline-4-fix-implementation-6262ab1b.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

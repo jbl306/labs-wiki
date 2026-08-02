@@ -1,21 +1,32 @@
 ---
-title: "Typicality Bias, Mode Collapse, and Verbalized Sampling in Aligned LLMs"
+title: Typicality Bias, Mode Collapse, and Verbalized Sampling in Aligned LLMs
 type: synthesis
 created: '2026-04-25'
 last_verified: '2026-04-25'
-source_hash: "synthesis-generated"
+source_hash: 144943be30b8ba859c93b9b3f83a314a00ba84306b27ae50aa4b0b54c3af1d2d
 sources:
-  - raw/2026-04-25-251001171v3pdf.md
-  - raw/2026-04-10-260206176v1pdf.md
-concepts: [typicality-bias-preference-data, mode-collapse-aligned-llms]
+- raw/2026-04-25-251001171v3pdf.md
+- raw/2026-04-10-260206176v1pdf.md
+concepts:
+- typicality-bias-preference-data
+- mode-collapse-aligned-llms
 related:
-  - "[[Typicality Bias in Preference Data]]"
-  - "[[Mode Collapse in Aligned LLMs]]"
-  - "[[Verbalized Sampling]]"
-  - "[[Cognitive Biases In Large Language Models]]"
+- '[[Typicality Bias in Preference Data]]'
+- '[[Mode Collapse in Aligned LLMs]]'
+- '[[Verbalized Sampling]]'
+- '[[Cognitive Biases In Large Language Models]]'
 tier: hot
-tags: [llm, alignment, mode-collapse, diversity, prompting, cognitive-bias]
+tags:
+- llm
+- alignment
+- mode-collapse
+- diversity
+- prompting
+- cognitive-bias
 quality_score: 70
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Typicality Bias, Mode Collapse, and Verbalized Sampling in Aligned LLMs
@@ -51,9 +62,18 @@ The trade-off is that Verbalized Sampling is a workaround, not a complete cure. 
 
 ## Key Insights
 
+
 1. **Mode collapse should be treated as a distributional failure, not merely a stylistic annoyance.** — supported by [[Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity]]
 2. **Typicality bias sharpens the path from human preference judgments to collapsed aligned behavior, making data collection itself part of the problem.** — supported by [[Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity]], [[Cognitive Biases In Large Language Models]]
 3. **Inference-time interface changes can recover useful diversity even when the underlying alignment pipeline is unchanged.** — supported by [[Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Mode collapse should be treated as a distributional failure, not merely a stylistic annoyance.** | [[Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity]] | `raw/2026-04-25-251001171v3pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Typicality bias sharpens the path from human preference judgments to collapsed aligned behavior, making data collection itself part of the problem.** | [[Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity]], [[Cognitive Biases In Large Language Models]] | `raw/2026-04-10-260206176v1pdf.md`, `raw/2026-04-25-251001171v3pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Inference-time interface changes can recover useful diversity even when the underlying alignment pipeline is unchanged.** | [[Verbalized Sampling: How to Mitigate Mode Collapse and Unlock LLM Diversity]] | `raw/2026-04-25-251001171v3pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

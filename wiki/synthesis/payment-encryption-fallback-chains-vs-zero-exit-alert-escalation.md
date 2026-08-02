@@ -1,21 +1,29 @@
 ---
-title: "Payment Encryption Fallback Chains vs Zero-Exit Alert Escalation"
+title: Payment Encryption Fallback Chains vs Zero-Exit Alert Escalation
 type: synthesis
 created: 2026-04-24
 last_verified: 2026-04-24
-source_hash: "synthesis-generated"
+source_hash: 74885b2f012626a61c63defdff9452fbe28c6b86fdb4ec66d01d12bf3487bce2
 sources:
-  - raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md
+- raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md
 concepts:
-  - resilient-payment-encryption-fallback-chains
-  - error-pattern-alert-escalation-zero-exit-automation-failures
+- resilient-payment-encryption-fallback-chains
+- error-pattern-alert-escalation-zero-exit-automation-failures
 related:
-  - "[[Resilient Payment Encryption Fallback Chains]]"
-  - "[[Error-Pattern Alert Escalation for Zero-Exit Automation Failures]]"
-  - "[[Ntfy Push Notifications for Service Monitoring]]"
+- '[[Resilient Payment Encryption Fallback Chains]]'
+- '[[Error-Pattern Alert Escalation for Zero-Exit Automation Failures]]'
+- '[[Ntfy Push Notifications for Service Monitoring]]'
 tier: hot
-tags: [automation, resilience, payments, observability, homelab]
+tags:
+- automation
+- resilience
+- payments
+- observability
+- homelab
 quality_score: 59
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Payment Encryption Fallback Chains vs Zero-Exit Alert Escalation
@@ -53,9 +61,18 @@ For design decisions, choose fallback work when the job can realistically recove
 
 ## Key Insights
 
+
 1. **Capability recovery and truthful observability solve adjacent but non-substitutable problems.** — supported by [[Resilient Payment Encryption Fallback Chains]], [[Error-Pattern Alert Escalation for Zero-Exit Automation Failures]]
 2. **The most dangerous failures are often the ones that preserve a green-looking process exit while the business task is fully red.** — supported by [[Error-Pattern Alert Escalation for Zero-Exit Automation Failures]]
 3. **Frontend drift is best handled by targeting the stable invariant of the system rather than one JavaScript helper name.** — supported by [[Resilient Payment Encryption Fallback Chains]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Capability recovery and truthful observability solve adjacent but non-substitutable problems.** | [[Resilient Payment Encryption Fallback Chains]], [[Error-Pattern Alert Escalation for Zero-Exit Automation Failures]] | `raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The most dangerous failures are often the ones that preserve a green-looking process exit while the business task is fully red.** | [[Error-Pattern Alert Escalation for Zero-Exit Automation Failures]] | `raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Frontend drift is best handled by targeting the stable invariant of the system rather than one JavaScript helper name.** | [[Resilient Payment Encryption Fallback Chains]] | `raw/2026-04-24-copilot-session-galloping-bot-payment-resilience-fix-114d6563.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -66,4 +83,3 @@ For design decisions, choose fallback work when the job can realistically recove
 ## Sources
 
 - [[Copilot Session Checkpoint: Galloping bot payment resilience fix]]
-

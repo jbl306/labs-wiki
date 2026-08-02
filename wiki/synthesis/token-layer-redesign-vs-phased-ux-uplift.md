@@ -1,21 +1,30 @@
 ---
-title: "Token-Layer Redesign vs Phased UX Uplift"
+title: Token-Layer Redesign vs Phased UX Uplift
 type: synthesis
 created: 2026-05-30
 last_verified: 2026-05-30
-source_hash: "synthesis-generated"
+source_hash: 5020ba9dbebbb29a795de0a57cfb3937ccd18c08d16fa75547f8514461a99791
 sources:
-  - raw/2026-05-30-copilot-session-light-ui-redesign-for-csr-benefits-571044d9.md
-  - raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md
+- raw/2026-05-30-copilot-session-light-ui-redesign-for-csr-benefits-571044d9.md
+- raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md
 concepts:
-  - presentation-only-ui-redesign-semantic-token-layers
-  - phased-ux-uplift-manual-first-nextjs-benefits-apps
+- presentation-only-ui-redesign-semantic-token-layers
+- phased-ux-uplift-manual-first-nextjs-benefits-apps
 related:
-  - "[[Presentation-Only UI Redesign via Semantic Token Layers]]"
-  - "[[Phased UX Uplift for Manual-First Next.js Benefits Apps]]"
-  - "[[Chase Sapphire Benefits v2]]"
+- '[[Presentation-Only UI Redesign via Semantic Token Layers]]'
+- '[[Phased UX Uplift for Manual-First Next.js Benefits Apps]]'
+- '[[Chase Sapphire Benefits v2]]'
 tier: hot
-tags: [ui-redesign, synthesis, nextjs, tailwindcss, internal-tools, workflow]
+tags:
+- ui-redesign
+- synthesis
+- nextjs
+- tailwindcss
+- internal-tools
+- workflow
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Token-Layer Redesign vs Phased UX Uplift
@@ -53,9 +62,18 @@ The practical decision rule is simple. Ask whether the next highest-leverage cha
 
 ## Key Insights
 
+
 1. **Phased uplift solves structural usability debt; token-layer redesign solves cross-surface visual incoherence.** — supported by [[Phased UX Uplift for Manual-First Next.js Benefits Apps]], [[Presentation-Only UI Redesign via Semantic Token Layers]]
 2. **A token-layer redesign becomes much safer after an app already has good primitives and stable interaction seams.** — supported by [[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]], [[Copilot Session Checkpoint: Light UI redesign for csr-benefits]]
 3. **Both strategies benefit from explicit non-goals so visual work does not accidentally mutate product behavior.** — supported by [[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]], [[Copilot Session Checkpoint: Light UI redesign for csr-benefits]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Phased uplift solves structural usability debt; token-layer redesign solves cross-surface visual incoherence.** | [[Phased UX Uplift for Manual-First Next.js Benefits Apps]], [[Presentation-Only UI Redesign via Semantic Token Layers]] | `raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md`, `raw/2026-05-30-copilot-session-light-ui-redesign-for-csr-benefits-571044d9.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A token-layer redesign becomes much safer after an app already has good primitives and stable interaction seams.** | [[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]], [[Copilot Session Checkpoint: Light UI redesign for csr-benefits]] | `raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md`, `raw/2026-05-30-copilot-session-light-ui-redesign-for-csr-benefits-571044d9.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Both strategies benefit from explicit non-goals so visual work does not accidentally mutate product behavior.** | [[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]], [[Copilot Session Checkpoint: Light UI redesign for csr-benefits]] | `raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md`, `raw/2026-05-30-copilot-session-light-ui-redesign-for-csr-benefits-571044d9.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

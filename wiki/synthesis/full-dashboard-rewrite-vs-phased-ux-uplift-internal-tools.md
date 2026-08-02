@@ -1,21 +1,30 @@
 ---
-title: "Full Dashboard Rewrite vs Phased UX Uplift for Internal Tools"
+title: Full Dashboard Rewrite vs Phased UX Uplift for Internal Tools
 type: synthesis
 created: '2026-05-29'
 last_verified: '2026-05-29'
-source_hash: "synthesis-generated"
+source_hash: ed49f1287e4c8349f2d3d01358307f8e2c28a9308e96ec5dcbe9ea73e469a0fd
 sources:
-  - raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
+- raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md
 concepts:
-  - phased-ux-uplift-manual-first-nextjs-benefits-apps
-  - react-dashboard-redesign-typescript-tailwindcss
+- phased-ux-uplift-manual-first-nextjs-benefits-apps
+- react-dashboard-redesign-typescript-tailwindcss
 related:
-  - "[[Chase Sapphire Benefits v2]]"
-  - "[[Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built]]"
-  - "[[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]]"
+- '[[Chase Sapphire Benefits v2]]'
+- '[[Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built]]'
+- '[[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]]'
 tier: hot
-tags: [frontend, modernization, dashboard, nextjs, react, synthesis]
+tags:
+- frontend
+- modernization
+- dashboard
+- nextjs
+- react
+- synthesis
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Full Dashboard Rewrite vs Phased UX Uplift for Internal Tools
@@ -51,9 +60,18 @@ The deeper lesson is that "modernization" is not a single category. Internal too
 
 ## Key Insights
 
+
 1. **Choose a rewrite when the current UI architecture is the bottleneck, not merely the current styling.** — supported by [[React Dashboard Redesign with TypeScript and Tailwind CSS]], [[Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built]]
 2. **Choose a phased uplift when the product logic already fits the problem and the highest leverage lies in interaction quality.** — supported by [[Phased UX Uplift for Manual-First Next.js Benefits Apps]], [[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]]
 3. **The more server-driven and privacy-constrained the app is, the more valuable targeted client islands become compared with blanket frontend replacement.** — supported by [[Phased UX Uplift for Manual-First Next.js Benefits Apps]], [[React Dashboard Redesign with TypeScript and Tailwind CSS]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Choose a rewrite when the current UI architecture is the bottleneck, not merely the current styling.** | [[React Dashboard Redesign with TypeScript and Tailwind CSS]], [[Copilot Session Checkpoint: React Dashboard Scaffold and Pages Built]] | `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Choose a phased uplift when the product logic already fits the problem and the highest leverage lies in interaction quality.** | [[Phased UX Uplift for Manual-First Next.js Benefits Apps]], [[Copilot Session Checkpoint: Implementing CSR benefits UI/UX uplift]] | `raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The more server-driven and privacy-constrained the app is, the more valuable targeted client islands become compared with blanket frontend replacement.** | [[Phased UX Uplift for Manual-First Next.js Benefits Apps]], [[React Dashboard Redesign with TypeScript and Tailwind CSS]] | `raw/2026-05-29-copilot-session-implementing-csr-benefits-ui-ux-uplift-72d037fa.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-react-dashboard-scaffold-and-pages-built-2fe5dac8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

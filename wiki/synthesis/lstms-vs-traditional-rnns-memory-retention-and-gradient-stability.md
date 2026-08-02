@@ -1,22 +1,31 @@
 ---
-title: "LSTMs vs Traditional RNNs: Memory Retention and Gradient Stability"
+title: 'LSTMs vs Traditional RNNs: Memory Retention and Gradient Stability'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 3f9f37cbe85615d4eb40d02628599834c412fae99140a9164c3064df2ecb168f
 sources:
-  - raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
-  - raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md
+- raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md
+- raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - recurrent-neural-network-architecture
-  - long-short-term-memory-lstm
+- recurrent-neural-network-architecture
+- long-short-term-memory-lstm
 related:
-  - "[[What is LSTM - Long Short Term Memory? - GeeksforGeeks]]"
-  - "[[Recurrent Neural Network Architecture]]"
-  - "[[Long Short-Term Memory (LSTM)]]"
+- '[[What is LSTM - Long Short Term Memory? - GeeksforGeeks]]'
+- '[[Recurrent Neural Network Architecture]]'
+- '[[Long Short-Term Memory (LSTM)]]'
 tier: hot
-tags: [RNN, LSTM, gradient stability, memory retention, sequence modeling, neural networks]
+tags:
+- RNN
+- LSTM
+- gradient stability
+- memory retention
+- sequence modeling
+- neural networks
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # LSTMs vs Traditional RNNs: Memory Retention and Gradient Stability
@@ -51,8 +60,16 @@ A common misconception is that RNNs can handle any sequential task equally well;
 
 ## Key Insights
 
+
 1. **The gating mechanism in LSTMs not only mitigates gradient issues but also enables selective memory retention, which is crucial for tasks with sparse relevant signals across long sequences.** — supported by [[Recurrent Neural Network Architecture]], [[Long Short-Term Memory (LSTM)]]
 2. **Despite their complexity, LSTMs' architecture allows them to generalize across sequence lengths far better than vanilla RNNs, making them uniquely suited for applications like machine translation and anomaly detection.** — supported by [[Long Short-Term Memory (LSTM)]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The gating mechanism in LSTMs not only mitigates gradient issues but also enables selective memory retention, which is crucial for tasks with sparse relevant signals across long sequences.** | [[Recurrent Neural Network Architecture]], [[Long Short-Term Memory (LSTM)]] | `raw/2026-04-08-introduction-to-recurrent-neural-networks-geeksforgeeks.md`, `raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Despite their complexity, LSTMs' architecture allows them to generalize across sequence lengths far better than vanilla RNNs, making them uniquely suited for applications like machine translation and anomaly detection.** | [[Long Short-Term Memory (LSTM)]] | `raw/2026-04-08-what-is-lstm-long-short-term-memory-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,25 +1,33 @@
 ---
-title: "Architectural Source Priority vs Live Prop-Line Incident Diagnosis"
+title: Architectural Source Priority vs Live Prop-Line Incident Diagnosis
 type: synthesis
 created: '2026-04-26'
 last_verified: '2026-04-26'
-source_hash: "synthesis-generated"
+source_hash: cbeef9f526a6e9607e8df6e26b5de95bad0ee246907169f5fb77a02715cfd25f
 sources:
-  - raw/2026-04-26-copilot-session-dashboard-prop-line-debug-ccc0f19c.md
-  - raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md
-  - raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md
+- raw/2026-04-26-copilot-session-dashboard-prop-line-debug-ccc0f19c.md
+- raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md
+- raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md
 concepts:
-  - source-priority-canonical-prop-ingestion
-  - browser-backed-sportsbook-truth-validation
-  - standard-over-under-vs-milestone-prop-market-identity
+- source-priority-canonical-prop-ingestion
+- browser-backed-sportsbook-truth-validation
+- standard-over-under-vs-milestone-prop-market-identity
 related:
-  - "[[Source-Priority Canonical Prop Ingestion]]"
-  - "[[Browser-Backed Sportsbook Truth Validation]]"
-  - "[[Standard Over/Under vs Milestone Prop Market Identity]]"
-  - "[[NBA ML Engine]]"
+- '[[Source-Priority Canonical Prop Ingestion]]'
+- '[[Browser-Backed Sportsbook Truth Validation]]'
+- '[[Standard Over/Under vs Milestone Prop Market Identity]]'
+- '[[NBA ML Engine]]'
 tier: hot
-tags: [sports-betting, synthesis, prop-lines, incident-response, nba-ml-engine]
+tags:
+- sports-betting
+- synthesis
+- prop-lines
+- incident-response
+- nba-ml-engine
 quality_score: 83
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Architectural Source Priority vs Live Prop-Line Incident Diagnosis
@@ -59,9 +67,18 @@ For the [[NBA ML Engine]], the practical takeaway is that architecture and incid
 
 ## Key Insights
 
-1. **Source priority is a selection policy, not a freshness guarantee** — supported by [[Source-Priority Canonical Prop Ingestion]] and [[Copilot Session Checkpoint: Dashboard Prop Line Debug]].
-2. **Live sportsbook incidents are often candidate-set failures, not ranking failures** — supported by [[Browser-Backed Sportsbook Truth Validation]] and [[Copilot Session Checkpoint: Dashboard Prop Line Debug]].
-3. **Market-family identity must be settled before a disputed line can be called wrong** — supported by [[Standard Over/Under vs Milestone Prop Market Identity]] and [[Copilot Session Checkpoint: Direct Sportsbook Sources]].
+
+1. **Source priority is a selection policy, not a freshness guarantee** — supported by [[Source-Priority Canonical Prop Ingestion]], [[Copilot Session Checkpoint: Dashboard Prop Line Debug]]
+2. **Live sportsbook incidents are often candidate-set failures, not ranking failures** — supported by [[Browser-Backed Sportsbook Truth Validation]], [[Copilot Session Checkpoint: Dashboard Prop Line Debug]]
+3. **Market-family identity must be settled before a disputed line can be called wrong** — supported by [[Standard Over/Under vs Milestone Prop Market Identity]], [[Copilot Session Checkpoint: Direct Sportsbook Sources]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Source priority is a selection policy, not a freshness guarantee** | [[Source-Priority Canonical Prop Ingestion]], [[Copilot Session Checkpoint: Dashboard Prop Line Debug]] | `raw/2026-04-25-copilot-session-direct-sportsbook-ingestion-a78d087a.md`, `raw/2026-04-26-copilot-session-dashboard-prop-line-debug-ccc0f19c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Live sportsbook incidents are often candidate-set failures, not ranking failures** | [[Browser-Backed Sportsbook Truth Validation]], [[Copilot Session Checkpoint: Dashboard Prop Line Debug]] | `raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md`, `raw/2026-04-26-copilot-session-dashboard-prop-line-debug-ccc0f19c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Market-family identity must be settled before a disputed line can be called wrong** | [[Standard Over/Under vs Milestone Prop Market Identity]], [[Copilot Session Checkpoint: Direct Sportsbook Sources]] | `raw/2026-04-25-copilot-session-direct-sportsbook-sources-855a32a8.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
@@ -73,4 +90,3 @@ For the [[NBA ML Engine]], the practical takeaway is that architecture and incid
 - [[Copilot Session Checkpoint: Dashboard Prop Line Debug]]
 - [[Copilot Session Checkpoint: Direct Sportsbook Ingestion]]
 - [[Copilot Session Checkpoint: Direct Sportsbook Sources]]
-

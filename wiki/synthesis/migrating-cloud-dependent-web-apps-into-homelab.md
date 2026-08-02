@@ -1,24 +1,33 @@
 ---
-title: "Migrating Cloud-Dependent Web Apps Into a Homelab"
+title: Migrating Cloud-Dependent Web Apps Into a Homelab
 type: synthesis
 created: 2026-04-27
 last_verified: 2026-04-27
-source_hash: "synthesis-generated"
+source_hash: ffb050c0d106590732cb4aeddd4769f6729c7576e25c346056b8efd124686866
 sources:
-  - raw/2026-04-27-copilot-session-homelab-migration-and-tunnel-fix-78392c21.md
-  - raw/2026-04-07-jbl306homelab.md
-  - raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
+- raw/2026-04-27-copilot-session-homelab-migration-and-tunnel-fix-78392c21.md
+- raw/2026-04-07-jbl306homelab.md
+- raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md
 concepts:
-  - single-user-local-sqlite-migration-self-hosted-web-apps
-  - native-module-safe-docker-builds-uid-aligned-sqlite-mounts
-  - split-dns-routing-cloudflare-tunnel-overrides-homelab-services
+- single-user-local-sqlite-migration-self-hosted-web-apps
+- native-module-safe-docker-builds-uid-aligned-sqlite-mounts
+- split-dns-routing-cloudflare-tunnel-overrides-homelab-services
 related:
-  - "[[Single-User Local SQLite Migration for Self-Hosted Web Apps]]"
-  - "[[Native-Module-Safe Docker Builds and UID-Aligned SQLite Mounts]]"
-  - "[[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]"
+- '[[Single-User Local SQLite Migration for Self-Hosted Web Apps]]'
+- '[[Native-Module-Safe Docker Builds and UID-Aligned SQLite Mounts]]'
+- '[[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]'
 tier: hot
-tags: [homelab, migration, deployment, sqlite, docker, cloudflare]
+tags:
+- homelab
+- migration
+- deployment
+- sqlite
+- docker
+- cloudflare
 quality_score: 75
+evidence_scope: cross-source
+evidence_source_count: 3
+evidence_origin_family_count: 2
 ---
 
 # Migrating Cloud-Dependent Web Apps Into a Homelab
@@ -56,14 +65,26 @@ Taken together, these concepts suggest a practical order of operations for futur
 
 ## Key Insights
 
-1. **Homelab migrations fail most often at layer boundaries, not inside one layer** — the current source shows app-state simplification, packaging hardening, and DNS edge correction as separate but sequentially necessary moves.
-2. **SQLite is only "simple" when packaging and permissions are also simple** — the local-database win depends on `.dockerignore` correctness and `${PUID}:${PGID}` alignment, not just on choosing SQLite.
-3. **Public success does not imply LAN success** — supported by [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]] and the current checkpoint's `dldebrid.jbl-lab.com` incident.
+
+1. **Public success does not imply LAN success** — supported by [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Public success does not imply LAN success** | [[Split-DNS Routing and Cloudflare Tunnel Overrides for Homelab Services]] | `raw/2026-04-07-jbl306homelab.md`, `raw/2026-04-20-copilot-session-scheduler-dns-agents-cleanup-2222559c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - When should a homelab migration keep multi-user auth instead of collapsing to a single trusted operator?
 - Which Homepage or monitoring signals best indicate that a migrated service is healthy at the application, container, and edge-routing layers simultaneously?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- Homelab migrations fail most often at layer boundaries, not inside one layer — the current source shows app-state simplification, packaging hardening, and DNS edge correction as separate but sequentially necessary moves.
+- SQLite is only "simple" when packaging and permissions are also simple — the local-database win depends on `.dockerignore` correctness and `${PUID}:${PGID}` alignment, not just on choosing SQLite.
 
 ## Sources
 

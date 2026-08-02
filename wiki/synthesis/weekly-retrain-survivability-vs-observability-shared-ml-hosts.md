@@ -1,27 +1,36 @@
 ---
-title: "Weekly Retrain Survivability vs Observability on Shared ML Hosts"
+title: Weekly Retrain Survivability vs Observability on Shared ML Hosts
 type: synthesis
 created: 2026-04-27
 last_verified: 2026-04-27
-source_hash: "synthesis-generated"
+source_hash: fc0fe6fad124ebb1158283368972dd83f48814cc449f9dfb25db45ec15cbfdd0
 sources:
-  - raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md
-  - raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
-  - raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
+- raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md
+- raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md
+- raw/2026-04-26-copilot-session-oom-mitigation-and-follow-up-93744ca8.md
 concepts:
-  - per-model-subprocess-isolation-memory-safe-weekly-retrains
-  - persistent-log-manifest-observability-detached-ml-runs
-  - training-pipeline-status-tracking-ml-systems
+- per-model-subprocess-isolation-memory-safe-weekly-retrains
+- persistent-log-manifest-observability-detached-ml-runs
+- training-pipeline-status-tracking-ml-systems
 related:
-  - "[[Per-Model Subprocess Isolation for Memory-Safe Weekly Retrains]]"
-  - "[[Persistent Log and Manifest Observability for Detached ML Runs]]"
-  - "[[Training Pipeline Status Tracking in ML Systems]]"
-  - "[[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]]"
-  - "[[NBA ML Engine]]"
-  - "[[nba-ml-api]]"
+- '[[Per-Model Subprocess Isolation for Memory-Safe Weekly Retrains]]'
+- '[[Persistent Log and Manifest Observability for Detached ML Runs]]'
+- '[[Training Pipeline Status Tracking in ML Systems]]'
+- '[[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]]'
+- '[[NBA ML Engine]]'
+- '[[nba-ml-api]]'
 tier: hot
-tags: [ml-ops, synthesis, nba-ml-engine, observability, oom, retraining]
+tags:
+- ml-ops
+- synthesis
+- nba-ml-engine
+- observability
+- oom
+- retraining
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Weekly Retrain Survivability vs Observability on Shared ML Hosts
@@ -59,9 +68,18 @@ The most durable operating model therefore stacks the three layers in order. Fir
 
 ## Key Insights
 
-1. **Status tracking is necessary but insufficient** — supported by [[Training Pipeline Status Tracking in ML Systems]] and [[Copilot Session Checkpoint: Weekly Retrain OOM Debugging]].
-2. **For background jobs, logs and manifests are part of correctness, not just convenience** — supported by [[Persistent Log and Manifest Observability for Detached ML Runs]] and [[Copilot Session Checkpoint: Weekly Retrain OOM Debugging]].
-3. **When coarse isolation still OOMs, the next durable lever is smaller execution units, not bigger memory limits** — supported by [[Per-Model Subprocess Isolation for Memory-Safe Weekly Retrains]] and [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]].
+
+1. **Status tracking is necessary but insufficient** — supported by [[Training Pipeline Status Tracking in ML Systems]], [[Copilot Session Checkpoint: Weekly Retrain OOM Debugging]]
+2. **For background jobs, logs and manifests are part of correctness, not just convenience** — supported by [[Persistent Log and Manifest Observability for Detached ML Runs]], [[Copilot Session Checkpoint: Weekly Retrain OOM Debugging]]
+3. **When coarse isolation still OOMs, the next durable lever is smaller execution units, not bigger memory limits** — supported by [[Per-Model Subprocess Isolation for Memory-Safe Weekly Retrains]], [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Status tracking is necessary but insufficient** | [[Training Pipeline Status Tracking in ML Systems]], [[Copilot Session Checkpoint: Weekly Retrain OOM Debugging]] | `raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md`, `raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **For background jobs, logs and manifests are part of correctness, not just convenience** | [[Persistent Log and Manifest Observability for Detached ML Runs]], [[Copilot Session Checkpoint: Weekly Retrain OOM Debugging]] | `raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **When coarse isolation still OOMs, the next durable lever is smaller execution units, not bigger memory limits** | [[Per-Model Subprocess Isolation for Memory-Safe Weekly Retrains]], [[Out-of-Memory (OOM) Failure Diagnosis and Remediation in ML Containers]] | `raw/2026-04-18-copilot-session-training-status-tracker-and-oom-fix-6c60a486.md`, `raw/2026-04-27-copilot-session-weekly-retrain-oom-debugging-c722e705.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

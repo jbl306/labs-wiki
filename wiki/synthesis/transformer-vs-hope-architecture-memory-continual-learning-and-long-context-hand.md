@@ -1,23 +1,33 @@
 ---
-title: "Transformer vs. Hope Architecture: Memory, Continual Learning, and Long-Context Handling"
+title: 'Transformer vs. Hope Architecture: Memory, Continual Learning, and Long-Context
+  Handling'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 6e35277b3a67fa3859b3e6c4ffbfb630db539e7c6de017008b6e4bc77dbb74d9
 sources:
-  - raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
-  - raw/2026-04-07-transformer-architecture-note.md
+- raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md
+- raw/2026-04-07-transformer-architecture-note.md
 quality_score: 67
 concepts:
-  - transformer
-  - hope
+- transformer
+- hope
 related:
-  - "[[Transformer Architecture]]"
-  - "[[Hope Architecture]]"
-  - "[[Hope]]"
-  - "[[Introducing Nested Learning: A New ML Paradigm for Continual Learning]]"
+- '[[Transformer Architecture]]'
+- '[[Hope Architecture]]'
+- '[[Hope]]'
+- '[[Introducing Nested Learning: A New ML Paradigm for Continual Learning]]'
 tier: hot
-tags: [transformer, hope-architecture, memory-management, continual-learning, long-context, deep-learning]
+tags:
+- transformer
+- hope-architecture
+- memory-management
+- continual-learning
+- long-context
+- deep-learning
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # Transformer vs. Hope Architecture: Memory, Continual Learning, and Long-Context Handling
@@ -54,9 +64,18 @@ While Transformer and Hope architectures can be complementary, with Transformer 
 
 ## Key Insights
 
+
 1. **Hope's continuum memory system enables multi-scale memory updates, directly addressing the Transformer’s bottleneck in handling long-context tasks.** — supported by [[Hope Architecture]], [[Transformer Architecture]]
 2. **Transformer’s lack of continual learning is a fundamental architectural limitation, whereas Hope’s self-modifying structure allows for infinite in-context learning without retraining.** — supported by [[Hope Architecture]], [[Transformer Architecture]]
 3. **Performance on Needle-In-Haystack tasks is a practical benchmark where Hope decisively outperforms Transformer, highlighting the importance of explicit memory management.** — supported by [[Hope Architecture]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Hope's continuum memory system enables multi-scale memory updates, directly addressing the Transformer’s bottleneck in handling long-context tasks.** | [[Hope Architecture]], [[Transformer Architecture]] | `raw/2026-04-07-transformer-architecture-note.md`, `raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Transformer’s lack of continual learning is a fundamental architectural limitation, whereas Hope’s self-modifying structure allows for infinite in-context learning without retraining.** | [[Hope Architecture]], [[Transformer Architecture]] | `raw/2026-04-07-transformer-architecture-note.md`, `raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Performance on Needle-In-Haystack tasks is a practical benchmark where Hope decisively outperforms Transformer, highlighting the importance of explicit memory management.** | [[Hope Architecture]] | `raw/2026-04-08-httpsresearchgoogleblogintroducing-nested-learning-a-new-ml-.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

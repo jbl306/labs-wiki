@@ -1,26 +1,35 @@
 ---
-title: "Claude Code vs OpenClaw: Architecture Choices Shaped by Deployment Context"
+title: 'Claude Code vs OpenClaw: Architecture Choices Shaped by Deployment Context'
 type: synthesis
 created: 2026-04-27
 last_verified: 2026-04-27
-source_hash: "synthesis-generated"
+source_hash: 907a8d41d430c62d6af76d916f032e9f3edb38b3fd5e229f1f6b37561c05f146
 sources:
-  - raw/2026-04-18-260414228v1pdf.md
-  - raw/2026-04-27-260414228v1pdf.md
+- raw/2026-04-18-260414228v1pdf.md
+- raw/2026-04-27-260414228v1pdf.md
 quality_score: 86
 concepts:
-  - agentic-loop-architecture-claude-code
-  - layered-agentic-architecture-claude-code
-  - context-management-compaction-pipeline-claude-code
-  - comparative-agent-system-architecture-claude-code-vs-openclaw
+- agentic-loop-architecture-claude-code
+- layered-agentic-architecture-claude-code
+- context-management-compaction-pipeline-claude-code
+- comparative-agent-system-architecture-claude-code-vs-openclaw
 related:
-  - "[[Claude Code]]"
-  - "[[OpenClaw]]"
-  - "[[Agentic Loop Architecture in Claude Code]]"
-  - "[[Layered Agentic Architecture in Claude Code]]"
-  - "[[Comparative Agent System Architecture: Claude Code vs. OpenClaw]]"
+- '[[Claude Code]]'
+- '[[OpenClaw]]'
+- '[[Agentic Loop Architecture in Claude Code]]'
+- '[[Layered Agentic Architecture in Claude Code]]'
+- '[[Comparative Agent System Architecture: Claude Code vs. OpenClaw]]'
 tier: hot
-tags: [claude-code, openclaw, agentic-systems, architecture, safety, context-management]
+tags:
+- claude-code
+- openclaw
+- agentic-systems
+- architecture
+- safety
+- context-management
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Claude Code vs OpenClaw: Architecture Choices Shaped by Deployment Context
@@ -56,9 +65,18 @@ These systems also imply different operational ergonomics. Claude Code looks lik
 
 ## Key Insights
 
+
 1. **Safety architecture follows deployment shape more than model brand.** Claude Code’s layered local checks and OpenClaw’s perimeter control are both rational once you know where each system lives. — supported by [[Claude Code]], [[OpenClaw]]
 2. **A shared agent loop is a strong fit for coding tools, but not a universal pattern.** Claude Code benefits from a unified loop because its surfaces all resolve to the same close-to-repo workflow. — supported by [[Agentic Loop Architecture in Claude Code]], [[Layered Agentic Architecture in Claude Code]]
 3. **Context handling is architectural, not cosmetic.** Claude Code’s five-stage compaction pipeline is a first-order design choice, whereas OpenClaw’s gateway model shifts the problem toward capability and channel coordination. — supported by [[Context Management and Compaction Pipeline in Claude Code]], [[Comparative Agent System Architecture: Claude Code vs. OpenClaw]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Safety architecture follows deployment shape more than model brand.** Claude Code’s layered local checks and OpenClaw’s perimeter control are both rational once you know where each system lives. | [[Claude Code]], [[OpenClaw]] | `raw/2026-04-18-260414228v1pdf.md`, `raw/2026-04-27-260414228v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **A shared agent loop is a strong fit for coding tools, but not a universal pattern.** Claude Code benefits from a unified loop because its surfaces all resolve to the same close-to-repo workflow. | [[Agentic Loop Architecture in Claude Code]], [[Layered Agentic Architecture in Claude Code]] | `raw/2026-04-18-260414228v1pdf.md`, `raw/2026-04-27-260414228v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Context handling is architectural, not cosmetic.** Claude Code’s five-stage compaction pipeline is a first-order design choice, whereas OpenClaw’s gateway model shifts the problem toward capability and channel coordination. | [[Context Management and Compaction Pipeline in Claude Code]], [[Comparative Agent System Architecture: Claude Code vs. OpenClaw]] | `raw/2026-04-18-260414228v1pdf.md`, `raw/2026-04-27-260414228v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

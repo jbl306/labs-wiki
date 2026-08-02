@@ -1,23 +1,33 @@
 ---
-title: "Comparing Chrome DevTools MCP and AXI for Agentic Tool Integration: Protocol vs. Ergonomic Design"
+title: 'Comparing Chrome DevTools MCP and AXI for Agentic Tool Integration: Protocol
+  vs. Ergonomic Design'
 type: synthesis
 created: 2026-04-13
 last_verified: 2026-04-13
-source_hash: "synthesis-generated"
+source_hash: 1b52ebaeceaaa7e5931e029c61acb35fc0b6c5bf75e5c7278946688e3766a555
 sources:
-  - raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
-  - raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
+- raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md
+- raw/2026-04-10-httpsgithubcomkunchenguidaxi.md
 quality_score: 67
 concepts:
-  - chrome-devtools-mcp
-  - axi
+- chrome-devtools-mcp
+- axi
 related:
-  - "[[Model-Context-Protocol (MCP) Server for Chrome DevTools]]"
-  - "[[AXI Design Principles for Agent-Ergonomic CLI Tools]]"
-  - "[[ChromeDevTools/chrome-devtools-mcp]]"
-  - "[[Chrome DevTools MCP]]"
+- '[[Model-Context-Protocol (MCP) Server for Chrome DevTools]]'
+- '[[AXI Design Principles for Agent-Ergonomic CLI Tools]]'
+- '[[ChromeDevTools/chrome-devtools-mcp]]'
+- '[[Chrome DevTools MCP]]'
 tier: hot
-tags: [agentic tools, protocols, CLI design, token optimization, browser automation, error handling]
+tags:
+- agentic tools
+- protocols
+- CLI design
+- token optimization
+- browser automation
+- error handling
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Comparing Chrome DevTools MCP and AXI for Agentic Tool Integration: Protocol vs. Ergonomic Design
@@ -54,9 +64,18 @@ A common misconception is that protocol standardization alone guarantees agent u
 
 ## Key Insights
 
+
 1. **AXI's use of the TOON format yields a quantifiable ~40% token savings over JSON, directly reducing agent inference costs—a benefit not matched by MCP's protocol outputs.** — supported by [[AXI Design Principles for Agent-Ergonomic CLI Tools]]
 2. **MCP's agent-agnostic protocol enables seamless integration with a broad range of agents and IDEs, whereas AXI's ergonomics are most impactful when tool authors fully adopt its design principles.** — supported by [[Model-Context-Protocol (MCP) Server for Chrome DevTools]], [[AXI Design Principles for Agent-Ergonomic CLI Tools]]
 3. **Both approaches emphasize structured, actionable error handling, but AXI formalizes idempotent mutations and exit code management, reducing unnecessary agent retries and failures.** — supported by [[Model-Context-Protocol (MCP) Server for Chrome DevTools]], [[AXI Design Principles for Agent-Ergonomic CLI Tools]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **AXI's use of the TOON format yields a quantifiable ~40% token savings over JSON, directly reducing agent inference costs—a benefit not matched by MCP's protocol outputs.** | [[AXI Design Principles for Agent-Ergonomic CLI Tools]] | `raw/2026-04-10-httpsgithubcomkunchenguidaxi.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **MCP's agent-agnostic protocol enables seamless integration with a broad range of agents and IDEs, whereas AXI's ergonomics are most impactful when tool authors fully adopt its design principles.** | [[Model-Context-Protocol (MCP) Server for Chrome DevTools]], [[AXI Design Principles for Agent-Ergonomic CLI Tools]] | `raw/2026-04-10-httpsgithubcomkunchenguidaxi.md`, `raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Both approaches emphasize structured, actionable error handling, but AXI formalizes idempotent mutations and exit code management, reducing unnecessary agent retries and failures.** | [[Model-Context-Protocol (MCP) Server for Chrome DevTools]], [[AXI Design Principles for Agent-Ergonomic CLI Tools]] | `raw/2026-04-10-httpsgithubcomkunchenguidaxi.md`, `raw/2026-04-13-httpsgithubcomchromedevtoolschrome-devtools-mcp.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

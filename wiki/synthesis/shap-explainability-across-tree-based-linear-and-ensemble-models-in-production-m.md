@@ -1,26 +1,37 @@
 ---
-title: "SHAP Explainability Across Tree-Based, Linear, and Ensemble Models in Production ML Pipelines"
+title: SHAP Explainability Across Tree-Based, Linear, and Ensemble Models in Production
+  ML Pipelines
 type: synthesis
 created: 2026-04-18
 last_verified: 2026-04-18
-source_hash: "synthesis-generated"
+source_hash: c27ce10c7d2a26aa4409da9355352f03c26caaec81679cb4d7ac8e11e4801de8
 sources:
-  - raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
-  - raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
+- raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md
+- raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md
 quality_score: 64
 concepts:
-  - linear-models-ridge
-  - ensemble-models-custom-meta-learners
-  - tree-based-models-lightgbm-randomforest-xgboost-catboost
-  - linear-models
-  - ensemble-models
-  - tree-based-models
+- linear-models-ridge
+- ensemble-models-custom-meta-learners
+- tree-based-models-lightgbm-randomforest-xgboost-catboost
+- linear-models
+- ensemble-models
+- tree-based-models
 related:
-  - "[[Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning]]"
-  - "[[LightGBM Feature Importance and SHAP Values]]"
-  - "[[SHAP Analysis Bug Resolution In NBA ML Engine]]"
+- '[[Copilot Session Checkpoint: Sprint 58 SHAP Bug Planning]]'
+- '[[LightGBM Feature Importance and SHAP Values]]'
+- '[[SHAP Analysis Bug Resolution In NBA ML Engine]]'
 tier: hot
-tags: [explainability, SHAP, tree-based models, linear models, ensemble models, ML pipelines, observability]
+tags:
+- explainability
+- SHAP
+- tree-based models
+- linear models
+- ensemble models
+- ML pipelines
+- observability
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # SHAP Explainability Across Tree-Based, Linear, and Ensemble Models in Production ML Pipelines
@@ -57,9 +68,18 @@ In practice, teams should choose tree-based models when SHAP explainability is a
 
 ## Key Insights
 
+
 1. **SHAP's TreeExplainer is strictly limited to tree-based models, requiring production pipelines to implement explicit checks and logging for unsupported model types to maintain workflow reliability.** — supported by [[SHAP Analysis Bug Resolution In NBA ML Engine]]
 2. **Feature correlation and rare feature usage can complicate SHAP interpretation even for tree-based models, necessitating careful analysis to avoid misleading conclusions.** — supported by [[LightGBM Feature Importance and SHAP Values]]
 3. **Custom serialization formats and registry schema drift can silently break explainability workflows, making robust registry queries and model loading logic essential for reliable SHAP analysis.** — supported by [[SHAP Analysis Bug Resolution In NBA ML Engine]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **SHAP's TreeExplainer is strictly limited to tree-based models, requiring production pipelines to implement explicit checks and logging for unsupported model types to maintain workflow reliability.** | [[SHAP Analysis Bug Resolution In NBA ML Engine]] | `raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Feature correlation and rare feature usage can complicate SHAP interpretation even for tree-based models, necessitating careful analysis to avoid misleading conclusions.** | [[LightGBM Feature Importance and SHAP Values]] | `raw/2026-04-08-lightgbm-light-gradient-boosting-machine-geeksforgeeks.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Custom serialization formats and registry schema drift can silently break explainability workflows, making robust registry queries and model loading logic essential for reliable SHAP analysis.** | [[SHAP Analysis Bug Resolution In NBA ML Engine]] | `raw/2026-04-18-copilot-session-sprint-58-shap-bug-planning-dfccfb5c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

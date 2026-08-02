@@ -1,22 +1,31 @@
 ---
-title: "Foundation Baselines vs Product-Facing Quality Systems in Spatial Design Studio"
+title: Foundation Baselines vs Product-Facing Quality Systems in Spatial Design Studio
 type: synthesis
 created: '2026-05-14'
 last_verified: '2026-05-14'
-source_hash: "synthesis-generated"
+source_hash: 9b6a005f9502ae23cac07366b7060d07db2b60ede33ec3cf06fb23d18534740a
 sources:
-  - raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md
-  - raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md
+- raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md
+- raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md
 concepts:
-  - staged-toolchain-baseline-hardening-active-monorepos
-  - multi-surface-ui-quality-gates-active-product-delivery
-  - accessibility-hardening-command-driven-3d-web-interfaces
+- staged-toolchain-baseline-hardening-active-monorepos
+- multi-surface-ui-quality-gates-active-product-delivery
+- accessibility-hardening-command-driven-3d-web-interfaces
 related:
-  - "[[Spatial Design Studio]]"
-  - "[[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]"
-  - "[[Copilot Session Checkpoint: Implementing S8 Quality]]"
+- '[[Spatial Design Studio]]'
+- '[[Copilot Session Checkpoint: Implementing S6 sprint foundation (SDS-100/102/101)]]'
+- '[[Copilot Session Checkpoint: Implementing S8 Quality]]'
 tier: hot
-tags: [spatial-design-studio, tooling, quality-systems, accessibility, testing, synthesis]
+tags:
+- spatial-design-studio
+- tooling
+- quality-systems
+- accessibility
+- testing
+- synthesis
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Foundation Baselines vs Product-Facing Quality Systems in Spatial Design Studio
@@ -52,9 +61,18 @@ Together, these sources argue for sequencing rather than maximalism. First make 
 
 ## Key Insights
 
+
 1. **Repository discipline and interface discipline are separate investments that reinforce each other.** — supported by [[Staged Toolchain Baseline Hardening for Active Monorepos]], [[Multi-Surface UI Quality Gates for Active Product Delivery]]
 2. **Frontend quality becomes durable only when behavior, visuals, browser flow, and accessibility each have a distinct proof surface.** — supported by [[Multi-Surface UI Quality Gates for Active Product Delivery]], [[Accessibility Hardening for Command-Driven 3D Web Interfaces]]
 3. **Accessibility is part of product maturity, not a post-hoc annotation layer.** — supported by [[Accessibility Hardening for Command-Driven 3D Web Interfaces]], [[Copilot Session Checkpoint: Implementing S8 Quality]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Repository discipline and interface discipline are separate investments that reinforce each other.** | [[Staged Toolchain Baseline Hardening for Active Monorepos]], [[Multi-Surface UI Quality Gates for Active Product Delivery]] | `raw/2026-05-14-copilot-session-implementing-s6-sprint-foundation-sds-100-102-10-4831f34a.md`, `raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Frontend quality becomes durable only when behavior, visuals, browser flow, and accessibility each have a distinct proof surface.** | [[Multi-Surface UI Quality Gates for Active Product Delivery]], [[Accessibility Hardening for Command-Driven 3D Web Interfaces]] | `raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Accessibility is part of product maturity, not a post-hoc annotation layer.** | [[Accessibility Hardening for Command-Driven 3D Web Interfaces]], [[Copilot Session Checkpoint: Implementing S8 Quality]] | `raw/2026-05-14-copilot-session-implementing-s8-quality-82653c66.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

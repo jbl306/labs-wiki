@@ -1,22 +1,32 @@
 ---
-title: "Complementarity and Competition: Exact Source-Hash Deduplication vs. Fuzzy Concept Name Merging in LLM Wiki Graphs"
+title: 'Complementarity and Competition: Exact Source-Hash Deduplication vs. Fuzzy
+  Concept Name Merging in LLM Wiki Graphs'
 type: synthesis
 created: 2026-04-18
 last_verified: 2026-04-18
-source_hash: "synthesis-generated"
+source_hash: a5e34133139ae29917ae7d1098df597ce5d2c2ee84ffee97258a1f906bb71c0d
 sources:
-  - raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
-  - raw/2026-04-10-httpsgithubcommidudevautoskills.md
+- raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
+- raw/2026-04-10-httpsgithubcommidudevautoskills.md
 quality_score: 64
 concepts:
-  - fuzzy-concept-name-merging
-  - exact-source-hash-deduplication
+- fuzzy-concept-name-merging
+- exact-source-hash-deduplication
 related:
-  - "[[Copilot Session Checkpoint: Mobile Graph UI + Wiki Dedup]]"
-  - "[[Wiki Deduplication and Concept Merging in LLM Wikis]]"
-  - "[[Automated AI Skill Stack Installation]]"
+- '[[Copilot Session Checkpoint: Mobile Graph UI + Wiki Dedup]]'
+- '[[Wiki Deduplication and Concept Merging in LLM Wikis]]'
+- '[[Automated AI Skill Stack Installation]]'
 tier: hot
-tags: [llm-wiki, deduplication, knowledge-graph, agent-workflows, fuzzy-matching, source-hash]
+tags:
+- llm-wiki
+- deduplication
+- knowledge-graph
+- agent-workflows
+- fuzzy-matching
+- source-hash
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # Complementarity and Competition: Exact Source-Hash Deduplication vs. Fuzzy Concept Name Merging in LLM Wiki Graphs
@@ -51,9 +61,18 @@ A common misconception is that deduplication is solely a technical process; in r
 
 ## Key Insights
 
+
 1. **Source-hash deduplication and fuzzy concept name merging are not mutually exclusive; their combined use creates a multi-layered defense against both exact and near-duplicate fragmentation, improving both precision and recall in graph maintenance.** — supported by [[Wiki Deduplication and Concept Merging in LLM Wikis]]
 2. **The audit logging and canonical reference updating processes are critical for transparency and historical traceability, especially as fuzzy merging introduces more subjective decisions.** — supported by [[Wiki Deduplication and Concept Merging in LLM Wikis]]
 3. **Agent workflows benefit most when both deduplication methods are integrated, allowing agents to propose merges based on both content and semantic similarity, thus supporting richer graph-aware relationships.** — supported by [[Wiki Deduplication and Concept Merging in LLM Wikis]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Source-hash deduplication and fuzzy concept name merging are not mutually exclusive; their combined use creates a multi-layered defense against both exact and near-duplicate fragmentation, improving both precision and recall in graph maintenance.** | [[Wiki Deduplication and Concept Merging in LLM Wikis]] | `raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The audit logging and canonical reference updating processes are critical for transparency and historical traceability, especially as fuzzy merging introduces more subjective decisions.** | [[Wiki Deduplication and Concept Merging in LLM Wikis]] | `raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Agent workflows benefit most when both deduplication methods are integrated, allowing agents to propose merges based on both content and semantic similarity, thus supporting richer graph-aware relationships.** | [[Wiki Deduplication and Concept Merging in LLM Wikis]] | `raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

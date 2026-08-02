@@ -1,22 +1,32 @@
 ---
-title: "Spatially-Organized Memory vs. LLM-Maintained Persistent Wiki: Long-Term AI Recall and Retrieval"
+title: 'Spatially-Organized Memory vs. LLM-Maintained Persistent Wiki: Long-Term AI
+  Recall and Retrieval'
 type: synthesis
 created: 2026-04-11
 last_verified: 2026-04-11
-source_hash: "synthesis-generated"
+source_hash: 7f0700a1cb236381f8f4f288884876e6f82ca2d32d523a14e3e2c304bc256893
 sources:
-  - raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
-  - raw/2026-04-07-llm-wiki.md
+- raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md
+- raw/2026-04-07-llm-wiki.md
 quality_score: 64
 concepts:
-  - llm-wiki-architecture
-  - palace-memory-architecture
+- llm-wiki-architecture
+- palace-memory-architecture
 related:
-  - "[[milla-jovovich/mempalace]]"
-  - "[[LLM Wiki Architecture]]"
-  - "[[Palace Memory Architecture]]"
+- '[[milla-jovovich/mempalace]]'
+- '[[LLM Wiki Architecture]]'
+- '[[Palace Memory Architecture]]'
 tier: hot
-tags: [AI memory, knowledge management, retrieval, wiki, spatial organization, LLM]
+tags:
+- AI memory
+- knowledge management
+- retrieval
+- wiki
+- spatial organization
+- LLM
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # Spatially-Organized Memory vs. LLM-Maintained Persistent Wiki: Long-Term AI Recall and Retrieval
@@ -51,9 +61,18 @@ Common misconceptions include assuming that spatially-organized memory is merely
 
 ## Key Insights
 
+
 1. **Spatial hierarchy in memory systems is not just for navigation—it measurably improves retrieval accuracy, especially in multi-domain contexts, outperforming flat search by 34%.** — supported by [[Palace Memory Architecture]]
 2. **LLM automation in persistent wikis shifts the maintenance burden from users to the AI, enabling ongoing synthesis and contradiction detection, but introduces dependence on schema clarity and LLM extraction fidelity.** — supported by [[LLM Wiki Architecture]]
 3. **Verbatim recall and context preservation are strongest in spatially-organized systems, while wiki-based approaches excel at knowledge synthesis and cross-referencing, suggesting they serve complementary roles in long-term AI memory.** — supported by [[Palace Memory Architecture]], [[LLM Wiki Architecture]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Spatial hierarchy in memory systems is not just for navigation—it measurably improves retrieval accuracy, especially in multi-domain contexts, outperforming flat search by 34%.** | [[Palace Memory Architecture]] | `raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **LLM automation in persistent wikis shifts the maintenance burden from users to the AI, enabling ongoing synthesis and contradiction detection, but introduces dependence on schema clarity and LLM extraction fidelity.** | [[LLM Wiki Architecture]] | `raw/2026-04-07-llm-wiki.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Verbatim recall and context preservation are strongest in spatially-organized systems, while wiki-based approaches excel at knowledge synthesis and cross-referencing, suggesting they serve complementary roles in long-term AI memory.** | [[Palace Memory Architecture]], [[LLM Wiki Architecture]] | `raw/2026-04-07-llm-wiki.md`, `raw/2026-04-11-httpsgithubcommilla-jovovichmempalace.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

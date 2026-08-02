@@ -1,22 +1,30 @@
 ---
-title: "Structured, Automated Documentation vs. Institutional Memory in Agentic Workflows"
+title: Structured, Automated Documentation vs. Institutional Memory in Agentic Workflows
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 0e9f0a010e61ac6e92e06c37f2278dd078f7db653082f2d5dc5706904a7d52dd
 sources:
-  - raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
-  - raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
+- raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md
+- raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md
 quality_score: 80
 concepts:
-  - living-documentation-principle
-  - institutional-memory-principle
+- living-documentation-principle
+- institutional-memory-principle
 related:
-  - "[[The Living Documentation Principle]]"
-  - "[[The Living Documentation Principle | 10 Claude Code Principles]]"
-  - "[[The Institutional Memory Principle]]"
+- '[[The Living Documentation Principle]]'
+- '[[The Living Documentation Principle | 10 Claude Code Principles]]'
+- '[[The Institutional Memory Principle]]'
 tier: hot
-tags: [documentation, agentic workflows, automation, organizational knowledge, AI agents]
+tags:
+- documentation
+- agentic workflows
+- automation
+- organizational knowledge
+- AI agents
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Structured, Automated Documentation vs. Institutional Memory in Agentic Workflows
@@ -53,9 +61,18 @@ These principles are complementary: Living Documentation ensures agents operate 
 
 ## Key Insights
 
+
 1. **Automated freshness checks (Living Documentation) directly reduce agent-generated errors, but without rationale-rich rules (Institutional Memory), agents may struggle to generalize to novel cases.** — supported by [[The Living Documentation Principle]], [[The Institutional Memory Principle]]
 2. **Structured prompt formats and recency ordering (Living Documentation) can account for up to 40% variation in agent performance, highlighting the operational impact of documentation structure beyond human readability.** — supported by [[The Living Documentation Principle]]
 3. **Negative constraints with rationales (Institutional Memory) not only prevent repeat mistakes but also steer agent outputs toward team conventions, outperforming positive instructions alone.** — supported by [[The Institutional Memory Principle]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Automated freshness checks (Living Documentation) directly reduce agent-generated errors, but without rationale-rich rules (Institutional Memory), agents may struggle to generalize to novel cases.** | [[The Living Documentation Principle]], [[The Institutional Memory Principle]] | `raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Structured prompt formats and recency ordering (Living Documentation) can account for up to 40% variation in agent performance, highlighting the operational impact of documentation structure beyond human readability.** | [[The Living Documentation Principle]] | `raw/2026-04-08-the-living-documentation-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Negative constraints with rationales (Institutional Memory) not only prevent repeat mistakes but also steer agent outputs toward team conventions, outperforming positive instructions alone.** | [[The Institutional Memory Principle]] | `raw/2026-04-08-the-institutional-memory-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

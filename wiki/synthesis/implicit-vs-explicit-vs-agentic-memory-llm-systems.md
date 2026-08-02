@@ -1,23 +1,32 @@
 ---
-title: "Implicit vs. Explicit vs. Agentic Memory in LLM Systems"
+title: Implicit vs. Explicit vs. Agentic Memory in LLM Systems
 type: synthesis
 created: 2026-04-28
 last_verified: 2026-04-28
-source_hash: "synthesis-generated"
+source_hash: 0315a3e61e7cb2ff0598e78a8b6564b04eb8a13c06150755736cc41fa2d20269
 sources:
-  - raw/2026-04-28-260109113v1pdf.md
+- raw/2026-04-28-260109113v1pdf.md
 quality_score: 65
 concepts:
-  - implicit-memory-llms
-  - explicit-memory-llm-systems
-  - agentic-memory-autonomous-agents
+- implicit-memory-llms
+- explicit-memory-llm-systems
+- agentic-memory-autonomous-agents
 related:
-  - "[[Implicit Memory in LLMs]]"
-  - "[[Explicit Memory in LLM Systems]]"
-  - "[[Agentic Memory in Autonomous Agents]]"
-  - "[[Agent Memory Frameworks]]"
+- '[[Implicit Memory in LLMs]]'
+- '[[Explicit Memory in LLM Systems]]'
+- '[[Agentic Memory in Autonomous Agents]]'
+- '[[Agent Memory Frameworks]]'
 tier: hot
-tags: [llm-memory, survey, taxonomy, agentic-memory, retrieval, reasoning]
+tags:
+- llm-memory
+- survey
+- taxonomy
+- agentic-memory
+- retrieval
+- reasoning
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Implicit vs. Explicit vs. Agentic Memory in LLM Systems
@@ -55,9 +64,18 @@ For the labs-wiki workspace, the practical consequence is clear: wiki pages and 
 
 ## Key Insights
 
+
 1. **The storage boundary is the central design fork.** Once knowledge moves outside the weights, you gain freshness and provenance but inherit retrieval-system complexity. — supported by [[Implicit Memory in LLMs]], [[Explicit Memory in LLM Systems]]
-2. **Agentic memory is defined by temporal continuity, not just by having an external database.** It becomes part of the decision loop and therefore has higher demands on consolidation quality. — supported by [[Agentic Memory in Autonomous Agents]], [[Agent Memory Frameworks]]
+2. **Agentic memory is defined by temporal continuity, not just by having an external database.** It becomes part of the decision loop and therefore has higher demands on consolidation quality. — supported by [[Agentic Memory in Autonomous Agents]]
 3. **The three paradigms are complementary layers, not rival camps.** Strong production systems typically rely on all three in different roles. — supported by [[Implicit Memory in LLMs]], [[Explicit Memory in LLM Systems]], [[Agentic Memory in Autonomous Agents]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The storage boundary is the central design fork.** Once knowledge moves outside the weights, you gain freshness and provenance but inherit retrieval-system complexity. | [[Implicit Memory in LLMs]], [[Explicit Memory in LLM Systems]] | `raw/2026-04-28-260109113v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Agentic memory is defined by temporal continuity, not just by having an external database.** It becomes part of the decision loop and therefore has higher demands on consolidation quality. | [[Agentic Memory in Autonomous Agents]] | `raw/2026-04-28-260109113v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The three paradigms are complementary layers, not rival camps.** Strong production systems typically rely on all three in different roles. | [[Implicit Memory in LLMs]], [[Explicit Memory in LLM Systems]], [[Agentic Memory in Autonomous Agents]] | `raw/2026-04-28-260109113v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,23 +1,32 @@
 ---
-title: "Token Economy vs. Context Hygiene: Optimizing Multi-Agent AI Workflows"
+title: 'Token Economy vs. Context Hygiene: Optimizing Multi-Agent AI Workflows'
 type: synthesis
 created: 2026-04-08
 last_verified: 2026-04-08
-source_hash: "synthesis-generated"
+source_hash: 02137130ebdbb4ab1bed4e646eab5499ef91fdd8c77f1b63bf0b425fa3733ed8
 sources:
-  - raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
-  - raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
-  - raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
+- raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md
+- raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md
+- raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md
 quality_score: 69
 concepts:
-  - context-hygiene-principle
-  - token-economy-principle
+- context-hygiene-principle
+- token-economy-principle
 related:
-  - "[[The Token Economy Principle]]"
-  - "[[The Token Economy Principle | 10 Claude Code Principles]]"
-  - "[[The Context Hygiene Principle]]"
+- '[[The Token Economy Principle]]'
+- '[[The Token Economy Principle | 10 Claude Code Principles]]'
+- '[[The Context Hygiene Principle]]'
 tier: hot
-tags: [multi-agent systems, prompt engineering, cost optimization, context management, workflow design, scalability]
+tags:
+- multi-agent systems
+- prompt engineering
+- cost optimization
+- context management
+- workflow design
+- scalability
+evidence_scope: within-source
+evidence_source_count: 3
+evidence_origin_family_count: 1
 ---
 
 # Token Economy vs. Context Hygiene: Optimizing Multi-Agent AI Workflows
@@ -54,9 +63,18 @@ For complex, dynamic workflows (e.g., those with large knowledge bases or highly
 
 ## Key Insights
 
+
 1. **Efficiency gains plateau quickly in multi-agent setups; prompt quality and context placement often yield greater improvements than agent quantity.** — supported by [[The Token Economy Principle]], [[The Context Hygiene Principle]]
 2. **Context window management is as critical to output quality as token cost management is to workflow scalability—neglecting either leads to degraded performance.** — supported by [[The Token Economy Principle]], [[The Context Hygiene Principle]]
 3. **Automated tools for measuring agent performance and auditing context freshness are increasingly necessary as workflows grow in complexity.** — supported by [[The Token Economy Principle]], [[The Context Hygiene Principle]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Efficiency gains plateau quickly in multi-agent setups; prompt quality and context placement often yield greater improvements than agent quantity.** | [[The Token Economy Principle]], [[The Context Hygiene Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Context window management is as critical to output quality as token cost management is to workflow scalability—neglecting either leads to degraded performance.** | [[The Token Economy Principle]], [[The Context Hygiene Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Automated tools for measuring agent performance and auditing context freshness are increasingly necessary as workflows grow in complexity.** | [[The Token Economy Principle]], [[The Context Hygiene Principle]] | `raw/2026-04-08-10-claude-code-principles-what-the-research-actually-says-10.md`, `raw/2026-04-08-the-context-hygiene-principle-10-claude-code-principles.md`, `raw/2026-04-08-the-token-economy-principle-10-claude-code-principles.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

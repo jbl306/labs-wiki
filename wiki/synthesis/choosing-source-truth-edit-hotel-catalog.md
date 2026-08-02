@@ -1,21 +1,33 @@
 ---
-title: "Choosing a Source of Truth for The Edit Hotel Catalog"
+title: Choosing a Source of Truth for The Edit Hotel Catalog
 type: synthesis
 created: '2026-05-30'
 last_verified: '2026-05-30'
-source_hash: "synthesis-generated"
+source_hash: 27f8f7563531abd645a219b1a4d32f292ee6aef540564188b88855225a1f07a3
 sources:
-  - raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md
-  - raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md
-concepts: [authenticated-export-private-travel-catalogs, third-party-map-ingestion-location-rich-travel-catalogs, deterministic-public-web-catalog-refresh-benefits-apps]
+- raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md
+- raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md
+concepts:
+- authenticated-export-private-travel-catalogs
+- third-party-map-ingestion-location-rich-travel-catalogs
+- deterministic-public-web-catalog-refresh-benefits-apps
 related:
-  - "[[The Edit by Chase Travel]]"
-  - "[[Chase Sapphire Benefits v2]]"
-  - "[[Automated Catalog Refresh Pipeline]]"
-  - "[[Copilot Session Checkpoint: Researching The Edit hotel auto-population]]"
-  - "[[Copilot Session Checkpoint: Implementing automated catalog refresh pipeline]]"
+- '[[The Edit by Chase Travel]]'
+- '[[Chase Sapphire Benefits v2]]'
+- '[[Automated Catalog Refresh Pipeline]]'
+- '[[Copilot Session Checkpoint: Researching The Edit hotel auto-population]]'
+- '[[Copilot Session Checkpoint: Implementing automated catalog refresh pipeline]]'
 tier: hot
-tags: [hotel-catalog, source-of-truth, chase-travel, automation, synthesis, travel-data]
+tags:
+- hotel-catalog
+- source-of-truth
+- chase-travel
+- automation
+- synthesis
+- travel-data
+evidence_scope: within-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
 ---
 
 # Choosing a Source of Truth for The Edit Hotel Catalog
@@ -51,9 +63,18 @@ The previously implemented public-web catalog-refresh pattern still matters, but
 
 ## Key Insights
 
+
 1. **The right primary source is the one that preserves semantic completeness, even if it is not the most automated path.** — supported by [[Authenticated Export for Private Travel Catalogs]], [[The Edit by Chase Travel]]
-2. **For geospatial product surfaces, coordinate availability can outweigh nominal source authority when choosing a practical bootstrap or fallback feed.** — supported by [[Third-Party Map Ingestion for Location-Rich Travel Catalogs]], [[Chase Sapphire Benefits v2]]
+2. **For geospatial product surfaces, coordinate availability can outweigh nominal source authority when choosing a practical bootstrap or fallback feed.** — supported by [[Third-Party Map Ingestion for Location-Rich Travel Catalogs]]
 3. **The earlier deterministic refresh pipeline is still the right control-plane shape; the real design choice is upstream evidence, not downstream mutation mechanics.** — supported by [[Deterministic Public-Web Catalog Refresh for Benefits Apps]], [[Automated Catalog Refresh Pipeline]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The right primary source is the one that preserves semantic completeness, even if it is not the most automated path.** | [[Authenticated Export for Private Travel Catalogs]], [[The Edit by Chase Travel]] | `raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **For geospatial product surfaces, coordinate availability can outweigh nominal source authority when choosing a practical bootstrap or fallback feed.** | [[Third-Party Map Ingestion for Location-Rich Travel Catalogs]] | `raw/2026-05-30-copilot-session-researching-the-edit-hotel-auto-population-72a00d67.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The earlier deterministic refresh pipeline is still the right control-plane shape; the real design choice is upstream evidence, not downstream mutation mechanics.** | [[Deterministic Public-Web Catalog Refresh for Benefits Apps]], [[Automated Catalog Refresh Pipeline]] | `raw/2026-05-30-copilot-session-implementing-automated-catalog-refresh-pipeline-a5fa5230.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,28 +1,38 @@
 ---
-title: "Audit Remediation Patterns for NBA ML Integrity"
+title: Audit Remediation Patterns for NBA ML Integrity
 type: synthesis
 created: 2026-04-30
 last_verified: 2026-04-30
-source_hash: "synthesis-generated"
+source_hash: e1623000fa5f575e47df1e50dbd8bc372b3c308154322e875b7fc94fbd98bd48
 sources:
-  - raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md
-  - raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
-  - raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md
-  - raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
-  - raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
+- raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md
+- raw/2026-04-25-copilot-session-dashboard-accuracy-fixes-3717a5b2.md
+- raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md
+- raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md
+- raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md
 concepts:
-  - source-tagged-confidence-contracts-ml-dashboards
-  - training-mode-aware-rolling-window-metadata
-  - prior-season-feature-mapping-temporal-leakage-prevention
+- source-tagged-confidence-contracts-ml-dashboards
+- training-mode-aware-rolling-window-metadata
+- prior-season-feature-mapping-temporal-leakage-prevention
 related:
-  - "[[Source-Tagged Confidence Contracts for ML Dashboards]]"
-  - "[[Training-Mode-Aware Rolling Window Metadata]]"
-  - "[[Prior-Season Feature Mapping for Temporal Leakage Prevention]]"
-  - "[[Worktree-Based Subagent-Driven Development]]"
-  - "[[Phased Progress Tracking With Validation Gates]]"
+- '[[Source-Tagged Confidence Contracts for ML Dashboards]]'
+- '[[Training-Mode-Aware Rolling Window Metadata]]'
+- '[[Prior-Season Feature Mapping for Temporal Leakage Prevention]]'
+- '[[Worktree-Based Subagent-Driven Development]]'
+- '[[Phased Progress Tracking With Validation Gates]]'
 tier: hot
-tags: [synthesis, nba-ml-engine, audit-remediation, ml-reliability, temporal-integrity, dashboard, workflow]
+tags:
+- synthesis
+- nba-ml-engine
+- audit-remediation
+- ml-reliability
+- temporal-integrity
+- dashboard
+- workflow
 quality_score: 83
+evidence_scope: within-source
+evidence_source_count: 5
+evidence_origin_family_count: 1
 ---
 
 # Audit Remediation Patterns for NBA ML Integrity
@@ -59,10 +69,20 @@ The combined lesson is that ML integrity is layered. A model can have good code 
 
 ## Key Insights
 
+
 1. **The most durable audit fixes are metadata upgrades, not just logic patches.** — supported by [[Source-Tagged Confidence Contracts for ML Dashboards]], [[Training-Mode-Aware Rolling Window Metadata]]
 2. **Temporal honesty has to be enforced twice: once in the split policy and once in the feature joins.** — supported by [[Training-Mode-Aware Rolling Window Metadata]], [[Prior-Season Feature Mapping for Temporal Leakage Prevention]]
 3. **Process rigor is part of model integrity, not separate from it.** — supported by [[Worktree-Based Subagent-Driven Development]], [[Phased Progress Tracking With Validation Gates]]
 4. **Explicitly preserving deferred risk is higher-value than claiming a broad fix is finished.** — supported by [[Copilot Session Checkpoint: Audit Recommendations Implementation]], [[Copilot Session Checkpoint: Dashboard Accuracy Hardening]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **The most durable audit fixes are metadata upgrades, not just logic patches.** | [[Source-Tagged Confidence Contracts for ML Dashboards]], [[Training-Mode-Aware Rolling Window Metadata]] | `raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Temporal honesty has to be enforced twice: once in the split policy and once in the feature joins.** | [[Training-Mode-Aware Rolling Window Metadata]], [[Prior-Season Feature Mapping for Temporal Leakage Prevention]] | `raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Process rigor is part of model integrity, not separate from it.** | [[Worktree-Based Subagent-Driven Development]], [[Phased Progress Tracking With Validation Gates]] | `raw/2026-04-20-copilot-session-integrating-agent-skill-routing-3f817cb6.md`, `raw/2026-04-22-copilot-session-implementing-full-review-r1-r19-recommendations-884f7926.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Explicitly preserving deferred risk is higher-value than claiming a broad fix is finished.** | [[Copilot Session Checkpoint: Audit Recommendations Implementation]], [[Copilot Session Checkpoint: Dashboard Accuracy Hardening]] | `raw/2026-04-25-copilot-session-audit-recommendations-implementation-4d25144f.md`, `raw/2026-04-25-copilot-session-dashboard-accuracy-hardening-404bc17e.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

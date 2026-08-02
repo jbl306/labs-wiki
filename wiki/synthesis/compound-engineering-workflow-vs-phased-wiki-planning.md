@@ -1,28 +1,31 @@
 ---
-title: "Compound Engineering Workflow vs Phased Wiki Planning"
+title: Compound Engineering Workflow vs Phased Wiki Planning
 type: synthesis
 created: '2026-04-23'
 last_verified: '2026-04-23'
-source_hash: "synthesis-generated"
+source_hash: 4e814488026c9e1ee1d3906d02a0ab83a0c6863cc98dab44091c285ee16075c5
 sources:
-  - raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
-  - raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
+- raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
+- raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md
 concepts:
-  - compound-engineering-workflow
-  - phased-implementation-planning-progress-tracking-llm-wikis
+- compound-engineering-workflow
+- phased-implementation-planning-progress-tracking-llm-wikis
 related:
-  - "[[Compound Engineering Workflow]]"
-  - "[[Phased Implementation Planning and Progress Tracking for LLM Wikis]]"
-  - "[[The Specialized Review Principle]]"
+- '[[Compound Engineering Workflow]]'
+- '[[Phased Implementation Planning and Progress Tracking for LLM Wikis]]'
+- '[[The Specialized Review Principle]]'
 tier: hot
 tags:
-  - ai-agents
-  - code-review
-  - knowledge-management
-  - planning
-  - workflow-comparison
+- ai-agents
+- code-review
+- knowledge-management
+- planning
+- workflow-comparison
 quality_score: 75
+evidence_scope: cross-source
+evidence_source_count: 3
+evidence_origin_family_count: 3
 ---
 
 # Compound Engineering Workflow vs Phased Wiki Planning
@@ -60,9 +63,18 @@ The strongest combination is to nest the two. Use Compound Engineering as the ou
 
 ## Key Insights
 
-1. **Compound Engineering is a meta-workflow; phased wiki planning is a project workflow** — the former governs how work should be approached, while the latter governs how one specific implementation should be sequenced and validated. Supported by [[EveryInc/compound-engineering-plugin]] and [[Copilot Session Checkpoint: Planning and Progress Tracking Complete]].
-2. **Specialist review is the clearest differentiator** — Compound Engineering's value rises as the cost of subtle mistakes rises, because it internalizes [[The Specialized Review Principle]] rather than leaving review informal. Supported by [[EveryInc/compound-engineering-plugin]] and [[The Specialized Review Principle | 10 Claude Code Principles]].
-3. **The two approaches are complementary, not mutually exclusive** — teams can use compound engineering to decide and learn, then use phased planning to execute a large system safely. Supported by [[Compound Engineering Workflow]] and [[Phased Implementation Planning and Progress Tracking for LLM Wikis]].
+
+1. **Compound Engineering is a meta-workflow; phased wiki planning is a project workflow** — the former governs how work should be approached, while the latter governs how one specific implementation should be sequenced and validated. — supported by [[EveryInc/compound-engineering-plugin]], [[Copilot Session Checkpoint: Planning and Progress Tracking Complete]]
+2. **Specialist review is the clearest differentiator** — Compound Engineering's value rises as the cost of subtle mistakes rises, because it internalizes [[The Specialized Review Principle]] rather than leaving review informal. — supported by [[The Specialized Review Principle]], [[EveryInc/compound-engineering-plugin]]
+3. **The two approaches are complementary, not mutually exclusive** — teams can use compound engineering to decide and learn, then use phased planning to execute a large system safely. — supported by [[Compound Engineering Workflow]], [[Phased Implementation Planning and Progress Tracking for LLM Wikis]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Compound Engineering is a meta-workflow; phased wiki planning is a project workflow** — the former governs how work should be approached, while the latter governs how one specific implementation should be sequenced and validated. | [[EveryInc/compound-engineering-plugin]], [[Copilot Session Checkpoint: Planning and Progress Tracking Complete]] | `raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Specialist review is the clearest differentiator** — Compound Engineering's value rises as the cost of subtle mistakes rises, because it internalizes [[The Specialized Review Principle]] rather than leaving review informal. | [[The Specialized Review Principle]], [[EveryInc/compound-engineering-plugin]] | `raw/2026-04-08-the-specialized-review-principle-10-claude-code-principles.md`, `raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The two approaches are complementary, not mutually exclusive** — teams can use compound engineering to decide and learn, then use phased planning to execute a large system safely. | [[Compound Engineering Workflow]], [[Phased Implementation Planning and Progress Tracking for LLM Wikis]] | `raw/2026-04-23-httpsgithubcomeveryinccompound-engineering-plugin.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

@@ -1,19 +1,29 @@
 ---
-title: "Deterministic Evidence Gates in Offline On-Call Triage"
+title: Deterministic Evidence Gates in Offline On-Call Triage
 type: synthesis
 created: 2026-05-31
 last_verified: 2026-05-31
-source_hash: "synthesis-generated"
+source_hash: bd97f9996effe962dd5a75de1466d9f4c04a529759f2c53d3cdbe96832d493c0
 sources:
-  - raw/2026-05-31-copilot-session-offline-triage-contracts-f348902c.md
-concepts: [offline-contract-validation-on-call-triage-artifacts, signal-relevance-gate-infrastructure-triage]
+- raw/2026-05-31-copilot-session-offline-triage-contracts-f348902c.md
+concepts:
+- offline-contract-validation-on-call-triage-artifacts
+- signal-relevance-gate-infrastructure-triage
 related:
-  - "[[Offline Contract Validation for On-Call Triage Artifacts]]"
-  - "[[Signal Relevance Gate for Infrastructure Triage]]"
-  - "[[Shared Contract Normalization for Dashboard APIs]]"
-  - "[[LLM-Powered Noise Filtering]]"
+- '[[Offline Contract Validation for On-Call Triage Artifacts]]'
+- '[[Signal Relevance Gate for Infrastructure Triage]]'
+- '[[Shared Contract Normalization for Dashboard APIs]]'
+- '[[LLM-Powered Noise Filtering]]'
 tier: hot
-tags: [on-call-triage, deterministic-gates, contract-validation, signal-relevance, offline-workflow]
+tags:
+- on-call-triage
+- deterministic-gates
+- contract-validation
+- signal-relevance
+- offline-workflow
+evidence_scope: within-source
+evidence_source_count: 1
+evidence_origin_family_count: 1
 ---
 
 # Deterministic Evidence Gates in Offline On-Call Triage
@@ -49,14 +59,26 @@ The broader systems lesson is that "use an LLM to summarize the incident" is too
 
 ## Key Insights
 
-1. **Artifact correctness and signal correctness are separate problems** — [[Offline Contract Validation for On-Call Triage Artifacts]] solves the first, while [[Signal Relevance Gate for Infrastructure Triage]] solves the second.
-2. **A trustworthy offline lane needs both gates before any live rollout** — the checkpoint's strategy is to prove schemas, timestamps, identities, and evidence ranking under fixtures before touching production systems.
-3. **Deterministic pre-LLM filtering improves auditability** — the more meaning that is settled in explicit artifacts and buckets, the easier it is for a human to review the system's judgment path.
+
+1. **Artifact correctness and signal correctness are separate problems** — [[Offline Contract Validation for On-Call Triage Artifacts]] solves the first, while [[Signal Relevance Gate for Infrastructure Triage]] solves the second. — supported by [[Offline Contract Validation for On-Call Triage Artifacts]], [[Signal Relevance Gate for Infrastructure Triage]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Artifact correctness and signal correctness are separate problems** — [[Offline Contract Validation for On-Call Triage Artifacts]] solves the first, while [[Signal Relevance Gate for Infrastructure Triage]] solves the second. | [[Offline Contract Validation for On-Call Triage Artifacts]], [[Signal Relevance Gate for Infrastructure Triage]] | `raw/2026-05-31-copilot-session-offline-triage-contracts-f348902c.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 
 - How should the relevance gate evolve once Prometheus, OpenSearch, Kubernetes, and CloudStack collectors move from fixtures to live read-only adapters?
 - Which additional contract checks will be needed when the workflow expands from read-only diagnosis to explicitly approved CloudStack action prechecks?
+
+## Legacy Claims Pending Evidence
+
+These retained claims are not Key Insights until claim-level support is supplied.
+
+- A trustworthy offline lane needs both gates before any live rollout — the checkpoint's strategy is to prove schemas, timestamps, identities, and evidence ranking under fixtures before touching production systems.
+- Deterministic pre-LLM filtering improves auditability — the more meaning that is settled in explicit artifacts and buckets, the easier it is for a human to review the system's judgment path.
 
 ## Sources
 

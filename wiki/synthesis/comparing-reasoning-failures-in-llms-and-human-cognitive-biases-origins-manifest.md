@@ -1,22 +1,31 @@
 ---
-title: "Comparing Reasoning Failures in LLMs and Human Cognitive Biases: Origins, Manifestations, and Mitigation"
+title: 'Comparing Reasoning Failures in LLMs and Human Cognitive Biases: Origins,
+  Manifestations, and Mitigation'
 type: synthesis
 created: 2026-04-10
 last_verified: 2026-04-10
-source_hash: "synthesis-generated"
+source_hash: 2986d3097e8cd3ed82c14631c8e332ffcba459382e74c7c22e2a97fe239eba96
 sources:
-  - raw/2026-04-10-260206176v1pdf.md
-  - raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
+- raw/2026-04-10-260206176v1pdf.md
+- raw/2026-04-08-artificial-neural-networks-and-its-applications-geeksforgeek.md
 quality_score: 64
 concepts:
-  - human-cognitive-biases
-  - cognitive-biases-in-llms
+- human-cognitive-biases
+- cognitive-biases-in-llms
 related:
-  - "[[Cognitive Biases In Large Language Models]]"
-  - "[[Large Language Model Reasoning Failures]]"
-  - "[[Activation Functions in Neural Networks]]"
+- '[[Cognitive Biases In Large Language Models]]'
+- '[[Large Language Model Reasoning Failures]]'
+- '[[Activation Functions in Neural Networks]]'
 tier: hot
-tags: [LLM reasoning, cognitive bias, AI alignment, bias mitigation, human cognition]
+tags:
+- LLM reasoning
+- cognitive bias
+- AI alignment
+- bias mitigation
+- human cognition
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 
 # Comparing Reasoning Failures in LLMs and Human Cognitive Biases: Origins, Manifestations, and Mitigation
@@ -51,9 +60,18 @@ Despite these challenges, understanding the parallels between LLM and human bias
 
 ## Key Insights
 
+
 1. **LLM biases are not solely inherited from data; architectural features (e.g., Transformer causal masking) independently introduce order-based and anchoring biases, paralleling human working memory limitations.** — supported by [[Cognitive Biases In Large Language Models]]
 2. **Alignment processes (RLHF) can amplify human biases in LLMs, meaning that efforts to make models 'safer' may inadvertently reinforce systematic reasoning failures.** — supported by [[Cognitive Biases In Large Language Models]]
 3. **Mitigation strategies in both LLMs and humans tend to provide only surface-level improvements, with biases re-emerging in new contexts, suggesting that robust reasoning requires context-aware and adaptive interventions.** — supported by [[Cognitive Biases In Large Language Models]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **LLM biases are not solely inherited from data; architectural features (e.g., Transformer causal masking) independently introduce order-based and anchoring biases, paralleling human working memory limitations.** | [[Cognitive Biases In Large Language Models]] | `raw/2026-04-10-260206176v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Alignment processes (RLHF) can amplify human biases in LLMs, meaning that efforts to make models 'safer' may inadvertently reinforce systematic reasoning failures.** | [[Cognitive Biases In Large Language Models]] | `raw/2026-04-10-260206176v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Mitigation strategies in both LLMs and humans tend to provide only surface-level improvements, with biases re-emerging in new contexts, suggesting that robust reasoning requires context-aware and adaptive interventions.** | [[Cognitive Biases In Large Language Models]] | `raw/2026-04-10-260206176v1pdf.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

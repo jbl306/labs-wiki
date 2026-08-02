@@ -1,86 +1,101 @@
 ---
-title: "Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion, Heuristic-Based Classification of Session Checkpoints, Auto-Ingest Pipeline for Wiki Markdown Processing"
+title: 'Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion,
+  Heuristic-Based Classification of Session Checkpoints, Auto-Ingest Pipeline for
+  Wiki Markdown Processing'
 type: synthesis
 created: 2026-04-22
 last_verified: 2026-04-22
-source_hash: "synthesis-generated"
+source_hash: 3c24c063baa83caf72dbaa08d71cf26687817eff584ff7de77153d102856b9c8
 sources:
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
-  - raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-github-crawling-and-richer-extraction-a4ef6de5.md
-  - raw/2026-04-22-copilot-session-graph-incident-and-cleanup-14e5153b.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-graphify-comparison-and-quality-evaluation-6949c984.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-homelab-monitoring-and-knightcrawler-fixes-a62133b0.md
-  - raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-installing-mempalace-beginning-migration-f4a540d2.md
-  - raw/2026-04-22-copilot-session-labs-wiki-full-review-report-b585f2e1.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
-  - raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
-  - raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md
-  - raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
-  - raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
-  - raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-22-post-retrain-optimization-f0d53185.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-24-prop-consolidation-implementation-e5c3d4c3.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-25-dashboard-fixes-implementation-a58c0fb5.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-32-feature-implementation-648fcb7c.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-50-complete-skill-optimized-3fbbedf2.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-implementation-deploying-matviews-7f8e1834.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-planning-started-825d0d96.md
-  - raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-vs-code-agents-instructions-and-android-capture--a7b54100.md
-  - raw/2026-04-20-copilot-session-wiki-audit-followups-92b1089b.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md
+- raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-github-crawling-and-richer-extraction-a4ef6de5.md
+- raw/2026-04-22-copilot-session-graph-incident-and-cleanup-14e5153b.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-graphify-comparison-and-quality-evaluation-6949c984.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-homelab-monitoring-and-knightcrawler-fixes-a62133b0.md
+- raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-implementing-post-ingest-quality-fixes-1de9c8cc.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-installing-mempalace-beginning-migration-f4a540d2.md
+- raw/2026-04-22-copilot-session-labs-wiki-full-review-report-b585f2e1.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-mempalace-phase-3-4-and-autoagent-research-5bfd2570.md
+- raw/2026-04-18-copilot-session-mobile-graph-ui-wiki-dedup-39a4d74e.md
+- raw/2026-04-18-copilot-session-nba-ml-oom-fix-and-docs-cleanup-52d24b9f.md
+- raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-pipeline-enhancements-and-vision-support-deploye-5028ddea.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-planning-and-progress-tracking-complete-d09b537d.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-researching-mempalace-for-comparison-doc-50987160.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-reworking-docs-for-copilot-opencode-4710bc64.md
+- raw/2026-04-20-copilot-session-second-curation-reports-23bcd48f.md
+- raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-22-post-retrain-optimization-f0d53185.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-24-prop-consolidation-implementation-e5c3d4c3.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-25-dashboard-fixes-implementation-a58c0fb5.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-32-feature-implementation-648fcb7c.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-50-complete-skill-optimized-3fbbedf2.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-implementation-deploying-matviews-7f8e1834.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-sprint-52-planning-started-825d0d96.md
+- raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-vs-code-agents-instructions-and-android-capture--a7b54100.md
+- raw/2026-04-20-copilot-session-wiki-audit-followups-92b1089b.md
 concepts:
-  - auto-ingest-pipeline-for-wiki-markdown-processing
-  - custom-copilot-cli-agents
-  - heuristic-based-classification-of-session-checkpoints
-  - durable-copilot-session-checkpoint-promotion
+- auto-ingest-pipeline-for-wiki-markdown-processing
+- custom-copilot-cli-agents
+- heuristic-based-classification-of-session-checkpoints
+- durable-copilot-session-checkpoint-promotion
 related:
-  - "[[Copilot Session Checkpoint: Installing MemPalace, Beginning Migration]]"
-  - "[[Copilot Session Checkpoint: Fixing MemPalace Timeouts]]"
-  - "[[Heuristic-Based Classification of Session Checkpoints]]"
-  - "[[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]]"
-  - "[[Copilot Session Checkpoint: Phase 5 Merged; Graph UI Next]]"
-  - "[[Copilot Session Checkpoint: Planning and Progress Tracking Complete]]"
-  - "[[Copilot Session Checkpoint: Sprint 50 complete, skill optimized]]"
-  - "[[Copilot Session Checkpoint: Pipeline Enhancements and Vision Support Deployed]]"
-  - "[[Durable Copilot Session Checkpoint Promotion]]"
-  - "[[Copilot Session Checkpoint: Graph Incident and Cleanup]]"
-  - "[[Copilot Session Checkpoint: Sprint 25 dashboard fixes implementation]]"
-  - "[[Copilot Session Checkpoint: Sprint 52 implementation, deploying matviews]]"
-  - "[[Custom Copilot CLI Agents]]"
-  - "[[Copilot Session Checkpoint: Sprint 52 planning started]]"
-  - "[[Copilot Session Checkpoint: GitHub Crawling and Richer Extraction]]"
-  - "[[Copilot Session Checkpoint: Mobile Graph UI + Wiki Dedup]]"
-  - "[[Copilot Session Checkpoint: NBA ML OOM Fix And Docs Cleanup]]"
-  - "[[Copilot Session Checkpoint: Homelab Monitoring and KnightCrawler Fixes]]"
-  - "[[Copilot Session Checkpoint: Sprint 24 prop consolidation implementation]]"
-  - "[[Copilot Session Checkpoint: Sprint 22 post-retrain optimization]]"
-  - "[[Copilot Session Checkpoint: Implementing Checkpoint Curation Phases]]"
-  - "[[Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research]]"
-  - "[[Copilot Session Checkpoint: Auto-ingest Pipeline Built and Docs Updated]]"
-  - "[[Copilot Session Checkpoint: Second Curation Reports]]"
-  - "[[Copilot Session Checkpoint: Session Wiki Promotion]]"
-  - "[[Copilot Session Checkpoint: Wiki Audit Followups]]"
-  - "[[Copilot Session Checkpoint: Graphify Comparison and Quality Evaluation]]"
-  - "[[Copilot Session Checkpoint: Sprint 32 feature implementation]]"
-  - "[[Copilot Session Checkpoint: labs-wiki full review report]]"
-  - "[[Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode]]"
-  - "[[Auto-Ingest Pipeline for Wiki Markdown Processing]]"
-  - "[[Copilot Session Checkpoint: Implementing Post-Ingest Quality Fixes]]"
-  - "[[Copilot Session Checkpoint: Researching MemPalace for Comparison Doc]]"
-  - "[[Copilot Session Checkpoint: VS Code agents, instructions, and Android capture setup]]"
+- '[[Copilot Session Checkpoint: Installing MemPalace, Beginning Migration]]'
+- '[[Copilot Session Checkpoint: Fixing MemPalace Timeouts]]'
+- '[[Heuristic-Based Classification of Session Checkpoints]]'
+- '[[Copilot Session Checkpoint: Building 4 Copilot CLI Custom Agents]]'
+- '[[Copilot Session Checkpoint: Phase 5 Merged; Graph UI Next]]'
+- '[[Copilot Session Checkpoint: Planning and Progress Tracking Complete]]'
+- '[[Copilot Session Checkpoint: Sprint 50 complete, skill optimized]]'
+- '[[Copilot Session Checkpoint: Pipeline Enhancements and Vision Support Deployed]]'
+- '[[Durable Copilot Session Checkpoint Promotion]]'
+- '[[Copilot Session Checkpoint: Graph Incident and Cleanup]]'
+- '[[Copilot Session Checkpoint: Sprint 25 dashboard fixes implementation]]'
+- '[[Copilot Session Checkpoint: Sprint 52 implementation, deploying matviews]]'
+- '[[Custom Copilot CLI Agents]]'
+- '[[Copilot Session Checkpoint: Sprint 52 planning started]]'
+- '[[Copilot Session Checkpoint: GitHub Crawling and Richer Extraction]]'
+- '[[Copilot Session Checkpoint: Mobile Graph UI + Wiki Dedup]]'
+- '[[Copilot Session Checkpoint: NBA ML OOM Fix And Docs Cleanup]]'
+- '[[Copilot Session Checkpoint: Homelab Monitoring and KnightCrawler Fixes]]'
+- '[[Copilot Session Checkpoint: Sprint 24 prop consolidation implementation]]'
+- '[[Copilot Session Checkpoint: Sprint 22 post-retrain optimization]]'
+- '[[Copilot Session Checkpoint: Implementing Checkpoint Curation Phases]]'
+- '[[Copilot Session Checkpoint: MemPalace Phase 3-4 and AutoAgent Research]]'
+- '[[Copilot Session Checkpoint: Auto-ingest Pipeline Built and Docs Updated]]'
+- '[[Copilot Session Checkpoint: Second Curation Reports]]'
+- '[[Copilot Session Checkpoint: Session Wiki Promotion]]'
+- '[[Copilot Session Checkpoint: Wiki Audit Followups]]'
+- '[[Copilot Session Checkpoint: Graphify Comparison and Quality Evaluation]]'
+- '[[Copilot Session Checkpoint: Sprint 32 feature implementation]]'
+- '[[Copilot Session Checkpoint: labs-wiki full review report]]'
+- '[[Copilot Session Checkpoint: Reworking Docs for Copilot/OpenCode]]'
+- '[[Auto-Ingest Pipeline for Wiki Markdown Processing]]'
+- '[[Copilot Session Checkpoint: Implementing Post-Ingest Quality Fixes]]'
+- '[[Copilot Session Checkpoint: Researching MemPalace for Comparison Doc]]'
+- '[[Copilot Session Checkpoint: VS Code agents, instructions, and Android capture
+  setup]]'
 tier: hot
 checkpoint_cluster_community: 1
 checkpoint_cluster_checkpoint_count: 30
 checkpoint_cluster_signature: 3c24c063baa83caf
-tags: [agents, checkpoint, checkpoint-synthesis, copilot-session, durable-knowledge, fileback, graph, homelab, labs-wiki]
+tags:
+- agents
+- checkpoint
+- checkpoint-synthesis
+- copilot-session
+- durable-knowledge
+- fileback
+- graph
+- homelab
+- labs-wiki
 quality_score: 75
+evidence_scope: within-source
+evidence_source_count: 30
+evidence_origin_family_count: 1
 ---
 
 # Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion, Heuristic-Based Classification of Session Checkpoints, Auto-Ingest Pipeline for Wiki Markdown Processing
@@ -117,10 +132,20 @@ The Custom Copilot CLI Agents work is the meta-application: instead of the wiki 
 
 ## Key Insights
 
+
 1. **Heuristic classification is more valuable than smarter prompting—suppressing extraction on planning-only checkpoints saves more credits than any prompt optimization in the cluster.** — supported by [[Heuristic-Based Classification of Session Checkpoints]], [[Auto-Ingest Pipeline for Wiki Markdown Processing]]
 2. **The SHA-256 hash idempotency gate appears in three independent places (curator, ingest, MemPalace re-import) because each surface re-derived the same lesson: 'never recompute what you've already compiled.'** — supported by [[Durable Copilot Session Checkpoint Promotion]], [[Auto-Ingest Pipeline for Wiki Markdown Processing]]
 3. **Source-aware lane routing (light/default/vision) is the only place GPT-4o-class compute is metered—everything upstream and downstream is local Python or hash math, which is why the Karpathy compile-once mapping is exact rather than aspirational.** — supported by [[Durable Copilot Session Checkpoint Promotion]], [[Auto-Ingest Pipeline for Wiki Markdown Processing]]
 4. **Custom CLI agents are how the curation loop closes on itself: an agent can ingest, classify, and validate a checkpoint—then write a new checkpoint that re-enters the same pipeline, which is the observable definition of a durable workflow.** — supported by [[Custom Copilot CLI Agents]], [[Durable Copilot Session Checkpoint Promotion]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Heuristic classification is more valuable than smarter prompting—suppressing extraction on planning-only checkpoints saves more credits than any prompt optimization in the cluster.** | [[Heuristic-Based Classification of Session Checkpoints]], [[Auto-Ingest Pipeline for Wiki Markdown Processing]] | `raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md`, `raw/2026-04-20-copilot-session-wiki-audit-followups-92b1089b.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **The SHA-256 hash idempotency gate appears in three independent places (curator, ingest, MemPalace re-import) because each surface re-derived the same lesson: 'never recompute what you've already compiled.'** | [[Durable Copilot Session Checkpoint Promotion]], [[Auto-Ingest Pipeline for Wiki Markdown Processing]] | `raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md`, `raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md`, `raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md`, `raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Source-aware lane routing (light/default/vision) is the only place GPT-4o-class compute is metered—everything upstream and downstream is local Python or hash math, which is why the Karpathy compile-once mapping is exact rather than aspirational.** | [[Durable Copilot Session Checkpoint Promotion]], [[Auto-Ingest Pipeline for Wiki Markdown Processing]] | `raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md`, `raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md`, `raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md`, `raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-auto-ingest-pipeline-built-and-docs-updated-f3b54c4f.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
+| **Custom CLI agents are how the curation loop closes on itself: an agent can ingest, classify, and validate a checkpoint—then write a new checkpoint that re-enters the same pipeline, which is the observable definition of a durable workflow.** | [[Custom Copilot CLI Agents]], [[Durable Copilot Session Checkpoint Promotion]] | `raw/2026-04-18-copilot-session-fixing-mempalace-timeouts-d94dbf3b.md`, `raw/2026-04-18-copilot-session-implementing-checkpoint-curation-phases-625f7a54.md`, `raw/2026-04-18-copilot-session-phase-5-merged-graph-ui-next-48f23b63.md`, `raw/2026-04-18-copilot-session-session-wiki-promotion-405414ae.md`, `raw/backfill-copilot-sessions-2026-04-18/2026-04-18-copilot-session-building-4-copilot-cli-custom-agents-4d3f83bc.md` | Legacy mapping reconstructed from existing wikilinks and declared provenance; verify semantics. |
 
 ## Open Questions
 

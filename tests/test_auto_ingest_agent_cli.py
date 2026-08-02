@@ -84,7 +84,15 @@ Original filename: notes.docx
         self.assertIn("--ignore-user-config", cmd)
         self.assertIn("--output-schema", cmd)
         self.assertIn("--output-last-message", cmd)
+        self.assertEqual(cmd[cmd.index("-s") + 1], "workspace-write")
         self.assertNotIn("-a", cmd[4:])
+
+    def test_codex_sandbox_allows_container_outer_boundary_override(self) -> None:
+        with patch.dict(os.environ, {"WIKI_CODEX_SANDBOX": "danger-full-access"}):
+            self.assertEqual(auto_ingest._codex_sandbox_mode(), "danger-full-access")
+        with patch.dict(os.environ, {"WIKI_CODEX_SANDBOX": "invalid"}):
+            with self.assertRaises(ValueError):
+                auto_ingest._codex_sandbox_mode()
 
     def test_missing_status_json_is_a_failure(self) -> None:
         result = auto_ingest._parse_agent_status_output(

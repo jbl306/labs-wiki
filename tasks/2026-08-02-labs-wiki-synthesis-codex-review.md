@@ -76,7 +76,7 @@ Completed 2026-08-02.
 
 ### Verification
 
-- Unit tests: **29 passed**.
+- Unit tests: **30 passed**.
 - Ingest evaluation: **3/3 fixtures passed** after correcting the stale expected
   slug.
 - Wiki lint: **964 pages, 0 errors, 974 warnings, 0 contradictions**. The warnings
@@ -95,11 +95,20 @@ Completed 2026-08-02.
   community-number fallback matches.
 - Python compilation, Markdown fence balance, and `git diff --check`: passed.
 
+### Deployment follow-up
+
+The first container rollout exposed a nested bubblewrap namespace failure. The
+runtime now executes image-owned scripts from `/opt/labs-wiki`, mounts the Git
+worktree separately, and selects `danger-full-access` only for the inner Codex
+CLI while retaining the capability-dropped, no-new-privileges container as the
+outer sandbox. A real containerized shell/read schema smoke returned
+`{"status":"ok"}`.
+
 ### Safety boundary
 
-No live homelab compose file, OAuth secret, running container, systemd unit, or
-raw/wiki corpus page was changed or restarted. Unrelated `.o11y/` and SevenRooms
-task work remains untouched.
+During the review implementation phase, no live homelab compose file, OAuth
+secret, running container, systemd unit, or raw/wiki corpus page was changed or
+restarted. Deployment was handled afterward under the separate homelab task.
 
 The comprehensive review is
 `reports/full-review-2026-08-02-codex-synthesis.md`.

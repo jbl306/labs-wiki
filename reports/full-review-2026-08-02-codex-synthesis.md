@@ -429,7 +429,7 @@ meaning and breaking high-degree links.
 
 ## Verification after implementation
 
-- Unit tests: 29 passed.
+- Unit tests: 30 passed.
 - Ingest evaluation: 3/3 fixtures passed after correcting the stale expected
   Karpathy concept slug.
 - Wiki lint: 964 pages, 0 errors, 974 warnings, 0 contradictions. The 974 warnings
@@ -446,6 +446,11 @@ meaning and breaking high-degree links.
   Codex CLI 0.145.0, `model=gpt-5.6-luna`, the required `pages_updated` manifest,
   JSON Schema validation, path-limited commit enforcement, and an executable
   strict-audit helper.
+- Post-deployment runtime correction moved executable worker code under
+  image-owned `/opt/labs-wiki`, mounted the Git worktree separately, and uses
+  the capability-dropped container as the outer Codex sandbox. A real
+  subscription-authenticated shell/read schema smoke then returned
+  `{"status":"ok"}` without the nested bubblewrap failure.
 - Checkpoint-cluster dry run: five changed clusters were planned, one exact-source
   match was reused, and no cluster matched by unstable community number.
 - Python compilation, Markdown fence balance, and `git diff --check` passed.

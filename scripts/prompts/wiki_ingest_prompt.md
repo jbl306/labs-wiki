@@ -543,7 +543,7 @@ Before reporting a new synthesis page, run this deterministic quality gate and
 fix every error until it passes:
 
 ```bash
-python3 scripts/audit_synthesis.py --strict --fail-under 80 \
+python3 "${WIKI_RUNTIME_SCRIPT_ROOT:-scripts}"/audit_synthesis.py --strict --fail-under 80 \
   --page wiki/synthesis/<slug>.md
 ```
 

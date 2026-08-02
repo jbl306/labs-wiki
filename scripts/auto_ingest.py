@@ -3064,7 +3064,7 @@ def append_log(log_path: Path, entry: dict) -> None:
 
 def rebuild_index(project_root: Path) -> None:
     """Run compile_index.py to rebuild wiki/index.md."""
-    script = project_root / "scripts" / "compile_index.py"
+    script = _runtime_scripts_dir(project_root) / "compile_index.py"
     if script.exists():
         log.info("Rebuilding wiki/index.md")
         subprocess.run(
@@ -3120,6 +3120,14 @@ AGENT_CLI_BACKENDS = {"codex-cli", "copilot-cli"}
 
 def _selected_backend() -> str:
     return os.environ.get("WIKI_INGEST_BACKEND", "codex-cli").strip().lower()
+
+
+def _codex_sandbox_mode() -> str:
+    """Resolve the Codex sandbox; containers may supply their own outer boundary."""
+    mode = os.environ.get("WIKI_CODEX_SANDBOX", "workspace-write").strip()
+    if mode not in {"read-only", "workspace-write", "danger-full-access"}:
+        raise ValueError(f"Unsupported WIKI_CODEX_SANDBOX: {mode!r}")
+    return mode
 
 
 def _backend_requires_token(backend: str) -> bool:
@@ -3188,6 +3196,12 @@ def _extract_last_json_object(text: str) -> dict | None:
     return last_obj
 
 
+def _runtime_scripts_dir(project_root: Path) -> Path:
+    """Return image-owned runtime scripts when configured, else checkout scripts."""
+    configured = os.environ.get("WIKI_RUNTIME_SCRIPT_ROOT", "").strip()
+    return Path(configured).resolve() if configured else project_root / "scripts"
+
+
 def _build_agent_ingest_prompt(
     *,
     raw_path: Path,
@@ -3198,7 +3212,7 @@ def _build_agent_ingest_prompt(
     retention_mode: str = "",
     planning_only: bool = False,
 ) -> str:
-    prompt_template_path = project_root / "scripts" / "prompts" / "wiki_ingest_prompt.md"
+    prompt_template_path = _runtime_scripts_dir(project_root) / "prompts" / "wiki_ingest_prompt.md"
     if not prompt_template_path.exists():
         raise FileNotFoundError(f"Prompt template not found: {prompt_template_path}")
 
@@ -3664,6 +3678,7 @@ def call_codex_cli_ingest(
             output_path = temp_dir / "status.json"
             schema_path = temp_dir / "status-schema.json"
             schema_path.write_text(json.dumps(INGEST_STATUS_SCHEMA))
+            sandbox_mode = _codex_sandbox_mode()
             cmd = [
                 "codex",
                 "-a", "never",
@@ -3672,7 +3687,7 @@ def call_codex_cli_ingest(
                 "-c", f'model_reasoning_effort="{effort}"',
                 "-C", str(project_root),
                 "--add-dir", str(project_root),
-                "-s", "workspace-write",
+                "-s", sandbox_mode,
                 "--skip-git-repo-check",
                 "--ephemeral",
                 "--ignore-user-config",

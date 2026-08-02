@@ -4890,4 +4890,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
     - wiki/synthesis/public-widget-availability-vs-partner-gated-reservation-apis.md
   status: success
   notes: "Auto-ingested 6 pages (2 concepts, 2 entities, 1 synthesis) via copilot-cli-gpt-5.4"
+
+- timestamp: 2026-08-02T20:39:47+00:00
+  operation: ingest
+  agent: codex-cli
+  targets:
+    - wiki/sources/github-ingestion-phase-3-review-delivery.md
+    - wiki/concepts/non-authorizing-lifecycle-records.md
+    - wiki/concepts/sealed-review-publication.md
+  source: raw/2026-07-09-github-ingestion-phase-3-delivery.md
+  status: success
+  notes: "Recovered typed manifest after nested-result parser bug; generated pages passed deterministic validation."
 ```

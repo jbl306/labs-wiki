@@ -1,0 +1,17 @@
+{
+  "id": "req-4-settings-auth-boundary",
+  "url": "https://www.sevenrooms.com/api-yoa/venue/reservation_widget_settings_v2?venue_id=armaniristorante",
+  "status": 401,
+  "headers": {
+    "content-type": "application/json; charset=utf-8",
+    "cache-control": "no-cache",
+    "x-cloud-trace-context": "aa2cdfa259cf7b6584e1de364a5902c5",
+    "date": "Mon, 08 Jun 2026 19:13:07 GMT",
+    "server": "Google Frontend",
+    "Content-Length": "246",
+    "via": "1.1 google",
+    "Alt-Svc": "h3=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "body": "{\"code\": 401, \"status\": 401, \"msg\": \"Missing Authentication parameters\", \"csrftoken\": null, \"request_id\": \"1780945987.6a27144300ff0147fcf92ed0da0001737e736576656e726f6f6d732d73656375726500016170693a636972636c6563692d3231626339336163633100010162\"}"
+}

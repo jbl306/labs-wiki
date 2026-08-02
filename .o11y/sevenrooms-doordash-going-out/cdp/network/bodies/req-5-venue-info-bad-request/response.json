@@ -1,0 +1,15 @@
+{
+  "id": "req-5-venue-info-bad-request",
+  "url": "https://www.sevenrooms.com/api-yoa/dining/venue_info?venue=armaniristorante",
+  "status": 400,
+  "headers": {
+    "date": "Mon, 08 Jun 2026 19:13:07 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "Content-Length": "174",
+    "cache-control": "no-cache",
+    "via": "1.1 google",
+    "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "body": "{\"code\": 400, \"status\": 400, \"msg\": \"{'venue_url_key': ['Missing data for required field.']}\", \"csrftoken\": null, \"request_id\": \"1780945987.b47b566bf8de27b0dc04d464fae10655\"}"
+}

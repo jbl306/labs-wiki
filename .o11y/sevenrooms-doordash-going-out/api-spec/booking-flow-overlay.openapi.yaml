@@ -1,0 +1,156 @@
+openapi: 3.1.0
+info:
+  title: SevenRooms / DoorDash Going Out Reservation Booking Flow Overlay
+  version: 0.1.0-discovered-overlay
+  description: >-
+    Safety-scoped overlay for Browserbase browser-to-api output. Live-observed
+    operations are confirmed by the trace. Static-observed operations were only
+    extracted from public SevenRooms widget JavaScript and were not called.
+servers:
+  - url: https://www.sevenrooms.com
+x-source-run: /home/jbl/projects/labs-wiki/.o11y/sevenrooms-doordash-going-out
+x-generated-from:
+  - browserbase/skills browser-to-api discover.mjs
+  - low-frequency public HTTP capture
+  - public SevenRooms widget JavaScript static endpoint extraction
+x-safety-scope:
+  live_mutations_attempted: false
+  booking_created: false
+  payment_session_created: false
+  private_credentials_used: false
+  notes: >-
+    Do not call static-observed write/payment paths without explicit
+    authorization, owned account context, anti-automation compliance, and hard
+    guards before final reservation/payment submission.
+paths:
+  /api-yoa/availability/widget/range:
+    get:
+      summary: Public SevenRooms widget availability discovery
+      operationId: sevenRoomsWidgetAvailabilityRange
+      x-observation-status: live-observed
+      x-confidence: medium-for-discovery-low-as-contract
+      x-live-samples: 3
+      x-booking-flow-role: discovery
+      parameters:
+        - name: venue
+          in: query
+          required: true
+          schema: { type: string }
+        - name: time_slot
+          in: query
+          required: true
+          schema: { type: string }
+        - name: party_size
+          in: query
+          required: true
+          schema: { type: integer }
+        - name: halo_size_interval
+          in: query
+          required: true
+          schema: { type: integer }
+        - name: start_date
+          in: query
+          required: true
+          schema: { type: string, description: Observed as MM-DD-YYYY }
+        - name: num_days
+          in: query
+          required: true
+          schema: { type: integer }
+        - name: channel
+          in: query
+          required: true
+          schema: { type: string, example: SEVENROOMS_WIDGET }
+      responses:
+        '200':
+          description: Availability grouped by date, shift, and time slots.
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: true
+  /api-yoa/venue/reservation_widget_settings_v2:
+    get:
+      summary: Reservation widget settings boundary probe
+      operationId: sevenRoomsReservationWidgetSettingsBoundary
+      x-observation-status: live-observed-unauthorized
+      x-live-samples: 1
+      x-booking-flow-role: configuration-boundary
+      parameters:
+        - name: venue_id
+          in: query
+          required: true
+          schema: { type: string }
+      responses:
+        '401':
+          description: Unauthenticated request was rejected in this run.
+  /api-yoa/dining/hold/add:
+    post:
+      summary: Probable first-party table-hold step
+      operationId: sevenRoomsDiningHoldAddStaticClue
+      x-observation-status: static-observed-only
+      x-live-samples: 0
+      x-booking-flow-role: hold-before-checkout
+      x-not-called-reason: Write-sensitive booking flow; avoid live reservation side effects.
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema: { type: object, additionalProperties: true }
+      responses:
+        default:
+          description: Unknown; not exercised.
+  /api-yoa/dining/hold/upgrades:
+    post:
+      summary: Probable hold upsell/update step
+      operationId: sevenRoomsDiningHoldUpgradesStaticClue
+      x-observation-status: static-observed-only
+      x-live-samples: 0
+      x-booking-flow-role: optional-upsells
+      x-not-called-reason: Write-sensitive booking flow; avoid live reservation side effects.
+      responses:
+        default:
+          description: Unknown; not exercised.
+  /api-yoa/customer-payment-session/:
+    post:
+      summary: Probable customer payment session setup
+      operationId: sevenRoomsCustomerPaymentSessionStaticClue
+      x-observation-status: static-observed-only
+      x-live-samples: 0
+      x-booking-flow-role: payment-setup
+      x-not-called-reason: Payment-sensitive; not called.
+      responses:
+        default:
+          description: Unknown; not exercised.
+  /api-yoa/customer-adyen-session/:
+    post:
+      summary: Probable Adyen payment session setup
+      operationId: sevenRoomsCustomerAdyenSessionStaticClue
+      x-observation-status: static-observed-only
+      x-live-samples: 0
+      x-booking-flow-role: payment-setup
+      x-not-called-reason: Payment-sensitive; not called.
+      responses:
+        default:
+          description: Unknown; not exercised.
+  /api-yoa/doordash_marketplace:
+    get:
+      summary: DoorDash marketplace configuration clue
+      operationId: sevenRoomsDoorDashMarketplaceStaticClue
+      x-observation-status: static-observed-only
+      x-live-samples: 0
+      x-booking-flow-role: partner-or-admin-configuration
+      x-not-called-reason: Likely partner/admin surface; not consumer booking discovery.
+      responses:
+        default:
+          description: Unknown; not exercised.
+  /api-yoa/doordash_storefront/connect:
+    post:
+      summary: DoorDash storefront connection clue
+      operationId: sevenRoomsDoorDashStorefrontConnectStaticClue
+      x-observation-status: static-observed-only
+      x-live-samples: 0
+      x-booking-flow-role: partner-or-admin-configuration
+      x-not-called-reason: Likely partner/admin mutation; not called.
+      responses:
+        default:
+          description: Unknown; not exercised.

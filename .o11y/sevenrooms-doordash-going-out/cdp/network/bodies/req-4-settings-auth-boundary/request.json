@@ -1,0 +1,10 @@
+{
+  "id": "req-4-settings-auth-boundary",
+  "url": "https://www.sevenrooms.com/api-yoa/venue/reservation_widget_settings_v2?venue_id=armaniristorante",
+  "method": "GET",
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (compatible; labs-wiki-api-discovery/0.1)",
+    "Accept": "application/json, text/plain, */*"
+  },
+  "body": null
+}

@@ -1,0 +1,48 @@
+{
+  "endpoints": [
+    {
+      "key": "GET https://www.sevenrooms.com/api-yoa/availability/widget/range",
+      "samples": 3,
+      "statusCodes": [
+        200
+      ],
+      "requestBodyKnown": false,
+      "responseBodyKnown": true,
+      "normalizationFlags": [
+        "single-status"
+      ],
+      "confidence": "low",
+      "includedInSpec": true
+    },
+    {
+      "key": "GET https://www.sevenrooms.com/api-yoa/venue/reservation_widget_settings_v2",
+      "samples": 1,
+      "statusCodes": [
+        401
+      ],
+      "requestBodyKnown": false,
+      "responseBodyKnown": true,
+      "normalizationFlags": [
+        "single-sample",
+        "single-status"
+      ],
+      "confidence": "low",
+      "includedInSpec": true
+    },
+    {
+      "key": "GET https://www.sevenrooms.com/api-yoa/dining/venue_info",
+      "samples": 1,
+      "statusCodes": [
+        400
+      ],
+      "requestBodyKnown": false,
+      "responseBodyKnown": true,
+      "normalizationFlags": [
+        "single-sample",
+        "single-status"
+      ],
+      "confidence": "low",
+      "includedInSpec": true
+    }
+  ]
+}

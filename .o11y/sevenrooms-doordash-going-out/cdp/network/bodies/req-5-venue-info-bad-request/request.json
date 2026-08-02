@@ -1,0 +1,10 @@
+{
+  "id": "req-5-venue-info-bad-request",
+  "url": "https://www.sevenrooms.com/api-yoa/dining/venue_info?venue=armaniristorante",
+  "method": "GET",
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (compatible; labs-wiki-api-discovery/0.1)",
+    "Accept": "application/json, text/plain, */*"
+  },
+  "body": null
+}

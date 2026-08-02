@@ -1,0 +1,10 @@
+{
+  "id": "req-3-availability-empty",
+  "url": "https://www.sevenrooms.com/api-yoa/availability/widget/range?venue=negrilbk&time_slot=19%3A30&party_size=2&halo_size_interval=16&start_date=06-08-2026&num_days=3&channel=SEVENROOMS_WIDGET",
+  "method": "GET",
+  "headers": {
+    "User-Agent": "Mozilla/5.0 (compatible; labs-wiki-api-discovery/0.1)",
+    "Accept": "application/json, text/plain, */*"
+  },
+  "body": null
+}

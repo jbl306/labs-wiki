@@ -1,0 +1,27 @@
+{
+  "source_url": "https://www.sevenrooms.com/static/21bc93acc1900fc2ac156b2a7b1752af5b7844bf/cdn/app/widget/dining.js",
+  "sha256": "9da003562adbcb03751414ea015d80b693666463d66887d6f277b071f1574abe",
+  "extracted_at_utc": "2026-06-08T19:13:46Z",
+  "note": "Static endpoint strings extracted from public SevenRooms dining widget JS. They were not all exercised live; use observed_trace=false entries only as booking-flow clues, not confirmed contracts.",
+  "endpoints": [
+    "/api-yoa/availability/widget/range",
+    "/api-yoa/availability/ng/widget/range?${lt.toString()}",
+    "/api-yoa/customer-payment-session/",
+    "/api-yoa/customer-payment-session/?customer_payment_session_id=${V}",
+    "/api-yoa/customer-adyen-session/",
+    "/api-yoa/doordash_marketplace",
+    "/api-yoa/doordash_marketplace/cuisine_update?venue=${encodeURIComponent(U.venue)}",
+    "/api-yoa/doordash_marketplace/venue_description_update?venue=${encodeURIComponent(U.venue)}",
+    "/api-yoa/doordash_marketplace/photos_update?venue=${encodeURIComponent(U.venue)}",
+    "/api-yoa/doordash_marketplace/photos_reorder?venue=${encodeURIComponent(U.venue)}",
+    "/api-yoa/doordash_marketplace/toggle?venue=${encodeURIComponent(X)}",
+    "/api-yoa/doordash_marketplace/image_upload?venue=${encodeURIComponent(X)}",
+    "/api-yoa/doordash_storefront/connect?venue=${encodeURIComponent(D)}",
+    "/api-yoa/doordash_storefront/disconnect?venue=${encodeURIComponent(I.venue)}",
+    "/api-yoa/availability/widget/experiences/range?${Be}",
+    "/api-yoa/dining/hold/upgrades",
+    "/api-yoa/dining/hold/add",
+    "/api-yoa/venue/reservation_widget_settings_v2",
+    "/api-yoa/venue/reservation_widget_settings_v2?venue_id=${W}"
+  ]
+}

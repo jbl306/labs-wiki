@@ -1,0 +1,2304 @@
+{
+  "generated_at_utc": "2026-06-08T19:34:48Z",
+  "source_js": "https://www.sevenrooms.com/static/21bc93acc1900fc2ac156b2a7b1752af5b7844bf/cdn/app/widget/dining.js",
+  "source_js_sha256": "d431c93148d613dc1e7e9dfc464aec49332d60c376051a67a599a3cb7241bf53",
+  "endpoint_count": 287,
+  "endpoints": [
+    {
+      "endpoint": "/api-yoa/actuals/manage/cancel?token={D}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/actuals/manage/preferences?token={L}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/actuals/manage?token={D}&lang={L}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/admin/api-integration-partners",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/api-integration-partners/{L_integrationTypeId}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "PUT/PATCH/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/autotag/config_tiers",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/autotag/configs",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/autotag/configs/{L_id}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/autotag/configs/{L}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/clientapps",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/DELETE/POST (inferred)",
+      "js_occurrences": 3,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/clientapps/{U_clientAppId}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/clientapps/{U_clientAppId}/form",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/clientapps/{U_clientAppId}/rotate-secret",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/custom_domains",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/custom_font/{v}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/PUT/PATCH/DELETE (inferred)",
+      "js_occurrences": 3,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/custom_fonts",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/email_campaign_template/publish/{v}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/email_campaign_template/{v}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/email_campaign_templates",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/POST/PUT/PATCH (inferred)",
+      "js_occurrences": 3,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/email_campaign_test",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/importutils/",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/integration-template-form",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/integration-templates",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/integration-templates/{W_integrationTemplateId}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/payments-debug",
+      "domain": "Payment setup",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/payments-debug/load-more-http-logs",
+      "domain": "Payment setup",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/refresh_custom_domains",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-group-history-tracking",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-history-tracking",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-images/{D_venueId}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST/GET (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-images/{D_venueId}/{D_imageId}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "DELETE (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-package-provisioning",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-package-provisioning-diff",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-phone-numbers",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-phone-numbers/migrate/{X}?venue_id={U}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue-phone-numbers/{U}",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "DELETE (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue/business-contact/resync",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue/business-contact?venue={U_venueId}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venue_group_merge",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venuegroup/{U_venueGroupId}/venue-phone-numbers/twilio/toll-free/latest-verified",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venuegroup/{W_venueGroupId}/package-wizard/reports",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/admin/venuegroup/{W_venueGroupId}/package-wizard/start",
+      "domain": "Admin / integration configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/adyen/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/adyen/{v}/get_initial_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/adyen/{v}/post_payment_details",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/autotag/audience_size",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/access_rules",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/active_audiences",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/booked_covers",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/calendar",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/dates?venue=",
+      "domain": "Availability / discovery",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static/public discovery clue; read-oriented but not fully live-verified in this exact shape."
+    },
+    {
+      "endpoint": "/api-yoa/availability/dates?{dates_query}",
+      "domain": "Availability / discovery",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static/public discovery clue; read-oriented but not fully live-verified in this exact shape."
+    },
+    {
+      "endpoint": "/api-yoa/availability/debugger",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/experience/dates?venue=",
+      "domain": "Availability / discovery",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/experience/dates?{experience_dates_query}",
+      "domain": "Availability / discovery",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/mode",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/mode/{W_modeId}",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/mode/{W_modeId}/shifts",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/mode/{W_modeId}?venue={W_venue}",
+      "domain": "Availability / discovery",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/mode?venue={W_venue}",
+      "domain": "Availability / discovery",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/ng/widget/range?{availability_query}",
+      "domain": "Availability / discovery",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static/public discovery clue; read-oriented but not fully live-verified in this exact shape."
+    },
+    {
+      "endpoint": "/api-yoa/availability/venuegroup/{T}/access_rules",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/availability/widget/experiences/range?{experience_query}",
+      "domain": "Availability / discovery",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static/public discovery clue; read-oriented but not fully live-verified in this exact shape."
+    },
+    {
+      "endpoint": "/api-yoa/availability/widget/range",
+      "domain": "Availability / discovery",
+      "method_inferred": "GET (live)",
+      "js_occurrences": 1,
+      "live_observed": true,
+      "note": "LIVE observed: statuses [200] samples=3 confidence=low"
+    },
+    {
+      "endpoint": "/api-yoa/backwriter/{D}/conversations${L?",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/backwriter/{D}/reviews/summary",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/backwriter/{D}/reviews/{L}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/booking_access",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/booking_access/audience_hierarchy",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/booking_access/bulk_edit?venue_id={U}",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/booking_access/create",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/booking_access/v2",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/booking_access/{U_args_id}",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/booking_access/{U_id}",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "GET/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/client-import-ma/{D}/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/client/marketing_opt_in/{v}?venue={E}",
+      "domain": "Client / guest data",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/client/{v}/external-profile-notes",
+      "domain": "Client / guest data",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/client/{v}/marketing_preferences",
+      "domain": "Client / guest data",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/client/{v}/marketing_preferences/{E}",
+      "domain": "Client / guest data",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/client/{v}/marketing_preferences?venue={E}",
+      "domain": "Client / guest data",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/client/{v}/stats",
+      "domain": "Client / guest data",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/client/{v}/tag-followers",
+      "domain": "Client / guest data",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/client/{v}/tags",
+      "domain": "Client / guest data",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/clients/marketing_opt_in/count",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/concierge_access_report/{T_conciergeId}",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_audience/{W_venueId}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_audience/{W_venueId}/{W_id}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "GET/DELETE/PUT/PATCH (inferred)",
+      "js_occurrences": 3,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_domains",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "DELETE (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_domains/activate?venue_id={W}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_domains/verify?venue_id={W}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_domains?venue_id={W}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_fonts?venue={T}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_sms/{L}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/custom_sms/{L}/{W}",
+      "domain": "Custom assets/domains/audiences",
+      "method_inferred": "DELETE (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/customer-adyen-session/",
+      "domain": "Payment setup",
+      "method_inferred": "POST/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Payment-sensitive setup step; not called."
+    },
+    {
+      "endpoint": "/api-yoa/customer-email/",
+      "domain": "Client / guest data",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Guest/client data surface; likely private or session-scoped; not called."
+    },
+    {
+      "endpoint": "/api-yoa/customer-payment-session/",
+      "domain": "Payment setup",
+      "method_inferred": "POST/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Payment-sensitive setup step; not called."
+    },
+    {
+      "endpoint": "/api-yoa/customer-payment-session/?customer_payment_session_id={V}",
+      "domain": "Payment setup",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Payment-sensitive setup step; not called."
+    },
+    {
+      "endpoint": "/api-yoa/cybersource/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 4,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/cybersource/auth/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/cybersource/auth/{v}/get_initial_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/cybersource/{v}/generate_token",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/cybersource/{v}/get_capture_context",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/default_policy_data/{I}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/deliveroo_marketplace",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/deliveroo_marketplace/cuisine?venue={venue}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/deliveroo_marketplace/image_uploader?venue={venue}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/deliveroo_marketplace/photos/reorder?venue={venue}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/deliveroo_marketplace/photos?venue={venue}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/deliveroo_marketplace/toggle?venue={venue}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/deliveroo_marketplace/venue_description?venue={venue}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/dining/hold/add",
+      "domain": "Dining hold / checkout flow",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Probable write-sensitive table-hold step; not called."
+    },
+    {
+      "endpoint": "/api-yoa/dining/hold/upgrades",
+      "domain": "Dining hold / checkout flow",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Probable write-sensitive table-hold step; not called."
+    },
+    {
+      "endpoint": "/api-yoa/dining/pre_arrival_upgrades/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/dining/pre_arrival_upgrades/{L}/{W}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/dining/venue_info",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": true,
+      "note": "LIVE observed: statuses [400] samples=1 confidence=low"
+    },
+    {
+      "endpoint": "/api-yoa/dining/venue_info?venue_url_key=",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/dining/widget_info",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_marketplace",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_marketplace/cuisine_update?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_marketplace/image_upload?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_marketplace/photos_reorder?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_marketplace/photos_update?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_marketplace/toggle?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_marketplace/venue_description_update?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_storefront/connect?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/doordash_storefront/disconnect?venue={venue}",
+      "domain": "DoorDash marketplace/storefront",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "DoorDash integration/marketplace clue from SevenRooms JS; likely partner/admin/config surface, not confirmed consumer Going Out API."
+    },
+    {
+      "endpoint": "/api-yoa/email_campaign_activity",
+      "domain": "Email / campaign tooling",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/email_campaign_templates",
+      "domain": "Email / campaign tooling",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/email_campaign_test",
+      "domain": "Email / campaign tooling",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/email_campaigns",
+      "domain": "Email / campaign tooling",
+      "method_inferred": "GET/PUT/PATCH/POST (inferred)",
+      "js_occurrences": 3,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/email_campaigns/fetch_template_fields/{E}",
+      "domain": "Email / campaign tooling",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/email_campaigns/resolve_parent_template_updates/{E}",
+      "domain": "Email / campaign tooling",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/email_campaigns/{E}",
+      "domain": "Email / campaign tooling",
+      "method_inferred": "GET/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/experiences",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH/GET (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/experiences/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/experiences/{T}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/experiences/{v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/experiences?venue_id={E}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/floorplan_layouts",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/insights/{L}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/insights/{L}/{W}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/insights/{L}/{W}/comment",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/ivvy/{I}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/languages/{L}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/languagestrings/{T}/all",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/languagestrings/{v_venueId}/sms-description-keys",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/loyalty/{T}/signup",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/manager/{v}/activitylog/json",
+      "domain": "Manager / activity or ops",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/marketing_assistant?venue_id={E}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/mfa/auth/step_up",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/mfa/provisioning/app/initiate",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/mfa/provisioning/sms/initiate",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/mfa/provisioning/{W_mfaMethod}/disable",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/mfa/provisioning/{W_mfaMethod}/verify",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/ordering/notification_settings",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/ordering/room_numbers/{v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/POST/PUT/PATCH/DELETE (inferred)",
+      "js_occurrences": 4,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/ordering/room_numbers/{v}/{E}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "DELETE (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/orders",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/orders/{L}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/orders/{L}/status",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/",
+      "domain": "Payment setup",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 4,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/{I_venueUrlKey}/refund",
+      "domain": "Payment setup",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/{U_gateway}/{U_venueKey}/setup",
+      "domain": "Payment setup",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/{U_venueId}/recommended_integrations",
+      "domain": "Payment setup",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/{U_venueId}/setup",
+      "domain": "Payment setup",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/{U_venueId}/setup/test",
+      "domain": "Payment setup",
+      "method_inferred": "POST/GET (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/{v}/authorize",
+      "domain": "Payment setup",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/payments/{v}/begin_payment",
+      "domain": "Payment setup",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/policies/{I_venueId}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{D}/internal_menu/clear",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{D}/internal_menu/items",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{D}/internal_menu/upload_csv",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/base_urls",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/check_creation_mappings_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/config",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/course_status_mapping_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/deposit_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/internal_menu/save_config",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/landing",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/locations",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/seating_areas",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/table_mapping_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/tender_items",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/validate_mapping_sync",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{Fe}/{Ve_toLowerCase}/save_config",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{I}/agilysys_infogenesis/automatic_check_creation_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{I}/agilysys_infogenesis/default_profit_center",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{experience_query}/{Fe_toLowerCase}/authenticate",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/posi/{experience_query}/{Fe_toLowerCase}/disconnect",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/promo_codes/{V}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/promo_codes/{V}/resources",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/promo_codes/{V}/{U_key}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/promo_codes/{V}/{U}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/redemption_hub/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/redemption_hub/{T}/check_balance",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/referrals_program",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/referrals_program?venue_id={D_venueId}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/reporting/revenue_dashboard/{T}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/requests/{D}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/requests/{D}/cancel",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/reviews",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/reviews/{D}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/reviews/{D}/reply",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "DELETE (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/reviews/{D}/reply?venue_id={L}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/saferpay/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/saferpay/{v}/get_initial_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/shift_4/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/shift_4/{v}/get_initial_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/shifts/schedule",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/shifts/summary",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/smart_boost",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/smart_boost?venue={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/smart_boost?venue_id={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/smart_boost_preview?venue={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/smart_boost_status?venue={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/smart_boost_time_slots?venue={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/smart_boost_time_slots_range",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/sms_campaign_activity",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/sms_campaign_templates",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/sms_campaign_templates/fetch_template_fields/{E}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/sms_campaign_test?venue={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/sms_campaigns",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/step_up/initiate",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/step_up/mfa/verify",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/stripe/{U_venueId}/disconnect",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/stripe/{U_venueId}/generate_connect_link",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/subscription/{T}/signup",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/tags/translated/{T}/{I}/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/upgrades/widget/status",
+      "domain": "Upsells / upgrades",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/upgrades/widget?venue_id={D}",
+      "domain": "Upsells / upgrades",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/users/{I}/suspend",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/booking_access_validation_criteria",
+      "domain": "Booking access rules / audiences",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Likely authenticated/admin/partner surface; static clue only."
+    },
+    {
+      "endpoint": "/api-yoa/venue/dining_widget_settings",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/marketing-status",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/perk_concierges",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/perks",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/perks/{E}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/perks/{E}?venue_id={v}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/perks?venue_id={v}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/phone-numbers",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/reservation_widget_settings_v2",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": true,
+      "note": "LIVE observed: statuses [401] samples=1 confidence=low"
+    },
+    {
+      "endpoint": "/api-yoa/venue/reservation_widget_settings_v2?venue_id={W}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 3,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/settings",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/settings?venue_id={D_venueId}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/settings?venue_id={L}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/side_navigation",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/subscription_widget_settings",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/subscription_widget_settings?venue_id={I}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/tax_rates",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/upsells/list",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/user_single_venue_user",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{D}/venue_users",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{D}/venue_users/{L}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET/PUT/PATCH (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{E}/whatsapp/connect",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{E}/whatsapp/reconnect",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{I}/go_live",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{I}/go_live_extension",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{L}/app_context",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{L}/looker_folders",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{T}/default_availability_settings",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{T}/seating_areas_tables",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{W}/block",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{W}/block/{U}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{W}/block/{V}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET/DELETE (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{W}/blocks",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{v_venueId}/whatsapp/connect",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue/{v}/activity_logs/{E}",
+      "domain": "Venue / widget configuration",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue_events/list",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue_profile",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET/POST (inferred)",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue_static_data",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venue_users",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venuegroup/accessible_pods",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venuegroup/get_group_venues",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/venuegroup/{I}/activity_log",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/waitlist",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/waitlist/",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 2,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/waitlist/quote_times?venue_id=",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "UNKNOWN",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/whatsapp/phone-numbers/acquire?venue_id={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/whatsapp/phone-numbers/{E}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "DELETE (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/whatsapp/phone-numbers?venue_id={v}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "POST (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/widget/experiences/{I}",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/{D}/fee_list",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "PUT/PATCH (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/{I_venueId}/fees",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/{T_venueId}/tables",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/{T_venueId}/taxes",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    },
+    {
+      "endpoint": "/api-yoa/{v}/topol_token",
+      "domain": "Other / miscellaneous",
+      "method_inferred": "GET (inferred)",
+      "js_occurrences": 1,
+      "live_observed": false,
+      "note": "Static JS endpoint clue; not live-verified."
+    }
+  ]
+}

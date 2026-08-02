@@ -1,0 +1,16 @@
+{
+  "id": "req-3-availability-empty",
+  "url": "https://www.sevenrooms.com/api-yoa/availability/widget/range?venue=negrilbk&time_slot=19%3A30&party_size=2&halo_size_interval=16&start_date=06-08-2026&num_days=3&channel=SEVENROOMS_WIDGET",
+  "status": 200,
+  "headers": {
+    "date": "Mon, 08 Jun 2026 19:13:07 GMT",
+    "content-type": "application/json; charset=utf-8",
+    "Content-Length": "177",
+    "x-sha-header": "21bc93acc1",
+    "cache-control": "no-cache",
+    "via": "1.1 google",
+    "Alt-Svc": "h3=\":443\"; ma=2592000",
+    "Connection": "close"
+  },
+  "body": "{\"status\": 200, \"data\": {\"availability\": {\"2026-06-08\": [], \"2026-06-09\": [], \"2026-06-10\": []}}, \"csrftoken\": null, \"request_id\": \"1780945987.8a7375d3675beb102d2b830db4fd956c\"}"
+}

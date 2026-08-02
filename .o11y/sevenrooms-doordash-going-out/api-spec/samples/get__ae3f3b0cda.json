@@ -1,0 +1,24 @@
+{
+  "endpoint": "GET https://www.sevenrooms.com/api-yoa/dining/venue_info",
+  "request": {
+    "status": null,
+    "headers": {
+      "User-Agent": "Mozilla/5.0 (compatible; labs-wiki-api-discovery/0.1)",
+      "Accept": "application/json, text/plain, */*"
+    },
+    "body": null
+  },
+  "response": {
+    "status": null,
+    "headers": {
+      "date": "Mon, 08 Jun 2026 19:13:07 GMT",
+      "content-type": "application/json; charset=utf-8",
+      "Content-Length": "174",
+      "cache-control": "no-cache",
+      "via": "1.1 google",
+      "Alt-Svc": "h3=\":443\"; ma=2592000,h3-29=\":443\"; ma=2592000",
+      "Connection": "close"
+    },
+    "body": null
+  }
+}

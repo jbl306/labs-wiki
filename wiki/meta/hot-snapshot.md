@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-08-02T03:17:01+00:00
+generated: 2026-08-03T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,24 +11,24 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-08-02T03:17:01+00:00
+> Regenerated: 2026-08-03T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-07-31` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
-- `2026-06-03` — [[partner-gated-reservation-apis]] (`wiki/concepts/partner-gated-reservation-apis.md`)
-- `2026-06-03` — [[public-reservation-widget-availability-endpoints]] (`wiki/concepts/public-reservation-widget-availability-endpoints.md`)
-- `2026-06-03` — [[doordash-going-out]] (`wiki/entities/doordash-going-out.md`)
-- `2026-06-03` — [[sevenrooms-api]] (`wiki/entities/sevenrooms-api.md`)
-- `2026-06-03` — [[doordash-going-out-sevenrooms-api-research]] (`wiki/sources/doordash-going-out-sevenrooms-api-research.md`)
-- `2026-06-03` — [[public-widget-availability-vs-partner-gated-reservation-apis]] (`wiki/synthesis/public-widget-availability-vs-partner-gated-reservation-apis.md`)
-- `2026-05-31` — [[offline-contract-validation-on-call-triage-artifacts]] (`wiki/concepts/offline-contract-validation-on-call-triage-artifacts.md`)
-- `2026-05-31` — [[point-in-time-prop-snapshot-identity]] (`wiki/concepts/point-in-time-prop-snapshot-identity.md`)
-- `2026-05-31` — [[shared-canonical-settled-prop-population-consistency]] (`wiki/concepts/shared-canonical-settled-prop-population-consistency.md`)
+- `2026-08-02` — [[ace-context-adaptation-failure-modes-countermeasures]] (`wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md`)
+- `2026-08-02` — [[adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs]] (`wiki/synthesis/adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs.md`)
+- `2026-08-02` — [[adaboost-vs-standalone-decision-trees-performance-and-limitations]] (`wiki/synthesis/adaboost-vs-standalone-decision-trees-performance-and-limitations.md`)
+- `2026-08-02` — [[agent-context-compression-layers-tool-using-systems]] (`wiki/synthesis/agent-context-compression-layers-tool-using-systems.md`)
+- `2026-08-02` — [[architectural-source-priority-vs-live-prop-line-incident-diagnosis]] (`wiki/synthesis/architectural-source-priority-vs-live-prop-line-incident-diagnosis.md`)
+- `2026-08-02` — [[audit-remediation-patterns-nba-ml-integrity]] (`wiki/synthesis/audit-remediation-patterns-nba-ml-integrity.md`)
+- `2026-08-02` — [[autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-]] (`wiki/synthesis/autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-.md`)
+- `2026-08-02` — [[broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction]] (`wiki/synthesis/broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction.md`)
+- `2026-08-02` — [[canonical-settled-backtests-vs-broad-diagnostic-backtests]] (`wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md`)
+- `2026-08-02` — [[claude-code-vs-openclaw-architecture-choices-shaped-by-deployment-context]] (`wiki/synthesis/claude-code-vs-openclaw-architecture-choices-shaped-by-deployment-context.md`)
 
 ## Recent Sources Captured
 
-- `2026-07-10` — `raw/2026-07-09-github-ingestion-phase-3-delivery.md`
+- `2026-08-02` — `raw/2026-07-09-github-ingestion-phase-3-delivery.md`
 - `2026-06-04` — `raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md`
 - `2026-05-31` — `raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md`
 - `2026-05-31` — `raw/2026-05-31-copilot-session-optimizing-dev-kit-instructions-3fbfec36.md`

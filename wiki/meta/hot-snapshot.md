@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-08-03T03:17:01+00:00
+generated: 2026-08-04T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,10 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-08-03T03:17:01+00:00
+> Regenerated: 2026-08-04T03:17:01+00:00
 
 ## Recent Wiki Edits
 
+- `2026-08-02` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-02` — [[ace-context-adaptation-failure-modes-countermeasures]] (`wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md`)
 - `2026-08-02` — [[adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs]] (`wiki/synthesis/adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs.md`)
 - `2026-08-02` — [[adaboost-vs-standalone-decision-trees-performance-and-limitations]] (`wiki/synthesis/adaboost-vs-standalone-decision-trees-performance-and-limitations.md`)
@@ -24,7 +25,6 @@ ttl_hours: 24
 - `2026-08-02` — [[autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-]] (`wiki/synthesis/autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-.md`)
 - `2026-08-02` — [[broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction]] (`wiki/synthesis/broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction.md`)
 - `2026-08-02` — [[canonical-settled-backtests-vs-broad-diagnostic-backtests]] (`wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md`)
-- `2026-08-02` — [[claude-code-vs-openclaw-architecture-choices-shaped-by-deployment-context]] (`wiki/synthesis/claude-code-vs-openclaw-architecture-choices-shaped-by-deployment-context.md`)
 
 ## Recent Sources Captured
 

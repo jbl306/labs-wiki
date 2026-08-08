@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-08-07T03:17:01+00:00
+generated: 2026-08-08T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-08-07T03:17:01+00:00
+> Regenerated: 2026-08-08T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-08-05` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-08-06` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-02` — [[ace-context-adaptation-failure-modes-countermeasures]] (`wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md`)
 - `2026-08-02` — [[adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs]] (`wiki/synthesis/adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs.md`)
 - `2026-08-02` — [[adaboost-vs-standalone-decision-trees-performance-and-limitations]] (`wiki/synthesis/adaboost-vs-standalone-decision-trees-performance-and-limitations.md`)

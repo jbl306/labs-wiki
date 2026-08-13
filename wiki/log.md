@@ -4912,4 +4912,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-08-08-the-next-generation-of-mcp-cloudflare-blog.md
   status: success
   notes: "Created one source summary and three new, source-grounded concept pages. No synthesis was proposed because the evidence is from a single raw source. Existing Code Mode MCP, Cloudflare, and MCP-category pages were retained as canonical references; no entity update was necessary."
+- timestamp: 2026-08-13T12:56:57+00:00
+  operation: ingest
+  agent: codex-cli
+  targets:
+    - wiki/sources/a-survey-of-agent-memory-in-the-second-half-towards-self-evolving-and-long-horizon-agents.md
+    - wiki/concepts/memory-substrates-in-foundation-agents.md
+    - wiki/concepts/memory-operations-in-foundation-agents.md
+    - wiki/concepts/agent-memory-frameworks.md
+  source: raw/2026-08-13-260206052v4pdf.md
+  status: success
+  notes: "Proposes one source summary, two distinct concepts for the survey's substrate and operational taxonomies, and a full update to the existing Agent Memory Frameworks page. Existing implicit/explicit/agentic memory pages and the existing synthesis were linked instead of duplicated; no new synthesis is proposed because the source is a single origin and the existing taxonomy synthesis already covers the three-way paradigm comparison. MemPalace/task-observer tools were unavailable in this runtime; no files or KG stores were written."
 ```

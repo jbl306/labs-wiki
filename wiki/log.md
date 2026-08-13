@@ -4901,4 +4901,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-07-09-github-ingestion-phase-3-delivery.md
   status: success
   notes: "Recovered typed manifest after nested-result parser bug; generated pages passed deterministic validation."
+- timestamp: 2026-08-13T12:51:00+00:00
+  operation: ingest
+  agent: codex-cli
+  targets:
+    - wiki/sources/the-next-generation-of-mcp-cloudflare-blog.md
+    - wiki/concepts/stateless-mcp-protocol.md
+    - wiki/concepts/multi-round-trip-requests-mcp-elicitation.md
+    - wiki/concepts/mcp-authorization-evolution.md
+  source: raw/2026-08-08-the-next-generation-of-mcp-cloudflare-blog.md
+  status: success
+  notes: "Created one source summary and three new, source-grounded concept pages. No synthesis was proposed because the evidence is from a single raw source. Existing Code Mode MCP, Cloudflare, and MCP-category pages were retained as canonical references; no entity update was necessary."
 ```

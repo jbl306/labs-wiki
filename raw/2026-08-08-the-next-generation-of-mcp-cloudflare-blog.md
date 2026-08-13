@@ -6,7 +6,7 @@ source: android-share
 url: "https://blog.cloudflare.com/mcp-v2/"
 content_hash: "sha256:f66aea27eeabe66a6361457106cbd6fabdc6a20f48f41aa0edcc84596bef73ca"
 tags: []
-status: pending
+status: ingested
 ---
 
 https://blog.cloudflare.com/mcp-v2/

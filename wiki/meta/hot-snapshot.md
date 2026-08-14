@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-08-13T03:17:01+00:00
+generated: 2026-08-14T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,24 +11,25 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-08-13T03:17:01+00:00
+> Regenerated: 2026-08-14T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-08-11` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-08-13` — [[agent-memory-frameworks]] (`wiki/concepts/agent-memory-frameworks.md`)
+- `2026-08-13` — [[memory-operations-in-foundation-agents]] (`wiki/concepts/memory-operations-in-foundation-agents.md`)
+- `2026-08-13` — [[memory-substrates-in-foundation-agents]] (`wiki/concepts/memory-substrates-in-foundation-agents.md`)
+- `2026-08-13` — [[a-survey-of-agent-memory-in-the-second-half-towards-self-evolving-and-long-horizon-agents]] (`wiki/sources/a-survey-of-agent-memory-in-the-second-half-towards-self-evolving-and-long-horizon-agents.md`)
+- `2026-08-13` — [[mcp-authorization-evolution]] (`wiki/concepts/mcp-authorization-evolution.md`)
+- `2026-08-13` — [[multi-round-trip-requests-mcp-elicitation]] (`wiki/concepts/multi-round-trip-requests-mcp-elicitation.md`)
+- `2026-08-13` — [[stateless-mcp-protocol]] (`wiki/concepts/stateless-mcp-protocol.md`)
+- `2026-08-12` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-02` — [[ace-context-adaptation-failure-modes-countermeasures]] (`wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md`)
 - `2026-08-02` — [[adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs]] (`wiki/synthesis/adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs.md`)
-- `2026-08-02` — [[adaboost-vs-standalone-decision-trees-performance-and-limitations]] (`wiki/synthesis/adaboost-vs-standalone-decision-trees-performance-and-limitations.md`)
-- `2026-08-02` — [[agent-context-compression-layers-tool-using-systems]] (`wiki/synthesis/agent-context-compression-layers-tool-using-systems.md`)
-- `2026-08-02` — [[architectural-source-priority-vs-live-prop-line-incident-diagnosis]] (`wiki/synthesis/architectural-source-priority-vs-live-prop-line-incident-diagnosis.md`)
-- `2026-08-02` — [[audit-remediation-patterns-nba-ml-integrity]] (`wiki/synthesis/audit-remediation-patterns-nba-ml-integrity.md`)
-- `2026-08-02` — [[autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-]] (`wiki/synthesis/autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-.md`)
-- `2026-08-02` — [[broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction]] (`wiki/synthesis/broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction.md`)
-- `2026-08-02` — [[canonical-settled-backtests-vs-broad-diagnostic-backtests]] (`wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md`)
 
 ## Recent Sources Captured
 
-- `2026-08-08` — `raw/2026-08-08-the-next-generation-of-mcp-cloudflare-blog.md`
+- `2026-08-13` — `raw/2026-08-13-260206052v4pdf.md`
+- `2026-08-13` — `raw/2026-08-08-the-next-generation-of-mcp-cloudflare-blog.md`
 - `2026-08-02` — `raw/2026-07-09-github-ingestion-phase-3-delivery.md`
 - `2026-06-04` — `raw/2026-06-04-doordash-going-out-sevenrooms-api-research.md`
 - `2026-05-31` — `raw/2026-05-31-copilot-session-sprint-accuracy-planning-8edf737a.md`
@@ -37,7 +38,6 @@ ttl_hours: 24
 - `2026-05-31` — `raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md`
 - `2026-05-30` — `raw/2026-05-30-copilot-session-light-ui-redesign-for-csr-benefits-571044d9.md`
 - `2026-05-30` — `raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md`
-- `2026-05-30` — `raw/2026-05-30-copilot-session-implementing-hotel-auto-population-pipeline-3ef0ada5.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

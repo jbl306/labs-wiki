@@ -1,0 +1,1495 @@
+{
+  "results": [
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "ACE Context Adaptation Failure Modes and Countermeasures"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "AdaBoost vs Random Forests: Ensemble Learning Approaches and Practical Trade-offs"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/adaboost-vs-standalone-decision-trees-performance-and-limitations.md",
+      "score": 97,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "AdaBoost vs. Standalone Decision Trees: Performance and Limitations"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/agent-context-compression-layers-tool-using-systems.md",
+      "score": 97,
+      "source_count": 3,
+      "source_family_count": 2,
+      "title": "Agent Context Compression Layers in Tool-Using Systems"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/architectural-source-priority-vs-live-prop-line-incident-diagnosis.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Architectural Source Priority vs Live Prop-Line Incident Diagnosis"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/audit-remediation-patterns-nba-ml-integrity.md",
+      "score": 100,
+      "source_count": 5,
+      "source_family_count": 1,
+      "title": "Audit Remediation Patterns for NBA ML Integrity"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/autoreason-vs-critique-and-revise-structural-approaches-to-bias-scope-creep-and-.md",
+      "score": 95,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "Autoreason vs. Critique-and-Revise: Structural Approaches to Bias, Scope Creep, and Restraint in Iterative Agentic Workflows"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/broadcaster-extractor-fallback-vs-drm-constrained-broadcaster-extraction.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Broadcaster Extractor Fallback vs DRM-Constrained Broadcaster Extraction"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/canonical-settled-backtests-vs-broad-diagnostic-backtests.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Canonical Settled Backtests vs Broad Diagnostic Backtests"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/choosing-source-truth-edit-hotel-catalog.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Choosing a Source of Truth for The Edit Hotel Catalog"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/claude-code-vs-openclaw-architecture-choices-shaped-by-deployment-context.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Claude Code vs OpenClaw: Architecture Choices Shaped by Deployment Context"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/comet-resolver-vs-real-debrid-magnet-polling.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Comet Resolver Workflow vs Real-Debrid Magnet Polling"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/comparing-axis-cli-ergonomics-with-autoagents-natural-language-driven-agent-crea.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Comparing AXI's CLI Ergonomics with AutoAgent's Natural Language-Driven Agent Creation"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/comparing-boosting-strategies-lightgbm-leaf-wise-adaboost-and-xgboost.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Comparing Boosting Strategies: LightGBM Leaf-Wise, AdaBoost, and XGBoost"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/comparing-chrome-devtools-mcp-and-axi-for-agentic-tool-integration-protocol-vs-e.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Comparing Chrome DevTools MCP and AXI for Agentic Tool Integration: Protocol vs. Ergonomic Design"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/comparing-reasoning-failures-in-llms-and-human-cognitive-biases-origins-manifest.md",
+      "score": 95,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "Comparing Reasoning Failures in LLMs and Human Cognitive Biases: Origins, Manifestations, and Mitigation"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/compiler-managed-agent-installs-vs-repo-local-custom-agents.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Compiler-Managed Agent Installs vs. Repo-Local Custom Agents"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/complementarity-and-competition-exact-source-hash-deduplication-vs-fuzzy-concept.md",
+      "score": 95,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "Complementarity and Competition: Exact Source-Hash Deduplication vs. Fuzzy Concept Name Merging in LLM Wiki Graphs"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/compound-engineering-workflow-vs-phased-wiki-planning.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 3,
+      "title": "Compound Engineering Workflow vs Phased Wiki Planning"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/configuration-scope-vs-workload-shaping-homelab-repairs.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Configuration Scope vs Workload Shaping in Homelab Repairs"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 1,
+      "insight_count": 1,
+      "passed": true,
+      "path": "wiki/synthesis/copilot-cli-vs-github-models-api-wiki-ingestion.md",
+      "score": 96,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Copilot CLI vs GitHub Models API for Wiki Ingestion"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/daily-validation-vs-walk-forward-cv-nba-ml-engine.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Daily Validation vs Walk-Forward Cross-Validation in NBA ML Engine"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/debrid-first-acquisition-vs-broadcaster-extractor-fallback.md",
+      "score": 97,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Debrid-First Acquisition vs Broadcaster Extractor Fallback"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/democratizing-agent-customization-automated-skill-stack-installation-vs-natural-.md",
+      "score": 95,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Democratizing Agent Customization: Automated Skill Stack Installation vs. Natural Language-Driven Agent Building"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 1,
+      "insight_count": 1,
+      "passed": true,
+      "path": "wiki/synthesis/deterministic-evidence-gates-in-offline-on-call-triage.md",
+      "score": 91,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Deterministic Evidence Gates in Offline On-Call Triage"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/deterministic-extraction-vs-validation-gates-catalog-automation.md",
+      "score": 95,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Deterministic Extraction vs Validation Gates in Catalog Automation"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/distribution-safety-vs-deliberative-escalation-in-jbl-dev-kit.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Distribution Safety vs. Deliberative Escalation in jbl-dev-kit"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 1,
+      "insight_count": 1,
+      "passed": true,
+      "path": "wiki/synthesis/explicit-vs-internalized-multi-agent-debate.md",
+      "score": 91,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Explicit vs Internalized Multi-Agent Debate"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/full-dashboard-rewrite-vs-phased-ux-uplift-internal-tools.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Full Dashboard Rewrite vs Phased UX Uplift for Internal Tools"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/galloping-bot-boundary-resilience-patterns.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Galloping-Bot Boundary Resilience Patterns"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/hardening-unattended-wiki-ingest-pipelines.md",
+      "score": 100,
+      "source_count": 4,
+      "source_family_count": 1,
+      "title": "Hardening Unattended Wiki Ingest Pipelines"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/heuristic-cleanup-vs-market-aware-prop-ingestion.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Heuristic Cleanup vs Market-Aware Prop Ingestion"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/heuristic-prop-line-selection-vs-direct-sportsbook-validation.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Heuristic Prop-Line Selection vs Direct Sportsbook Validation"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/implicit-vs-explicit-vs-agentic-memory-llm-systems.md",
+      "score": 95,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Implicit vs. Explicit vs. Agentic Memory in LLM Systems"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/knightcrawler-addon-customization-vs-operational-reliability.md",
+      "score": 95,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "KnightCrawler Addon Customization vs Operational Reliability"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/knn-vs-decision-tree-comparative-approaches-to-classification-and-regression.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "KNN vs Decision Tree: Comparative Approaches to Classification and Regression"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/linear-regression-vs-decision-tree-algorithms-for-regression-tasks-interpretabil.md",
+      "score": 95,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Linear Regression vs Decision Tree Algorithms for Regression Tasks: Interpretability, Robustness, and Modeling Non-Linearity"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/linear-regression-vs-logistic-regression-mathematical-formulation-assumptions-an.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Linear Regression vs Logistic Regression: Mathematical Formulation, Assumptions, and Applications"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/llm-centric-architectures-operating-systems-vs-persistent-wiki-environments.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "LLM-Centric Architectures: Operating Systems vs. Persistent Wiki Environments"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/local-vision-policy-vs-planning-vs-wiring-spatial-design-studio.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Local Vision Policy vs Planning vs Wiring in Spatial Design Studio"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/local-vision-vs-developer-assisted-workflows-spatial-planning.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Local Vision vs Developer-Assisted Workflows for Spatial Planning Apps"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/lstms-vs-traditional-rnns-memory-retention-and-gradient-stability.md",
+      "score": 97,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "LSTMs vs Traditional RNNs: Memory Retention and Gradient Stability"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/memory-tuning-vs-workload-shaping-nba-ml-oom-response.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Memory Tuning vs Workload Shaping in NBA ML OOM Response"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 1,
+      "insight_count": 1,
+      "passed": true,
+      "path": "wiki/synthesis/migrating-cloud-dependent-web-apps-into-homelab.md",
+      "score": 96,
+      "source_count": 3,
+      "source_family_count": 2,
+      "title": "Migrating Cloud-Dependent Web Apps Into a Homelab"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/ml-dashboard-trust-contract-normalization-vs-provenance-transparency.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "ML Dashboard Trust: Contract Normalization vs Provenance Transparency"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/ml-dashboard-trust-hardening-calibration-artifact-freshness.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "ML Dashboard Trust Hardening: Calibration, Artifact Safety, and Freshness Alignment"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/naive-bayes-vs-decision-tree-assumptions-interpretability-and-performance-in-cla.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Naive Bayes vs Decision Tree: Assumptions, Interpretability, and Performance in Classification"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/payment-encryption-fallback-chains-vs-zero-exit-alert-escalation.md",
+      "score": 95,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Payment Encryption Fallback Chains vs Zero-Exit Alert Escalation"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/persistent-knowledge-codification-vs-aggressive-context-pruning-in-ai-agent-work.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Persistent Knowledge Codification vs. Aggressive Context Pruning in AI Agent Workflows"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/public-widget-availability-vs-partner-gated-reservation-apis.md",
+      "score": 95,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Public Reservation Widgets vs. Partner-Gated Reservation APIs"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/publishing-homelab-dashboards-safely-access-gates-dns.md",
+      "score": 97,
+      "source_count": 3,
+      "source_family_count": 2,
+      "title": "Publishing Homelab Dashboards Safely: Host Services, Access Gates, and DNS Pathing"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/random-forest-regression-vs-decision-tree-algorithm-a-comparative-synthesis.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Random Forest Regression vs. Decision Tree Algorithm: A Comparative Synthesis"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/recurring-checkpoint-patterns-agent-skill-routing-architecture-worktree-based-su.md",
+      "score": 95,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Recurring checkpoint patterns: Agent Skill Routing Architecture, Worktree-Based Subagent-Driven Development, Automated Skill Path Generation for Containerized Agent Systems"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/recurring-checkpoint-patterns-backend-for-frontend-bff-pattern-in-modern-dashboa.md",
+      "score": 95,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Recurring checkpoint patterns: Backend-For-Frontend (BFF) Pattern in Modern Dashboard Architecture, Handling PostgreSQL NUMERIC Type in Node.js with pg Library, Dashboard Chart Strategy and Data-Driven Refinement"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/recurring-checkpoint-patterns-caddy-handle-path-directive-and-its-impact-on-upst.md",
+      "score": 95,
+      "source_count": 9,
+      "source_family_count": 1,
+      "title": "Recurring checkpoint patterns: Caddy handle_path Directive and Its Impact on Upstream URL Construction, Docker Container Resource Auditing and Optimization, PostgreSQL Materialized Views for Dashboard Optimization"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/recurring-checkpoint-patterns-durable-copilot-session-checkpoint-promotion-heuri.md",
+      "score": 95,
+      "source_count": 30,
+      "source_family_count": 1,
+      "title": "Recurring checkpoint patterns: Durable Copilot Session Checkpoint Promotion, Heuristic-Based Classification of Session Checkpoints, Auto-Ingest Pipeline for Wiki Markdown Processing"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/recurring-checkpoint-patterns-feature-engineering-for-nba-ml-engine-sprint-10-wa.md",
+      "score": 95,
+      "source_count": 4,
+      "source_family_count": 1,
+      "title": "Recurring checkpoint patterns: Feature Engineering for NBA ML Engine Sprint 10, Warmstarting Hyperparameter Tuning with Optuna, Target Encoding with Shifted Expanding Mean for Time-Series Features"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 4,
+      "insight_count": 4,
+      "passed": true,
+      "path": "wiki/synthesis/recurring-checkpoint-patterns-parallel-agent-coordination-in-ml-sprint-implement.md",
+      "score": 95,
+      "source_count": 41,
+      "source_family_count": 1,
+      "title": "Recurring checkpoint patterns: Parallel Agent Coordination in ML Sprint Implementation, Calibration Leakage Mitigation in ML Model Training, Data Source Expansion for NBA ML Prediction Platform"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/recursive-language-models-vs-block-masking-long-context-scaling.md",
+      "score": 97,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "Recursive Language Models vs. Block Masking for Long-Context Scaling"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 1,
+      "insight_count": 1,
+      "passed": true,
+      "path": "wiki/synthesis/richer-vs-signal-preserving-github-repository-ingestion.md",
+      "score": 96,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Richer vs. Signal-Preserving GitHub Repository Ingestion"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/rnns-vs-transformers-handling-sequential-data-memory-and-long-term-dependencies.md",
+      "score": 97,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "RNNs vs Transformers: Handling Sequential Data, Memory, and Long-Term Dependencies"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/shap-explainability-across-tree-based-linear-and-ensemble-models-in-production-m.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "SHAP Explainability Across Tree-Based, Linear, and Ensemble Models in Production ML Pipelines"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/shap-explainability-standard-lightgbm-vs-custom-serialized-models-in-production.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "SHAP Explainability: Standard LightGBM vs Custom Serialized Models in Production"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/spatial-foundation-baselines-vs-product-quality-systems.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Foundation Baselines vs Product-Facing Quality Systems in Spatial Design Studio"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/spatial-roadmap-vs-deployment-vs-foundation-baselines.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Roadmap Planning vs Deployment Hardening vs Foundation Baselines in Spatial Design Studio"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/spatial-s6-foundation-vs-completion-closeout.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Foundation Hardening vs Completion Closeout in Spatial Design Studio S6"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/spatially-organized-memory-vs-llm-maintained-persistent-wiki-long-term-ai-recall.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "Spatially-Organized Memory vs. LLM-Maintained Persistent Wiki: Long-Term AI Recall and Retrieval"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/standard-attention-vs-flash-attention-in-llms-efficiency-scalability-and-deploym.md",
+      "score": 95,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Standard Attention vs. Flash Attention in LLMs: Efficiency, Scalability, and Deployment"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/strategic-human-gates-vs-specialized-review-roles-mechanisms-for-preventing-qual.md",
+      "score": 95,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Strategic Human Gates vs. Specialized Review Roles: Mechanisms for Preventing Quality Failures in Automated Agent Pipelines"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/structured-automated-documentation-vs-institutional-memory-in-agentic-workflows.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Structured, Automated Documentation vs. Institutional Memory in Agentic Workflows"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        },
+        {
+          "code": "mechanism-shaped-title",
+          "message": "use a topic/decision-shaped title of at most 100 characters",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/structured-plan-artifacts-vs-context-management-complementary-strategies-for-err.md",
+      "score": 95,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Structured Plan Artifacts vs. Context Management: Complementary Strategies for Error Reduction in Agentic Workflows"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/svm-vs-decision-tree-approaches-to-classification-robustness-interpretability-an.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "SVM vs Decision Tree: Approaches to Classification, Robustness, Interpretability, and Performance"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/token-economy-vs-context-hygiene-optimizing-multi-agent-ai-workflows.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Token Economy vs. Context Hygiene: Optimizing Multi-Agent AI Workflows"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/token-layer-redesign-vs-phased-ux-uplift.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Token-Layer Redesign vs Phased UX Uplift"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-source",
+          "message": "within-source synthesis; seek an independent source before treating it as cross-source",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 1,
+      "insight_count": 1,
+      "passed": true,
+      "path": "wiki/synthesis/training-time-segmentation-vs-inference-time-compaction-in-memento.md",
+      "score": 91,
+      "source_count": 1,
+      "source_family_count": 1,
+      "title": "Training-Time Segmentation vs. Inference-Time Compaction in Memento"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/transformer-interpretability-traditional-methods-vs-circuit-tracing.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "Transformer Interpretability: Traditional Methods vs. Circuit Tracing"
+    },
+    {
+      "evidence_scope": "cross-source",
+      "findings": [],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/transformer-vs-hope-architecture-memory-continual-learning-and-long-context-hand.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 2,
+      "title": "Transformer vs. Hope Architecture: Memory, Continual Learning, and Long-Context Handling"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/trustworthy-prop-analytics-requires-three-contracts.md",
+      "score": 100,
+      "source_count": 4,
+      "source_family_count": 1,
+      "title": "Trustworthy Prop Analytics Requires Three Contracts"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/turning-sparse-hotel-sources-into-safe-geospatial-catalog.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Turning Sparse Hotel Sources into a Safe Geospatial Catalog"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/typicality-bias-mode-collapse-verbalized-sampling-aligned-llms.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Typicality Bias, Mode Collapse, and Verbalized Sampling in Aligned LLMs"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/vision-policy-vs-extraction-vs-acceptance-spatial-reference.md",
+      "score": 100,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Vision Policy vs Extraction vs Acceptance in Spatial Reference Workflows"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 2,
+      "insight_count": 2,
+      "passed": true,
+      "path": "wiki/synthesis/vision-policy-vs-hardware-reality-spatial-planning-apps.md",
+      "score": 97,
+      "source_count": 2,
+      "source_family_count": 1,
+      "title": "Vision Policy vs Hardware Reality in Spatial Planning Apps"
+    },
+    {
+      "evidence_scope": "within-source",
+      "findings": [
+        {
+          "code": "single-origin-family",
+          "message": "multiple raw files come from one coarse origin family",
+          "severity": "warning"
+        }
+      ],
+      "grounded_insight_count": 3,
+      "insight_count": 3,
+      "passed": true,
+      "path": "wiki/synthesis/weekly-retrain-survivability-vs-observability-shared-ml-hosts.md",
+      "score": 100,
+      "source_count": 3,
+      "source_family_count": 1,
+      "title": "Weekly Retrain Survivability vs Observability on Shared ML Hosts"
+    }
+  ],
+  "summary": {
+    "evidence_scopes": {
+      "cross-source": 15,
+      "within-source": 68
+    },
+    "failed": 0,
+    "fully_grounded_pages": 83,
+    "mechanism_shaped_titles": 13,
+    "pages": 83,
+    "passed": 83,
+    "score_below_85": 0,
+    "score_below_90": 0,
+    "score_mean": 98.1,
+    "score_median": 100,
+    "single_origin_family_pages": 68,
+    "single_source_pages": 9,
+    "strict_contract_pages": 83,
+    "ungrounded_pages": 0
+  }
+}

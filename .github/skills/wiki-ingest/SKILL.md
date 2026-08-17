@@ -15,7 +15,7 @@ allowed-tools:
 
 Manually process one or more raw sources from `raw/` into wiki pages. Uses a **two-phase pipeline** with hash-based incremental compilation.
 
-> **Primary path:** The `wiki-auto-ingest` Docker sidecar automatically processes pending sources within ~5 seconds using GPT-4.1. It handles Twitter/X, GitHub repos, HTML pages, MarkItDown-backed document conversion, and images with vision support. Use this skill as a fallback for manual re-processing or quality improvements.
+> **Primary path:** The `wiki-auto-ingest` Docker sidecar automatically processes pending sources within ~5 seconds using the configured agent CLI backend (Codex CLI by default). It handles Twitter/X, GitHub repos, HTML pages, MarkItDown-backed document conversion, and images with vision support. Use this skill as a fallback for manual re-processing or quality improvements.
 
 ## Usage
 
@@ -46,18 +46,19 @@ Use the **Researcher** persona (`agents/researcher.md`).
 
 Use the **Compiler** persona (`agents/compiler.md`).
 
-1. Create `wiki/sources/<slug>.md` using `templates/source-summary.md`
-   - Always 1:1 with the raw source
+1. Create or update `wiki/sources/<slug>.md` using `templates/source-summary.md`
+   - Create a new page when no canonical source page exists.
+   - When another raw capture represents the same upstream document (for example an arXiv abstract URL followed by its PDF URL), update the existing canonical source page instead of creating a duplicate. Preserve prior `sources`, accumulated metadata, and the original `created` date while using the richer proposed body and current source hash.
    - Set `source_hash` to the computed SHA-256
-   - Set `tier: hot` for new pages
+   - Set `tier: hot` only for new pages; preserve an existing page's established tier
 2. For each new concept extracted:
    - Check if `wiki/concepts/<slug>.md` exists
    - If not → create using `templates/concept-page.md`
-   - If yes → update with new information (append, don't overwrite)
+   - If yes — including when a concurrent ingest created it after proposal generation — update it with new information while preserving prior body content, provenance, and metadata
 3. For each new entity extracted:
    - Check if `wiki/entities/<slug>.md` exists
    - If not → create using `templates/entity-page.md`
-   - If yes → update with new information
+   - If yes — including a same-path concurrent-ingest collision — update with new information while preserving prior body content, provenance, and metadata
 4. Add `[[wikilinks]]` in both directions between related pages
 5. Update `sources:` field in all affected pages
 6. Append operation to `wiki/log.md`:
@@ -77,6 +78,11 @@ Use the **Compiler** persona (`agents/compiler.md`).
 
 - Never manually modify files in `raw/`; the only automated exception is replacing the deterministic fetched-content block for `type: url` sources or deterministic extracted-content block for `type: file` asset-backed sources, plus the `status` field
 - Always check hash before processing — skip unchanged sources
+- Treat an exact-path collision for the same titled source as an update candidate only when the current raw capture's normalized upstream identity matches the canonical page (including modern and legacy arXiv abstract/PDF IDs), or, for captures without URL identity, the source hash matches; retain every contributing raw path in `sources:`
+- Require the deterministic current-raw preflight hash for every reconciled source/concept/entity collision, bind each mutation's `source_hash` to it, and never trust a model-proposed copied hash as identity proof; fail closed when the deterministic hash is absent or invalid
+- Compare colliding page titles case-insensitively with whitespace normalization only; punctuation remains identity-significant (`C` and `C++` are different titles)
+- Treat explicit `update` proposals as untrusted input too: require matching canonical/proposed type and title, deterministic current-raw hash and provenance, and current-raw upstream identity for source-page updates; merge accumulated provenance, metadata, and body content instead of allowing replacement
+- Finalize deterministic duplicate and retention skips as observable publication outcomes: outside validation mode update the raw status, append the wiki log, commit only those manifest paths, and notify
 - Every wiki page must have valid frontmatter (see AGENTS.md)
 - Every fact must trace to a source via the `sources:` field
 - Update `wiki/log.md` and `wiki/index.md` after every operation

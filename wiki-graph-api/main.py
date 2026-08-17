@@ -27,6 +27,7 @@ import logging
 import os
 import re
 import time
+from functools import partial
 from pathlib import Path
 from typing import Any
 
@@ -129,9 +130,17 @@ class GraphState:
                 }
             loop = asyncio.get_running_loop()
             payload = await loop.run_in_executor(
-                None, build_graph_artifact, WIKI_PATH, CACHE_DIR, GRAPH_PATH
+                None,
+                partial(
+                    build_graph_artifact,
+                    WIKI_PATH,
+                    CACHE_DIR,
+                    GRAPH_PATH,
+                    tracker_path=TRACKER_PATH,
+                ),
             )
             self._install(payload)
+            self._refresh_query_embeddings()
             await self._broadcast("graph-updated")
             return payload
 

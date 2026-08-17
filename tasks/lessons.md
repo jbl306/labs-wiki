@@ -34,3 +34,27 @@ Format:
 - **Prevention rule**: Any "score" that produces a near-uniform distribution after >100 samples is broken — track the score distribution in CI and alarm when the IQR collapses. Replace presence-checks with continuous signals (graph degree, body length band, citable-claim regex, staleness curve, knowledge_state). R3 in the full review owns the rewrite of `compute_quality_score` and is the prevention.
 - **Affected files**: `scripts/lint_wiki.py`, `docs/memory-model.md`, `reports/full-review-2026-04-21.md`
 - **Category**: knowledge-curation
+
+## 2026-08-13: Auto-ingest deployment exposed build-time permissions and strict-schema drift
+
+- **Pattern**: The updated watcher reached Codex only after two unrelated runtime blockers were corrected: operator-private prompt files were unreadable to the non-root container user, and an optional object property was omitted from a strict structured-output schema's `required` array.
+- **Root cause**: Image copies inherited source-tree modes without a runtime-readability assertion, while local schema validation did not enforce the OpenAI strict-mode rule that every declared object property must be required (nullable when semantically optional).
+- **Prevention rule**: Auto-ingest image tests must read every shipped prompt/template as the configured runtime UID, and proposal-schema tests must recursively assert `required == properties.keys()` for closed objects before deployment.
+- **Affected files**: `Dockerfile.auto-ingest`, `scripts/ingest_transaction.py`, `tests/test_ingest_transaction.py`
+- **Category**: auto-ingest
+
+## 2026-08-17: Same-document source captures must upsert the canonical page
+
+- **Pattern**: An arXiv abstract capture created a canonical source page, then a second capture of the paper's PDF proposed `operation: create` for that same source path and the transaction failed instead of incorporating the richer raw capture.
+- **Root cause**: The proposal validator treated every create-to-existing-path mismatch as terminal, even when the collision was the single required source mutation for the same normalized title. The model's operation label was trusted more than the deterministic path and page identity evidence.
+- **Prevention rule**: Reconcile exact-path, same-type, same-title source/concept/entity creates from racing ingests only when the current raw capture's normalized upstream identity matches the canonical page; normalize both modern and legacy slash-style arXiv abstract/PDF IDs, and use equal source hashes as the fallback only when that raw has no URL identity. Require the deterministic current-raw preflight hash for every reconciliation, require every reconciled mutation to cite the current raw, and bind its `source_hash` to that deterministic hash rather than accepting inherited provenance or a model-proposed copied hash as identity proof; fail closed when the deterministic hash is absent or invalid. Compare titles case-insensitively with whitespace normalization only, retaining punctuation as identity-significant. Keep prior raw sources, accumulated list metadata, original creation date, quality metadata, and established tier. Use the richer proposed body for source pages; retain both racers' body content for concepts/entities. Continue rejecting existing-path creates for synthesis pages and identity, type, or title mismatches.
+- **Affected files**: `scripts/ingest_transaction.py`, `tests/test_ingest_transaction.py`, `.github/skills/wiki-ingest/SKILL.md`
+- **Category**: auto-ingest
+
+## 2026-08-17: Explicit updates and deterministic skips share the publication trust boundary
+
+- **Pattern**: A schema-valid model proposal could declare `operation: update` and replace an unrelated canonical source page, while duplicate/retention short-circuits changed raw status without log, commit, or notification evidence.
+- **Root cause**: Transaction guards covered racing stale creates but treated explicit updates as trusted full replacements; pre-backend success branches bypassed normal publication finalization.
+- **Prevention rule**: Bind every update to matching type/title plus deterministic current-raw hash and provenance, require current upstream identity for source-page updates, and preserve accumulated canonical metadata/provenance/body. Finalize deterministic skips through status, audit log, manifest-scoped commit, and notification outside validation mode.
+- **Affected files**: `scripts/ingest_transaction.py`, `scripts/auto_ingest.py`, `tests/test_ingest_transaction.py`, `tests/test_auto_ingest_agent_cli.py`, `.github/skills/wiki-ingest/SKILL.md`
+- **Category**: auto-ingest

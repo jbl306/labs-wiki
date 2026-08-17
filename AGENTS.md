@@ -97,13 +97,16 @@ tags: [topic, subtopic]
 # Required on synthesis pages:
 evidence_scope: cross-source       # cross-source | within-source
 evidence_source_count: 2           # unique raw paths in sources
+evidence_origin_family_count: 2    # independent upstream domains/channels
 ---
 ```
 
-**Required fields:** `title`, `type`, `created`, `sources`
-**Auto-populated by auto-ingest/skills:** `source_hash`, `quality_score`, `last_verified`, `concepts`, `related`
+**Required fields:** `title`, `type`, `created`, `last_verified`, `source_hash`,
+`sources`, `concepts`, `related`, `tier`, and `tags`
+**Auto-populated by auto-ingest/skills:** `quality_score`
 
 Synthesis pages additionally require `evidence_scope`, `evidence_source_count`,
+`evidence_origin_family_count`,
 and an `## Evidence Map` that maps each key insight to wiki pages, raw
 provenance, and confidence/limitations. Run
 `python3 scripts/audit_synthesis.py --page <path> --strict` before accepting a
@@ -224,8 +227,9 @@ concepts alone are not a synthesis trigger.
 
 1. Search existing synthesis pages before creating another.
 2. Build a targeted evidence packet of 2–6 relevant wiki pages.
-3. Prefer two or more independent raw sources; label a defensible single-source
-   comparison `evidence_scope: within-source` rather than overstating breadth.
+3. `evidence_scope: cross-source` is allowed only with two or more independent
+   origin families (different upstream domains/channels). Multiple files from
+   one session/checkpoint family remain `evidence_scope: within-source`.
 4. Use a topic- or decision-shaped title under 100 characters.
 5. Include 4–6 comparison dimensions, 3–5 grounded insights, and an Evidence
    Map with explicit confidence/limitations.

@@ -25,7 +25,7 @@ import time
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 import networkx as nx
 from networkx.algorithms.community import greedy_modularity_communities
@@ -931,6 +931,22 @@ def _checkpoint_health_report(
 # Serialisation
 # ---------------------------------------------------------------------------
 
+def _deterministic_generated_at(pages: Iterable[Page]) -> int:
+    """Derive artifact time from page metadata, never the wall clock."""
+    verified_dates = sorted(
+        str(page.last_verified)
+        for page in pages
+        if re.fullmatch(r"\d{4}-\d{2}-\d{2}", str(page.last_verified or ""))
+    )
+    if not verified_dates:
+        return 0
+    return int(
+        datetime.datetime.strptime(verified_dates[-1], "%Y-%m-%d")
+        .replace(tzinfo=datetime.timezone.utc)
+        .timestamp()
+    )
+
+
 def to_node_link(
     g: nx.Graph,
     communities: dict[str, int],
@@ -939,7 +955,7 @@ def to_node_link(
     extraction_stats: dict[str, int],
 ) -> dict[str, Any]:
     nodes = []
-    for n, data in g.nodes(data=True):
+    for n, data in sorted(g.nodes(data=True), key=lambda item: str(item[0])):
         page = pages_by_id.get(n)
         nodes.append(
             {
@@ -961,25 +977,38 @@ def to_node_link(
             }
         )
 
-    edges = [
+    edges = sorted(
+        [
         {
-            "source": u,
-            "target": v,
+            "source": min(str(u), str(v)),
+            "target": max(str(u), str(v)),
             "weight": data.get("weight", 1),
             "confidence": data.get("confidence", "EXTRACTED"),
             "source_kind": data.get("source", "wikilink"),
             "cross_community": communities.get(u, -1) != communities.get(v, -1),
         }
         for u, v, data in g.edges(data=True)
-    ]
+        ],
+        key=lambda edge: (edge["source"], edge["target"], edge["source_kind"]),
+    )
+
+    source_signature = compute_wiki_signature_from_pages(pages_by_id.values())
+    generated_at = _deterministic_generated_at(pages_by_id.values())
 
     return {
-        "generated_at": int(time.time()),
-        "source_signature": compute_wiki_signature_from_pages(pages_by_id.values()),
+        # Derived from canonical page metadata rather than wall-clock time so
+        # identical wiki inputs produce byte-identical checked-in artifacts.
+        "generated_at": generated_at,
+        "source_signature": source_signature,
         "node_count": g.number_of_nodes(),
         "edge_count": g.number_of_edges(),
         "community_count": len(set(communities.values())) if communities else 0,
-        "extraction_stats": extraction_stats,
+        # Cache hits/misses are runtime diagnostics and must not affect the
+        # canonical artifact. Page/error counts depend only on source inputs.
+        "extraction_stats": {
+            "pages": len(pages_by_id),
+            "errors": int(extraction_stats.get("errors", 0)),
+        },
         "nodes": nodes,
         "edges": edges,
         "god_nodes": analysis["god_nodes"],
@@ -1003,7 +1032,12 @@ def compute_wiki_signature_from_pages(pages: Any) -> str:
     return h.hexdigest()
 
 
-def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
+def write_checkpoint_tracker(
+    health: dict[str, Any],
+    out_path: Path,
+    *,
+    generated_at: int = 0,
+) -> None:
     """Write a report-only markdown tracker for checkpoint graph recommendations.
 
     Compares the graph recommendation layer against the heuristic baseline from
@@ -1021,7 +1055,10 @@ def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
     disagree_count: int = health.get("disagreement_count", 0)
     disagree_breakdown: dict[str, int] = health.get("disagreement_breakdown", {})
     merge_clusters: list[dict[str, Any]] = health.get("merge_clusters", [])
-    generated_ts = datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    generated_ts = datetime.datetime.fromtimestamp(
+        generated_at,
+        tz=datetime.timezone.utc,
+    ).strftime("%Y-%m-%dT%H:%M:%SZ")
 
     lines: list[str] = [
         "# Checkpoint Graph Tracker",
@@ -1032,8 +1069,8 @@ def write_checkpoint_tracker(health: dict[str, Any], out_path: Path) -> None:
         "> heuristic classifier and the graph recommendation layer so they can",
         "> be evaluated before any policy change is made.",
         "",
-        f"**Generated:** {generated_ts}  ",
-        f"**Total checkpoints:** {total}  ",
+        f"**Generated:** {generated_ts}",
+        f"**Total checkpoints:** {total}",
         "",
         "## Graph recommendation counts",
         "",
@@ -1169,23 +1206,19 @@ def build(
             n["x"], n["y"] = pos
     payload["layout_precomputed"] = bool(layout)
 
-    # R14 — node embeddings for the NL query endpoint. Cached per (id, hash).
-    embeddings, backend = compute_node_embeddings(payload["nodes"], cache_dir)
-    for n in payload["nodes"]:
-        vec = embeddings.get(n["id"])
-        if vec is not None:
-            n[EMBEDDING_FIELD] = vec
-    payload["embedding_backend"] = backend
-    log.info("embeddings: backend=%s vectors=%d", backend, len(embeddings))
+    # Query embeddings are runtime state. GraphState computes them after
+    # loading the canonical artifact, so vectors and cache-dependent backend
+    # diagnostics are deliberately excluded from checked-in JSON.
 
-    payload["build_seconds"] = round(time.time() - t0, 3)
+    elapsed = round(time.time() - t0, 3)
+    payload["build_seconds"] = 0.0
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, indent=2))
     log.info(
         "wrote %s in %.2fs (%d nodes, %d edges, %d communities)",
         out_path,
-        payload["build_seconds"],
+        elapsed,
         payload["node_count"],
         payload["edge_count"],
         payload["community_count"],
@@ -1194,8 +1227,12 @@ def build(
     # Write the checkpoint-graph tracker report.
     # Default: repo-root/reports/checkpoint-graph-tracker.md (wiki_dir.parent is repo root).
     resolved_tracker = tracker_path or wiki_dir.parent / "reports" / "checkpoint-graph-tracker.md"
-    write_checkpoint_tracker(payload.get("checkpoint_health", {}), resolved_tracker)
-    log.info("wrote checkpoint tracker %s", resolved_tracker)
+    write_checkpoint_tracker(
+        payload.get("checkpoint_health", {}),
+        resolved_tracker,
+        generated_at=int(payload.get("generated_at", 0)),
+    )
+    log.info("wrote checkpoint tracker %s (build_seconds=%.3f)", resolved_tracker, elapsed)
 
     return payload
 

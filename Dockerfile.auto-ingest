@@ -5,7 +5,7 @@ ARG CODEX_VERSION=0.145.0
 WORKDIR /workspace
 
 # Install Node + Codex CLI for the default codex-cli ingest backend.
-# Git/ripgrep are useful to Codex when it inspects and edits the mounted repo.
+# Git/ripgrep let Codex inspect the disposable proposal context efficiently.
 RUN apt-get update && apt-get install -y curl ca-certificates gnupg git ripgrep && \
     curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
@@ -16,10 +16,15 @@ COPY scripts/requirements-auto-ingest.txt /opt/labs-wiki/requirements.txt
 RUN pip install --no-cache-dir -r /opt/labs-wiki/requirements.txt
 
 COPY --chmod=755 scripts/auto_ingest.py scripts/watch_raw.py scripts/audit_synthesis.py /opt/labs-wiki/scripts/
+COPY --chmod=755 scripts/ingest_transaction.py scripts/wiki_schema.py /opt/labs-wiki/scripts/
 COPY --chmod=755 scripts/checkpoint_classifier.py scripts/checkpoint_state.py /opt/labs-wiki/scripts/
 COPY --chmod=755 scripts/compile_index.py /opt/labs-wiki/scripts/
-COPY scripts/prompts/ /opt/labs-wiki/scripts/prompts/
-COPY templates/ /opt/labs-wiki/templates/
+COPY --chmod=755 wiki-graph-api/graph_builder.py /opt/labs-wiki/scripts/graph_builder.py
+# Build context may contain operator-private prompt modes (for example 0600).
+# Runtime workers run under the configured non-root PUID, so normalize read access.
+COPY --chmod=644 scripts/prompts/ /opt/labs-wiki/scripts/prompts/
+COPY --chmod=644 templates/ /opt/labs-wiki/templates/
+RUN chmod -R a+rX /opt/labs-wiki/scripts/prompts /opt/labs-wiki/templates
 
 ENV PROJECT_ROOT=/workspace
 ENV WIKI_RUNTIME_SCRIPT_ROOT=/opt/labs-wiki/scripts

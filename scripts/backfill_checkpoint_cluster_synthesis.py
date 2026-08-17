@@ -506,6 +506,7 @@ def main() -> int:
                 "checkpoint_cluster_evidence_input_count": str(len(compare_pages)),
             },
             source_provenance=source_provenance,
+            project_root=ROOT,
         )
         rel_path = f"wiki/synthesis/{filename}"
         out_path = ROOT / rel_path

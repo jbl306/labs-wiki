@@ -12,9 +12,175 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
 
 import auto_ingest  # noqa: E402
+import watch_raw  # noqa: E402
 
 
 class AgentCliBackendTests(unittest.TestCase):
+    def test_agent_failure_sends_ntfy_with_actionable_details(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw_path = root / "raw" / "example.md"
+            raw_path.parent.mkdir(parents=True)
+            raw_path.write_text(
+                "---\ntitle: Example\ntype: text\nstatus: pending\n---\nUseful source body"
+            )
+            failure = auto_ingest._failed_agent_proposal(
+                "codex exec exited with code 1: 401 Unauthorized"
+            )
+
+            with (
+                patch("auto_ingest._selected_backend", return_value="codex-cli"),
+                patch("auto_ingest.call_codex_cli_ingest", return_value=failure),
+                patch("auto_ingest.send_ntfy") as send_ntfy,
+            ):
+                success = auto_ingest.ingest_raw_source(raw_path, root, token="")
+
+            self.assertFalse(success)
+            send_ntfy.assert_called_once()
+            title, message = send_ntfy.call_args.args[:2]
+            self.assertIn(raw_path.name, title)
+            self.assertIn("codex-cli", message)
+            self.assertIn("401 Unauthorized", message)
+            self.assertIn("status: pending", raw_path.read_text())
+
+    def test_failure_detail_formatter_redacts_secrets_and_bounds_message(self) -> None:
+        detail = (
+            "Authorization: Bearer super-secret-token\n"
+            "token=ghp_abcdefghijklmnopqrstuvwxyz\n"
+            "AWS_SECRET_ACCESS_KEY=aws-secret-value\n"
+            "client_secret=oauth-secret\n"
+            "Cookie: session=browser-secret\n"
+            "https://user:pass@example.test/path?token=query-secret\n"
+            + ("🙂" * 5000)
+            + "\n401 Unauthorized at final transport attempt"
+        )
+
+        message = auto_ingest.format_ingest_failure_message(
+            Path("raw/example.md"),
+            backend="codex-cli",
+            detail=detail,
+        )
+
+        self.assertNotIn("super-secret-token", message)
+        for secret in (
+            "ghp_abcdefghijklmnopqrstuvwxyz",
+            "aws-secret-value",
+            "oauth-secret",
+            "browser-secret",
+            "user:pass",
+            "query-secret",
+        ):
+            self.assertNotIn(secret, message)
+        self.assertIn("Authorization: Bearer [REDACTED]", message)
+        self.assertIn("401 Unauthorized at final transport attempt", message)
+        self.assertLessEqual(
+            len(message.encode("utf-8")),
+            auto_ingest.NTFY_FAILURE_MESSAGE_MAX_CHARS,
+        )
+
+    def test_pending_loop_exception_notifies_with_exception_details(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw_path = root / "raw" / "example.md"
+            raw_path.parent.mkdir(parents=True)
+            raw_path.write_text("---\ntitle: Example\ntype: text\nstatus: pending\n---\nBody")
+
+            with (
+                patch("auto_ingest.ingest_raw_source", side_effect=RuntimeError("disk exploded")),
+                patch("auto_ingest.send_ntfy") as send_ntfy,
+            ):
+                count = auto_ingest.process_all_pending(root, token="")
+
+            self.assertEqual(count, 0)
+            send_ntfy.assert_called_once()
+            _title, message = send_ntfy.call_args.args[:2]
+            self.assertIn("RuntimeError: disk exploded", message)
+
+    def test_pending_discovery_failure_notifies_and_preserves_retry_state(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw_path = root / "raw" / "example.md"
+            raw_path.parent.mkdir(parents=True)
+            raw_path.write_text("---\ntitle: Example\ntype: text\nstatus: pending\n---\nBody")
+
+            with (
+                patch("auto_ingest.classify_ingest_route", side_effect=ValueError("bad route")),
+                patch("auto_ingest.send_ntfy") as send_ntfy,
+            ):
+                count = auto_ingest.process_all_pending(root, token="")
+
+            self.assertEqual(count, 0)
+            send_ntfy.assert_called_once()
+            self.assertIn("ValueError: bad route", send_ntfy.call_args.args[1])
+            self.assertIn("status: pending", raw_path.read_text())
+
+    def test_watcher_classification_failure_notifies(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw_path = root / "raw" / "example.md"
+            raw_path.parent.mkdir(parents=True)
+            raw_path.write_text("---\ntitle: Example\ntype: text\nstatus: pending\n---\nBody")
+            handler = watch_raw.RawFileHandler(root, token="", model_override=None)
+            handler._pending[str(raw_path)] = 0
+
+            with (
+                patch("watch_raw.classify_ingest_route", side_effect=ValueError("bad route")),
+                patch("watch_raw.notify_ingest_failure") as notify,
+            ):
+                handler._process_pending()
+
+            notify.assert_called_once()
+            self.assertIn("ValueError: bad route", notify.call_args.kwargs["detail"])
+
+    def test_direct_cli_exception_notifies_and_exits_failed(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw_path = root / "raw" / "example.md"
+            raw_path.parent.mkdir(parents=True)
+            raw_path.write_text("---\ntitle: Example\ntype: text\nstatus: pending\n---\nBody")
+
+            with (
+                patch.object(sys, "argv", ["auto_ingest.py", str(raw_path), "--project-root", str(root)]),
+                patch("auto_ingest.ingest_raw_source", side_effect=RuntimeError("publish exploded")),
+                patch("auto_ingest.send_ntfy") as send_ntfy,
+                self.assertRaises(SystemExit) as exit_error,
+            ):
+                auto_ingest.main()
+
+            self.assertEqual(exit_error.exception.code, 1)
+            send_ntfy.assert_called_once()
+            self.assertIn("RuntimeError: publish exploded", send_ntfy.call_args.args[1])
+            self.assertIn("status: pending", raw_path.read_text())
+
+    def test_direct_cli_exception_validation_run_suppresses_notification(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            raw_path = root / "raw" / "example.md"
+            raw_path.parent.mkdir(parents=True)
+            raw_path.write_text("---\ntitle: Example\ntype: text\nstatus: pending\n---\nBody")
+
+            with (
+                patch.object(
+                    sys,
+                    "argv",
+                    [
+                        "auto_ingest.py",
+                        str(raw_path),
+                        "--project-root",
+                        str(root),
+                        "--force",
+                        "--validation-run",
+                    ],
+                ),
+                patch("auto_ingest.ingest_raw_source", side_effect=RuntimeError("publish exploded")),
+                patch("auto_ingest.send_ntfy") as send_ntfy,
+                self.assertRaises(SystemExit) as exit_error,
+            ):
+                auto_ingest.main()
+
+            self.assertEqual(exit_error.exception.code, 1)
+            send_ntfy.assert_not_called()
+
     def test_codex_backend_is_default_and_tokenless(self) -> None:
         with patch.dict(os.environ, {}, clear=True):
             self.assertEqual(auto_ingest._selected_backend(), "codex-cli")
@@ -64,13 +230,15 @@ Original filename: notes.docx
             returncode=0,
             stdout=(
                 'progress\n{"status":"success","source_path":"wiki/sources/example.md",'
-                '"entities_created":[],"concepts_created":[],"synthesis_created":[],'
-                '"pages_updated":[],"duplicates_avoided":[],"kg_facts_added":0,'
+                '"page_mutations":[],"duplicates_avoided":[],"kg_facts":[],'
                 '"notes":"ok"}\n'
             ),
             stderr="",
         )
-        with patch("auto_ingest.subprocess.run", return_value=completed) as run:
+        with (
+            patch.dict(os.environ, {"WIKI_CODEX_SANDBOX": "read-only"}),
+            patch("auto_ingest.subprocess.run", return_value=completed) as run,
+        ):
             result = auto_ingest.call_codex_cli_ingest(
                 raw_path=ROOT / "raw" / "example.md",
                 project_root=ROOT,
@@ -85,7 +253,9 @@ Original filename: notes.docx
         self.assertIn("--ignore-user-config", cmd)
         self.assertIn("--output-schema", cmd)
         self.assertIn("--output-last-message", cmd)
-        self.assertEqual(cmd[cmd.index("-s") + 1], "workspace-write")
+        self.assertEqual(cmd[cmd.index("-s") + 1], "read-only")
+        self.assertNotEqual(Path(cmd[cmd.index("-C") + 1]), ROOT)
+        self.assertNotEqual(Path(cmd[cmd.index("--add-dir") + 1]), ROOT)
         self.assertNotIn("-a", cmd[4:])
 
     def test_codex_sandbox_allows_container_outer_boundary_override(self) -> None:
@@ -140,117 +310,72 @@ Original filename: notes.docx
         self.assertIn("CHECKPOINT_CLASS**: `project-progress`", prompt)
         self.assertIn("RETENTION_MODE**: `compress`", prompt)
         self.assertIn("PLANNING_ONLY**: `true`", prompt)
-        self.assertIn("create or update only the source", prompt)
+        self.assertIn("propose only the source summary", prompt)
+        self.assertIn("read-only", prompt.casefold())
 
-    def test_agent_result_requires_existing_source_page(self) -> None:
-        with self.subTest("missing source_path"):
-            result = auto_ingest._validate_agent_ingest_result(
-                {"status": "success", "source_path": ""},
-                ROOT / "raw" / "example.md",
-                ROOT,
-            )
-            self.assertEqual(result["status"], "failed")
-            self.assertTrue(result["validation_errors"])
-
-    def test_agent_result_accepts_existing_source_with_raw_provenance(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            raw_path = root / "raw" / "example.md"
-            source_path = root / "wiki" / "sources" / "example.md"
-            raw_path.parent.mkdir(parents=True)
-            source_path.parent.mkdir(parents=True)
-            raw_path.write_text("---\nstatus: pending\n---\nsource")
-            source_path.write_text(
-                "---\ntitle: Example\ntype: source\ncreated: 2026-08-02\n"
-                "sources:\n  - raw/example.md\n---\n\n# Example\n"
-            )
-
-            result = auto_ingest._validate_agent_ingest_result(
+    def test_agent_proposal_parser_rejects_incomplete_or_unknown_fields(self) -> None:
+        missing = auto_ingest._parse_agent_status_output(
+            '{"status":"success","source_path":"wiki/sources/example.md"}',
+            "Codex CLI",
+            ROOT / "raw" / "example.md",
+        )
+        unknown = auto_ingest._parse_agent_status_output(
+            json.dumps(
                 {
                     "status": "success",
                     "source_path": "wiki/sources/example.md",
-                    "entities_created": [],
-                    "concepts_created": [],
-                    "synthesis_created": [],
-                    "pages_updated": [],
+                    "page_mutations": [],
                     "duplicates_avoided": [],
-                    "kg_facts_added": 0,
-                    "notes": "ok",
-                },
-                raw_path,
-                root,
-            )
-
-            self.assertEqual(result["status"], "success")
-            self.assertNotIn("validation_errors", result)
-
-    def test_agent_result_requires_complete_schema_and_rejects_unknown_fields(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            raw_path = root / "raw" / "example.md"
-            source_path = root / "wiki" / "sources" / "example.md"
-            raw_path.parent.mkdir(parents=True)
-            source_path.parent.mkdir(parents=True)
-            raw_path.write_text("---\nstatus: pending\n---\nsource")
-            source_path.write_text(
-                "---\ntitle: Example\ntype: source\nsources:\n  - raw/example.md\n---\n# Example\n"
-            )
-
-            missing = auto_ingest._validate_agent_ingest_result(
-                {"status": "success", "source_path": "wiki/sources/example.md"},
-                raw_path,
-                root,
-            )
-            unknown = auto_ingest._validate_agent_ingest_result(
-                {
-                    "status": "success",
-                    "source_path": "wiki/sources/example.md",
-                    "entities_created": [],
-                    "concepts_created": [],
-                    "synthesis_created": [],
-                    "pages_updated": [],
-                    "duplicates_avoided": [],
-                    "kg_facts_added": 0,
+                    "kg_facts": [],
                     "notes": "ok",
                     "unexpected": True,
-                },
-                raw_path,
-                root,
-            )
+                }
+            ),
+            "Codex CLI",
+            ROOT / "raw" / "example.md",
+        )
 
-            self.assertEqual(missing["status"], "failed")
-            self.assertTrue(any("schema" in error for error in missing["validation_errors"]))
-            self.assertEqual(unknown["status"], "failed")
-            self.assertTrue(any("schema" in error for error in unknown["validation_errors"]))
+        self.assertEqual(missing["status"], "failed")
+        self.assertIn("schema", missing["notes"])
+        self.assertEqual(unknown["status"], "failed")
+        self.assertIn("schema", unknown["notes"])
 
-    def test_checkout_manifest_rejects_unreported_agent_writes(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            source = root / "wiki" / "sources" / "example.md"
-            script = root / "scripts" / "unexpected.py"
-            source.parent.mkdir(parents=True)
-            script.parent.mkdir(parents=True)
-            source.write_text("before")
-            script.write_text("before")
-            before = auto_ingest._snapshot_agent_write_scope(root)
+    def test_all_backends_short_circuit_source_hash_before_backend_call(self) -> None:
+        for backend in ("codex-cli", "copilot-cli", "github-models"):
+            with self.subTest(backend=backend), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                raw_path = root / "raw" / "duplicate.md"
+                source_path = root / "wiki" / "sources" / "existing.md"
+                raw_path.parent.mkdir(parents=True)
+                source_path.parent.mkdir(parents=True)
+                body = "Deterministic duplicate body"
+                source_hash = auto_ingest.compute_sha256(body)
+                raw_path.write_text(
+                    f"---\ntitle: Duplicate\ntype: text\nstatus: pending\n---\n{body}"
+                )
+                source_path.write_text(
+                    f"---\ntitle: Existing\ntype: source\nsource_hash: sha256:{source_hash}\n---\n"
+                )
 
-            source.write_text("declared update")
-            script.write_text("unexpected update")
-            after = auto_ingest._snapshot_agent_write_scope(root)
-            unexpected = auto_ingest._unexpected_agent_changes(
-                before,
-                after,
-                {
-                    "source_path": str(source),
-                    "entities_created": [],
-                    "concepts_created": [],
-                    "synthesis_created": [],
-                    "pages_updated": [],
-                },
-                root,
-            )
+                with (
+                    patch("auto_ingest._selected_backend", return_value=backend),
+                    patch("auto_ingest.call_codex_cli_ingest") as codex,
+                    patch("auto_ingest.call_copilot_cli_ingest") as copilot,
+                    patch("auto_ingest.commit_wiki_changes", return_value=True) as commit,
+                    patch("auto_ingest.send_ntfy") as send_ntfy,
+                ):
+                    success = auto_ingest.ingest_raw_source(raw_path, root, token="")
 
-            self.assertEqual(unexpected, ["scripts/unexpected.py"])
+                self.assertTrue(success)
+                codex.assert_not_called()
+                copilot.assert_not_called()
+                self.assertIn("status: ingested", raw_path.read_text())
+                commit.assert_called_once()
+                committed_paths = commit.call_args.kwargs["paths"]
+                self.assertIn("raw/duplicate.md", committed_paths)
+                self.assertIn("wiki/log.md", committed_paths)
+                send_ntfy.assert_called_once()
+                self.assertIn("duplicate", (root / "wiki" / "log.md").read_text().lower())
 
     def test_validation_run_skips_log_notification_and_commit(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -260,30 +385,49 @@ Original filename: notes.docx
             raw_path.parent.mkdir(parents=True)
             source_path.parent.mkdir(parents=True)
             raw_path.write_text(
-                "---\ntitle: Example\ntype: text\nsource: test\nstatus: pending\n---\nUseful source body"
+                "---\ntitle: Example\ntype: text\nurl: https://example.com/source\n"
+                "status: pending\n---\nUseful source body"
             )
-            source_path.write_text(
-                "---\ntitle: Example\ntype: source\ncreated: 2026-08-02\n"
-                "sources:\n  - raw/example.md\n---\n\n# Example\n"
+            source_hash = auto_ingest.compute_sha256("Useful source body")
+            existing_content = (
+                "---\ntitle: Example\ntype: source\ncreated: 2026-08-01\n"
+                "last_verified: 2026-08-01\nsource_hash: \"" + "b" * 64 + "\"\n"
+                "sources:\n  - raw/example.md\nconcepts: []\nrelated: []\n"
+                "tier: hot\ntags: [example]\n---\n\n# Example\n\n## Summary\n\nExisting summary.\n"
+            )
+            source_path.write_text(existing_content)
+            proposed_content = existing_content.replace(
+                "created: 2026-08-01\nlast_verified: 2026-08-01\nsource_hash: \"" + "b" * 64 + "\"",
+                f"created: 2026-08-01\nlast_verified: 2026-08-02\nsource_hash: \"{source_hash}\"",
             )
             status = {
                 "status": "success",
                 "source_path": "wiki/sources/example.md",
-                "entities_created": [],
-                "concepts_created": [],
-                "synthesis_created": [],
-                "pages_updated": [],
+                "page_mutations": [
+                    {
+                        "path": "wiki/sources/example.md",
+                        "operation": "update",
+                        "content": proposed_content,
+                    }
+                ],
                 "duplicates_avoided": [],
-                "kg_facts_added": 0,
+                "kg_facts": [],
                 "notes": "ok",
             }
+
+            def fake_graph(stage_root, _runtime=None):
+                graph = stage_root / "wiki" / "graph" / "graph.json"
+                graph.parent.mkdir(parents=True, exist_ok=True)
+                graph.write_text('{"node_count": 1, "nodes": []}\n')
+                tracker = stage_root / "reports" / "checkpoint-graph-tracker.md"
+                tracker.parent.mkdir(parents=True, exist_ok=True)
+                tracker.write_text("# Tracker\n")
 
             with (
                 patch("auto_ingest._selected_backend", return_value="codex-cli"),
                 patch("auto_ingest.call_codex_cli_ingest", return_value=status),
-                patch("auto_ingest.append_log") as append_log,
+                patch("ingest_transaction._build_graph", side_effect=fake_graph),
                 patch("auto_ingest.send_ntfy") as send_ntfy,
-                patch("auto_ingest.rebuild_index"),
                 patch("auto_ingest.replay_pending_kg_facts"),
                 patch("auto_ingest.commit_wiki_changes") as commit,
             ):
@@ -295,7 +439,6 @@ Original filename: notes.docx
                 )
 
             self.assertTrue(success)
-            append_log.assert_not_called()
             send_ntfy.assert_not_called()
             commit.assert_not_called()
             self.assertIn("status: ingested", raw_path.read_text())
@@ -332,6 +475,14 @@ Original filename: notes.docx
                 ["--", "wiki/sources/example.md", "raw/example.md"],
             )
             self.assertNotIn("wiki/", add_command)
+
+    def test_git_publish_manifest_excludes_runtime_kg_outbox(self) -> None:
+        self.assertEqual(
+            auto_ingest.git_publish_manifest(
+                ["wiki/sources/example.md", "wiki/.kg-pending.jsonl", "raw/example.md"]
+            ),
+            ["wiki/sources/example.md", "raw/example.md"],
+        )
 
     def test_commit_excludes_unrelated_pre_staged_changes(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -374,46 +525,6 @@ Original filename: notes.docx
             ).split()
             self.assertEqual(staged_paths, ["unrelated.txt"])
 
-    def test_index_failure_does_not_finalize_agent_success(self) -> None:
-        with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            raw_path = root / "raw" / "example.md"
-            source_path = root / "wiki" / "sources" / "example.md"
-            raw_path.parent.mkdir(parents=True)
-            source_path.parent.mkdir(parents=True)
-            raw_path.write_text(
-                "---\ntitle: Example\ntype: text\nsource: test\nstatus: pending\n---\nUseful source body"
-            )
-            source_path.write_text(
-                "---\ntitle: Example\ntype: source\nsources:\n  - raw/example.md\n---\n# Example\n"
-            )
-            status = {
-                "status": "success",
-                "source_path": "wiki/sources/example.md",
-                "entities_created": [],
-                "concepts_created": [],
-                "synthesis_created": [],
-                "pages_updated": [],
-                "duplicates_avoided": [],
-                "kg_facts_added": 0,
-                "notes": "ok",
-            }
-            with (
-                patch("auto_ingest._selected_backend", return_value="codex-cli"),
-                patch("auto_ingest.call_codex_cli_ingest", return_value=status),
-                patch("auto_ingest.rebuild_index", side_effect=RuntimeError("index failed")),
-                patch("auto_ingest.append_log") as append_log,
-                patch("auto_ingest.send_ntfy") as send_ntfy,
-                patch("auto_ingest.commit_wiki_changes") as commit,
-            ):
-                success = auto_ingest.ingest_raw_source(raw_path, root, token="")
-
-            self.assertFalse(success)
-            self.assertIn("status: pending", raw_path.read_text())
-            append_log.assert_not_called()
-            send_ntfy.assert_not_called()
-            commit.assert_not_called()
-
     def test_synthesis_generator_emits_evidence_contract(self) -> None:
         synthesis = {
             "title": "Choosing A or B",
@@ -454,6 +565,8 @@ Original filename: notes.docx
 
         self.assertIn("evidence_scope: cross-source", content)
         self.assertIn("evidence_source_count: 2", content)
+        self.assertIn("evidence_origin_family_count: 2", content)
+        self.assertRegex(content, r'source_hash: "[0-9a-f]{64}"')
         self.assertIn("## Evidence Map", content)
         insight_one = next(line for line in content.splitlines() if line.startswith("| Insight 1 |"))
         insight_two = next(line for line in content.splitlines() if line.startswith("| Insight 2 |"))

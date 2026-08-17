@@ -13,6 +13,7 @@ import os
 import sys
 import threading
 import time
+import traceback
 from pathlib import Path
 
 from watchdog.events import FileCreatedEvent, FileModifiedEvent, FileSystemEventHandler
@@ -23,6 +24,7 @@ from auto_ingest import (
     _selected_backend,
     classify_ingest_route,
     ingest_raw_source,
+    notify_ingest_failure,
     parse_frontmatter,
     process_all_pending,
 )
@@ -88,14 +90,27 @@ class RawFileHandler(FileSystemEventHandler):
                 continue
             try:
                 fm, _ = parse_frontmatter(raw_path)
-            except Exception:
+            except Exception as exc:
                 log.exception("Failed to parse %s", raw_path.name)
+                notify_ingest_failure(
+                    raw_path,
+                    backend=_selected_backend(),
+                    detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
+                )
                 continue
-            if fm.get("status") != "pending":
-                log.debug("Skipping %s (status: %s)", raw_path.name, fm.get("status"))
-                continue
-            route = classify_ingest_route(fm, model_override=self.model_override, body=None)
-            prioritized.append((route.priority, raw_path.name, raw_path))
+            try:
+                if fm.get("status") != "pending":
+                    log.debug("Skipping %s (status: %s)", raw_path.name, fm.get("status"))
+                    continue
+                route = classify_ingest_route(fm, model_override=self.model_override, body=None)
+                prioritized.append((route.priority, raw_path.name, raw_path))
+            except Exception as exc:
+                log.exception("Failed to classify %s", raw_path.name)
+                notify_ingest_failure(
+                    raw_path,
+                    backend=_selected_backend(),
+                    detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
+                )
 
         for _, _, raw_path in sorted(prioritized):
             try:
@@ -111,8 +126,13 @@ class RawFileHandler(FileSystemEventHandler):
 
                 log.info("New pending source detected: %s", raw_path.name)
                 ingest_raw_source(raw_path, self.project_root, self.token, self.model_override)
-            except Exception:
+            except Exception as exc:
                 log.exception("Failed to process %s", raw_path.name)
+                notify_ingest_failure(
+                    raw_path,
+                    backend=_selected_backend(),
+                    detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
+                )
             finally:
                 with self._lock:
                     self._inflight.discard(str(raw_path))

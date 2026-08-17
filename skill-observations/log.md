@@ -28,3 +28,13 @@
     - "Adding PDF-only normalization in auto_ingest.py improved fetched previews without changing HTML ingest behavior."
   suggested_update: "Document a PDF-cleanup pass after MarkItDown conversion for `.pdf` inputs, focused on artifact removal rather than aggressive reflow."
   source: "session"
+- id: obs-2026-08-17-001
+  status: RESOLVED
+  type: improve-existing-skill
+  skill: wiki-ingest
+  summary: "A second capture of the same paper through its PDF URL was treated as a conflicting source create instead of an update to the canonical source page."
+  evidence:
+    - "The arXiv abstract capture created wiki/sources/scaling-domain-data-repetition-in-llm-pretraining.md; the subsequent PDF capture proposed the same path with operation=create and failed transaction validation."
+    - "The user required the richer raw-PDF capture to update the original while retaining provenance."
+  suggested_update: "Document same-document source upserts and concurrent same-path concept/entity reconciliation; require preservation of prior raw provenance, metadata, creation date, and tier."
+  source: "session"

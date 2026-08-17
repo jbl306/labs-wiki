@@ -168,7 +168,7 @@ def _evidence_map_rows(text: str) -> dict[str, tuple[list[str], list[str]]]:
     return rows
 
 
-def _source_family(raw_path: Path) -> str:
+def source_origin_family(raw_path: Path) -> str:
     """Return a coarse origin family for independence diagnostics."""
     if not raw_path.exists():
         return "missing"
@@ -206,10 +206,13 @@ def audit_page(path: Path, repo_root: Path = ROOT, *, strict: bool = False) -> A
     source_paths = [source_path for source_path, _relative in valid_sources]
     declared_source_paths = {relative for _source_path, relative in valid_sources}
     source_count = len(unique_sources)
-    families = {_source_family(source_path) for source_path in source_paths}
+    families = {source_origin_family(source_path) for source_path in source_paths}
     families.discard("missing")
     source_family_count = len(families)
-    inferred_scope = "cross-source" if source_count >= 2 else "within-source"
+    # "Cross-source" means independent origins, not merely multiple files.
+    # Several checkpoints emitted by one agent/session channel are one evidence
+    # family and must not be presented as independent corroboration.
+    inferred_scope = "cross-source" if source_family_count >= 2 else "within-source"
     declared_scope = str(frontmatter.get("evidence_scope") or "").strip()
 
     required_frontmatter = ("title", "type", "sources", "concepts", "related")
@@ -239,6 +242,23 @@ def audit_page(path: Path, repo_root: Path = ROOT, *, strict: bool = False) -> A
                     "error",
                     "evidence-count-mismatch",
                     f"evidence_source_count={declared_count!r}, but sources contains {source_count} unique paths",
+                )
+            )
+        declared_family_count = frontmatter.get("evidence_origin_family_count")
+        if declared_family_count != source_family_count:
+            findings.append(
+                Finding(
+                    "error",
+                    "evidence-family-count-mismatch",
+                    f"evidence_origin_family_count={declared_family_count!r}, but provenance resolves to {source_family_count} origin families",
+                )
+            )
+        if declared_scope == "cross-source" and source_family_count < 2:
+            findings.append(
+                Finding(
+                    "error",
+                    "cross-source-not-independent",
+                    "cross-source synthesis requires at least two independent origin families",
                 )
             )
     elif not declared_scope:

@@ -27,8 +27,10 @@ build/
 *.egg-info/
 .worktrees/
 
-# Local caches
+# Local caches and runtime outboxes
 .cache/
+.graph_cache/
+wiki/.kg-pending.jsonl
 
 # OpenCode symlinks are tracked (they point to .github/skills/)
 # but don't track OpenCode DB or state

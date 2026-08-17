@@ -19,9 +19,11 @@ import logging
 import mimetypes
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
+import traceback
 import textwrap
 from collections import Counter
 from dataclasses import dataclass
@@ -60,6 +62,13 @@ from checkpoint_classifier import (
     resolve_retention,
 )
 from checkpoint_state import derive_knowledge_state, is_planning_only_checkpoint
+from ingest_transaction import (
+    PROPOSAL_SCHEMA,
+    ProposalError,
+    prepare_and_publish,
+    rebuild_graph_artifacts,
+)
+from wiki_schema import validate_page
 
 log = logging.getLogger("auto-ingest")
 
@@ -1965,14 +1974,25 @@ def append_update_section(
     matched_path.write_text(existing.rstrip() + update_block)
 
 
+def normalize_source_hash(value: object) -> str:
+    """Normalize historical ``sha256:`` prefixes for exact deduplication."""
+    text = str(value or "").strip().lower()
+    if text.startswith("sha256:"):
+        text = text.removeprefix("sha256:")
+    return text if re.fullmatch(r"[0-9a-f]{64}", text) else ""
+
+
 def check_already_processed(wiki_dir: Path, source_hash: str) -> bool:
-    """Check if a source with this hash has already been processed."""
+    """Check if a source with this canonical hash has already been processed."""
+    expected = normalize_source_hash(source_hash)
+    if not expected:
+        return False
     sources_dir = wiki_dir / "sources"
     if not sources_dir.exists():
         return False
     for page in sources_dir.glob("*.md"):
         fm, _ = parse_frontmatter(page)
-        if fm.get("source_hash") == source_hash:
+        if normalize_source_hash(fm.get("source_hash")) == expected:
             log.info("Source already processed (hash match): %s", page.name)
             return True
     return False
@@ -2690,12 +2710,29 @@ def generate_synthesis_page(
     *,
     extra_frontmatter: dict[str, str] | None = None,
     source_provenance: dict[str, list[str]] | None = None,
+    project_root: Path | None = None,
 ) -> tuple[str, str]:
     """Generate a synthesis wiki page. Returns (filename, content)."""
     title = synthesis.get("title", "Untitled Synthesis")
     slug = slugify(title)
     filename = f"{slug}.md"
     raw_paths = list(dict.fromkeys(str(path) for path in raw_paths))
+    if project_root is None:
+        # Compatibility for pure rendering callers; production callers pass a
+        # root so families are resolved from raw frontmatter/URLs.
+        origin_family_count = len(raw_paths)
+    else:
+        from audit_synthesis import source_origin_family
+
+        families = {
+            source_origin_family((project_root / raw_path).resolve())
+            for raw_path in raw_paths
+            if (project_root / raw_path).is_file()
+        }
+        families.discard("missing")
+        origin_family_count = len(families)
+    evidence_scope = "cross-source" if origin_family_count >= 2 else "within-source"
+    synthesis_hash = hashlib.sha256("\n".join(sorted(raw_paths)).encode()).hexdigest()
 
     # Build comparison table
     comparison = synthesis.get("comparison", [])
@@ -2800,11 +2837,12 @@ title: "{title}"
 type: synthesis
 created: {today}
 last_verified: {today}
-source_hash: "synthesis-generated"
+source_hash: "{synthesis_hash}"
 sources:
 {sources_fm}
-evidence_scope: {'cross-source' if len(raw_paths) >= 2 else 'within-source'}
+evidence_scope: {evidence_scope}
 evidence_source_count: {len(raw_paths)}
+evidence_origin_family_count: {origin_family_count}
 concepts:
 {chr(10).join('  - ' + s for s in concept_slugs) if concept_slugs else '  []'}
 related:
@@ -3088,9 +3126,124 @@ def update_raw_status(raw_path: Path, new_status: str) -> None:
     raw_path.write_text(updated)
 
 
+def finalize_pre_backend_skip(
+    project_root: Path,
+    raw_path: Path,
+    *,
+    title: str,
+    backend: str,
+    new_status: str,
+    operation: str,
+    notes: str,
+    validation_run: bool,
+) -> None:
+    """Finalize a deterministic pre-backend outcome through normal side effects."""
+    if validation_run:
+        return
+    update_raw_status(raw_path, new_status)
+    raw_relative = raw_path.resolve().relative_to(project_root.resolve()).as_posix()
+    log_relative = "wiki/log.md"
+    append_log(
+        project_root / log_relative,
+        {
+            "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "operation": operation,
+            "agent": backend,
+            "targets": [raw_relative],
+            "source": raw_relative,
+            "status": "success",
+            "notes": notes.replace('"', "'").replace("\n", " "),
+        },
+    )
+    commit_wiki_changes(
+        project_root,
+        title=title,
+        notes=notes,
+        paths=[raw_relative, log_relative],
+    )
+    send_ntfy(
+        f"Wiki: {title}",
+        notes,
+        tags="books,white_check_mark",
+    )
+
+
 # ---------------------------------------------------------------------------
 # Notification
 # ---------------------------------------------------------------------------
+
+
+NTFY_FAILURE_MESSAGE_MAX_CHARS = 3500
+
+
+def _redact_failure_detail(detail: object) -> str:
+    """Remove common credential forms before external error notification."""
+    text = str(detail or "Unknown error").strip()
+    patterns = (
+        (r"(?im)^((?:set-)?cookie\s*:)\s*[^\r\n]+", r"\1 [REDACTED]"),
+        (r"(?i)(authorization\s*:\s*(?:bearer|basic)\s+)[^\s]+", r"\1[REDACTED]"),
+        (r"(?i)\b(bearer\s+)[A-Za-z0-9._~+/=-]+", r"\1[REDACTED]"),
+        (r"\b(?:ghp_|gho_|github_pat_|sk-)[A-Za-z0-9_-]{12,}\b", "[REDACTED]"),
+        (
+            r"(?i)(https?://)[^\s/:@]+:[^\s/@]+@",
+            r"\1[REDACTED]@",
+        ),
+        (
+            r"(?i)([?&](?:access[_-]?key|api[_-]?key|auth|client[_-]?secret|"
+            r"password|session|secret|token)=)[^&#\s]+",
+            r"\1[REDACTED]",
+        ),
+        (
+            r"(?i)\b([A-Za-z0-9_.-]*(?:access[_-]?key|api[_-]?key|auth[_-]?token|"
+            r"client[_-]?secret|password|passwd|secret|session|token)[A-Za-z0-9_.-]*)"
+            r"(\s*[=:]\s*)([^\s,;&]+)",
+            r"\1\2[REDACTED]",
+        ),
+        (r"\b(?:AKIA|ASIA)[A-Z0-9]{16}\b", "[REDACTED]"),
+    )
+    for pattern, replacement in patterns:
+        text = re.sub(pattern, replacement, text)
+    return text
+
+
+def format_ingest_failure_message(
+    raw_path: Path,
+    *,
+    backend: str,
+    detail: object,
+) -> str:
+    """Build a bounded, redacted ntfy body with actionable failure context."""
+    prefix = f"Source: {raw_path.name}\nBackend: {backend}\nError:\n"
+    redacted = _redact_failure_detail(detail)
+    available = max(0, NTFY_FAILURE_MESSAGE_MAX_CHARS - len(prefix.encode("utf-8")))
+    encoded = redacted.encode("utf-8")
+    if len(encoded) > available:
+        separator = "\n...[middle truncated]...\n"
+        separator_bytes = separator.encode("utf-8")
+        content_budget = max(0, available - len(separator_bytes))
+        head_size = min(900, content_budget // 3)
+        tail_size = max(0, content_budget - head_size)
+        head = encoded[:head_size].decode("utf-8", errors="ignore").rstrip()
+        tail = encoded[-tail_size:].decode("utf-8", errors="ignore").lstrip()
+        redacted = head + separator + tail
+    return prefix + redacted
+
+
+def notify_ingest_failure(
+    raw_path: Path,
+    *,
+    backend: str,
+    detail: object,
+    validation_run: bool = False,
+) -> None:
+    """Send a detailed failure alert unless notifications are explicitly suppressed."""
+    if validation_run:
+        return
+    send_ntfy(
+        f"Wiki ingest failed: {raw_path.name}",
+        format_ingest_failure_message(raw_path, backend=backend, detail=detail),
+        tags="warning,x",
+    )
 
 
 def send_ntfy(title: str, message: str, tags: str = "books") -> None:
@@ -3124,7 +3277,7 @@ def _selected_backend() -> str:
 
 def _codex_sandbox_mode() -> str:
     """Resolve the Codex sandbox; containers may supply their own outer boundary."""
-    mode = os.environ.get("WIKI_CODEX_SANDBOX", "workspace-write").strip()
+    mode = os.environ.get("WIKI_CODEX_SANDBOX", "read-only").strip()
     if mode not in {"read-only", "workspace-write", "danger-full-access"}:
         raise ValueError(f"Unsupported WIKI_CODEX_SANDBOX: {mode!r}")
     return mode
@@ -3133,46 +3286,6 @@ def _codex_sandbox_mode() -> str:
 def _backend_requires_token(backend: str) -> bool:
     """Return True for backends that require a GitHub Models/Copilot token upfront."""
     return backend in {"github-models", "openai", "legacy", "copilot-cli"}
-
-
-INGEST_STATUS_SCHEMA = {
-    "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "type": "object",
-    "additionalProperties": False,
-    "properties": {
-        "status": {"type": "string", "enum": ["success", "partial", "failed"]},
-        "source_path": {"type": "string"},
-        "entities_created": {"type": "array", "items": {"type": "string"}},
-        "concepts_created": {"type": "array", "items": {"type": "string"}},
-        "synthesis_created": {"type": "array", "items": {"type": "string"}},
-        "pages_updated": {"type": "array", "items": {"type": "string"}},
-        "duplicates_avoided": {
-            "type": "array",
-            "items": {
-                "type": "object",
-                "additionalProperties": False,
-                "properties": {
-                    "candidate": {"type": "string"},
-                    "linked_to": {"type": "string"},
-                },
-                "required": ["candidate", "linked_to"],
-            },
-        },
-        "kg_facts_added": {"type": "integer", "minimum": 0},
-        "notes": {"type": "string"},
-    },
-    "required": [
-        "status",
-        "source_path",
-        "entities_created",
-        "concepts_created",
-        "synthesis_created",
-        "pages_updated",
-        "duplicates_avoided",
-        "kg_facts_added",
-        "notes",
-    ],
-}
 
 
 def _extract_last_json_object(text: str) -> dict | None:
@@ -3208,6 +3321,31 @@ def _runtime_scripts_dir(project_root: Path) -> Path:
     return Path(configured).resolve() if configured else project_root / "scripts"
 
 
+def _prepare_agent_context(project_root: Path, destination: Path) -> None:
+    """Copy readable ingest inputs into a disposable agent workspace.
+
+    Agent CLIs may still use permissive tools for compatibility inside
+    containers. They never receive the canonical checkout: attempted writes
+    land in this temporary copy and are discarded.
+    """
+    destination.mkdir(parents=True, exist_ok=True)
+    for directory in ("wiki", "templates"):
+        source = project_root / directory
+        if source.is_dir():
+            shutil.copytree(source, destination / directory, dirs_exist_ok=True)
+    (destination / "raw").mkdir(parents=True, exist_ok=True)
+    for source in (project_root / "raw").rglob("*.md"):
+        target = destination / source.relative_to(project_root)
+        target.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copy2(source, target)
+    for relative in ("AGENTS.md", ".github/copilot-instructions.md"):
+        source = project_root / relative
+        if source.is_file():
+            target = destination / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(source, target)
+
+
 def _build_agent_ingest_prompt(
     *,
     raw_path: Path,
@@ -3217,18 +3355,25 @@ def _build_agent_ingest_prompt(
     checkpoint_class: str = "",
     retention_mode: str = "",
     planning_only: bool = False,
+    source_hash: str = "",
+    workspace_root: Path | None = None,
 ) -> str:
-    prompt_template_path = _runtime_scripts_dir(project_root) / "prompts" / "wiki_ingest_prompt.md"
+    prompt_template_path = (
+        _runtime_scripts_dir(project_root) / "prompts" / "wiki_ingest_proposal_prompt.md"
+    )
     if not prompt_template_path.exists():
         raise FileNotFoundError(f"Prompt template not found: {prompt_template_path}")
 
     prompt_template = prompt_template_path.read_text()
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    agent_root = (workspace_root or project_root).resolve()
+    agent_raw = agent_root / raw_path.resolve().relative_to(project_root.resolve())
     runtime_inputs = f"""
 
 ## RUNTIME INPUTS
 
-- **RAW_PATH**: `{raw_path.resolve()}`
+- **PROJECT_ROOT**: `{agent_root}`
+- **RAW_PATH**: `{agent_raw}`
 - **MODEL_ID**: `{model}`
 - **INGEST_BACKEND**: `{backend}`
 - **WING**: `labs_wiki`
@@ -3236,200 +3381,56 @@ def _build_agent_ingest_prompt(
 - **CHECKPOINT_CLASS**: `{checkpoint_class or 'not-a-checkpoint'}`
 - **RETENTION_MODE**: `{retention_mode or 'standard'}`
 - **PLANNING_ONLY**: `{str(planning_only).lower()}`
+- **SOURCE_HASH**: `{source_hash}`
 
 The checkpoint policy above was computed deterministically by the Python
-orchestrator. If `PLANNING_ONLY` is true, create or update only the source
-summary: report empty entity, concept, and synthesis arrays. Do not promote a
-plan or progress narrative into canonical knowledge. A `compress` retention
-mode likewise requires a terse source summary and no synthesis unless the raw
-contains an explicit completed result with durable evidence.
+orchestrator. If `PLANNING_ONLY` is true, propose only the source summary
+mutation. Do not promote a plan or progress narrative into canonical concepts,
+entities, or synthesis. A `compress` retention mode likewise requires a terse
+source summary and no synthesis unless the raw contains an explicit completed
+result with durable evidence.
 """
     return prompt_template + runtime_inputs
+
+
+def _failed_agent_proposal(notes: str) -> dict:
+    """Return a schema-valid failure result for every agent execution path."""
+    return {
+        "status": "failed",
+        "source_path": "",
+        "page_mutations": [],
+        "duplicates_avoided": [],
+        "kg_facts": [],
+        "notes": notes,
+    }
 
 
 def _parse_agent_status_output(output: str, backend_label: str, raw_path: Path) -> dict:
     status_dict = _extract_last_json_object(output.strip())
     if not status_dict:
         log.warning(
-            "No JSON status found in %s output for %s. Treating the ingest as failed.",
+            "No JSON proposal found in %s output for %s. Treating the ingest as failed.",
             backend_label,
             raw_path.name,
         )
-        return {
-            "status": "failed",
-            "notes": "No JSON status report found in output",
-        }
-    if status_dict.get("status") not in {"success", "partial", "failed"}:
-        return {
-            "status": "failed",
-            "notes": f"Invalid agent status value: {status_dict.get('status')!r}",
-        }
+        return _failed_agent_proposal("No JSON proposal found in output")
+    errors = sorted(
+        Draft202012Validator(PROPOSAL_SCHEMA).iter_errors(status_dict),
+        key=lambda error: tuple(str(part) for part in error.absolute_path),
+    )
+    if errors:
+        detail = "; ".join(
+            f"{'.'.join(map(str, error.absolute_path)) or '<root>'}: {error.message}"
+            for error in errors
+        )
+        return _failed_agent_proposal(f"Invalid agent proposal schema: {detail}")
     log.info(
-        "%s ingest %s: %s",
+        "%s ingest proposal %s: %s",
         backend_label,
         status_dict.get("status", "unknown"),
         status_dict.get("notes", ""),
     )
     return status_dict
-
-
-def _resolve_reported_wiki_path(
-    value: object,
-    project_root: Path,
-    expected_directory: Path,
-) -> Path | None:
-    """Resolve an agent-reported path and enforce its expected wiki directory."""
-    raw_value = str(value or "").strip()
-    if not raw_value:
-        return None
-    candidate = Path(raw_value)
-    if not candidate.is_absolute():
-        candidate = project_root / candidate
-    candidate = candidate.resolve()
-    try:
-        candidate.relative_to(expected_directory.resolve())
-    except ValueError:
-        return None
-    return candidate
-
-
-def _snapshot_agent_write_scope(project_root: Path) -> dict[str, tuple[int, int]]:
-    """Capture a cheap pre/post manifest for unexpected agent writes."""
-    snapshot: dict[str, tuple[int, int]] = {}
-    root = project_root.resolve()
-    excluded_roots = {root / ".git", root / "raw" / "assets"}
-    for path in root.rglob("*"):
-        if not path.is_file():
-            continue
-        if any(excluded == path or excluded in path.parents for excluded in excluded_roots):
-            continue
-        stat = path.stat()
-        snapshot[str(path.relative_to(root))] = (stat.st_size, stat.st_mtime_ns)
-    return snapshot
-
-
-def _unexpected_agent_changes(
-    before: dict[str, tuple[int, int]],
-    after: dict[str, tuple[int, int]],
-    result: dict,
-    project_root: Path,
-) -> list[str]:
-    """Return changed paths not declared by the typed agent status manifest."""
-    changed = {
-        path
-        for path in before.keys() | after.keys()
-        if before.get(path) != after.get(path)
-    }
-    allowed = {"wiki/.kg-pending.jsonl"}
-    for field in (
-        "source_path",
-        "entities_created",
-        "concepts_created",
-        "synthesis_created",
-        "pages_updated",
-    ):
-        values = result.get(field, [])
-        if field == "source_path":
-            values = [values]
-        if not isinstance(values, list):
-            continue
-        for value in values:
-            text = str(value or "").strip()
-            if not text:
-                continue
-            candidate = Path(text)
-            if candidate.is_absolute():
-                try:
-                    text = str(candidate.resolve().relative_to(project_root.resolve()))
-                except ValueError:
-                    continue
-            else:
-                text = str(candidate)
-            allowed.add(text)
-    return sorted(changed - allowed)
-
-
-def _validate_agent_ingest_result(
-    result: dict,
-    raw_path: Path,
-    project_root: Path,
-) -> dict:
-    """Validate the agent's end state before finalizing raw status or the log."""
-    validated = dict(result)
-    errors: list[str] = []
-    schema_errors = sorted(
-        Draft202012Validator(INGEST_STATUS_SCHEMA).iter_errors(result),
-        key=lambda error: tuple(str(part) for part in error.absolute_path),
-    )
-    for error in schema_errors:
-        location = ".".join(str(part) for part in error.absolute_path) or "<root>"
-        errors.append(f"schema validation failed at {location}: {error.message}")
-    if result.get("status") != "success":
-        errors.append(f"agent returned status={result.get('status')!r}")
-
-    source_page = _resolve_reported_wiki_path(
-        result.get("source_path"),
-        project_root,
-        project_root / "wiki" / "sources",
-    )
-    if source_page is None:
-        errors.append("source_path is missing or outside wiki/sources")
-    elif not source_page.is_file():
-        errors.append(f"reported source page does not exist: {source_page}")
-    else:
-        source_frontmatter, _ = parse_frontmatter(source_page)
-        try:
-            expected_raw = str(raw_path.resolve().relative_to(project_root.resolve()))
-        except ValueError:
-            expected_raw = str(raw_path.resolve())
-        reported_sources = source_frontmatter.get("sources")
-        if not isinstance(reported_sources, list) or expected_raw not in {
-            str(source) for source in reported_sources
-        }:
-            errors.append(f"source page provenance does not include {expected_raw}")
-
-    output_fields = {
-        "entities_created": project_root / "wiki" / "entities",
-        "concepts_created": project_root / "wiki" / "concepts",
-        "synthesis_created": project_root / "wiki" / "synthesis",
-        "pages_updated": project_root / "wiki",
-    }
-    synthesis_paths: list[Path] = []
-    for field, expected_directory in output_fields.items():
-        values = result.get(field, [])
-        if not isinstance(values, list):
-            errors.append(f"{field} must be an array")
-            continue
-        for value in values:
-            resolved = _resolve_reported_wiki_path(value, project_root, expected_directory)
-            if resolved is None:
-                errors.append(f"{field} contains an invalid path: {value!r}")
-            elif not resolved.is_file():
-                errors.append(f"{field} path does not exist: {value!r}")
-            elif field == "synthesis_created" or resolved.parent == project_root / "wiki" / "synthesis":
-                synthesis_paths.append(resolved)
-
-    if synthesis_paths:
-        try:
-            from audit_synthesis import audit_page
-
-            for synthesis_path in synthesis_paths:
-                audit = audit_page(synthesis_path, project_root, strict=True)
-                if not audit.passed:
-                    codes = ", ".join(finding.code for finding in audit.findings)
-                    errors.append(
-                        f"synthesis quality gate failed for {synthesis_path.name}: "
-                        f"score={audit.score}; findings={codes}"
-                    )
-        except Exception as exc:
-            errors.append(f"synthesis quality gate crashed: {exc}")
-
-    if errors:
-        validated["status"] = "failed"
-        validated["validation_errors"] = errors
-        prior_notes = str(validated.get("notes") or "").strip()
-        validated["notes"] = "; ".join(filter(None, [prior_notes, *errors]))
-    return validated
 
 
 def _looks_like_pdf_reference(value: object) -> bool:
@@ -3646,6 +3647,11 @@ def commit_wiki_changes(
     return True
 
 
+def git_publish_manifest(paths: list[str]) -> list[str]:
+    """Exclude local runtime outboxes from a manifest-scoped Git commit."""
+    return [path for path in paths if path != "wiki/.kg-pending.jsonl"]
+
+
 def call_codex_cli_ingest(
     raw_path: Path,
     project_root: Path,
@@ -3654,23 +3660,9 @@ def call_codex_cli_ingest(
     checkpoint_class: str = "",
     retention_mode: str = "",
     planning_only: bool = False,
+    source_hash: str = "",
 ) -> dict:
-    """Call Codex CLI to execute the full wiki ingest workflow.
-
-    Returns a status dict with:
-    - status: "success" | "partial" | "failed"
-    - source_path, entities_created, concepts_created, synthesis_created
-    - duplicates_avoided, kg_facts_added, notes
-    """
-    final_prompt = _build_agent_ingest_prompt(
-        raw_path=raw_path,
-        project_root=project_root,
-        model=model,
-        backend="codex-cli",
-        checkpoint_class=checkpoint_class,
-        retention_mode=retention_mode,
-        planning_only=planning_only,
-    )
+    """Call Codex CLI for a read-only, typed wiki ingest proposal."""
     log.info(
         "Calling Codex CLI for %s (model=%s, effort=%s)",
         raw_path.name,
@@ -3681,9 +3673,22 @@ def call_codex_cli_ingest(
     try:
         with tempfile.TemporaryDirectory(prefix="labs-wiki-codex-") as tmp:
             temp_dir = Path(tmp)
+            context_root = temp_dir / "context"
+            _prepare_agent_context(project_root, context_root)
+            final_prompt = _build_agent_ingest_prompt(
+                raw_path=raw_path,
+                project_root=project_root,
+                model=model,
+                backend="codex-cli",
+                checkpoint_class=checkpoint_class,
+                retention_mode=retention_mode,
+                planning_only=planning_only,
+                source_hash=source_hash,
+                workspace_root=context_root,
+            )
             output_path = temp_dir / "status.json"
             schema_path = temp_dir / "status-schema.json"
-            schema_path.write_text(json.dumps(INGEST_STATUS_SCHEMA))
+            schema_path.write_text(json.dumps(PROPOSAL_SCHEMA))
             sandbox_mode = _codex_sandbox_mode()
             cmd = [
                 "codex",
@@ -3691,8 +3696,8 @@ def call_codex_cli_ingest(
                 "exec",
                 "-m", model,
                 "-c", f'model_reasoning_effort="{effort}"',
-                "-C", str(project_root),
-                "--add-dir", str(project_root),
+                "-C", str(context_root),
+                "--add-dir", str(context_root),
                 "-s", sandbox_mode,
                 "--skip-git-repo-check",
                 "--ephemeral",
@@ -3709,7 +3714,7 @@ def call_codex_cli_ingest(
                 capture_output=True,
                 text=True,
                 timeout=1200,  # 20 minutes max
-                cwd=str(project_root),
+                cwd=str(context_root),
             )
             if result.returncode != 0:
                 log.error(
@@ -3718,10 +3723,10 @@ def call_codex_cli_ingest(
                     raw_path.name,
                     result.stderr,
                 )
-                return {
-                    "status": "failed",
-                    "notes": f"codex exec exited with code {result.returncode}",
-                }
+                detail = result.stderr.strip() or result.stdout.strip() or "No process output"
+                return _failed_agent_proposal(
+                    f"codex exec exited with code {result.returncode}: {detail}"
+                )
 
             output_parts = [result.stdout.strip()]
             if output_path.exists():
@@ -3729,16 +3734,10 @@ def call_codex_cli_ingest(
             output = "\n".join(part for part in output_parts if part)
     except subprocess.TimeoutExpired:
         log.error("Codex CLI timed out after 1200s for %s", raw_path.name)
-        return {
-            "status": "failed",
-            "notes": "Codex CLI timed out after 20 minutes",
-        }
+        return _failed_agent_proposal("Codex CLI timed out after 20 minutes")
     except Exception as e:
         log.error("Codex CLI subprocess failed: %s", e)
-        return {
-            "status": "failed",
-            "notes": f"Subprocess error: {e}",
-        }
+        return _failed_agent_proposal(f"Subprocess error: {e}")
 
     log.debug("Codex CLI output (last 500 chars): %s", output[-500:])
     return _parse_agent_status_output(output, "Codex CLI", raw_path)
@@ -3752,66 +3751,61 @@ def call_copilot_cli_ingest(
     checkpoint_class: str = "",
     retention_mode: str = "",
     planning_only: bool = False,
+    source_hash: str = "",
 ) -> dict:
-    """Call gh copilot CLI to execute the full wiki ingest workflow.
-
-    Kept as an explicit compatibility backend; Codex is now the default.
-    """
-    final_prompt = _build_agent_ingest_prompt(
-        raw_path=raw_path,
-        project_root=project_root,
-        model=model,
-        backend="copilot-cli",
-        checkpoint_class=checkpoint_class,
-        retention_mode=retention_mode,
-        planning_only=planning_only,
-    )
-
+    """Call GitHub Copilot CLI in a disposable read-only proposal context."""
     log.info(
         "Calling gh copilot CLI for %s (model=%s, effort=%s)",
         raw_path.name, model, effort,
     )
 
-    cmd = [
-        "gh", "copilot", "-p", final_prompt,
-        "--model", model,
-        "--effort", effort,
-        "--allow-all-tools",
-        "--add-dir", str(project_root),
-    ]
-    env = {**os.environ, "COPILOT_ALLOW_ALL": "1"}
-
     try:
-        result = subprocess.run(
-            cmd,
-            env=env,
-            capture_output=True,
-            text=True,
-            timeout=900,  # 15 minutes max
-            cwd=str(project_root),
-        )
+        with tempfile.TemporaryDirectory(prefix="labs-wiki-copilot-") as tmp:
+            context_root = Path(tmp) / "context"
+            _prepare_agent_context(project_root, context_root)
+            final_prompt = _build_agent_ingest_prompt(
+                raw_path=raw_path,
+                project_root=project_root,
+                model=model,
+                backend="copilot-cli",
+                checkpoint_class=checkpoint_class,
+                retention_mode=retention_mode,
+                planning_only=planning_only,
+                source_hash=source_hash,
+                workspace_root=context_root,
+            )
+            cmd = [
+                "gh", "copilot", "-p", final_prompt,
+                "--model", model,
+                "--effort", effort,
+                "--allow-all-tools",
+                "--add-dir", str(context_root),
+            ]
+            env = {**os.environ, "COPILOT_ALLOW_ALL": "1"}
+            result = subprocess.run(
+                cmd,
+                env=env,
+                capture_output=True,
+                text=True,
+                timeout=900,  # 15 minutes max
+                cwd=str(context_root),
+            )
     except subprocess.TimeoutExpired:
         log.error("Copilot CLI timed out after 900s for %s", raw_path.name)
-        return {
-            "status": "failed",
-            "notes": "Copilot CLI timed out after 15 minutes",
-        }
+        return _failed_agent_proposal("Copilot CLI timed out after 15 minutes")
     except Exception as e:
         log.error("Copilot CLI subprocess failed: %s", e)
-        return {
-            "status": "failed",
-            "notes": f"Subprocess error: {e}",
-        }
+        return _failed_agent_proposal(f"Subprocess error: {e}")
 
     if result.returncode != 0:
         log.error(
             "Copilot CLI exited with code %d for %s:\nSTDERR: %s",
             result.returncode, raw_path.name, result.stderr,
         )
-        return {
-            "status": "failed",
-            "notes": f"gh copilot exited with code {result.returncode}",
-        }
+        detail = result.stderr.strip() or result.stdout.strip() or "No process output"
+        return _failed_agent_proposal(
+            f"gh copilot exited with code {result.returncode}: {detail}"
+        )
 
     stdout = result.stdout.strip()
     log.debug("Copilot CLI stdout (last 500 chars): %s", stdout[-500:])
@@ -3839,7 +3833,14 @@ def ingest_raw_source(
     # Parse raw source
     fm, body = parse_frontmatter(raw_path)
     if not fm:
-        log.error("No frontmatter found in %s", raw_path)
+        detail = f"No frontmatter found in {raw_path}"
+        log.error("%s", detail)
+        notify_ingest_failure(
+            raw_path,
+            backend=_selected_backend(),
+            detail=detail,
+            validation_run=validation_run,
+        )
         return False
 
     status = fm.get("status", "pending")
@@ -3933,6 +3934,45 @@ def ingest_raw_source(
                             backend,
                         )
 
+        # All backends perform deterministic source deduplication before any
+        # model process is selected or invoked. Hash only durable source content
+        # (not fetched/extracted timestamps) so refreshes remain stable.
+        if source_type == "file":
+            persisted_text, persisted_metadata = read_persisted_extracted_content(body)
+            _asset_ref, original_filename = parse_file_asset_reference(body)
+            original_filename = (
+                original_filename
+                or str(persisted_metadata.get("original_filename") or "").strip()
+                or None
+            )
+            hash_content = build_file_ingest_content(
+                body=body,
+                persisted_text=persisted_text,
+            )
+        elif source_type == "url" and source_url:
+            persisted_text, _persisted_metadata = read_persisted_fetched_content(body)
+            hash_content = build_url_ingest_content(
+                body=body,
+                source_url=source_url,
+                persisted_text=persisted_text,
+            )
+        else:
+            hash_content = body
+        agent_source_hash = hashlib.sha256(hash_content.encode()).hexdigest()
+        if not force and check_already_processed(project_root / "wiki", agent_source_hash):
+            log.info("Duplicate source hash; skipping %s before %s execution", raw_path.name, backend)
+            finalize_pre_backend_skip(
+                project_root,
+                raw_path,
+                title=str(title),
+                backend=backend,
+                new_status="ingested",
+                operation="duplicate",
+                notes=f"Skipped duplicate source hash before {backend} execution.",
+                validation_run=validation_run,
+            )
+            return True
+
         agent_route = classify_ingest_route(fm, model_override=model, body=body)
         agent_planning_only = is_planning_only_checkpoint(
             str(title),
@@ -3947,7 +3987,19 @@ def ingest_raw_source(
                 backend,
                 agent_route.checkpoint_class or "-",
             )
-            update_raw_status(raw_path, "ingested-skipped")
+            finalize_pre_backend_skip(
+                project_root,
+                raw_path,
+                title=str(title),
+                backend=backend,
+                new_status="ingested-skipped",
+                operation="skip",
+                notes=(
+                    "Skipped by deterministic retention policy before "
+                    f"{backend} execution (checkpoint_class={agent_route.checkpoint_class or '-'})."
+                ),
+                validation_run=validation_run,
+            )
             return True
 
         # Agent CLI backend (Codex default, Copilot compatibility)
@@ -3971,7 +4023,6 @@ def ingest_raw_source(
             "Using %s backend (model=%s, effort=%s)",
             backend, ingest_model, ingest_effort,
         )
-        agent_write_snapshot = _snapshot_agent_write_scope(project_root)
 
         if backend == "codex-cli":
             result = call_codex_cli_ingest(
@@ -3982,6 +4033,7 @@ def ingest_raw_source(
                 checkpoint_class=agent_route.checkpoint_class or "",
                 retention_mode=agent_route.retention_mode,
                 planning_only=agent_planning_only,
+                source_hash=agent_source_hash,
             )
         else:
             result = call_copilot_cli_ingest(
@@ -3992,117 +4044,89 @@ def ingest_raw_source(
                 checkpoint_class=agent_route.checkpoint_class or "",
                 retention_mode=agent_route.retention_mode,
                 planning_only=agent_planning_only,
+                source_hash=agent_source_hash,
             )
 
-        unexpected_changes = _unexpected_agent_changes(
-            agent_write_snapshot,
-            _snapshot_agent_write_scope(project_root),
-            result,
-            project_root,
-        )
-        if unexpected_changes:
-            result = {
-                **result,
-                "status": "failed",
-                "notes": (
-                    "agent changed paths outside its typed result manifest: "
-                    + ", ".join(unexpected_changes)
-                ),
-            }
-
-        if agent_planning_only:
-            promoted_fields = {
-                field: result.get(field, [])
-                for field in (
-                    "entities_created",
-                    "concepts_created",
-                    "synthesis_created",
-                    "pages_updated",
-                )
-                if result.get(field)
-            }
-            if promoted_fields:
+        if agent_planning_only and result.get("status") == "success":
+            promoted = [
+                mutation.get("path", "")
+                for mutation in result.get("page_mutations", [])
+                if not str(mutation.get("path", "")).startswith("wiki/sources/")
+            ]
+            if promoted:
                 result = {
                     **result,
                     "status": "failed",
                     "notes": (
-                        "planning-only checkpoint promoted canonical outputs despite "
-                        f"deterministic retention policy: {sorted(promoted_fields)}"
+                        "planning-only checkpoint proposed canonical promotion despite "
+                        f"deterministic retention policy: {sorted(promoted)}"
                     ),
                 }
 
-        result = _validate_agent_ingest_result(result, raw_path, project_root)
         success = result.get("status") == "success"
 
         if success:
-            raw_relative = str(raw_path.resolve().relative_to(project_root.resolve()))
-            targets = [result.get("source_path", "")]
-            for field in (
-                "entities_created",
-                "concepts_created",
-                "synthesis_created",
-                "pages_updated",
-            ):
-                values = result.get(field, [])
-                if isinstance(values, list):
-                    targets.extend(str(value) for value in values)
-            # Derived artifacts must succeed before finalizing success. If the
-            # index cannot be rebuilt, leave the raw source pending so the
-            # watcher can retry after the deterministic failure is corrected.
             try:
-                rebuild_index(project_root)
-            except Exception as exc:
-                log.error("Index rebuild failed; leaving raw source pending: %s", exc)
+                manifest = prepare_and_publish(
+                    result,
+                    project_root,
+                    raw_path,
+                    backend=backend,
+                    validation_run=validation_run,
+                    runtime_scripts=_runtime_scripts_dir(project_root),
+                    expected_source_hash=agent_source_hash,
+                )
+            except (ProposalError, OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                log.error(
+                    "Transactional %s ingest failed; canonical state remains unchanged: %s",
+                    backend,
+                    exc,
+                )
+                notify_ingest_failure(
+                    raw_path,
+                    backend=backend,
+                    detail=f"{type(exc).__name__}: {exc}",
+                    validation_run=validation_run,
+                )
                 return False
-            # KG replay is explicitly best-effort and is not part of the
-            # success gate.
+
+            # Git publication is attempted before external side effects so a
+            # success notification never precedes the manifest-scoped commit.
+            # The canonical transaction is already durable even when auto-commit
+            # is disabled or fails.
+            if not validation_run:
+                try:
+                    # The local KG outbox must survive a crash between commit and
+                    # replay, but it is runtime state and must never enter Git.
+                    commit_manifest = git_publish_manifest(manifest)
+                    commit_wiki_changes(
+                        project_root,
+                        title=title,
+                        notes=result.get("notes", ""),
+                        paths=commit_manifest,
+                    )
+                except Exception as exc:
+                    log.warning("git auto-commit failed (non-fatal): %s", exc)
+
             try:
                 replay_pending_kg_facts(project_root)
             except Exception as exc:
                 log.warning("KG replay failed (non-fatal): %s", exc)
-            if not validation_run:
-                append_log(
-                    project_root / "wiki" / "log.md",
-                    {
-                        "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-                        "operation": "ingest",
-                        "agent": backend,
-                        "source": raw_relative,
-                        "targets": [target for target in targets if target],
-                        "status": "success",
-                        "notes": result.get("notes", ""),
-                    },
-                )
-            else:
-                log.info("Validation run — skipping log.md append")
-            update_raw_status(raw_path, "ingested")
-            # Notify
             if not validation_run:
                 send_ntfy(
                     f"Wiki: {title}",
                     f"Ingested via {backend}: {result.get('notes', '')}",
                     tags="books,white_check_mark",
                 )
-            # Auto-commit only normal ingests. Validation runs intentionally
-            # leave their page changes visible for review without creating an
-            # audit-history commit.
-            if not validation_run:
-                try:
-                    commit_wiki_changes(
-                        project_root,
-                        title=title,
-                        notes=result.get("notes", ""),
-                        paths=[
-                            *[target for target in targets if target],
-                            raw_relative,
-                            "wiki/log.md",
-                            "wiki/index.md",
-                        ],
-                    )
-                except Exception as exc:
-                    log.warning("git auto-commit failed (non-fatal): %s", exc)
         else:
-            log.error("%s ingest failed: %s", backend, result.get("notes", "Unknown error"))
+            detail = result.get("notes", "Unknown error")
+            log.error("%s ingest failed: %s", backend, detail)
+            notify_ingest_failure(
+                raw_path,
+                backend=backend,
+                detail=detail,
+                validation_run=validation_run,
+            )
 
         return success
 
@@ -4245,7 +4269,19 @@ def ingest_raw_source(
             raw_path.name,
             route.checkpoint_class or "-",
         )
-        update_raw_status(raw_path, "ingested-skipped")
+        finalize_pre_backend_skip(
+            project_root,
+            raw_path,
+            title=str(title),
+            backend=backend,
+            new_status="ingested-skipped",
+            operation="skip",
+            notes=(
+                "Skipped by deterministic retention policy before "
+                f"{backend} execution (checkpoint_class={route.checkpoint_class or '-'})."
+            ),
+            validation_run=validation_run,
+        )
         return True
 
     # Compute hash & check incremental
@@ -4254,7 +4290,16 @@ def ingest_raw_source(
 
     if not force and check_already_processed(wiki_dir, source_hash):
         log.info("Already processed, updating status only")
-        update_raw_status(raw_path, "ingested")
+        finalize_pre_backend_skip(
+            project_root,
+            raw_path,
+            title=str(title),
+            backend=backend,
+            new_status="ingested",
+            operation="duplicate",
+            notes=f"Skipped duplicate source hash before {backend} execution.",
+            validation_run=validation_run,
+        )
         return True
 
     # Get existing wiki state
@@ -4591,6 +4636,7 @@ def ingest_raw_source(
         syn_filename, syn_content = generate_synthesis_page(
             synthesis_result, syn_raw_paths, syn_source_titles, today,
             source_provenance=syn_source_provenance,
+            project_root=project_root,
         )
         syn_path = wiki_dir / "synthesis" / syn_filename
         syn_path.parent.mkdir(parents=True, exist_ok=True)
@@ -4602,13 +4648,33 @@ def ingest_raw_source(
     # Post-process: validate wikilinks, dedup, compute quality scores
     postprocess_created_pages(wiki_dir, created_pages, project_root)
 
+    # Enforce the shared page contract for every compatibility-backend output,
+    # then rebuild both derived artifacts before any success side effect.
+    validation_errors: list[str] = []
+    for relative in dict.fromkeys(created_pages):
+        page = project_root / relative
+        validation_errors.extend(f"{relative}: {error}" for error in validate_page(page, project_root))
+        if relative.startswith("wiki/synthesis/"):
+            from audit_synthesis import audit_page
+
+            audit = audit_page(page, project_root, strict=True)
+            if not audit.passed:
+                codes = ", ".join(finding.code for finding in audit.findings)
+                validation_errors.append(
+                    f"{relative}: strict synthesis audit score={audit.score}; {codes}"
+                )
+    if validation_errors:
+        raise ProposalError("compatibility backend page validation failed: " + "; ".join(validation_errors))
+
+    rebuild_index(project_root)
+    rebuild_graph_artifacts(project_root, _runtime_scripts_dir(project_root))
+
+    # Raw status and audit log are success-finalization effects and occur only
+    # after the graph gate succeeds.
+    update_raw_status(raw_path, "ingested")
     if validation_run:
-        # Validation runs update raw snapshots and pages but do not append to
-        # wiki/log.md or send ntfy notifications so review reruns don't pollute
-        # the audit trail.
         log.info("Validation run — skipping log.md append and ntfy notification")
     else:
-        # Append to log
         log_path = wiki_dir / "log.md"
         append_log(log_path, {
             "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -4619,18 +4685,11 @@ def ingest_raw_source(
             "status": "success",
             "notes": f"Auto-ingested {len(created_pages)} pages ({len(extraction.get('concepts', []))} concepts, {len(extraction.get('entities', []))} entities, {synthesis_count} synthesis)",
         })
-        # Notify
         send_ntfy(
             f"Wiki: {source_title}",
             f"Ingested {len(created_pages)} pages from {raw_path.name}",
             tags="books,white_check_mark",
         )
-
-    # Rebuild index
-    rebuild_index(project_root)
-
-    # Mark raw source as ingested
-    update_raw_status(raw_path, "ingested")
 
     log.info(
         "✅ Ingested %s → %d pages created",
@@ -4652,10 +4711,19 @@ def process_all_pending(
     count = 0
     pending_files: list[tuple[int, str, Path]] = []
     for raw_file in raw_dir.glob("*.md"):
-        fm, _ = parse_frontmatter(raw_file)
-        if fm.get("status") == "pending":
-            route = classify_ingest_route(fm, model_override=model)
-            pending_files.append((route.priority, raw_file.name, raw_file))
+        try:
+            fm, _ = parse_frontmatter(raw_file)
+            if fm.get("status") == "pending":
+                route = classify_ingest_route(fm, model_override=model)
+                pending_files.append((route.priority, raw_file.name, raw_file))
+        except Exception as exc:
+            log.exception("Failed to inspect pending source %s", raw_file.name)
+            notify_ingest_failure(
+                raw_file,
+                backend=_selected_backend(),
+                detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
+                validation_run=validation_run,
+            )
 
     for _, _, raw_file in sorted(pending_files):
         try:
@@ -4667,15 +4735,14 @@ def process_all_pending(
                 validation_run=validation_run,
             ):
                 count += 1
-        except Exception:
+        except Exception as exc:
             log.exception("Failed to process %s", raw_file.name)
-            update_raw_status(raw_file, "failed")
-            if not validation_run:
-                send_ntfy(
-                    f"❌ Wiki ingest failed: {raw_file.name}",
-                    f"Error processing {raw_file.name}. Check logs.",
-                    tags="warning",
-                )
+            notify_ingest_failure(
+                raw_file,
+                backend=_selected_backend(),
+                detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
+                validation_run=validation_run,
+            )
     return count
 
 
@@ -4753,15 +4820,25 @@ def main() -> None:
         if not raw_path.is_absolute():
             raw_path = project_root / raw_path
         raw_path = raw_path.resolve()
-        ok = ingest_raw_source(
-            raw_path,
-            project_root,
-            args.token,
-            args.model,
-            force=args.force,
-            refresh_fetch=args.refresh_fetch,
-            validation_run=args.validation_run,
-        )
+        try:
+            ok = ingest_raw_source(
+                raw_path,
+                project_root,
+                args.token,
+                args.model,
+                force=args.force,
+                refresh_fetch=args.refresh_fetch,
+                validation_run=args.validation_run,
+            )
+        except Exception as exc:
+            log.exception("Failed to process %s", raw_path.name)
+            notify_ingest_failure(
+                raw_path,
+                backend=backend,
+                detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
+                validation_run=args.validation_run,
+            )
+            ok = False
         sys.exit(0 if ok else 1)
     else:
         count = process_all_pending(

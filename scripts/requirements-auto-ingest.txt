@@ -6,3 +6,6 @@ jsonschema>=4.22.0
 rapidfuzz>=3.0.0
 beautifulsoup4>=4.12.0
 markitdown[pdf,docx,pptx,xlsx,xls]>=0.1.0
+networkx==3.3
+scikit-learn==1.5.2
+numpy==2.1.2

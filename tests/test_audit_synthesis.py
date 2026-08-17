@@ -47,6 +47,7 @@ concepts: [concept-a, concept-b]
 related: ["[[Concept A]]", "[[Concept B]]"]
 evidence_scope: cross-source
 evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 # Choosing Between A and B
 ## Question
@@ -83,6 +84,58 @@ Approach A favors predictable operation while Approach B favors flexibility. The
             self.assertTrue(result.passed, result.to_dict())
             self.assertGreaterEqual(result.score, 80)
             self.assertEqual(result.evidence_scope, "cross-source")
+
+    def test_strict_cross_source_page_requires_independent_origin_families(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            source_a = self._write_raw(root, "checkpoint-a", "copilot-session")
+            source_b = self._write_raw(root, "checkpoint-b", "copilot-session")
+            self._write_wiki_page(root, "A", "a", [source_a])
+            self._write_wiki_page(root, "B", "b", [source_b])
+            page = root / "wiki" / "synthesis" / "same-family.md"
+            page.parent.mkdir(parents=True)
+            page.write_text(
+                f"""---
+title: Same Family Comparison
+type: synthesis
+sources: [{source_a}, {source_b}]
+concepts: [a, b]
+related: ["[[A]]", "[[B]]"]
+evidence_scope: cross-source
+evidence_source_count: 2
+evidence_origin_family_count: 1
+---
+## Question
+What can these checkpoints establish?
+## Summary
+This comparison is deliberately well structured, but both raw files originate from the same agent-session family and therefore are not independent evidence.
+## Comparison
+| Dimension | [[A]] | [[B]] |
+|---|---|---|
+| Evidence | First checkpoint | Second checkpoint |
+## Analysis
+{"Detailed analysis of the comparison and its source-independence limits. " * 45}
+## Key Insights
+1. **The checkpoints describe related behavior.** — supported by [[A]], [[B]]
+## Evidence Map
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| The checkpoints describe related behavior. | [[A]], [[B]] | `{source_a}`, `{source_b}` | Same origin family |
+## Open Questions
+- What does an independent source report?
+## Sources
+- [[A]]
+- [[B]]
+"""
+            )
+
+            result = audit_synthesis.audit_page(page, root, strict=True)
+
+            self.assertFalse(result.passed)
+            self.assertIn(
+                "cross-source-not-independent",
+                {finding.code for finding in result.findings},
+            )
 
     def test_weak_mechanism_shaped_page_fails(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -132,6 +185,7 @@ concepts: [a, b]
 related: ["[[A]]", "[[B]]"]
 evidence_scope: within-source
 evidence_source_count: 1
+evidence_origin_family_count: 0
 ---
 ## Question
 What should be chosen?
@@ -179,6 +233,7 @@ concepts: [a, b]
 related: ["[[A]]", "[[B]]"]
 evidence_scope: cross-source
 evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 ## Question
 What should be chosen?
@@ -227,6 +282,7 @@ concepts: [a, b]
 related: ["[[A]]", "[[B]]"]
 evidence_scope: cross-source
 evidence_source_count: 2
+evidence_origin_family_count: 2
 ---
 ## Question
 What should be chosen?

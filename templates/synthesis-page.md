@@ -17,6 +17,9 @@ related:
   - "[[Concept B]]"
 tier: hot
 tags: [tag1, tag2, comparison]
+evidence_scope: cross-source
+evidence_source_count: 3
+evidence_origin_family_count: 3
 ---
 
 # SYNTHESIS_TITLE
@@ -46,7 +49,15 @@ Deeper analysis of the comparison. What patterns emerge? When would you choose o
 
 1. **Insight 1** — supported by [[Source Summary 1]]
 2. **Insight 2** — supported by [[Source Summary 2]]
-3. **Insight 3** — cross-reference between multiple sources
+3. **Insight 3** — supported by [[Source Summary 1]], [[Source Summary 2]]
+
+## Evidence Map
+
+| Insight | Supporting pages | Raw provenance | Confidence / limits |
+|---|---|---|---|
+| **Insight 1** | [[Source Summary 1]] | `raw/source-one.md` | Direct support; note any limit. |
+| **Insight 2** | [[Source Summary 2]] | `raw/source-two.md` | Direct support; note any limit. |
+| **Insight 3** | [[Source Summary 1]], [[Source Summary 2]] | `raw/source-one.md`, `raw/source-two.md` | Cross-source support; note any disagreement. |
 
 ## Open Questions
 

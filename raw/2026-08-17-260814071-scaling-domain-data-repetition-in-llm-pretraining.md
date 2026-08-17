@@ -6,7 +6,7 @@ source: android-share
 url: "https://arxiv.org/abs/2608.14071"
 content_hash: "sha256:297a831c5d490c0552be42256ba1ae1cdb0224c80b787be98f42fe4f047a487d"
 tags: []
-status: pending
+status: ingested
 ---
 
 https://arxiv.org/abs/2608.14071

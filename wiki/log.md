@@ -4923,4 +4923,13 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-08-13-260206052v4pdf.md
   status: success
   notes: "Proposes one source summary, two distinct concepts for the survey's substrate and operational taxonomies, and a full update to the existing Agent Memory Frameworks page. Existing implicit/explicit/agentic memory pages and the existing synthesis were linked instead of duplicated; no new synthesis is proposed because the source is a single origin and the existing taxonomy synthesis already covers the three-way paradigm comparison. MemPalace/task-observer tools were unavailable in this runtime; no files or KG stores were written."
+- timestamp: 2026-08-17T12:46:07+00:00
+  operation: ingest
+  agent: codex-cli
+  targets:
+    - wiki/sources/scaling-domain-data-repetition-in-llm-pretraining.md
+    - wiki/concepts/optimal-domain-repetition-in-llm-pretraining.md
+  source: raw/2026-08-17-260814071-scaling-domain-data-repetition-in-llm-pretraining.md
+  status: success
+  notes: "Created exactly one source page and one source-grounded concept page. No existing duplicate title, slug, or body match was found. No entity or synthesis was proposed because the source does not require a standalone entity page and provides only single-source evidence."
 ```

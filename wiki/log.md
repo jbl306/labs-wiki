@@ -4932,4 +4932,12 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-08-17-260814071-scaling-domain-data-repetition-in-llm-pretraining.md
   status: success
   notes: "Created exactly one source page and one source-grounded concept page. No existing duplicate title, slug, or body match was found. No entity or synthesis was proposed because the source does not require a standalone entity page and provides only single-source evidence."
+- timestamp: 2026-08-17T14:06:06+00:00
+  operation: ingest
+  agent: deterministic-recovery
+  targets:
+    - wiki/sources/scaling-domain-data-repetition-in-llm-pretraining.md
+  source: raw/2026-08-17-260814071v1pdf.md
+  status: success
+  notes: "Reconciled the duplicate arXiv PDF capture into the existing canonical source page and preserved both raw provenance paths."
 ```

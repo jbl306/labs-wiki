@@ -1,6 +1,6 @@
 {
   "generated_at": 1786924800,
-  "source_signature": "b87728e0fbaf4956f22220fb0421589a99a4ec61f11dc09eb3baafbe4e6a155f",
+  "source_signature": "ce07d97aedb5ae764172c0a7a46bf15ab89a320f1ff510057292a255389f83e9",
   "node_count": 976,
   "edge_count": 3337,
   "community_count": 25,
@@ -21458,7 +21458,7 @@
       "retention_mode": "",
       "community": 8,
       "degree": 1,
-      "content_hash": "1dbd448584f04a321cdb887ee252d08b29f44205108631254e8dad0cad8a35ed",
+      "content_hash": "d0aa87c58b36cee16cd47b2b986faf15621ff7419a1bfdf8bbc2b588d933d9a6",
       "x": 239.137,
       "y": 7.469
     },

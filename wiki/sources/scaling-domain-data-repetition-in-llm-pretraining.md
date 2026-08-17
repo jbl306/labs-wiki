@@ -1,24 +1,25 @@
 ---
-title: "Scaling Domain Data Repetition in LLM Pretraining"
+title: Scaling Domain Data Repetition in LLM Pretraining
 type: source
 created: 2026-08-17
 last_verified: 2026-08-17
-source_hash: "f1853c3a9b9d09eea4b11acb9151efaeac67164a0e046eaf93a5d4be19e074cc"
+source_hash: f1853c3a9b9d09eea4b11acb9151efaeac67164a0e046eaf93a5d4be19e074cc
 sources:
-  - raw/2026-08-17-260814071-scaling-domain-data-repetition-in-llm-pretraining.md
+- raw/2026-08-17-260814071-scaling-domain-data-repetition-in-llm-pretraining.md
+- raw/2026-08-17-260814071v1pdf.md
 quality_score: 90
 concepts:
-  - domain data repetition
-  - tokens-per-parameter scaling
-  - repetition-induced overfitting
+- domain data repetition
+- tokens-per-parameter scaling
+- repetition-induced overfitting
 related:
-  - "[[Optimal Domain Repetition in LLM Pretraining]]"
+- '[[Optimal Domain Repetition in LLM Pretraining]]'
 tier: hot
 tags:
-  - llm
-  - pretraining
-  - data-scaling
-  - overfitting
+- llm
+- pretraining
+- data-scaling
+- overfitting
 ---
 
 # Scaling Domain Data Repetition in LLM Pretraining

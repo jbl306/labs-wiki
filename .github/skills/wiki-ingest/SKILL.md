@@ -82,7 +82,8 @@ Use the **Compiler** persona (`agents/compiler.md`).
 - Require the deterministic current-raw preflight hash for every reconciled source/concept/entity collision, bind each mutation's `source_hash` to it, and never trust a model-proposed copied hash as identity proof; fail closed when the deterministic hash is absent or invalid
 - Compare colliding page titles case-insensitively with whitespace normalization only; punctuation remains identity-significant (`C` and `C++` are different titles)
 - Treat explicit `update` proposals as untrusted input too: require matching canonical/proposed type and title, deterministic current-raw hash and provenance, and current-raw upstream identity for source-page updates; merge accumulated provenance, metadata, and body content instead of allowing replacement
-- Finalize deterministic duplicate and retention skips as observable publication outcomes: outside validation mode update the raw status, append the wiki log, commit only those manifest paths, and notify
+- Keep source-page provenance identity-closed: reject a canonical source with conflicting upstream identities and reject any newly proposed raw provenance that is neither the current raw nor independently normalized to the same upstream document; concepts/entities may still aggregate multiple identities
+- Finalize deterministic duplicate and retention skips as observable publication outcomes: outside validation mode update the raw status, append the wiki log, require a successful manifest-scoped commit, and only then notify; on false/exception commit outcomes restore raw/log state and leave the source retryable
 - Every wiki page must have valid frontmatter (see AGENTS.md)
 - Every fact must trace to a source via the `sources:` field
 - Update `wiki/log.md` and `wiki/index.md` after every operation

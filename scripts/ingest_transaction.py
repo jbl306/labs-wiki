@@ -209,6 +209,36 @@ def _merge_racing_body(existing_body: str, proposed_body: str) -> str:
     return f"{existing}\n\n{addition}" if addition else existing
 
 
+def _validate_source_provenance_expansion(
+    existing_frontmatter: dict[str, Any],
+    proposed_frontmatter: dict[str, Any],
+    project_root: Path,
+    raw_path: Path,
+    current_identity: str,
+    relative: str,
+) -> None:
+    """Reject untrusted provenance that would expand a source's identity set."""
+    existing_sources = {
+        str(value) for value in existing_frontmatter.get("sources", [])
+    }
+    raw_relative = raw_path.resolve().relative_to(project_root.resolve()).as_posix()
+    raw_root = (project_root / "raw").resolve()
+    for value in proposed_frontmatter.get("sources", []):
+        source = str(value)
+        if source in existing_sources or source == raw_relative:
+            continue
+        candidate = (project_root / source).resolve()
+        if not candidate.is_relative_to(raw_root) or not candidate.is_file():
+            raise ProposalError(
+                f"source mutation contains unrelated provenance: {relative}"
+            )
+        candidate_identity = _raw_upstream_identity(candidate)
+        if not current_identity or candidate_identity != current_identity:
+            raise ProposalError(
+                f"source mutation contains unrelated provenance: {relative}"
+            )
+
+
 def _reconcile_existing_page_create(
     canonical: Path,
     proposed_content: str,
@@ -272,15 +302,29 @@ def _reconcile_existing_page_create(
     matching_hash = bool(
         deterministic_hash and existing_hash == deterministic_hash
     )
+    existing_identities = _source_identities(existing_frontmatter, project_root)
     matching_identity = bool(
         current_identity
-        and current_identity in _source_identities(existing_frontmatter, project_root)
+        and (
+            existing_identities == {current_identity}
+            if expected_type == "source"
+            else current_identity in existing_identities
+        )
     )
     if (current_identity and not matching_identity) or (
         not current_identity and not matching_hash
     ):
         raise ProposalError(
             f"create mutation conflicts with an existing {expected_type} page having a different upstream identity: {relative}"
+        )
+    if expected_type == "source":
+        _validate_source_provenance_expansion(
+            existing_frontmatter,
+            proposed_frontmatter,
+            project_root,
+            raw_path,
+            current_identity,
+            relative,
         )
 
     merged_frontmatter = dict(existing_frontmatter)
@@ -369,9 +413,9 @@ def _reconcile_existing_page_update(
         existing_hash = _normalize_source_hash(existing_frontmatter.get("source_hash"))
         current_identity = _raw_upstream_identity(raw_path)
         matching_hash = existing_hash == deterministic_hash
+        existing_identities = _source_identities(existing_frontmatter, project_root)
         matching_identity = bool(
-            current_identity
-            and current_identity in _source_identities(existing_frontmatter, project_root)
+            current_identity and existing_identities == {current_identity}
         )
         if (current_identity and not matching_identity) or (
             not current_identity and not matching_hash
@@ -379,6 +423,14 @@ def _reconcile_existing_page_update(
             raise ProposalError(
                 f"update mutation conflicts with an existing source page having a different upstream identity: {relative}"
             )
+        _validate_source_provenance_expansion(
+            existing_frontmatter,
+            proposed_frontmatter,
+            project_root,
+            raw_path,
+            current_identity,
+            relative,
+        )
 
     merged_frontmatter = dict(existing_frontmatter)
     merged_frontmatter.update(proposed_frontmatter)
@@ -505,6 +557,24 @@ def _write_mutations(
             source_mutations += 1
             if relative != source_path:
                 raise ProposalError("source_path must name the single source page mutation")
+            proposed_frontmatter, _proposed_body, proposed_error = parse_page_text(content)
+            if proposed_error:
+                raise ProposalError(f"{relative}: {proposed_error}")
+            existing_frontmatter: dict[str, Any] = {}
+            if canonical.is_file():
+                existing_frontmatter, _existing_body, existing_error = parse_page_text(
+                    canonical.read_text()
+                )
+                if existing_error:
+                    raise ProposalError(f"{relative}: {existing_error}")
+            _validate_source_provenance_expansion(
+                existing_frontmatter,
+                proposed_frontmatter,
+                project_root,
+                raw_path,
+                _raw_upstream_identity(raw_path),
+                relative,
+            )
 
         staged = stage_root / relative
         staged.parent.mkdir(parents=True, exist_ok=True)

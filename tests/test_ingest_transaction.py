@@ -287,6 +287,116 @@ Existing unrelated source.
                     expected_source_hash="a" * 64,
                 )
 
+    def test_source_reconciliation_cannot_add_unrelated_provenance(self) -> None:
+        for operation in ("create", "update"):
+            with self.subTest(operation=operation), tempfile.TemporaryDirectory() as tmp:
+                root, raw = self._root(tmp)
+                raw.write_text(
+                    "---\ntitle: Current\ntype: url\nurl: https://arxiv.org/pdf/2608.11111\n"
+                    "status: pending\n---\nEvidence\n"
+                )
+                (root / "raw" / "prior.md").write_text(
+                    "---\ntitle: Prior\ntype: url\nurl: https://arxiv.org/abs/2608.11111\n"
+                    "status: ingested\n---\nPrior evidence\n"
+                )
+                (root / "raw" / "unrelated.md").write_text(
+                    "---\ntitle: Unrelated\ntype: url\nurl: https://arxiv.org/abs/2608.22222\n"
+                    "status: ingested\n---\nUnrelated evidence\n"
+                )
+                existing = root / "wiki" / "sources" / "example.md"
+                existing.write_text(
+                    f"""---
+title: Example
+type: source
+created: 2026-08-01
+last_verified: 2026-08-01
+source_hash: {'b' * 64}
+sources: [raw/prior.md]
+concepts: []
+related: []
+tier: established
+tags: []
+---
+# Example
+
+## Summary
+
+Existing source.
+"""
+                )
+                proposal = self._proposal()
+                proposal["page_mutations"][0] = {
+                    "path": "wiki/sources/example.md",
+                    "operation": operation,
+                    "content": f"""---
+title: Example
+type: source
+created: 2026-08-02
+last_verified: 2026-08-02
+source_hash: {'a' * 64}
+sources: [raw/prior.md, raw/example.md, raw/unrelated.md]
+concepts: []
+related: []
+tier: hot
+tags: []
+---
+# Example
+
+## Summary
+
+Proposed source.
+""",
+                }
+                stage = root / "stage"
+                ingest_transaction._copy_transaction_inputs(root, stage)
+
+                with self.assertRaisesRegex(
+                    ingest_transaction.ProposalError,
+                    "unrelated provenance",
+                ):
+                    ingest_transaction._write_mutations(
+                        proposal,
+                        root,
+                        stage,
+                        raw,
+                        expected_source_hash="a" * 64,
+                    )
+
+    def test_new_source_create_cannot_add_unrelated_provenance(self) -> None:
+        for current_url in ("https://arxiv.org/pdf/2608.11111", None):
+            with self.subTest(current_url=current_url), tempfile.TemporaryDirectory() as tmp:
+                root, raw = self._root(tmp)
+                url_line = f"url: {current_url}\n" if current_url else ""
+                raw.write_text(
+                    f"---\ntitle: Current\ntype: {'url' if current_url else 'text'}\n"
+                    f"{url_line}status: pending\n---\nEvidence\n"
+                )
+                (root / "raw" / "unrelated.md").write_text(
+                    "---\ntitle: Unrelated\ntype: url\nurl: https://arxiv.org/abs/2608.22222\n"
+                    "status: ingested\n---\nUnrelated evidence\n"
+                )
+                proposal = self._proposal()
+                proposal["page_mutations"][0]["content"] = proposal["page_mutations"][0][
+                    "content"
+                ].replace(
+                    "sources:\n  - raw/example.md",
+                    "sources:\n  - raw/example.md\n  - raw/unrelated.md",
+                )
+                stage = root / "stage"
+                ingest_transaction._copy_transaction_inputs(root, stage)
+
+                with self.assertRaisesRegex(
+                    ingest_transaction.ProposalError,
+                    "unrelated provenance",
+                ):
+                    ingest_transaction._write_mutations(
+                        proposal,
+                        root,
+                        stage,
+                        raw,
+                        expected_source_hash="a" * 64,
+                    )
+
     def test_concept_update_preserves_accumulated_state(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root, raw = self._root(tmp)

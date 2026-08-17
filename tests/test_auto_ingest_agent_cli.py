@@ -377,6 +377,43 @@ Original filename: notes.docx
                 send_ntfy.assert_called_once()
                 self.assertIn("duplicate", (root / "wiki" / "log.md").read_text().lower())
 
+    def test_pre_backend_finalization_rolls_back_when_commit_fails(self) -> None:
+        for failure in (False, OSError("commit exploded")):
+            with self.subTest(failure=repr(failure)), tempfile.TemporaryDirectory() as tmp:
+                root = Path(tmp)
+                raw_path = root / "raw" / "duplicate.md"
+                raw_path.parent.mkdir(parents=True)
+                (root / "wiki").mkdir(parents=True)
+                original = (
+                    "---\ntitle: Duplicate\ntype: text\nstatus: pending\n---\n"
+                    "Deterministic duplicate body\n"
+                )
+                raw_path.write_text(original)
+
+                with (
+                    patch("auto_ingest.commit_wiki_changes") as commit,
+                    patch("auto_ingest.send_ntfy") as send_ntfy,
+                ):
+                    if isinstance(failure, Exception):
+                        commit.side_effect = failure
+                    else:
+                        commit.return_value = failure
+                    with self.assertRaisesRegex(RuntimeError, "manifest commit"):
+                        auto_ingest.finalize_pre_backend_skip(
+                            root,
+                            raw_path,
+                            title="Duplicate",
+                            backend="codex-cli",
+                            new_status="ingested",
+                            operation="duplicate",
+                            notes="Skipped duplicate source hash.",
+                            validation_run=False,
+                        )
+
+                self.assertEqual(raw_path.read_text(), original)
+                self.assertFalse((root / "wiki" / "log.md").exists())
+                send_ntfy.assert_not_called()
+
     def test_validation_run_skips_log_notification_and_commit(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

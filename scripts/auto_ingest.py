@@ -3140,27 +3140,62 @@ def finalize_pre_backend_skip(
     """Finalize a deterministic pre-backend outcome through normal side effects."""
     if validation_run:
         return
-    update_raw_status(raw_path, new_status)
     raw_relative = raw_path.resolve().relative_to(project_root.resolve()).as_posix()
     log_relative = "wiki/log.md"
-    append_log(
-        project_root / log_relative,
-        {
-            "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "operation": operation,
-            "agent": backend,
-            "targets": [raw_relative],
-            "source": raw_relative,
-            "status": "success",
-            "notes": notes.replace('"', "'").replace("\n", " "),
-        },
-    )
-    commit_wiki_changes(
-        project_root,
-        title=title,
-        notes=notes,
-        paths=[raw_relative, log_relative],
-    )
+    log_path = project_root / log_relative
+    raw_before = raw_path.read_text()
+    log_existed = log_path.exists()
+    log_before = log_path.read_text() if log_existed else ""
+    try:
+        update_raw_status(raw_path, new_status)
+        append_log(
+            log_path,
+            {
+                "timestamp": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                "operation": operation,
+                "agent": backend,
+                "targets": [raw_relative],
+                "source": raw_relative,
+                "status": "success",
+                "notes": notes.replace('"', "'").replace("\n", " "),
+            },
+        )
+        try:
+            committed = commit_wiki_changes(
+                project_root,
+                title=title,
+                notes=notes,
+                paths=[raw_relative, log_relative],
+            )
+        except Exception as exc:
+            raise RuntimeError("pre-backend manifest commit failed") from exc
+        if not committed:
+            raise RuntimeError("pre-backend manifest commit did not complete")
+    except Exception:
+        raw_path.write_text(raw_before)
+        if log_existed:
+            log_path.write_text(log_before)
+        else:
+            log_path.unlink(missing_ok=True)
+        try:
+            subprocess.run(
+                [
+                    "git",
+                    "-C",
+                    str(project_root),
+                    "add",
+                    "-A",
+                    "--",
+                    raw_relative,
+                    log_relative,
+                ],
+                check=False,
+                capture_output=True,
+                timeout=30,
+            )
+        except (FileNotFoundError, subprocess.TimeoutExpired):
+            log.warning("Unable to restore Git index after pre-backend rollback")
+        raise
     send_ntfy(
         f"Wiki: {title}",
         notes,

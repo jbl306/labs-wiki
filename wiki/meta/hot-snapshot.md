@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-08-17T03:17:01+00:00
+generated: 2026-08-18T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,13 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-08-17T03:17:01+00:00
+> Regenerated: 2026-08-18T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-08-15` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-08-17` — [[scaling-domain-data-repetition-in-llm-pretraining]] (`wiki/sources/scaling-domain-data-repetition-in-llm-pretraining.md`)
+- `2026-08-17` — [[optimal-domain-repetition-in-llm-pretraining]] (`wiki/concepts/optimal-domain-repetition-in-llm-pretraining.md`)
+- `2026-08-16` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-13` — [[agent-memory-frameworks]] (`wiki/concepts/agent-memory-frameworks.md`)
 - `2026-08-13` — [[memory-operations-in-foundation-agents]] (`wiki/concepts/memory-operations-in-foundation-agents.md`)
 - `2026-08-13` — [[memory-substrates-in-foundation-agents]] (`wiki/concepts/memory-substrates-in-foundation-agents.md`)
@@ -23,11 +25,11 @@ ttl_hours: 24
 - `2026-08-13` — [[mcp-authorization-evolution]] (`wiki/concepts/mcp-authorization-evolution.md`)
 - `2026-08-13` — [[multi-round-trip-requests-mcp-elicitation]] (`wiki/concepts/multi-round-trip-requests-mcp-elicitation.md`)
 - `2026-08-13` — [[stateless-mcp-protocol]] (`wiki/concepts/stateless-mcp-protocol.md`)
-- `2026-08-02` — [[ace-context-adaptation-failure-modes-countermeasures]] (`wiki/synthesis/ace-context-adaptation-failure-modes-countermeasures.md`)
-- `2026-08-02` — [[adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs]] (`wiki/synthesis/adaboost-vs-random-forests-ensemble-learning-approaches-and-practical-trade-offs.md`)
 
 ## Recent Sources Captured
 
+- `2026-08-17` — `raw/2026-08-17-260814071v1pdf.md`
+- `2026-08-17` — `raw/2026-08-17-260814071-scaling-domain-data-repetition-in-llm-pretraining.md`
 - `2026-08-13` — `raw/2026-08-13-260206052v4pdf.md`
 - `2026-08-13` — `raw/2026-08-08-the-next-generation-of-mcp-cloudflare-blog.md`
 - `2026-08-02` — `raw/2026-07-09-github-ingestion-phase-3-delivery.md`
@@ -36,8 +38,6 @@ ttl_hours: 24
 - `2026-05-31` — `raw/2026-05-31-copilot-session-optimizing-dev-kit-instructions-3fbfec36.md`
 - `2026-05-31` — `raw/2026-05-31-copilot-session-offline-triage-contracts-f348902c.md`
 - `2026-05-31` — `raw/2026-05-31-copilot-session-canonical-props-implementation-c9632506.md`
-- `2026-05-30` — `raw/2026-05-30-copilot-session-light-ui-redesign-for-csr-benefits-571044d9.md`
-- `2026-05-30` — `raw/2026-05-30-copilot-session-extending-jbl-dev-kit-workflow-toolkit-c56bdb5a.md`
 
 ## Always-Hot Pages (`tier: hot`)
 

@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-08-18T03:17:01+00:00
+generated: 2026-08-19T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,13 +11,13 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-08-18T03:17:01+00:00
+> Regenerated: 2026-08-19T03:17:01+00:00
 
 ## Recent Wiki Edits
 
+- `2026-08-17` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-17` — [[scaling-domain-data-repetition-in-llm-pretraining]] (`wiki/sources/scaling-domain-data-repetition-in-llm-pretraining.md`)
 - `2026-08-17` — [[optimal-domain-repetition-in-llm-pretraining]] (`wiki/concepts/optimal-domain-repetition-in-llm-pretraining.md`)
-- `2026-08-16` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-13` — [[agent-memory-frameworks]] (`wiki/concepts/agent-memory-frameworks.md`)
 - `2026-08-13` — [[memory-operations-in-foundation-agents]] (`wiki/concepts/memory-operations-in-foundation-agents.md`)
 - `2026-08-13` — [[memory-substrates-in-foundation-agents]] (`wiki/concepts/memory-substrates-in-foundation-agents.md`)

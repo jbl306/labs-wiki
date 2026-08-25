@@ -4940,4 +4940,15 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   source: raw/2026-08-17-260814071v1pdf.md
   status: success
   notes: "Reconciled the duplicate arXiv PDF capture into the existing canonical source page and preserved both raw provenance paths."
+- timestamp: 2026-08-21T12:50:30+00:00
+  operation: ingest
+  agent: codex-cli
+  targets:
+    - wiki/sources/agentic-esopt-fine-tuning-long-horizon-llm-agents.md
+    - wiki/concepts/agentic-esopt-for-long-horizon-llm-fine-tuning.md
+    - wiki/concepts/prompt-parameter-co-evolution-agentic-test-time-compute.md
+    - wiki/synthesis/evolution-strategies-vs-agentic-rl-for-long-horizon-agents.md
+  source: raw/2026-08-21-260817310v1pdf.md
+  status: success
+  notes: "Proposes one new source summary, two new standalone concepts, and one within-source synthesis comparing Agentic ESOpt with agentic RL. No existing page was a title, slug, or body-level near-duplicate, so no updates or duplicate links were needed."
 ```

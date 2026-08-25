@@ -17,7 +17,17 @@ source.
 
 ## Authentication
 
-Set `WIKI_API_TOKEN` environment variable. Send as `Authorization: Bearer <token>`.
+Set `WIKI_API_TOKEN` environment variable. Send it as
+`Authorization: Bearer <token>`. Capture endpoints fail closed with
+`503 Service Unavailable` when the server token is unset.
+
+Text, URL, and note requests to `/api/ingest` are non-idempotent. Repeating an
+accepted request creates a new raw source with a numeric filename suffix.
+Clients should not automatically retry an ambiguous timeout without accepting
+that a duplicate may be created.
+
+URL capture is an operator-trusted capability because the downstream ingest
+pipeline may fetch the submitted URL. Do not expose it to untrusted callers.
 
 ## Environment Variables
 

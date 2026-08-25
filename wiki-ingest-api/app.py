@@ -44,7 +44,7 @@ class IngestResponse(BaseModel):
 def verify_token(authorization: str | None = Header(None)) -> None:
     """Verify Bearer token authentication."""
     if not API_TOKEN:
-        return
+        raise HTTPException(status_code=503, detail="Server authentication is not configured")
     if not authorization or not authorization.startswith("Bearer "):
         raise HTTPException(status_code=401, detail="Missing or invalid authorization")
     token = authorization.removeprefix("Bearer ").strip()
@@ -78,19 +78,19 @@ def write_raw_source(
     """Write a raw source file with standardized frontmatter."""
     content_hash = hashlib.sha256(content.encode()).hexdigest()
     captured = datetime.now(timezone.utc).isoformat()
-    tags_str = ", ".join(tags)
+    tags_str = json.dumps(tags)
 
     frontmatter = f"""---
-title: "{title}"
+title: {json.dumps(title)}
 type: {source_type}
 captured: {captured}
-source: {source_channel}
+source: {json.dumps(source_channel)}
 """
     if url:
-        frontmatter += f'url: "{url}"\n'
+        frontmatter += f"url: {json.dumps(url)}\n"
 
     frontmatter += f"""content_hash: "sha256:{content_hash}"
-tags: [{tags_str}]
+tags: {tags_str}
 status: pending
 ---
 """
@@ -148,14 +148,14 @@ async def debug_request(request: Request) -> dict:
     }
 
 
-async def _parse_ingest_params(request: Request) -> dict[str, str]:
+async def _parse_ingest_params(request: Request) -> dict[str, object]:
     """Extract ingest params from any request format: query, JSON, form, or raw body.
 
     Tries in order: query params → JSON body → form body → URL-encoded body.
     This handles HTTP Shortcuts' sendHttpRequest() which may send bodies
     in unexpected formats depending on version and Content-Type negotiation.
     """
-    params: dict[str, str] = {}
+    params: dict[str, object] = {}
 
     # Dump full request for debugging
     body = await request.body()
@@ -196,10 +196,18 @@ async def _parse_ingest_params(request: Request) -> dict[str, str]:
         try:
             data = json.loads(body_text)
             if isinstance(data, dict):
+                if "tags" in data and (
+                    not isinstance(data["tags"], list)
+                    or not all(isinstance(tag, str) for tag in data["tags"])
+                ):
+                    raise HTTPException(status_code=400, detail="tags must be a string list")
                 for key in ("type", "content", "title", "tags", "source"):
                     val = data.get(key)
                     if val is not None:
-                        params.setdefault(key, str(val) if not isinstance(val, str) else val)
+                        params.setdefault(
+                            key,
+                            val if key == "tags" and isinstance(val, list) else str(val),
+                        )
                 logger.info("Parsed params from JSON body")
                 return params
         except json.JSONDecodeError:
@@ -296,8 +304,10 @@ async def ingest(
 
     if isinstance(tags_raw, str):
         tag_list = [t.strip() for t in tags_raw.split(",") if t.strip()]
+    elif isinstance(tags_raw, list) and all(isinstance(tag, str) for tag in tags_raw):
+        tag_list = tags_raw
     else:
-        tag_list = list(tags_raw) if tags_raw else []
+        raise HTTPException(status_code=400, detail="tags must be a string list")
 
     path = _do_ingest(ingest_type, content, title, tag_list, source)
 

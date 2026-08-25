@@ -59,3 +59,27 @@ Format:
 - **Follow-up hardening**: Source provenance must remain identity-closed: validate every newly proposed raw path before merging so an untrusted proposal cannot seed a second upstream identity that authorizes future updates. Treat the manifest commit as the success boundary for duplicate/retention finalization; if it returns false or raises, restore raw/log state, suppress success notification, and fail for retry.
 - **Affected files**: `scripts/ingest_transaction.py`, `scripts/auto_ingest.py`, `tests/test_ingest_transaction.py`, `tests/test_auto_ingest_agent_cli.py`, `.github/skills/wiki-ingest/SKILL.md`
 - **Category**: auto-ingest
+
+## 2026-08-25: Shared API and MCP boundaries need executable contract tests
+
+- **Pattern**: The MCP capture wrapper advertised a narrower, authenticated contract than the ingest API and generated tool schema actually enforced; tags changed shape, authentication could disappear, unsafe response paths were echoed, and retry behavior was ambiguous.
+- **Root cause**: The wrapper was tested with hand-built response doubles and in isolation from the FastMCP schema and ASGI endpoint, so cross-boundary drift and transport behavior were not exercised.
+- **Prevention rule**: Test shared capture contracts with real `httpx` responses/transports, the generated FastMCP schema, and the ASGI app. Cover authentication, transport restrictions, input shape, safe output paths, existing tool inventory, and explicit duplicate/retry semantics without claiming unsupported idempotency.
+- **Affected files**: `scripts/wiki_mcp_server.py`, `wiki-ingest-api/app.py`, `tests/test_wiki_mcp_server.py`, `tests/test_wiki_ingest_api_contract.py`, `docs/tool-setup.md`, `wiki-ingest-api/README.md`
+- **Category**: api
+
+## 2026-08-25: Keep frontmatter serialization and response disclosure separate
+
+- **Pattern**: Punctuation-bearing tags did not round-trip through raw frontmatter, and a valid post-write response path was rejected whenever an ordinary authentication token appeared in the path.
+- **Root cause**: Tags used display-oriented comma joining instead of a data serializer, while one predicate combined structural path validation with secret-disclosure policy.
+- **Prevention rule**: Serialize frontmatter collections with JSON-valid YAML and round-trip punctuation-heavy cases; validate response structure independently, then suppress only the sensitive value while still reporting bounded success.
+- **Affected files**: `wiki-ingest-api/app.py`, `scripts/wiki_mcp_server.py`, `tests/test_wiki_ingest_api_contract.py`, `tests/test_wiki_mcp_server.py`
+- **Category**: api
+
+## 2026-08-25: Validate transport shapes before coercion and serialize YAML scalars
+
+- **Pattern**: User-controlled title, source, and URL values could break raw-source YAML, while JSON tags outside `list[str]` were coerced or ignored instead of rejected.
+- **Root cause**: The flexible request parser coerced JSON values before enforcing the JSON contract, and the frontmatter writer used hand-built quoting instead of a scalar serializer.
+- **Prevention rule**: Validate JSON collection shapes before generic transport coercion, keep form/query string parsing separate, serialize user-controlled YAML scalars with JSON-valid YAML, and round-trip quotes, backslashes, colons, and hashes through PyYAML tests.
+- **Affected files**: `wiki-ingest-api/app.py`, `tests/test_wiki_ingest_api_contract.py`
+- **Category**: api

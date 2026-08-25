@@ -39,6 +39,39 @@ Invoke in VS Code Chat with `@agent-name`. Each agent has specific tools and a f
 | Wiki Curator | `@wiki-curator` | Gap analysis, synthesis creation, tier promotion |
 | Wiki Orchestrate | `@wiki-orchestrate` | Coordinates other agents for multi-step workflows |
 
+## Labs-Wiki MCP Server
+
+`scripts/wiki_mcp_server.py` provides the local read/graph tools and the
+authenticated `wiki_capture` tool. Set these variables in the MCP server
+process to enable capture:
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `WIKI_INGEST_API_BASE_URL` | Yes | HTTPS base URL for the wiki ingest API; HTTP is accepted only for `localhost` or an IP loopback address |
+| `WIKI_INGEST_API_TOKEN` | Yes | Raw bearer token sent to `POST /api/ingest` |
+
+`wiki_capture` accepts only `url`, `text`, or `note` captures and validates
+request sizes before making a network call. Adding or enabling this server in
+a Codex or Hermes MCP client is a separately authorized live configuration
+step; this repository change does not modify client configuration or call the
+live API.
+
+The base URL and URL-capture tool are operator-trusted capabilities. The base
+URL determines where the MCP process sends its bearer token, and an accepted
+URL capture can cause the downstream ingest pipeline to fetch that URL. Point
+the tool only at an ingest service you control, and do not expose URL capture
+to untrusted callers.
+
+Capture is explicitly non-idempotent: every accepted request creates a new raw
+source, adding a numeric filename suffix when needed. The MCP client makes one
+request and does not automatically retry network failures because a timeout
+can occur after the server has written the source. An operator retry may
+therefore create a duplicate.
+
+The ingest API itself must set `WIKI_API_TOKEN`; capture endpoints return
+`503 Service Unavailable` without it. `WIKI_INGEST_API_TOKEN` must contain the
+same raw token in the MCP server process.
+
 #### Example Usage
 
 ```

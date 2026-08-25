@@ -2,7 +2,8 @@
 """
 Wiki MCP Server — exposes labs-wiki as searchable tools for all AI agents.
 
-Provides three local file-system tools plus six wiki-graph-api proxies:
+Provides three local file-system tools, one authenticated ingest proxy, plus
+six wiki-graph-api proxies:
 
   Local (read wiki/ directly):
     - wiki_search:               full-text search across wiki pages
@@ -18,6 +19,10 @@ Provides three local file-system tools plus six wiki-graph-api proxies:
     - wiki_graph_surprises:      cross-community edges
     - wiki_graph_query:          NL semantic query (R14 endpoint)
 
+  Capture (HTTP → wiki-ingest-api, configured with
+  WIKI_INGEST_API_BASE_URL and WIKI_INGEST_API_TOKEN):
+    - wiki_capture:              authenticated URL/text/note capture
+
 Transport: stdio (works with VS Code Copilot, Copilot CLI, OpenCode)
 """
 
@@ -26,7 +31,10 @@ from __future__ import annotations
 import json
 import os
 import re
-from pathlib import Path
+from ipaddress import ip_address
+from pathlib import Path, PurePosixPath
+from typing import Literal
+from urllib.parse import urlsplit
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -37,6 +45,17 @@ INDEX_PATH = WIKI_DIR / "index.md"
 
 GRAPH_API_BASE = os.environ.get("WIKI_GRAPH_API_BASE_URL", "http://localhost:8765").rstrip("/")
 GRAPH_API_TIMEOUT = float(os.environ.get("WIKI_GRAPH_API_TIMEOUT", "10"))
+CAPTURE_API_TIMEOUT = 5.0
+CAPTURE_MAX_BASE_URL = 2048
+CAPTURE_MAX_TOKEN = 4096
+CAPTURE_MAX_CONTENT = 20_000
+CAPTURE_MAX_TITLE = 200
+CAPTURE_MAX_TAGS = 20
+CAPTURE_MAX_TAG = 50
+CAPTURE_MAX_SOURCE = 100
+CAPTURE_MAX_RESPONSE_PATH = 512
+CAPTURE_MAX_OUTPUT = 4_096
+CAPTURE_TYPES = {"url", "text", "note"}
 
 mcp = FastMCP("labs-wiki")
 
@@ -60,6 +79,185 @@ def _graph_post(path: str, body: dict) -> dict | list:
 
 def _graph_error(action: str, exc: Exception) -> str:
     return f"wiki-graph-api {action} failed against {GRAPH_API_BASE}: {exc}"
+
+
+def _capture_error(message: str) -> str:
+    return f"wiki capture {message}"[:CAPTURE_MAX_OUTPUT]
+
+
+def _capture_config() -> tuple[str, str] | str:
+    base_url = os.environ.get("WIKI_INGEST_API_BASE_URL", "")
+    token = os.environ.get("WIKI_INGEST_API_TOKEN", "")
+
+    if not base_url:
+        return _capture_error(
+            "configuration invalid: WIKI_INGEST_API_BASE_URL is required"
+        )
+    if not token:
+        return _capture_error(
+            "configuration invalid: WIKI_INGEST_API_TOKEN is required"
+        )
+    if (
+        len(base_url) > CAPTURE_MAX_BASE_URL
+        or base_url != base_url.strip()
+        or any(char.isspace() or ord(char) < 32 or ord(char) == 127 for char in base_url)
+    ):
+        return _capture_error("configuration invalid: base URL is malformed")
+    if (
+        len(token) > CAPTURE_MAX_TOKEN
+        or token != token.strip()
+        or any(char.isspace() or ord(char) < 32 or ord(char) == 127 for char in token)
+        or token.lower().startswith("bearer ")
+    ):
+        return _capture_error("configuration invalid: token is malformed")
+
+    try:
+        parsed = urlsplit(base_url)
+        _ = parsed.port
+        hostname = parsed.hostname
+    except ValueError:
+        return _capture_error("configuration invalid: base URL is malformed")
+    if (
+        parsed.scheme not in {"http", "https"}
+        or not hostname
+        or parsed.username is not None
+        or parsed.password is not None
+        or parsed.query
+        or parsed.fragment
+    ):
+        return _capture_error("configuration invalid: base URL is malformed")
+    if parsed.scheme == "http":
+        try:
+            loopback = hostname.lower() == "localhost" or ip_address(hostname).is_loopback
+        except ValueError:
+            loopback = hostname.lower() == "localhost"
+        if not loopback:
+            return _capture_error(
+                "configuration invalid: HTTPS is required except for loopback HTTP"
+            )
+
+    return base_url.rstrip("/"), token
+
+
+def _capture_label_valid(value: object, limit: int) -> bool:
+    return (
+        isinstance(value, str)
+        and len(value) <= limit
+        and not any(ord(char) < 32 or ord(char) == 127 for char in value)
+    )
+
+
+def _capture_validate(
+    capture_type: object,
+    content: object,
+    title: object,
+    tags: object,
+    source: object,
+) -> str | None:
+    if not isinstance(capture_type, str) or capture_type not in CAPTURE_TYPES:
+        return _capture_error("invalid input: type must be url, text, or note")
+    if not isinstance(content, str) or not content.strip():
+        return _capture_error("invalid input: content is required")
+    if len(content) > CAPTURE_MAX_CONTENT:
+        return _capture_error("invalid input: content exceeds its size limit")
+    if title is not None and not _capture_label_valid(title, CAPTURE_MAX_TITLE):
+        return _capture_error("invalid input: title exceeds its size limit")
+    if not _capture_label_valid(source, CAPTURE_MAX_SOURCE) or not source:
+        return _capture_error("invalid input: source is required or malformed")
+    if not isinstance(tags, list) or len(tags) > CAPTURE_MAX_TAGS:
+        return _capture_error("invalid input: tags exceed their size limit")
+    if any(not _capture_label_valid(tag, CAPTURE_MAX_TAG) or not tag for tag in tags):
+        return _capture_error("invalid input: tags contain a malformed value")
+    return None
+
+
+def _capture_response_path_valid(value: object) -> bool:
+    if (
+        not isinstance(value, str)
+        or not value
+        or len(value) > CAPTURE_MAX_RESPONSE_PATH
+        or "\\" in value
+        or any(ord(char) < 32 or ord(char) == 127 for char in value)
+    ):
+        return False
+    path = PurePosixPath(value)
+    return (
+        not path.is_absolute()
+        and str(path) == value
+        and len(path.parts) == 2
+        and path.parts[0] == "raw"
+        and ".." not in path.parts
+        and path.suffix == ".md"
+    )
+
+
+@mcp.tool()
+def wiki_capture(
+    type: Literal["url", "text", "note"],
+    content: str,
+    title: str | None = None,
+    tags: list[str] | None = None,
+    source: str = "codex-mcp",
+) -> str:
+    """Capture a URL, text, or note through the authenticated wiki ingest API.
+
+    The client must set ``WIKI_INGEST_API_BASE_URL`` and
+    ``WIKI_INGEST_API_TOKEN``. The API client is never contacted until all
+    inputs and configuration have passed validation.
+    """
+    normalized_tags = [] if tags is None else tags
+    validation_error = _capture_validate(type, content, title, normalized_tags, source)
+    if validation_error:
+        return validation_error
+
+    config = _capture_config()
+    if isinstance(config, str):
+        return config
+    base_url, token = config
+    payload: dict[str, object] = {
+        "type": type,
+        "content": content,
+        "tags": normalized_tags,
+        "source": source,
+    }
+    if title is not None:
+        payload["title"] = title
+
+    try:
+        with httpx.Client(timeout=CAPTURE_API_TIMEOUT) as client:
+            response = client.post(
+                f"{base_url}/api/ingest",
+                json=payload,
+                headers={
+                    "Authorization": f"Bearer {token}",
+                    "Content-Type": "application/json",
+                },
+            )
+            response.raise_for_status()
+    except httpx.HTTPStatusError as exc:
+        status_code = getattr(exc.response, "status_code", "unknown")
+        if not isinstance(status_code, int):
+            status_code = "unknown"
+        return _capture_error(f"failed: ingest API returned HTTP {status_code}")
+    except httpx.RequestError:
+        return _capture_error("failed: network error contacting ingest API")
+    except Exception:
+        return _capture_error("failed: request could not be completed")
+
+    try:
+        result = response.json()
+    except Exception:
+        return _capture_error("failed: invalid response from ingest API")
+    if (
+        not isinstance(result, dict)
+        or result.get("status") != "ok"
+        or not _capture_response_path_valid(result.get("path"))
+    ):
+        return _capture_error("failed: invalid response from ingest API")
+    if token in result["path"]:
+        return "wiki ingest succeeded"
+
+    return _capture_error(f"succeeded: {result['path']}")
 
 
 def _find_pages() -> list[Path]:

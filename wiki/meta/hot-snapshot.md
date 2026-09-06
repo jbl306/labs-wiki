@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-09-05T03:17:01+00:00
+generated: 2026-09-06T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-09-05T03:17:01+00:00
+> Regenerated: 2026-09-06T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-09-03` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-09-04` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-25` — [[agentic-esopt-for-long-horizon-llm-fine-tuning]] (`wiki/concepts/agentic-esopt-for-long-horizon-llm-fine-tuning.md`)
 - `2026-08-25` — [[prompt-parameter-co-evolution-agentic-test-time-compute]] (`wiki/concepts/prompt-parameter-co-evolution-agentic-test-time-compute.md`)
 - `2026-08-25` — [[agentic-esopt-fine-tuning-long-horizon-llm-agents]] (`wiki/sources/agentic-esopt-fine-tuning-long-horizon-llm-agents.md`)
@@ -67,37 +67,43 @@ ttl_hours: 24
 ### Wing: `labs_wiki`
 
 ```
-Wake-up text (~111 tokens):
+Wake-up text (~884 tokens):
 ==================================================
 I am jbl's AI assistant operating on a homelab server (Beelink GTi13 Ultra, Ubuntu 24.04 LTS).
 I help with infrastructure management, ML research, knowledge management, and home automation.
 Key projects: labs-wiki (LLM knowledge wiki), homelab (Docker service orchestration), nba-ml-engine (fantasy basketball ML).
 I value accuracy, provenance, and elegant solutions. I track lessons learned to avoid repeating mistakes.
-## L1 — No memories yet.
+## L1 — ESSENTIAL STORY
+[agents]
+  ... (more in L3 search)
 ```
 
 ### Wing: `copilot_sessions`
 
 ```
-Wake-up text (~111 tokens):
+Wake-up text (~894 tokens):
 ==================================================
 I am jbl's AI assistant operating on a homelab server (Beelink GTi13 Ultra, Ubuntu 24.04 LTS).
 I help with infrastructure management, ML research, knowledge management, and home automation.
 Key projects: labs-wiki (LLM knowledge wiki), homelab (Docker service orchestration), nba-ml-engine (fantasy basketball ML).
 I value accuracy, provenance, and elegant solutions. I track lessons learned to avoid repeating mistakes.
-## L1 — No memories yet.
+## L1 — ESSENTIAL STORY
+[technical]
+  ... (more in L3 search)
 ```
 
 ### Wing: `homelab`
 
 ```
-Wake-up text (~111 tokens):
+Wake-up text (~886 tokens):
 ==================================================
 I am jbl's AI assistant operating on a homelab server (Beelink GTi13 Ultra, Ubuntu 24.04 LTS).
 I help with infrastructure management, ML research, knowledge management, and home automation.
 Key projects: labs-wiki (LLM knowledge wiki), homelab (Docker service orchestration), nba-ml-engine (fantasy basketball ML).
 I value accuracy, provenance, and elegant solutions. I track lessons learned to avoid repeating mistakes.
-## L1 — No memories yet.
+## L1 — ESSENTIAL STORY
+[compose]
+  ... (more in L3 search)
 ```
 
 ---

@@ -225,6 +225,13 @@ extraction or image ranking after a follow-up pass.
 
 ### Docker Service
 
+Source-page reconciliation identifies arXiv abstract, PDF, and HTML URLs and
+Hugging Face `/papers/<arxiv-id>` listings by their validated arXiv ID. A later
+full-paper capture can enrich the existing source page while preserving both
+raw references. Different IDs, other hosts, and unrecognized paths remain
+distinct; a matching title alone never authorizes a merge. If reconciliation
+fails, the raw source stays pending and canonical wiki state is unchanged.
+
 The `wiki-auto-ingest` container runs alongside `wiki-ingest-api` in
 `compose.wiki.yml`. It watches the shared `raw/` volume and processes new
 sources automatically.

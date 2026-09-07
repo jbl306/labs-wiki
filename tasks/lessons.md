@@ -83,3 +83,12 @@ Format:
 - **Prevention rule**: Validate JSON collection shapes before generic transport coercion, keep form/query string parsing separate, serialize user-controlled YAML scalars with JSON-valid YAML, and round-trip quotes, backslashes, colons, and hashes through PyYAML tests.
 - **Affected files**: `wiki-ingest-api/app.py`, `tests/test_wiki_ingest_api_contract.py`
 - **Category**: api
+
+
+## 2026-09-07: Match paper captures by verified upstream identity
+
+- **Pattern**: An arXiv PDF could not enrich the source page created from the same paper's Hugging Face listing.
+- **Root cause**: URL normalization recognized arXiv abstract/PDF aliases but treated the listing and HTML URL as different documents.
+- **Prevention rule**: Normalize supported paper URLs by validated arXiv ID; retain exact-host, provenance, hash, and title checks, and test both create reconciliation and updates.
+- **Affected files**: `scripts/ingest_transaction.py`, `tests/test_ingest_transaction.py`
+- **Category**: auto-ingest

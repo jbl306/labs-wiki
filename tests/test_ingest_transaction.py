@@ -12,6 +12,56 @@ import ingest_transaction  # noqa: E402
 
 
 class IngestTransactionTests(unittest.TestCase):
+    def test_paper_urls_share_identity_only_for_recognized_hosts_and_ids(self) -> None:
+        for url in (
+            "https://huggingface.co/papers/2608.28122",
+            "https://huggingface.co/papers/2608.28122/?source=daily#discussion",
+            "https://arxiv.org/abs/2608.28122",
+            "https://arxiv.org:443/abs/2608.28122/",
+            "http://huggingface.co:80/papers/2608.28122",
+            "https://arxiv.org/pdf/2608.28122v1.pdf",
+            "https://arxiv.org/html/2608.28122v1",
+        ):
+            with self.subTest(url=url):
+                self.assertEqual(ingest_transaction._normalized_upstream_identity(url), "arxiv:2608.28122")
+        for url in (
+            "https://huggingface.co/papers/2608.28123",
+            "https://huggingface.co/papers/trending",
+            "https://huggingface.co/papers/2608.28122/discussion",
+            "https://huggingface.co.example.org/papers/2608.28122",
+            "https://arxiv.org.example.org/pdf/2608.28122",
+            "file://huggingface.co/papers/2608.28122",
+            "https://huggingface.co:bad/papers/2608.28122",
+            "https://huggingface.co:444/papers/2608.28122",
+            "https://arxiv.org:bad/abs/2608.28122",
+            "https://arxiv.org:444/pdf/2608.28122",
+            "https://arxiv.org:0/abs/2608.28122",
+            "https://arxiv.org/abs/2608.28122//",
+        ):
+            with self.subTest(url=url):
+                self.assertNotEqual(ingest_transaction._normalized_upstream_identity(url), "arxiv:2608.28122")
+        self.assertEqual(
+            ingest_transaction._normalized_upstream_identity("https://arxiv.org:0/abs/2608.28122"),
+            "https://arxiv.org:0/abs/2608.28122",
+        )
+
+    def test_huggingface_paper_can_be_enriched_from_arxiv_preserving_provenance(self) -> None:
+        for operation in ("create", "update"):
+            with self.subTest(operation=operation), tempfile.TemporaryDirectory() as tmp:
+                root, raw = self._root(tmp)
+                raw.write_text("---\ntitle: Example\ntype: url\nurl: https://arxiv.org/pdf/2608.28122\nstatus: pending\n---\nFull paper\n")
+                (root / "raw/prior.md").write_text("---\ntitle: Prior\ntype: url\nurl: https://huggingface.co/papers/2608.28122\nstatus: ingested\n---\nPaper listing\n")
+                existing = root / "wiki/sources/example.md"
+                existing.write_text(self._proposal("raw/prior.md")["page_mutations"][0]["content"])
+                proposal = self._proposal()
+                proposal["page_mutations"][0]["operation"] = operation
+                stage = root / "stage"
+                ingest_transaction._copy_transaction_inputs(root, stage)
+                ingest_transaction._write_mutations(proposal, root, stage, raw, expected_source_hash="a" * 64)
+                frontmatter, _, error = ingest_transaction.parse_page_text((stage / "wiki/sources/example.md").read_text())
+                self.assertIsNone(error)
+                self.assertEqual(frontmatter["sources"], ["raw/prior.md", "raw/example.md"])
+
     def test_legacy_arxiv_abstract_and_pdf_urls_share_identity(self) -> None:
         self.assertEqual(
             ingest_transaction._normalized_upstream_identity(

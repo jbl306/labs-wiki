@@ -136,26 +136,27 @@ def _normalized_upstream_identity(value: object) -> str:
         return ""
     try:
         parsed = urllib.parse.urlsplit(text)
+        port_number = parsed.port
     except ValueError:
         return ""
     host = (parsed.hostname or "").casefold()
-    if host in {"arxiv.org", "www.arxiv.org"}:
-        match = re.fullmatch(r"/(?:abs|pdf)/(.+)", parsed.path, re.IGNORECASE)
-        if match:
-            arxiv_id = re.sub(r"\.pdf$", "", match.group(1), flags=re.IGNORECASE)
-            arxiv_id = re.sub(r"v\d+$", "", arxiv_id, flags=re.IGNORECASE)
-            if re.fullmatch(
-                r"(?:\d{4}\.\d{4,5}|[a-z][a-z0-9.-]*/\d{7})",
-                arxiv_id,
-                re.IGNORECASE,
-            ):
-                return f"arxiv:{arxiv_id.casefold()}"
     if parsed.scheme.casefold() not in {"http", "https"} or not host:
         return ""
-    try:
-        port = f":{parsed.port}" if parsed.port else ""
-    except ValueError:
-        return ""
+    match = None
+    if host in {"arxiv.org", "www.arxiv.org"}:
+        match = re.fullmatch(r"/(?:abs|pdf|html)/(.+)", parsed.path.removesuffix("/"), re.IGNORECASE)
+    elif host in {"huggingface.co", "www.huggingface.co"}:
+        match = re.fullmatch(r"/papers/(\d{4}\.\d{4,5}(?:v\d+)?)/?", parsed.path, re.IGNORECASE)
+    if match and port_number in {None, 443 if parsed.scheme.casefold() == "https" else 80}:
+        arxiv_id = re.sub(r"\.pdf$", "", match.group(1), flags=re.IGNORECASE)
+        arxiv_id = re.sub(r"v\d+$", "", arxiv_id, flags=re.IGNORECASE)
+        if re.fullmatch(
+            r"(?:\d{4}\.\d{4,5}|[a-z][a-z0-9.-]*/\d{7})",
+            arxiv_id,
+            re.IGNORECASE,
+        ):
+            return f"arxiv:{arxiv_id.casefold()}"
+    port = f":{port_number}" if port_number is not None else ""
     path = parsed.path.rstrip("/") or "/"
     return urllib.parse.urlunsplit(
         (parsed.scheme.casefold(), host + port, path, parsed.query, "")

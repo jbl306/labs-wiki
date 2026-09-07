@@ -187,7 +187,13 @@ def source_origin_family(raw_path: Path) -> str:
     return "local-capture"
 
 
-def audit_page(path: Path, repo_root: Path = ROOT, *, strict: bool = False) -> AuditResult:
+def audit_page(
+    path: Path,
+    repo_root: Path = ROOT,
+    *,
+    strict: bool = False,
+    page_provenance: dict[str, set[str]] | None = None,
+) -> AuditResult:
     """Score one synthesis page and return actionable findings."""
     text = path.read_text(errors="replace")
     frontmatter, body = parse_frontmatter_text(text)
@@ -332,7 +338,8 @@ def audit_page(path: Path, repo_root: Path = ROOT, *, strict: bool = False) -> A
         score += round(10 * grounded_insight_count / len(insights))
     evidence_map = section_body(body, "Evidence Map")
     evidence_rows = _evidence_map_rows(evidence_map)
-    page_provenance = _wiki_page_provenance(repo_root)
+    if page_provenance is None:
+        page_provenance = _wiki_page_provenance(repo_root)
     invalid_evidence_claims: list[str] = []
     missing_evidence_claims: list[str] = []
     for insight in insights:
@@ -509,7 +516,12 @@ def main() -> int:
     args = parser.parse_args()
 
     pages = args.page or sorted((args.wiki_dir / "synthesis").glob("*.md"))
-    results = [audit_page(path.resolve(), ROOT, strict=args.strict) for path in pages]
+    # Reuse one live provenance snapshot for this batch, never across runs.
+    page_provenance = _wiki_page_provenance(ROOT) if pages else {}
+    results = [
+        audit_page(path.resolve(), ROOT, strict=args.strict, page_provenance=page_provenance)
+        for path in pages
+    ]
     payload = {
         "summary": summarize(results),
         "results": [result.to_dict() for result in results],

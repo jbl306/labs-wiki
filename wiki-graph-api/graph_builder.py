@@ -450,8 +450,10 @@ def parse_page(root: Path, md_path: Path) -> Page | None:
 # Extraction with cache
 # ---------------------------------------------------------------------------
 
-def _cache_path(cache_dir: Path, content_hash: str) -> Path:
-    return cache_dir / f"{content_hash}.json"
+def _cache_path(cache_dir: Path, content_hash: str, relative_path: str) -> Path:
+    # Parsed pages include their path and a filename-derived fallback title.
+    key = hashlib.sha256(f"{relative_path}\0{content_hash}".encode("utf-8")).hexdigest()
+    return cache_dir / f"{key}.json"
 
 
 def _iter_wiki_markdown(wiki_dir: Path) -> list[Path]:
@@ -522,7 +524,7 @@ def _page_from_cache_dict(d: dict[str, Any]) -> Page:
 
 
 def extract_pages(wiki_dir: Path, cache_dir: Path | None = None) -> tuple[list[Page], dict[str, int]]:
-    """Walk `wiki_dir` for .md files, parse each, cache by content hash.
+    """Walk `wiki_dir` for .md files, parse each, cache by path and content hash.
 
     Returns (pages, stats) where stats contains cache_hits / cache_misses / errors.
     """
@@ -542,7 +544,8 @@ def extract_pages(wiki_dir: Path, cache_dir: Path | None = None) -> tuple[list[P
             continue
         content_hash = hashlib.sha256(raw).hexdigest()
 
-        cache_file = _cache_path(cache_dir, content_hash) if cache_dir else None
+        relative_path = md.relative_to(wiki_dir).as_posix()
+        cache_file = _cache_path(cache_dir, content_hash, relative_path) if cache_dir else None
         if cache_file and cache_file.exists():
             try:
                 cached = json.loads(cache_file.read_text())
@@ -580,10 +583,6 @@ def _resolve_wikilink(target: str, by_title: dict[str, str], by_slug: dict[str, 
     slug = _slugify(key)
     if slug in by_slug:
         return by_slug[slug]
-    # Also try matching the tail of a path, e.g. "rope" matches "concepts/rope".
-    for node_id in by_slug.values():
-        if node_id.rsplit("/", 1)[-1] == slug:
-            return node_id
     return None
 
 

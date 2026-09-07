@@ -2,13 +2,58 @@ import asyncio
 import json
 import os
 import sys
+import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 import httpx
 
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "scripts"))
 import wiki_mcp_server as server  # noqa: E402
+
+
+class WikiReadTests(unittest.TestCase):
+    def test_direct_page_reads_skip_the_corpus_scan_and_preserve_title_lookup(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wiki = root / 'wiki'
+            page = wiki / 'concepts' / 'sample.md'
+            page.parent.mkdir(parents=True)
+            page.write_text('---\ntitle: A Different Title\ntype: concept\n---\nPublic content')
+            with patch.object(server, 'WIKI_ROOT', root), patch.object(server, 'WIKI_DIR', wiki):
+                with patch.object(server, '_find_pages', side_effect=AssertionError('unnecessary scan')):
+                    for name in ('wiki/concepts/sample.md', 'concepts/sample.md', 'sample'):
+                        self.assertIn('Public content', server.wiki_read(name))
+                self.assertIn('Public content', server.wiki_read('A Different Title'))
+
+    def test_local_tools_do_not_read_outside_wiki_or_non_markdown_files(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wiki = root / 'wiki'
+            wiki.mkdir()
+            secret = root / 'private.md'
+            secret.write_text('---\ntitle: secret-marker\n---\nsecret-marker')
+            (wiki / 'linked.md').symlink_to(secret)
+            (wiki / 'linked-dir').symlink_to(root, target_is_directory=True)
+            (wiki / 'private.txt').write_text('secret-marker')
+            with patch.object(server, 'WIKI_ROOT', root), patch.object(server, 'WIKI_DIR', wiki):
+                for name in ('private.md', '../private.md', str(secret), 'wiki/linked.md', 'wiki/linked-dir/private.md', 'wiki/private.txt'):
+                    with self.subTest(name=name):
+                        self.assertNotIn('secret-marker', server.wiki_read(name))
+                self.assertEqual(server._find_pages(), [])
+                self.assertNotIn('secret-marker', server.wiki_list())
+                self.assertNotIn('secret-marker', server.wiki_search('secret'))
+
+    def test_symlink_loops_do_not_break_local_tools(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wiki = root / 'wiki'
+            wiki.mkdir()
+            (wiki / 'loop.md').symlink_to(wiki / 'loop.md')
+            with patch.object(server, 'WIKI_ROOT', root), patch.object(server, 'WIKI_DIR', wiki):
+                self.assertEqual(server._find_pages(), [])
+                self.assertIn('not found', server.wiki_read('wiki/loop.md'))
 
 
 class WikiCaptureTests(unittest.TestCase):

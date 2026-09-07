@@ -11,6 +11,13 @@
 
 ## Architecture
 
+The diagram below describes the existing transcript watcher path. Codex also
+has a separate [selective checkpoint path](codex-durable-memory.md): the agent
+stages durable Labs Wiki facts, then native Stop/PreCompact hooks save them
+through the connected MemPalace server. That path does not mine transcripts or
+publish wiki pages. Watcher configuration and service health were not reverified
+during the 2026-09-07 checkpoint integration.
+
 ```
 ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
 │ Codex/Copilot   │  │  VS Code Copilot│  │    OpenCode     │
@@ -79,14 +86,19 @@ Encoded in [agents-snippet.md](agents-snippet.md) and injected into every projec
 3. `wiki_search` / `wiki_read` MCP
 4. Web fetch (last resort)
 
-### 4. Manual hook substitutes (skills)
+### 4. Native Codex checkpoints and manual skills
 
-| Skill | Substitutes for | Trigger |
+Codex uses native SessionStart, Stop, and PreCompact hooks for selective Labs
+Wiki memory. SessionStart supplies the policy; Stop and PreCompact save staged
+facts through `mempalace_durable_hook`. See the [implementation and verification
+guide](codex-durable-memory.md).
+
+Manual skills remain available for distinct, explicitly requested operations:
+
+| Skill | Purpose | Trigger |
 |-------|-----------------|---------|
-| [`/wiki-save`](../.github/skills/wiki-save/SKILL.md) | Stop hook | End-of-session capture |
-| [`/wiki-refresh-hot`](../.github/skills/wiki-refresh-hot/SKILL.md) | SessionStart hook | Manual hot cache refresh |
-
-Codex/Copilot CLI and VS Code Copilot have **no native SessionStart/Stop/PreCompact hooks** in this repo. The watcher + always-loaded `hot.md` + user-invoked skills give equivalent behavior without needing them.
+| [`/wiki-save`](../.github/skills/wiki-save/SKILL.md) | Publish a conversation summary as a raw source | Explicit user authorization |
+| [`/wiki-refresh-hot`](../.github/skills/wiki-refresh-hot/SKILL.md) | Refresh the hot cache | Manual refresh |
 
 ### 5. Weekly safety-net cron
 

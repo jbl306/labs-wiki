@@ -168,6 +168,7 @@ Works with Codex CLI for unattended processing plus the repo's interactive assis
   evaluates provenance, grounding, depth, and title quality
 - **Tiers:** hot → established → core → workflow (consolidation over time)
 - **Checkpoint policy:** Copilot `project-progress` checkpoints are compressed into archived source pages; planning-only checkpoints keep the summary but do not mint standalone concept/entity pages, and checkpoint source pages carry `knowledge_state: planned|executed|validated` separately from structural quality
+- **Codex session memory:** native Stop and PreCompact hooks save selected, evidence-backed Labs Wiki checkpoints to MemPalace. Execution state stays explicit; these checkpoints do not automatically publish wiki sources or pages. See [Codex durable session memory](docs/codex-durable-memory.md) for the adapter, scope, and checks.
 
 See [docs/memory-model.md](docs/memory-model.md) for details.
 

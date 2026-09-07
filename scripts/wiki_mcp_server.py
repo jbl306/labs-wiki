@@ -260,6 +260,19 @@ def wiki_capture(
     return _capture_error(f"succeeded: {result['path']}")
 
 
+def _is_wiki_page(path: Path) -> bool:
+    """Only admit Markdown files whose resolved location stays inside wiki/."""
+    try:
+        resolved = path.resolve()
+    except (OSError, RuntimeError, ValueError):
+        return False
+    return (
+        resolved.is_relative_to(WIKI_DIR.resolve())
+        and resolved.suffix == ".md"
+        and resolved.is_file()
+    )
+
+
 def _find_pages() -> list[Path]:
     """Return all .md files in wiki/ excluding index.md and log.md."""
     if not WIKI_DIR.exists():
@@ -267,7 +280,7 @@ def _find_pages() -> list[Path]:
     return sorted(
         p
         for p in WIKI_DIR.rglob("*.md")
-        if p.name not in ("index.md", "log.md")
+        if p.name not in ("index.md", "log.md") and _is_wiki_page(p)
     )
 
 
@@ -413,23 +426,20 @@ def wiki_read(page: str) -> str:
     for subdir in ["concepts", "entities", "sources", "synthesis"]:
         candidates.append(WIKI_DIR / subdir / f"{slug}.md")
 
-    # Try title matching
-    for p in _find_pages():
-        text = p.read_text(errors="replace")
-        fm = _extract_frontmatter(text)
-        title = fm.get("title", "").lower()
-        if title == page.lower() or p.stem == slug:
-            candidates.insert(0, p)
-
     for candidate in candidates:
-        if candidate.exists() and candidate.is_file():
-            rel = str(candidate.relative_to(WIKI_ROOT))
+        if _is_wiki_page(candidate):
+            rel = str(candidate.resolve().relative_to(WIKI_ROOT.resolve()))
             content = candidate.read_text(errors="replace")
             return f"# {rel}\n\n{content}"
 
-    # Fuzzy: search for partial matches
+    # Only scan page contents when direct path and slug lookups miss.
     matches = []
     for p in _find_pages():
+        text = p.read_text(errors="replace")
+        fm = _extract_frontmatter(text)
+        if fm.get("title", "").lower() == page.lower() or p.stem == slug:
+            return f"# {p.relative_to(WIKI_ROOT)}\n\n{text}"
+
         if slug in p.stem:
             matches.append(str(p.relative_to(WIKI_ROOT)))
 

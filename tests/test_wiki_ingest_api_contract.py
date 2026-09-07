@@ -4,6 +4,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import AsyncMock, patch
+from concurrent.futures import ThreadPoolExecutor
 
 import httpx
 import yaml
@@ -72,6 +73,59 @@ class WikiIngestAPIContractTests(unittest.TestCase):
         self.assertEqual(missing.status_code, 401)
         self.assertEqual(invalid.status_code, 403)
         self.assertFalse(self.raw_dir.exists())
+
+    def test_debug_requires_auth_and_returns_only_bounded_metadata(self):
+        self.assertEqual(self.request('/api/debug').status_code, 401)
+        response = self.request(
+            '/api/debug?secret=query-secret',
+            content='private capture',
+            headers={**self.auth(), 'Cookie': 'session=cookie-secret'},
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'method': 'POST', 'body_length': 15})
+
+    def test_ingest_logs_do_not_contain_request_values(self):
+        with self.assertLogs(api.logger, level='DEBUG') as logs:
+            response = self.request(
+                '/api/ingest?private=query-secret',
+                json={'type': 'note', 'content': 'body-secret', 'title': 'title-secret'},
+                headers={**self.auth(), 'Cookie': 'session=cookie-secret'},
+            )
+        self.assertEqual(response.status_code, 200)
+        for value in ('query-secret', 'body-secret', 'title-secret', 'cookie-secret', 'server-token'):
+            self.assertNotIn(value, '\n'.join(logs.output))
+
+    def test_repeated_file_uploads_preserve_both_raw_records_and_assets(self):
+        first = self.request(
+            '/api/ingest/file', files={'file': ('paper.txt', b'first version')},
+            headers=self.auth(),
+        )
+        first_path = self.root / first.json()['path']
+        first_bytes = first_path.read_bytes()
+        second = self.request(
+            '/api/ingest/file', files={'file': ('paper.txt', b'second version')},
+            headers=self.auth(),
+        )
+        self.assertEqual(first.status_code, 200)
+        self.assertEqual(second.status_code, 200)
+        self.assertNotEqual(first.json()['path'], second.json()['path'])
+        self.assertEqual(first_path.read_bytes(), first_bytes)
+        assets = list((self.raw_dir / 'assets').iterdir())
+        self.assertEqual({p.read_bytes() for p in assets}, {b'first version', b'second version'})
+        second_text = (self.root / second.json()['path']).read_text()
+        for asset in assets:
+            self.assertIn(asset.name, first_bytes.decode() if asset.read_bytes() == b'first version' else second_text)
+
+    def test_concurrent_captures_do_not_overwrite_existing_sources(self):
+        def capture(index):
+            return api._do_ingest('note', f'capture {index}', 'Same title', [], 'test')
+
+        with ThreadPoolExecutor(max_workers=8) as pool:
+            paths = list(pool.map(capture, range(16)))
+
+        self.assertEqual(len(set(paths)), 16)
+        for index, path in enumerate(paths):
+            self.assertTrue(path.read_text().endswith(f'\ncapture {index}\n'))
 
     def test_json_tag_lists_round_trip_through_frontmatter(self):
         cases = [

@@ -74,7 +74,7 @@ def write_raw_source(
     source_channel: str,
     tags: list[str],
     url: str | None = None,
-) -> None:
+) -> Path:
     """Write a raw source file with standardized frontmatter."""
     content_hash = hashlib.sha256(content.encode()).hexdigest()
     captured = datetime.now(timezone.utc).isoformat()
@@ -95,7 +95,18 @@ status: pending
 ---
 """
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(frontmatter + "\n" + content + "\n")
+    original_path = path
+    counter = 1
+    while True:
+        try:
+            handle = path.open("x", encoding="utf-8")
+        except FileExistsError:
+            path = original_path.with_stem(f"{original_path.stem}-{counter}")
+            counter += 1
+            continue
+        with handle:
+            handle.write(frontmatter + "\n" + content + "\n")
+        return path
 
 
 async def notify(title: str) -> None:
@@ -134,17 +145,13 @@ async def health() -> dict[str, str]:
 
 
 @app.api_route("/api/debug", methods=["GET", "POST", "PUT"])
-async def debug_request(request: Request) -> dict:
-    """Dump the full raw request for debugging. No auth required."""
+async def debug_request(request: Request, authorization: str | None = Header(None)) -> dict:
+    """Return authenticated request diagnostics without captured content or credentials."""
+    verify_token(authorization)
     body = await request.body()
     return {
         "method": request.method,
-        "url": str(request.url),
-        "query_params": dict(request.query_params),
-        "headers": dict(request.headers),
-        "content_type": request.headers.get("content-type"),
         "body_length": len(body),
-        "body_text": body.decode("utf-8", errors="replace")[:2000],
     }
 
 
@@ -157,20 +164,13 @@ async def _parse_ingest_params(request: Request) -> dict[str, object]:
     """
     params: dict[str, object] = {}
 
-    # Dump full request for debugging
     body = await request.body()
     content_type = (request.headers.get("content-type") or "").lower()
     body_text = body.decode("utf-8", errors="replace") if body else ""
-    logger.warning(
-        "INGEST DEBUG | method=%s url=%s content_type=%s "
-        "body_len=%d body=%r query=%s headers=%s",
+    logger.debug(
+        "Ingest request: method=%s body_len=%d",
         request.method,
-        str(request.url),
-        content_type,
-        len(body) if body else 0,
-        body_text[:500],
-        dict(request.query_params),
-        {k: v for k, v in request.headers.items() if k.lower() not in ("authorization",)},
+        len(body),
     )
 
     # 1. Query parameters (always available, highest priority for overrides)
@@ -189,7 +189,7 @@ async def _parse_ingest_params(request: Request) -> dict[str, object]:
         logger.warning("Empty request body, using query params only")
         return params
 
-    logger.info("Body received (%d bytes), Content-Type: %s", len(body), content_type)
+    logger.debug("Body received (%d bytes)", len(body))
 
     # 3. Try JSON
     if "json" in content_type or body_text.lstrip().startswith("{"):
@@ -266,14 +266,8 @@ def _do_ingest(
     resolved_title = title or content[:80]
     path = generate_raw_path(resolved_title)
 
-    counter = 1
-    original_path = path
-    while path.exists():
-        path = original_path.with_stem(f"{original_path.stem}-{counter}")
-        counter += 1
-
     url = content if ingest_type == "url" else None
-    write_raw_source(
+    return write_raw_source(
         path=path,
         title=resolved_title,
         source_type=ingest_type,
@@ -282,7 +276,6 @@ def _do_ingest(
         tags=tags,
         url=url,
     )
-    return path
 
 
 @app.post("/api/ingest", response_model=IngestResponse)
@@ -347,7 +340,7 @@ async def ingest_file(
 
     tag_list = [t.strip() for t in tags.split(",") if t.strip()] if tags else []
 
-    write_raw_source(
+    raw_path = write_raw_source(
         path=raw_path,
         title=file_title,
         source_type="file",

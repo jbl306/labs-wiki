@@ -18,6 +18,41 @@ spec.loader.exec_module(graph_builder)
 
 
 class GraphBuilderEmbeddingTests(unittest.TestCase):
+    def test_cache_preserves_distinct_paths_and_refreshes_after_rename(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wiki = root / 'wiki'
+            concepts = wiki / 'concepts'
+            concepts.mkdir(parents=True)
+            for name in ('alpha', 'beta'):
+                (concepts / f'{name}.md').write_text('---\ntype: concept\n---\nShared body\n')
+            cache = root / 'cache'
+            for _ in range(2):
+                pages, _stats = graph_builder.extract_pages(wiki, cache)
+                self.assertEqual([p.node_id for p in pages], ['concepts/alpha', 'concepts/beta'])
+                self.assertEqual([p.title for p in pages], ['Alpha', 'Beta'])
+                self.assertEqual(len(graph_builder.build_graph(pages)), 2)
+                self.assertEqual(graph_builder.compute_wiki_signature_from_pages(pages), graph_builder.compute_wiki_signature(wiki))
+
+            (concepts / 'alpha.md').rename(concepts / 'gamma.md')
+            for _ in range(2):
+                pages, _stats = graph_builder.extract_pages(wiki, cache)
+                self.assertEqual([p.path for p in pages], ['concepts/beta.md', 'concepts/gamma.md'])
+                self.assertEqual([p.node_id for p in pages], ['concepts/beta', 'concepts/gamma'])
+                self.assertEqual([p.title for p in pages], ['Beta', 'Gamma'])
+                self.assertEqual(graph_builder.compute_wiki_signature_from_pages(pages), graph_builder.compute_wiki_signature(wiki))
+
+    def test_graph_resolves_title_and_filename_links_and_ignores_missing_targets(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            wiki = Path(tmp)
+            (wiki / 'alpha.md').write_text('---\ntitle: Alpha\n---\n[[rope]] [[Missing Page]]')
+            (wiki / 'rope.md').write_text('---\ntitle: Rotary Position Embeddings\n---\n[[Alpha]]')
+            pages, _stats = graph_builder.extract_pages(wiki)
+            graph = graph_builder.build_graph(pages)
+            self.assertEqual(set(graph.nodes), {'alpha', 'rope'})
+            self.assertEqual(graph.number_of_edges(), 1)
+            self.assertEqual(graph['alpha']['rope']['weight'], 2.0)
+
     def setUp(self) -> None:
         self._old_backend = os.environ.get("WIKI_GRAPH_EMBEDDING_BACKEND")
         self._old_features = os.environ.get("WIKI_GRAPH_TFIDF_MAX_FEATURES")

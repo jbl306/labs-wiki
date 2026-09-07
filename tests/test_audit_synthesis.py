@@ -1,7 +1,9 @@
+import json
 import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -10,6 +12,26 @@ import audit_synthesis  # noqa: E402  # pyright: ignore[reportMissingImports]
 
 
 class SynthesisAuditTests(unittest.TestCase):
+    def test_batch_audit_reuses_provenance_without_changing_results(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            synthesis = root / 'wiki' / 'synthesis'
+            synthesis.mkdir(parents=True)
+            pages = [synthesis / 'alpha.md', synthesis / 'beta.md']
+            for page in pages:
+                page.write_text(f'---\ntitle: {page.stem}\nsources: []\n---\n# {page.stem}\n')
+            expected = [audit_synthesis.audit_page(page, root, strict=True).to_dict() for page in pages]
+            output = root / 'audit.json'
+            with (
+                patch.object(audit_synthesis, 'ROOT', root),
+                patch.object(sys, 'argv', ['audit_synthesis.py', '--strict', '--json-out', str(output)]),
+                patch.object(audit_synthesis, '_wiki_page_provenance', wraps=audit_synthesis._wiki_page_provenance) as scan,
+            ):
+                for _ in range(2):
+                    self.assertEqual(audit_synthesis.main(), 1)
+                    self.assertEqual(json.loads(output.read_text())['results'], expected)
+                self.assertEqual(scan.call_count, 2)
+
     def _write_raw(self, root: Path, name: str, source: str) -> str:
         relative = f"raw/{name}.md"
         path = root / relative

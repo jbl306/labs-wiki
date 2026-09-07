@@ -3,7 +3,7 @@
 ---
 title: "Hot Cache — Recent Context"
 type: meta
-generated: 2026-09-06T03:17:01+00:00
+generated: 2026-09-07T03:17:01+00:00
 generator: scripts/build_hot.py
 ttl_hours: 24
 ---
@@ -11,11 +11,11 @@ ttl_hours: 24
 # Hot Cache
 
 > Auto-generated. Every session, every client, reads this first.
-> Regenerated: 2026-09-06T03:17:01+00:00
+> Regenerated: 2026-09-07T03:17:01+00:00
 
 ## Recent Wiki Edits
 
-- `2026-09-04` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
+- `2026-09-05` — [[hot-snapshot]] (`wiki/meta/hot-snapshot.md`)
 - `2026-08-25` — [[agentic-esopt-for-long-horizon-llm-fine-tuning]] (`wiki/concepts/agentic-esopt-for-long-horizon-llm-fine-tuning.md`)
 - `2026-08-25` — [[prompt-parameter-co-evolution-agentic-test-time-compute]] (`wiki/concepts/prompt-parameter-co-evolution-agentic-test-time-compute.md`)
 - `2026-08-25` — [[agentic-esopt-fine-tuning-long-horizon-llm-agents]] (`wiki/sources/agentic-esopt-fine-tuning-long-horizon-llm-agents.md`)

@@ -25,12 +25,12 @@ carefully: validation does not prove their truth or detect every possible
 secret. No transcript is read or mined by the selective path. Existing
 transcript watchers and other clients are separate, unchanged integrations.
 
-Verification used six focused unit tests and the native MCP JSON-RPC transport
-against a temporary palace, including duplicate delivery and the read-only
-gate. The review findings from this session were also saved and read back from
+The 2026-09-07 verification used six focused unit tests and the native MCP
+JSON-RPC transport against a temporary palace, including duplicate delivery
+and the read-only gate. The review findings were also saved and read back from
 the live MemPalace connection, retaining their local-tested/undeployed status.
-Codex reports all three memory hooks enabled and trusted. The connected server
-now exposes `mempalace_durable_hook`.
+All three memory hooks were verified enabled and trusted, and the connected
+server exposed `mempalace_durable_hook`.
 
 This authorization covers session checkpoints. It does not automatically
 publish compiled wiki pages or sources, refresh verification dates, or extend

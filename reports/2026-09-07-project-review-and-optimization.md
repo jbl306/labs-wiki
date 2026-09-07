@@ -4,6 +4,24 @@ Implemented focused fixes for source preservation, local read containment, reque
 
 The review covered the capture API, local MCP tools, graph extraction and construction, synthesis auditing, and corpus health. Existing ingestion transaction and CLI tests were also run. This was not a line-by-line audit of the entire project or a live deployment test.
 
+## Delivery Status
+
+On 2026-09-07, the fixes, checkpoint adapter, tests, and documentation reached
+`origin/main` in commit `fac4c43ad47d5530dfa8b8c3d1ead6637478e04e`. The push
+included 13 earlier local snapshots. Local and remote commit IDs matched, and
+the working tree was clean after delivery. The required outgoing-change
+review passed. No service deployment was performed.
+
+The periodic snapshot job committed the 16 staged files while the commit review
+was running, so the commit title is `wiki(auto-ingest): periodic snapshot`.
+Its contents were checked before the push. The final delivery checkpoint was
+saved through the native MemPalace tool with an acknowledged receipt.
+
+The snapshot in [`scripts/replay_kg_facts.py`](../scripts/replay_kg_facts.py)
+stages `wiki/` and `raw/`, then commits the full Git index. This includes any
+code or docs already staged; the per-source ingestion commit boundary does
+not apply to that job.
+
 ## Findings fixed
 
 | Priority | Finding | Change |
@@ -43,6 +61,12 @@ including duplicate delivery and the read-only gate. Graph UI tests remained
 **6/6**, and the strict synthesis audit remained **84/84**. The versioned
 adapter matches the installed runtime source; the test runner resolves that
 source from its own directory.
+
+The final review combined exact-title matching and partial filename collection
+into one fallback loop in `wiki_read`. After that edit, all **17 affected MCP
+tests** passed, including **43 subtests**. The 103-test full-suite result above
+precedes this final simplification; the targeted rerun verifies the changed
+path.
 
 The repository's existing `.venv` lacked pytest, MCP, and python-multipart. Tests ran in `/tmp/labs-wiki-review-venv`, using the existing project packages plus temporary test dependencies, including FastAPI 0.115.0 and MCP 1.30.0. The project environment and dependency files were not changed.
 

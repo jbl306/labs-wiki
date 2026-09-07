@@ -103,3 +103,9 @@ On every graph build, `wiki-graph-api/graph_builder.py` produces a second editor
 The comparison is written to `reports/checkpoint-graph-tracker.md` as a **report-only** artifact — it does not rewrite any wiki page or frontmatter. Its purpose is to surface disagreements between the heuristic classifier and the graph layer so they can be evaluated before any policy change is applied.
 
 Tier changes are tracked in `wiki/log.md` and performed by the Curator agent during `/wiki-orchestrate maintenance`.
+
+## Codex Durable Session Checkpoints
+
+Codex saves selected Labs Wiki facts to MemPalace with evidence and explicit
+execution state; see [Codex durable session memory](codex-durable-memory.md)
+for the authorized scope, native hooks, and save receipts.

@@ -33,7 +33,7 @@ tags: []
 ---
 ```
 
-- `source_hash` is the exact 64-character `SOURCE_HASH` supplied by the orchestrator for the source page. Preserve a valid existing hash when updating a multi-source canonical page unless the new source replaces its basis.
+- `source_hash` must equal the exact 64-character `SOURCE_HASH` supplied by the orchestrator for every create or update, including multi-source concepts, entities, and synthesis pages. Preserve earlier provenance in `sources`, but never carry forward an older `source_hash`.
 - `sources` must be a non-empty YAML list of contained, existing `raw/*.md` paths.
 - `concepts`, `related`, and `tags` must be YAML lists even when empty.
 - Entity pages require `## Overview` and a populated `## Key Facts` table. Use `Unknown` only when the source does not state the value.

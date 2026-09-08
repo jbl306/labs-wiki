@@ -92,3 +92,12 @@ Format:
 - **Prevention rule**: Normalize supported paper URLs by validated arXiv ID; retain exact-host, provenance, hash, and title checks, and test both create reconciliation and updates.
 - **Affected files**: `scripts/ingest_transaction.py`, `tests/test_ingest_transaction.py`
 - **Category**: auto-ingest
+
+
+## 2026-09-07: Keep proposal hash instructions aligned with validation
+
+- **Pattern**: After paper identity was fixed, the live proposal failed because an updated concept retained its earlier source hash.
+- **Root cause**: The proposal prompt told the model to preserve valid canonical-page hashes, while the transaction validator requires the current deterministic raw-source hash for every mutation.
+- **Prevention rule**: Apply the supplied SOURCE_HASH to every created or updated page; preserve historical provenance through sources. Keep the strict hash check and align prompt instructions with it.
+- **Affected files**: `scripts/prompts/wiki_ingest_proposal_prompt.md`, `scripts/ingest_transaction.py`
+- **Category**: auto-ingest

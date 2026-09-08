@@ -231,6 +231,8 @@ full-paper capture can enrich the existing source page while preserving both
 raw references. Different IDs, other hosts, and unrecognized paths remain
 distinct; a matching title alone never authorizes a merge. If reconciliation
 fails, the raw source stays pending and canonical wiki state is unchanged.
+Every proposed page update must use the orchestrator's current `SOURCE_HASH`,
+including multi-source canonical pages; earlier provenance stays in `sources`.
 
 The `wiki-auto-ingest` container runs alongside `wiki-ingest-api` in
 `compose.wiki.yml`. It watches the shared `raw/` volume and processes new

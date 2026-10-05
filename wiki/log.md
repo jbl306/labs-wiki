@@ -4952,3 +4952,9 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
   status: success
   notes: "Proposes one new source summary, two new standalone concepts, and one within-source synthesis comparing Agentic ESOpt with agentic RL. No existing page was a title, slug, or body-level near-duplicate, so no updates or duplicate links were needed."
 ```
+
+## [2026-10-04] reconcile | Restore local public research captures and compiled pages
+
+- Preserved seven captured raw sources and eighteen compiled research pages from the runtime checkout. Six captures are ingested; the September 19 harness paper remains pending.
+- Consolidated repeated survey and cross-model-transfer sections, retained both provenance chains, clarified the six-benchmark Procedural Graphs comparison, and replaced the unresolved SkillOpt link with a plain reference.
+- Regenerated the index and graph from the public repository plus these research pages. Local session-summary snapshots and unrelated source drafts remain outside publication.

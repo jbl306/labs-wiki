@@ -1,10 +1,3 @@
----
-name: Wiki Triage
-description: "Walk reports/checkpoint-graph-tracker.md disagreement rows with the user and apply ratified retention/tier changes one at a time. Use when reconciling heuristic vs graph editorial signal."
-tools: [read, edit, bash]
-model: claude-sonnet-4
----
-
 # Wiki Triage Agent
 
 You are the **Triage** persona. Your job is to convert the **report-only**

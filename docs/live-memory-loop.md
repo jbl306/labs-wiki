@@ -1,11 +1,13 @@
 # Live Memory Loop
 
-> How labs-wiki and MemPalace stay in sync across Codex CLI, VS Code Copilot, and OpenCode sessions while keeping the live memory loop local-first.
+> Historical transcript-watcher architecture. Runtime configuration and service health
+> are not verified by this document. Current Codex policy is owned by the global
+> `AGENTS.md` and [selective checkpoint contract](codex-session-memory.md).
 
 ## Goals
 
 1. **Sub-minute freshness** — a decision made at 2:00pm is searchable via `mempalace_search` by 2:01pm.
-2. **Uniform behavior across clients** — Codex CLI, VS Code Copilot, and OpenCode all read the same hot cache and follow the same retrieval ladder.
+2. **Shared retrieval tools** — clients can use MemPalace and the curated wiki when relevant to the task.
 3. **Zero model calls in the live memory loop** — mining, embedding, and hot-cache refresh stay local; only source compilation uses the configured ingest backend.
 4. **Graceful degradation** — a periodic full-sweep catches anything the watcher missed.
 
@@ -44,8 +46,8 @@ during the 2026-09-07 checkpoint integration.
          └────────────┬────────────┘
                       │
          ┌────────────▼────────────┐
-         │ Every new session reads │  via AGENTS.md snippet
-         │  wiki/hot.md first      │
+         │ Optional hot-cache read │
+         │  when task-relevant     │
          └─────────────────────────┘
 ```
 
@@ -77,14 +79,13 @@ during the 2026-09-07 checkpoint integration.
   - `tasks/todo.md` — first unchecked item per project
   - `mempalace wake-up --wing <W>` — L0+L1 context per active wing (compacted to ≤800 chars/wing)
 
-### 3. Retrieval ladder
+### 3. Scoped retrieval
 
-Encoded in [agents-snippet.md](agents-snippet.md) and injected into every project's `AGENTS.md`:
-
-1. `wiki/hot.md` (always loaded)
-2. `mempalace_search`
-3. `wiki_search` / `wiki_read` MCP
-4. Web fetch (last resort)
+Global `/home/jbl/.codex/AGENTS.md` owns knowledge routing. Use MemPalace for
+relevant prior sessions, the bounded Wiki MCP reader for curated research, and
+current primary sources for changing external facts. `wiki/hot.md` is optional
+task context. The previous mandatory startup ladder and cross-project snippet
+injection are retired.
 
 ### 4. Native Codex checkpoints and manual skills
 
@@ -97,8 +98,8 @@ Manual skills remain available for distinct, explicitly requested operations:
 
 | Skill | Purpose | Trigger |
 |-------|-----------------|---------|
-| [`/wiki-save`](../.github/skills/wiki-save/SKILL.md) | Publish a conversation summary as a raw source | Explicit user authorization |
-| [`/wiki-refresh-hot`](../.github/skills/wiki-refresh-hot/SKILL.md) | Refresh the hot cache | Manual refresh |
+| [`/wiki-save`](/home/jbl/.agents/skills/wiki-save/SKILL.md) | Publish a conversation summary as a raw source | Explicit user authorization |
+| [`/wiki-refresh-hot`](/home/jbl/.agents/skills/wiki-refresh-hot/SKILL.md) | Refresh the hot cache | Manual refresh |
 
 ### 5. Weekly safety-net cron
 
@@ -108,6 +109,10 @@ Manual skills remain available for distinct, explicitly requested operations:
 - **MemPalace sync behavior:** `wiki_to_mempalace.py` upserts current wiki pages and prunes orphaned drawers for renamed/deleted pages, so `labs_wiki_knowledge` stays aligned with the filesystem.
 
 ## Installation
+
+The commands below describe the legacy watcher installation; verify the owning
+homelab configuration and authorized capture scope before using them. They do
+not configure the native Codex checkpoint path.
 
 ```bash
 # 1. Install the systemd user service
@@ -127,8 +132,6 @@ tail -f ~/logs/mempalace-watcher.log
 # 4. Seed hot.md for the first time
 python /home/jbl/projects/labs-wiki/scripts/build_hot.py
 
-# 5. Inject the AGENTS.md snippet into every project
-bash /home/jbl/projects/labs-wiki/setup.sh --inject-snippet
 ```
 
 ## Troubleshooting
@@ -147,7 +150,7 @@ bash /home/jbl/projects/labs-wiki/setup.sh --inject-snippet
 
 ## Success criteria
 
-1. Any new session reads `wiki/hot.md` at start (via AGENTS.md snippet).
+1. Retrieval is scoped to the task under the current global `AGENTS.md` policy.
 2. `hot.md` timestamp is always within the last hour during active work.
 3. `/wiki-save` → searchable via `mempalace_search` within 60 seconds.
 4. Weekly full-sweep finds ≤ 5% novel content (proving the watcher caught the rest).

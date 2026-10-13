@@ -1,7 +1,7 @@
 # labs-wiki — Agent Schema
 
 > Universal schema for all AI agents operating in this repository.
-> Read by: VS Code Copilot, Copilot CLI, OpenCode.
+> Shared workflow and testing policy: `/home/jbl/.codex/AGENTS.md`.
 
 ## Project Overview
 
@@ -347,28 +347,26 @@ Structured audit log. Every operation appends an entry:
 
 ## Agent Personas
 
-Seven agent specs are defined in `.github/agents/`. These are Copilot-format agent definitions with YAML frontmatter (name, description, tools, model).
+Domain personas are defined in `agents/`; global AGENTS.md owns workflow and testing policy.
 
 | Agent | File | Primary Role |
 |-------|------|-------------|
-| wiki-capture | `.github/agents/wiki-capture.agent.md` | Quick-capture URLs/text into `raw/` |
-| wiki-ingest | `.github/agents/wiki-ingest.agent.md` | Manual two-phase pipeline fallback |
-| wiki-query | `.github/agents/wiki-query.agent.md` | Search and synthesize answers |
-| wiki-lint | `.github/agents/wiki-lint.agent.md` | Quality audit, broken links, staleness |
-| wiki-update | `.github/agents/wiki-update.agent.md` | Revise pages, preserve provenance |
-| wiki-curator | `.github/agents/wiki-curator.agent.md` | Gap analysis, synthesis, consolidation |
-| wiki-orchestrate | `.github/agents/wiki-orchestrate.agent.md` | Multi-step maintenance workflows |
+| wiki-capture | `agents/wiki-capture.agent.md` | Quick-capture URLs/text into `raw/` |
+| wiki-ingest | `agents/wiki-ingest.agent.md` | Manual two-phase pipeline fallback |
+| wiki-query | `agents/wiki-query.agent.md` | Search and synthesize answers |
+| wiki-lint | `agents/wiki-lint.agent.md` | Quality audit, broken links, staleness |
+| wiki-update | `agents/wiki-update.agent.md` | Revise pages, preserve provenance |
+| wiki-curator | `agents/wiki-curator.agent.md` | Gap analysis, synthesis, consolidation |
+| wiki-orchestrate | `agents/wiki-orchestrate.agent.md` | Multi-step maintenance workflows |
 
 ---
 
 ## Skills
 
-Project skills live in `.github/skills/` and include the cross-cutting
-`task-observer` meta-skill alongside the wiki workflows:
+Personal skills live in `/home/jbl/.agents/skills/`. Load the relevant wiki workflow:
 
 | Skill | Purpose |
 |-------|---------|
-| `task-observer` | Observe task sessions, capture skill improvements, and drive proactive skill maintenance |
 | `wiki-setup` | Idempotent initialization — creates dirs, validates structure |
 | `wiki-ingest` | Manual source processing (fallback when auto-ingest unavailable) |
 | `wiki-query` | Search index, read pages, synthesize answers |
@@ -377,37 +375,21 @@ Project skills live in `.github/skills/` and include the cross-cutting
 | `wiki-orchestrate` | Audit, maintenance, and gap analysis workflows |
 
 **Routing guide:**
-- Task-oriented session start / skill maintenance? → `task-observer`
 - Wiki sources / pages / quality? → wiki-* skills above
 - Agent system / prompts? → context-engineering skills
 
-## Task Observer Meta-Skill
+## Context and session memory
 
-- Install `task-observer` under `.github/skills/task-observer/`; OpenCode mirrors the same skill through `.opencode/skills/`.
-- Invoke `task-observer` at the start of every task-oriented session before other skill or tool work.
-- When loading any skill, check `skill-observations/log.md` for `OPEN` observations tagged to that skill and apply them during the current task.
-- When `task-observer` surfaces safe, concrete improvements to local skills or instructions, update them in the same session and rerun `python3 /home/jbl/projects/update_opencode_skills_paths.py`.
+Use scoped MemPalace recall for relevant prior decisions and Wiki search/read for
+curated knowledge. Load only results needed for the task and verify mutable facts
+live. No fixed startup sequence or unrelated memory search is required.
 
----
-
-## MemPalace — MANDATORY Session Protocol
-
-Agents operating in this repo must query MemPalace before answering. Relevant wings: `labs_wiki` (~2200 drawers, ingest & pipeline content) and `labs_wiki_knowledge` (~150 drawers, curated knowledge).
-
-**Session start:**
-1. `mempalace_status`
-2. `mempalace_search(query=<topic>, wing="labs_wiki")`
-3. `mempalace_search(query=<topic>, wing="labs_wiki_knowledge")`
-4. `mempalace_search(query=<topic>, wing="copilot_sessions")`
-5. `mempalace_kg_query(entity=<name>)` for named things
-
-**Recall split:** Use MemPalace for episodic recall: recent decisions, who said what, prior changes, and session history. Before fresh research on any cross-project topic, pattern, concept, or comparison, call `wiki_search`, then `wiki_read` for the canonical page. Do not preload wiki page lists or indexes into instruction files.
-
-**During work:** `mempalace_add_drawer(wing="labs_wiki", room=<domain>, content=<verbatim>)` for significant findings. Use `mempalace_kg_add` / `mempalace_kg_invalidate` when facts change.
-
-**End of session:** `mempalace_diary_write(agent_name="<agent>", entry=<AAAK summary>)`.
-
-Never store secrets or credentials.
+Codex follows [the selective checkpoint contract](docs/codex-session-memory.md).
+This is the single Codex session-memory write path: stage verified milestones and
+let Stop/PreCompact save them with duplicate protection. Do not also write a diary,
+direct drawer, or wiki source for the same checkpoint. Other clients and publication
+workflows require their own authorization. Skill maintenance and lesson-log writes
+also require user authorization; finding an improvement does not grant it.
 
 ## Context-Engineering Skill Routing
 
@@ -417,38 +399,24 @@ Never store secrets or credentials.
 
 ## Validation Rules
 
-Before committing any changes:
+For changes to wiki content, preserve these validation gates:
 
 1. All wiki pages have valid frontmatter with required fields
 2. No broken `[[wikilinks]]` — every link resolves to an existing page
 3. No orphan pages — every wiki page appears in `index.md`
 4. Provenance intact — every wiki page has `sources:` with at least one entry
-5. `wiki/log.md` has an entry for the operation
+5. `wiki/log.md` has an entry for the operation, except `--validation-run` reruns.
+   For auto-ingest, the Python orchestrator owns this write after validation; the
+   Codex subprocess must not write it.
 6. `wiki/index.md` reflects all current pages
 
 Run `/wiki-lint` or `python scripts/lint_wiki.py` to check all rules.
 
 ---
 
-## Post-task hook: lessons.md
+## Lessons
 
-Any agent finishing a debugging session, an incident response, a corrective
-follow-up, or any task where a user issued a correction **must** append a
-lesson entry to `tasks/lessons.md` before declaring the task complete.
-
-This file is the cross-session memory layer that keeps the same mistake from
-recurring. Treat the append as part of the task definition of done — not as
-optional cleanup.
-
-Format follows [`.github/context/lesson-format.md`](../.github/context/lesson-format.md)
-(linked authoritative spec). Each entry must include the following keys:
-
-- **Date** — ISO date of the lesson
-- **Pattern** — what went wrong or what was corrected
-- **Root cause** — the actual underlying reason, not just the symptom
-- **Prevention rule** — concrete, actionable rule to avoid recurrence
-- **Affected files** — specific paths involved
-- **Category** — one of: `architecture`, `convention`, `api`, `testing`, `tooling`, `knowledge-curation`, `auto-ingest`, `infrastructure`, `agents`, `other`
-
-Never store secrets in a lesson. Never delete or rewrite existing entries —
-the file is append-only.
+When the user authorizes lesson recording, append reusable corrections to
+`tasks/lessons.md` using [the lesson format](../.github/context/lesson-format.md).
+Preserve existing entries and exclude secrets. Ordinary debugging or instruction
+maintenance does not require a separate lesson-log write.

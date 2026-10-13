@@ -1,15 +1,3 @@
----
-name: Wiki Capture
-description: "Quickly capture a new source into raw/ from a URL, text, or notes. Use when you want to add something to the wiki inbox for later processing."
-tools: ['web/fetch']
-model: ['Claude Sonnet 4', 'GPT-5.4']
-handoffs:
-  - label: Check Auto-Ingest Status
-    agent: wiki-orchestrate
-    prompt: "Check if wiki-auto-ingest is running and processing the captured source."
-    send: false
----
-
 # Wiki Capture Agent
 
 You capture sources into `raw/` for later processing by the ingest pipeline.

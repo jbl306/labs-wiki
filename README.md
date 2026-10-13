@@ -51,9 +51,8 @@ labs-wiki/
 ├── wiki-ingest-api/        # FastAPI capture service
 ├── Dockerfile.auto-ingest  # Auto-ingest watcher service
 ├── docs/                   # Documentation
-├── .github/skills/         # AI skills (6 wiki operations)
-├── AGENTS.md               # Universal schema (Layer 3)
-└── opencode.json           # OpenCode configuration
+├── agents/                 # Domain personas
+└── AGENTS.md               # Universal schema (Layer 3)
 ```
 
 ## Quick Start
@@ -63,7 +62,7 @@ labs-wiki/
 git clone https://github.com/jbl306/labs-wiki.git
 cd labs-wiki
 
-# Run setup (creates symlinks, validates structure)
+# Run setup (validates structure)
 ./setup.sh
 
 # Add a source (auto-processed by the watcher service within seconds)
@@ -150,13 +149,11 @@ See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 
 ## Toolchain
 
-Works with Codex CLI for unattended processing plus the repo's interactive assistant surfaces — all read `AGENTS.md`:
+Global `/home/jbl/.codex/AGENTS.md` owns shared policy. Codex CLI uses the repository schema for unattended processing:
 
 | Tool | Config |
 |------|--------|
 | Codex CLI | `AGENTS.md` + `scripts/prompts/wiki_ingest_prompt.md` |
-| VS Code Copilot | `.github/copilot-instructions.md` + `AGENTS.md` |
-| OpenCode | `opencode.json` + `AGENTS.md` |
 
 ## Memory Model
 

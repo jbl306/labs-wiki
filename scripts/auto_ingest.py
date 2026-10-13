@@ -3373,7 +3373,7 @@ def _prepare_agent_context(project_root: Path, destination: Path) -> None:
         target = destination / source.relative_to(project_root)
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copy2(source, target)
-    for relative in ("AGENTS.md", ".github/copilot-instructions.md"):
+    for relative in ("AGENTS.md",):
         source = project_root / relative
         if source.is_file():
             target = destination / relative

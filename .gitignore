@@ -32,8 +32,7 @@ build/
 .graph_cache/
 wiki/.kg-pending.jsonl
 
-# OpenCode symlinks are tracked (they point to .github/skills/)
-# but don't track OpenCode DB or state
+# Keep legacy OpenCode runtime state out of version control
 .opencode/state/
 mempalace.yaml
 entities.json

@@ -4,7 +4,9 @@
   },
   "markdown.validate.enabled": true,
   "editor.wordWrap": "on",
-  "editor.rulers": [100],
+  "editor.rulers": [
+    100
+  ],
   "files.exclude": {
     "**/__pycache__": true,
     "**/*.pyc": true
@@ -31,16 +33,5 @@
     }
   },
   "python.analysis.typeCheckingMode": "basic",
-  "chat.agent.enabled": true,
-  "chat.agentSkillsLocations": {
-    "/home/jbl/projects/external-powers/awesome-claude-code-subagents/.github/skills": true,
-    "/home/jbl/projects/external-powers/Agent-Skills-for-Context-Engineering/skills": true
-  },
-  "chat.plugins.enabled": true,
-  "chat.pluginLocations": {
-    "/home/jbl/projects/external-powers/superpowers": true
-  },
-  "github.copilot.chat.codeGeneration.instructions": [
-    { "file": "AGENTS.md" }
-  ]
+  "chat.agent.enabled": true
 }

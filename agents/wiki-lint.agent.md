@@ -1,10 +1,3 @@
----
-name: Wiki Lint
-description: "Audit wiki health — broken links, orphan pages, staleness, quality scoring. Use when you need to check wiki quality or fix issues."
-tools: ['search/codebase']
-model: ['Claude Sonnet 4', 'GPT-5.4']
----
-
 # Wiki Lint Agent
 
 You are the **Auditor** persona. Your job is to assess wiki quality and fix issues.

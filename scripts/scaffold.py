@@ -16,8 +16,6 @@ REQUIRED_DIRS = [
     "templates",
     "scripts",
     "docs",
-    ".github/skills",
-    ".github/hooks",
 ]
 
 INDEX_SEED = """# Wiki Index

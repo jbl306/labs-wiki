@@ -150,8 +150,9 @@ full-paper capture can enrich the existing source page while preserving both
 raw references. Different IDs, other hosts, and unrecognized paths remain
 distinct; a matching title alone never authorizes a merge. If reconciliation
 fails, the raw source stays pending and canonical wiki state is unchanged.
-Every proposed page update must use the orchestrator's current `SOURCE_HASH`,
-including multi-source canonical pages; earlier provenance stays in `sources`.
+Every proposed page must cite the current raw and carry its preflight SHA-256.
+Updates retain earlier provenance. Body links and frontmatter `related` entries
+resolve against the entire staged proposal before publication.
 
 The `wiki-auto-ingest` container runs alongside `wiki-ingest-api` in
 `compose.wiki.yml`. It watches the shared `raw/` volume and processes new
@@ -164,6 +165,16 @@ docker logs -f wiki-auto-ingest
 # Restart
 docker compose -f compose.wiki.yml restart wiki-auto-ingest
 ```
+
+### Backlog and commit status
+
+Run `docker exec wiki-auto-ingest python3 /opt/labs-wiki/scripts/watch_raw.py --status` to read the current queue. It reports pending and failed counts, oldest files and ages, held and exhausted captures, unreadable records, and unconfirmed Git commits. The watcher also logs this snapshot on reconciliation. Container process health measures watcher liveness.
+
+The watcher subscribes before its first scan and reconciles the inbox every minute while idle. Pending sources get up to five attempts across restarts, with delays of 1, 3, 9 and 27 minutes between attempts. Queued files keep their raw status. A successful ingest removes its retry record.
+
+Before restarting, place an empty file at `.cache/wiki-watcher/holds/<raw-filename.md>` under the mounted project root to hold that particular capture. Remove its hold file to resume. After correcting an exhausted capture, remove only its `.cache/wiki-watcher/retries/<raw-filename.md>.json` record to grant a new retry budget.
+
+Before canonical publication, the transaction records the expected Git manifest. If the process stops or the Git commit fails, the watcher reports the outstanding manifest under `.cache/wiki-watcher/uncommitted/<raw-filename.md>.json` and alerts the operator. Review those paths and the raw status, verify their Git commit, and remove that receipt when reconciled. An outstanding receipt holds automatic reprocessing for that capture.
 
 ### Environment Variables
 

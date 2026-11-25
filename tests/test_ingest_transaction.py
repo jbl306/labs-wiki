@@ -133,6 +133,45 @@ A source summary grounded in the raw evidence.
             "notes": "created source",
         }
 
+    def test_page_binding_and_links_are_checked_after_staging_the_batch(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root, raw = self._root(tmp)
+            (root / "raw/prior.md").write_text("---\nstatus: ingested\n---\nPrior evidence.")
+            proposal = self._proposal()
+            source = proposal["page_mutations"][0]
+            concept = {
+                "path": "wiki/concepts/topic.md", "operation": "create",
+                "content": source["content"].replace("Example", "Topic").replace("type: source", "type: concept")
+                    .replace("## Summary", "## Overview"),
+            }
+            subdir = root / "wiki/concepts/nested"
+            subdir.mkdir()
+            (subdir / "prior-topic.md").write_text("---\ntitle: 'Prior | Topic'\n---\n# Prior topic\n")
+            source["content"] += (
+                "\nThe [[Topic#Overview|concept]], [[Prior | Topic]], and "
+                "[[../concepts/nested/prior-topic.md#Details|prior evidence]] explain this source.\n"
+            )
+            proposal["page_mutations"].append(concept)
+            original = concept["content"]
+            stage = root / "stage"
+            ingest_transaction._copy_transaction_inputs(root, stage)
+            for content, error in (
+                (original.replace("a" * 64, "b" * 64), "source_hash"),
+                (original.replace("raw/example.md", "raw/prior.md"), "provenance"),
+                (original.replace("related: []", 'related: ["[[Absent]]"]'), "unresolved wikilink"),
+                (original + "\nSee [[Absent]].", "unresolved wikilink"),
+            ):
+                with self.subTest(error=error), self.assertRaisesRegex(ingest_transaction.ProposalError, error):
+                    concept["content"] = content
+                    ingest_transaction._write_mutations(proposal, root, stage, raw, expected_source_hash="a" * 64)
+                self.assertFalse((root / concept["path"]).exists())
+                self.assertIn("status: pending", raw.read_text())
+            concept["content"] = original.replace("related: []", 'related: ["[[Example]]"]')
+            self.assertEqual(
+                ingest_transaction._write_mutations(proposal, root, stage, raw, expected_source_hash="a" * 64),
+                [source["path"], concept["path"]],
+            )
+
     def test_graph_failure_leaves_canonical_state_unchanged(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root, raw = self._root(tmp)
@@ -151,6 +190,7 @@ A source summary grounded in the raw evidence.
                         raw,
                         backend="codex-cli",
                         validation_run=False,
+                        expected_source_hash="a" * 64,
                     )
 
             self.assertFalse((root / "wiki/sources/example.md").exists())
@@ -178,8 +218,11 @@ A source summary grounded in the raw evidence.
                     raw,
                     backend="codex-cli",
                     validation_run=False,
+                    expected_source_hash="a" * 64,
                 )
 
+            receipt = json.loads((root / ingest_transaction.commit_receipt_path(raw)).read_text())
+            self.assertEqual(receipt["manifest"], manifest)
             self.assertIn("wiki/sources/example.md", manifest)
             self.assertIn("wiki/index.md", manifest)
             self.assertIn("wiki/graph/graph.json", manifest)
@@ -189,6 +232,36 @@ A source summary grounded in the raw evidence.
             self.assertIn("status: ingested", raw.read_text())
             self.assertIn("[[Example]]", (root / "wiki/index.md").read_text())
             self.assertIn("codex-cli", (root / "wiki/log.md").read_text())
+
+    def test_interruption_after_raw_status_keeps_recoverable_git_manifest(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root, raw = self._root(tmp)
+            def graph(stage, _runtime):
+                tracker = stage / "reports/checkpoint-graph-tracker.md"
+                tracker.parent.mkdir(exist_ok=True)
+                tracker.write_text("# Tracker")
+            replace = ingest_transaction.os.replace
+            def interrupt_after_raw(source, destination):
+                replace(source, destination)
+                if destination == raw:
+                    raise KeyboardInterrupt()
+            with (
+                patch("ingest_transaction._build_graph", side_effect=graph),
+                patch("ingest_transaction.os.replace", side_effect=interrupt_after_raw),
+                self.assertRaises(KeyboardInterrupt),
+            ):
+                ingest_transaction.prepare_and_publish(
+                    self._proposal(), root, raw, backend="codex-cli", validation_run=False,
+                    expected_source_hash="a" * 64,
+                )
+            self.assertIn("status: ingested", raw.read_text())
+            receipt = root / ingest_transaction.commit_receipt_path(raw)
+            self.assertIn("raw/example.md", json.loads(receipt.read_text())["manifest"])
+            with self.assertRaisesRegex(ingest_transaction.ProposalError, "prior Git manifest"):
+                ingest_transaction.prepare_and_publish(
+                    self._proposal(), root, raw, backend="codex-cli", validation_run=False,
+                    expected_source_hash="a" * 64,
+                )
 
     def test_invalid_page_schema_is_rejected_before_publish(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
@@ -203,6 +276,7 @@ A source summary grounded in the raw evidence.
                     raw,
                     backend="codex-cli",
                     validation_run=False,
+                    expected_source_hash="a" * 64,
                 )
 
             self.assertFalse((root / "wiki/sources/example.md").exists())
@@ -220,6 +294,7 @@ A source summary grounded in the raw evidence.
                 "---\ntitle: Prior\ntype: url\nurl: https://arxiv.org/abs/2608.14071\n"
                 "status: ingested\n---\nPrior evidence\n"
             )
+            (root / "wiki/concepts/prior-concept.md").write_text("# Prior Concept\n")
             existing = root / "wiki" / "sources" / "example.md"
             existing.write_text(
                 f"""---
@@ -932,6 +1007,7 @@ Existing C++ source.
                         raw,
                         backend="codex-cli",
                         validation_run=False,
+                        expected_source_hash="a" * 64,
                     )
             digest.assert_not_called()
 

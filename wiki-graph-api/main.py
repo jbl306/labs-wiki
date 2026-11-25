@@ -27,7 +27,9 @@ import logging
 import os
 import re
 import time
-from functools import partial
+from collections import Counter
+from contextlib import suppress
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -37,6 +39,7 @@ from fastapi.responses import JSONResponse, StreamingResponse
 
 from graph_builder import (
     EMBEDDING_FIELD,
+    atomic_write_text,
     build as build_graph_artifact,
     compute_node_embeddings,
     compute_wiki_signature,
@@ -60,6 +63,28 @@ TRACKER_PATH = Path(
 )
 
 
+def _utc_now() -> str:
+    return datetime.now(timezone.utc).isoformat(timespec="milliseconds")
+
+
+def _receipt_path() -> Path:
+    return GRAPH_PATH.with_suffix(".build-receipt.json")
+
+
+def _publication_marker() -> tuple[int, int, int] | None:
+    try:
+        stat = (WIKI_PATH / "graph" / "graph.json").stat()
+    except FileNotFoundError:
+        return None
+    return stat.st_ino, stat.st_mtime_ns, stat.st_size
+
+
+# Page-only repairs may leave the published artifact unchanged. Periodically
+# verify its source tree as well as watching the ingest publication marker.
+PUBLICATION_POLL_SECONDS = 15
+SOURCE_CHECK_SECONDS = 300
+
+
 class GraphState:
     """In-memory graph snapshot; refreshed on rebuild."""
 
@@ -67,44 +92,58 @@ class GraphState:
         self.payload: dict[str, Any] = {}
         self.nodes_by_id: dict[str, dict[str, Any]] = {}
         self.adjacency: dict[str, list[dict[str, Any]]] = {}
-        self.last_rebuild_iso: str = ""
-        self.last_rebuild_seconds: float = 0.0
+        self.receipt: dict[str, Any] | None = None
+        self.observed_source_signature: str | None = None
+        self.checked_at: str | None = None
+        self.sync_status = "unknown"
+        self.sync_error: str | None = None
+        self._checked_monotonic = 0.0
+        self._published_marker: tuple[int, int, int] | None = None
         self._lock = asyncio.Lock()
         self._subscribers: set[asyncio.Queue[str]] = set()
 
     def load_from_disk(self) -> bool:
-        if not GRAPH_PATH.exists():
-            return False
         try:
             payload = json.loads(GRAPH_PATH.read_text())
-        except (OSError, json.JSONDecodeError) as e:
-            log.warning("failed to load %s: %s", GRAPH_PATH, e)
+            self._install(payload)
+        except (OSError, ValueError, TypeError, KeyError) as exc:
+            log.warning("cannot load graph snapshot %s: %s", GRAPH_PATH, exc)
             return False
-        self._install(payload)
-        self._refresh_query_embeddings()
+        self.receipt = None
+        try:
+            receipt = json.loads(_receipt_path().read_text())
+            if (
+                isinstance(receipt, dict)
+                and receipt.get("source_signature") == payload.get("source_signature")
+                and isinstance(receipt.get("built_at"), str)
+                and isinstance(receipt.get("build_seconds"), (int, float))
+                and isinstance(receipt.get("source_counts"), dict)
+            ):
+                self.receipt = receipt
+        except (OSError, ValueError) as exc:
+            log.info("no usable build receipt: %s", exc)
         return True
 
     def _install(self, payload: dict[str, Any]) -> None:
+        if not isinstance(payload, dict) or not isinstance(payload.get("nodes"), list):
+            raise ValueError("graph has no node list")
+        nodes = payload["nodes"]
+        nodes_by_id = {node["id"]: node for node in nodes}
+        if len(nodes_by_id) != len(nodes) or len(nodes) != payload.get("node_count"):
+            raise ValueError("graph node count mismatch")
+        adjacency: dict[str, list[dict[str, Any]]] = {nid: [] for nid in nodes_by_id}
+        for edge in payload["edges"]:
+            source, target = edge["source"], edge["target"]
+            adjacency[source].append({"neighbor": target, **edge})
+            adjacency[target].append({"neighbor": source, **edge})
+        self._refresh_query_embeddings(payload)
         self.payload = payload
-        self.nodes_by_id = {n["id"]: n for n in payload.get("nodes", [])}
-        adjacency: dict[str, list[dict[str, Any]]] = {nid: [] for nid in self.nodes_by_id}
-        for edge in payload.get("edges", []):
-            s, t = edge["source"], edge["target"]
-            adjacency.setdefault(s, []).append({"neighbor": t, **edge})
-            adjacency.setdefault(t, []).append({"neighbor": s, **edge})
+        self.nodes_by_id = nodes_by_id
         self.adjacency = adjacency
-        generated = payload.get("generated_at")
-        if isinstance(generated, (int, float)):
-            self.last_rebuild_iso = time.strftime(
-                "%Y-%m-%dT%H:%M:%SZ", time.gmtime(generated)
-            )
-        self.last_rebuild_seconds = float(payload.get("build_seconds", 0.0))
 
-    def _refresh_query_embeddings(self) -> None:
-        """Fit the configured query embedding backend after loading graph.json."""
-        nodes = self.payload.get("nodes", [])
-        if not nodes:
-            return
+    def _refresh_query_embeddings(self, payload: dict[str, Any]) -> None:
+        """Restore the query backend before making the snapshot available."""
+        nodes = payload["nodes"]
         embeddings, backend = compute_node_embeddings(nodes, CACHE_DIR)
         for node in nodes:
             vec = embeddings.get(node.get("id"))
@@ -112,37 +151,76 @@ class GraphState:
                 node.pop(EMBEDDING_FIELD, None)
             else:
                 node[EMBEDDING_FIELD] = vec
-        self.payload["embedding_backend"] = backend
+        payload["embedding_backend"] = backend
         log.info("query embeddings ready: backend=%s vectors=%d", backend, len(embeddings))
 
-    async def rebuild(self) -> dict[str, Any]:
+    async def _build_from_source(self, signature: str) -> dict[str, Any]:
+        self.sync_status = "rebuilding"
+        started = time.monotonic()
+        payload = await asyncio.to_thread(
+            build_graph_artifact, WIKI_PATH, CACHE_DIR, GRAPH_PATH,
+            tracker_path=TRACKER_PATH, expected_source_signature=signature,
+        )
+        counts = Counter(node["page_type"] for node in payload["nodes"])
+        receipt = {
+            "built_at": _utc_now(),
+            "build_seconds": time.monotonic() - started,
+            "source_signature": signature,
+            "source_revision": None,  # Mounted pages can change independently of the image.
+            "source_counts": {
+                "wiki_pages": len(payload["nodes"]),
+                "by_page_type": dict(sorted(counts.items())),
+            },
+        }
+        atomic_write_text(_receipt_path(), json.dumps(receipt, indent=2))
+        self._install(payload)
+        self.receipt = receipt
+        await self._broadcast("graph-updated")
+        return payload
+
+    async def rebuild(self, *, if_due: bool = False) -> dict[str, Any]:
         async with self._lock:
-            current_signature = compute_wiki_signature(WIKI_PATH)
-            if (
-                self.payload
-                and self.payload.get("source_signature") == current_signature
-            ):
-                log.info("rebuild skipped; wiki source unchanged")
-                return {
-                    "ok": True,
-                    "rebuild_skipped": True,
-                    **self.payload,
-                }
-            loop = asyncio.get_running_loop()
-            payload = await loop.run_in_executor(
-                None,
-                partial(
-                    build_graph_artifact,
-                    WIKI_PATH,
-                    CACHE_DIR,
-                    GRAPH_PATH,
-                    tracker_path=TRACKER_PATH,
-                ),
-            )
-            self._install(payload)
-            self._refresh_query_embeddings()
-            await self._broadcast("graph-updated")
-            return payload
+            try:
+                # Read the publication marker before scanning. If ingest
+                # publishes again during the scan, the next poll sees it.
+                marker = _publication_marker()
+                if (
+                    if_due and self.sync_status == "current"
+                    and marker == self._published_marker
+                    and time.monotonic() - self._checked_monotonic < SOURCE_CHECK_SECONDS
+                ):
+                    return {"rebuild_skipped": True, **self.payload}
+
+                self.sync_status = "checking"
+                self.observed_source_signature = None
+                signature = await asyncio.to_thread(compute_wiki_signature, WIKI_PATH)
+                self.observed_source_signature = signature
+                self.checked_at = _utc_now()
+                if (
+                    self.receipt and "broken_link_count" in self.payload
+                    and self.payload.get("source_signature") == signature
+                    and TRACKER_PATH.is_file()
+                ):
+                    result = {"rebuild_skipped": True, **self.payload}
+                else:
+                    result = await self._build_from_source(signature)
+                self._published_marker = marker
+                self._checked_monotonic = time.monotonic()
+                self.sync_status = "current"
+                self.sync_error = None
+                return result
+            except Exception as exc:
+                self.sync_status = "error"
+                self.sync_error = str(exc)
+                raise
+
+    async def poll_publication(self) -> None:
+        while True:
+            await asyncio.sleep(PUBLICATION_POLL_SECONDS)
+            try:
+                await self.rebuild(if_due=True)
+            except Exception:
+                log.exception("graph refresh failed; will retry")
 
     async def subscribe(self) -> asyncio.Queue[str]:
         q: asyncio.Queue[str] = asyncio.Queue(maxsize=16)
@@ -201,12 +279,19 @@ async def _startup() -> None:
             state.payload.get("node_count", 0),
             state.payload.get("edge_count", 0),
         )
-    else:
-        log.info("no graph on disk; building initial snapshot")
-        try:
-            await state.rebuild()
-        except Exception as e:  # pragma: no cover — defensive startup
-            log.exception("initial build failed: %s", e)
+    try:
+        # Verify the mounted source even when the persistent graph volume loads.
+        await state.rebuild()
+    except Exception:
+        log.exception("initial graph refresh failed; will retry")
+    app.state.graph_poll = asyncio.create_task(state.poll_publication())
+
+
+@app.on_event("shutdown")
+async def _shutdown() -> None:
+    app.state.graph_poll.cancel()
+    with suppress(asyncio.CancelledError):
+        await app.state.graph_poll
 
 
 # ---------------------------------------------------------------------------
@@ -224,12 +309,21 @@ def health() -> dict[str, Any]:
 
 @app.get("/graph/stats")
 def graph_stats() -> dict[str, Any]:
+    receipt = state.receipt or {}
+    content_time = state.payload.get("generated_at")
     return {
         "node_count": state.payload.get("node_count", 0),
         "edge_count": state.payload.get("edge_count", 0),
         "communities": state.payload.get("community_count", 0),
-        "last_rebuild": state.last_rebuild_iso,
-        "build_seconds": state.last_rebuild_seconds,
+        "last_rebuild": receipt.get("built_at"),
+        "build_seconds": receipt.get("build_seconds"),
+        "build_receipt": state.receipt,
+        "content_as_of": datetime.fromtimestamp(content_time, timezone.utc).isoformat() if content_time else None,
+        "source_signature": state.payload.get("source_signature"),
+        "observed_source_signature": state.observed_source_signature,
+        "sync_status": state.sync_status,
+        "checked_at": state.checked_at,
+        "sync_error": state.sync_error,
         "extraction": state.payload.get("extraction_stats", {}),
     }
 
@@ -313,7 +407,12 @@ def graph_neighbors(
         frontier = next_frontier
 
     nodes = [
-        {**state.nodes_by_id[nid], "depth": d}
+        {
+            **{key: state.nodes_by_id[nid].get(key) for key in (
+                "id", "path", "title", "page_type", "tier", "degree", "community",
+            )},
+            "depth": d,
+        }
         for nid, d in visited.items()
         if nid in state.nodes_by_id
     ]
@@ -516,36 +615,31 @@ def graph_health() -> dict[str, Any]:
     to decide whether to trigger ingest, dedupe, or curation passes.
     """
     nodes = state.payload.get("nodes", [])
-    edges = state.payload.get("edges", [])
-    node_ids = set(state.nodes_by_id.keys())
-
     orphan_count = sum(1 for n in nodes if int(n.get("degree", 0)) == 0)
-    # Builder filters dangling edges already; recheck defensively.
-    broken_link_count = sum(
-        1 for e in edges if e.get("source") not in node_ids or e.get("target") not in node_ids
-    )
+    broken_link_count = state.payload.get("broken_link_count")
 
-    # Dedupe candidates — Stream A's scripts/dedupe_concepts.py may write a
-    # JSON sidecar next to its markdown report. Optional; fall back to 0.
-    dedupe_count = 0
-    dedupe_note: str | None = None
+    dedupe_count = None
+    dedupe_note = None
     dedupe_path = WIKI_PATH.parent / "reports" / "dedupe-candidates-latest.json"
-    if dedupe_path.exists():
-        try:
-            data = json.loads(dedupe_path.read_text())
-            if isinstance(data, list):
-                dedupe_count = len(data)
-            elif isinstance(data, dict):
-                dedupe_count = int(data.get("candidate_count", len(data.get("candidates", []))))
-        except Exception as e:
-            dedupe_note = f"failed to read {dedupe_path}: {e}"
-    else:
-        dedupe_note = "run scripts/dedupe_concepts.py"
+    try:
+        data = json.loads(dedupe_path.read_text())
+        if isinstance(data, list):
+            dedupe_count = len(data)
+        elif isinstance(data, dict) and type(data.get("candidate_count")) is int and data["candidate_count"] >= 0:
+            dedupe_count = data["candidate_count"]
+        elif isinstance(data, dict) and isinstance(data.get("candidates"), list):
+            dedupe_count = len(data["candidates"])
+        else:
+            dedupe_note = "dedupe report contains no valid candidate count"
+    except FileNotFoundError:
+        dedupe_note = "dedupe report unavailable"
+    except (OSError, ValueError) as exc:
+        dedupe_note = f"dedupe report unreadable: {exc}"
 
     qs = [float(n.get("quality_score", 0.0)) for n in nodes if "quality_score" in n]
     avg_quality = round(sum(qs) / len(qs), 4) if qs else 0.0
 
-    tier_keys = ("hot", "established", "core", "archive", "workflow")
+    tier_keys = ("hot", "warm", "established", "core", "archive", "workflow")
     tier_distribution: dict[str, int] = {k: 0 for k in tier_keys}
     for n in nodes:
         tier = (n.get("tier") or "").strip().lower()
@@ -577,7 +671,7 @@ def graph_health() -> dict[str, Any]:
     return {
         "orphan_count": orphan_count,
         "broken_link_count": broken_link_count,
-        "broken_link_note": "builder filters dangling edges; field kept for stable schema",
+        "broken_link_note": "unresolved targets per page before graph construction" if broken_link_count is not None else "measurement unavailable",
         "dedupe_candidate_count": dedupe_count,
         "dedupe_note": dedupe_note,
         "avg_quality_score": avg_quality,
@@ -670,11 +764,23 @@ def _cosine(a: list[float], b: list[float]) -> float:
     return dot / (math.sqrt(na) * math.sqrt(nb))
 
 
+def _archived_node(node: dict[str, Any]) -> bool:
+    archives = {"archive", "archives", "archived", "_archive", "_archives", "_archived"}
+    path = node.get("path") or node["id"]
+    return (
+        (node.get("tier") or "").strip().lower() == "archive"
+        or (node.get("retention_mode") or "").strip().lower() == "archive"
+        or any(part.lower() in archives for part in Path(path).parts[:-1])
+    )
+
+
 @app.post("/graph/query")
 async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
     """Embed ``q`` and return the top-K nodes plus their 1-hop subgraph union.
 
-    Body: ``{"q": "<text>", "k": 10}`` (k optional, default 10, capped at 50).
+    Body: ``{"q": "<text>", "k": 10, "include_archived": true}``.
+    k defaults to 10 and is capped at 50. Disable include_archived to restrict
+    both ranked results and their neighboring subgraph to active pages.
     Response::
 
         {
@@ -692,6 +798,9 @@ async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
     q = (payload or {}).get("q", "")
     if not isinstance(q, str) or not q.strip():
         raise HTTPException(status_code=400, detail="missing 'q' (non-empty string)")
+    include_archived = payload.get("include_archived", True)
+    if not isinstance(include_archived, bool):
+        raise HTTPException(status_code=400, detail="include_archived must be a boolean")
     k_raw = (payload or {}).get("k", 10)
     try:
         k = max(1, min(int(k_raw), 50))
@@ -712,11 +821,14 @@ async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
 
     scored: list[tuple[float, dict[str, Any]]] = []
     for n in state.payload.get("nodes", []):
+        if not include_archived and _archived_node(n):
+            continue
         vec = n.get(EMBEDDING_FIELD)
         if not vec:
             continue
         s = _cosine(qvec, vec)
-        scored.append((s, n))
+        if s > 0:
+            scored.append((s, n))
 
     scored.sort(key=lambda r: r[0], reverse=True)
     top = scored[:k]
@@ -728,6 +840,8 @@ async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
     seen_pairs: set[tuple[str, str]] = set()
     for nid in list(top_ids):
         for adj in state.adjacency.get(nid, []):
+            if not include_archived and _archived_node(state.nodes_by_id[adj["neighbor"]]):
+                continue
             sub_node_ids.add(adj["neighbor"])
             pair = tuple(sorted((adj["source"], adj["target"])))
             if pair in seen_pairs:
@@ -802,7 +916,7 @@ async def internal_rebuild(x_admin_token: str | None = Header(default=None)) -> 
         "rebuild_skipped": payload.get("rebuild_skipped", False),
         "node_count": payload.get("node_count", 0),
         "edge_count": payload.get("edge_count", 0),
-        "build_seconds": payload.get("build_seconds", 0.0),
+        "build_seconds": (state.receipt or {}).get("build_seconds"),
     }
 
 

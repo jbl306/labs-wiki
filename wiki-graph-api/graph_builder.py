@@ -21,14 +21,23 @@ import json
 import logging
 import os
 import re
+import sys
+import tempfile
 import time
 from collections import Counter
 from dataclasses import dataclass, field
 from pathlib import Path
+from stat import S_IMODE
 from typing import Any, Iterable
 
 import networkx as nx
 from networkx.algorithms.community import greedy_modularity_communities
+
+# Service and ingest images install the shared parser beside this module.
+# In a checkout it lives in the sibling scripts directory.
+sys.path.append(str(Path(__file__).resolve().parents[1] / "scripts"))
+from wiki_links import WikilinkLookup, related_wikilinks, wiki_markdown_pages, wikilink_targets
+from wiki_schema import parse_page_text
 
 log = logging.getLogger("graph_builder")
 
@@ -325,10 +334,6 @@ def embed_query(text: str) -> list[float] | None:
 # Parsing
 # ---------------------------------------------------------------------------
 
-_WIKILINK_RE = re.compile(r"\[\[([^\]|#]+)(?:#[^\]|]+)?(?:\|[^\]]+)?\]\]")
-_FRONTMATTER_RE = re.compile(r"^---\s*\n(.*?)\n---\s*\n", re.DOTALL)
-
-
 @dataclass
 class Page:
     """A single wiki page extracted from a markdown file."""
@@ -348,45 +353,11 @@ class Page:
     retention_mode: str = ""     # retain | compress | archive
 
 
-def _parse_frontmatter(text: str) -> dict[str, Any]:
-    m = _FRONTMATTER_RE.match(text)
-    if not m:
-        return {}
-    out: dict[str, Any] = {}
-    for line in m.group(1).splitlines():
-        line = line.rstrip()
-        if not line or line.startswith("#"):
-            continue
-        if ":" not in line:
-            continue
-        key, _, value = line.partition(":")
-        key = key.strip()
-        value = value.strip().strip('"').strip("'")
-        if value.startswith("[") and value.endswith("]"):
-            inner = value[1:-1].strip()
-            out[key] = [p.strip().strip('"').strip("'") for p in inner.split(",") if p.strip()] if inner else []
-        else:
-            out[key] = value
-    return out
+def parse_page(root: Path, md_path: Path, raw_bytes: bytes) -> Page:
+    """Parse the exact bytes used for the extraction cache and signature."""
+    raw = raw_bytes.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
 
-
-def _slugify(text: str) -> str:
-    text = text.lower().strip()
-    text = re.sub(r"[^\w\s-]", "", text)
-    text = re.sub(r"[\s_-]+", "-", text)
-    return text.strip("-")
-
-
-def parse_page(root: Path, md_path: Path) -> Page | None:
-    """Parse a single markdown file into a Page, or return None on failure."""
-    try:
-        raw = md_path.read_text(encoding="utf-8")
-    except OSError as e:
-        log.warning("read failed %s: %s", md_path, e)
-        return None
-
-    fm = _parse_frontmatter(raw)
-    body = _FRONTMATTER_RE.sub("", raw, count=1).strip()
+    fm, body, _ = parse_page_text(raw)
 
     # node_id = relative path without extension, forward slashes
     rel = md_path.relative_to(root).with_suffix("")
@@ -412,22 +383,9 @@ def parse_page(root: Path, md_path: Path) -> Page | None:
     if len(summary) > 240:
         summary = summary[:237] + "..."
 
-    # Wikilinks come from BOTH the body AND any [[...]] inside the frontmatter
-    # (notably the `related:` block-list). The primitive frontmatter parser
-    # above only handles single-line YAML, so we just regex-scan the whole
-    # frontmatter section for [[wikilinks]] — any duplication is deduped below.
-    fm_text = _FRONTMATTER_RE.match(raw).group(1) if _FRONTMATTER_RE.match(raw) else ""
-    body_links = _WIKILINK_RE.findall(body)
-    fm_links = _WIKILINK_RE.findall(fm_text)
-    seen: set[str] = set()
-    wikilinks: list[str] = []
-    for link in (*body_links, *fm_links):
-        link = link.strip()
-        if link and link not in seen:
-            seen.add(link)
-            wikilinks.append(link)
+    wikilinks = list(dict.fromkeys([*wikilink_targets(body), *related_wikilinks(fm)]))
 
-    content_hash = hashlib.sha256(raw.encode("utf-8", errors="ignore")).hexdigest()
+    content_hash = hashlib.sha256(raw_bytes).hexdigest()
 
     return Page(
         node_id=node_id,
@@ -452,31 +410,18 @@ def parse_page(root: Path, md_path: Path) -> Page | None:
 
 def _cache_path(cache_dir: Path, content_hash: str, relative_path: str) -> Path:
     # Parsed pages include their path and a filename-derived fallback title.
-    key = hashlib.sha256(f"{relative_path}\0{content_hash}".encode("utf-8")).hexdigest()
+    key = hashlib.sha256(f"v3\0{relative_path}\0{content_hash}".encode("utf-8")).hexdigest()
     return cache_dir / f"{key}.json"
-
-
-def _iter_wiki_markdown(wiki_dir: Path) -> list[Path]:
-    """Return graph-eligible markdown files in deterministic order."""
-    out: list[Path] = []
-    for md in sorted(wiki_dir.rglob("*.md")):
-        if md.name in {"index.md", "hot.md", "log.md"}:
-            continue
-        if "/.obsidian/" in str(md) or "/meta/" in str(md):
-            continue
-        out.append(md)
-    return out
 
 
 def compute_wiki_signature(wiki_dir: Path) -> str:
     """Content signature for deciding whether a rebuild can be skipped."""
+    if not wiki_dir.is_dir():
+        raise FileNotFoundError(f"wiki source directory unavailable: {wiki_dir}")
     h = hashlib.sha256()
     count = 0
-    for md in _iter_wiki_markdown(wiki_dir):
-        try:
-            raw = md.read_bytes()
-        except OSError:
-            continue
+    for md in wiki_markdown_pages(wiki_dir):
+        raw = md.read_bytes()
         rel = str(md.relative_to(wiki_dir)).replace("\\", "/")
         h.update(rel.encode("utf-8", errors="ignore"))
         h.update(b"\0")
@@ -534,7 +479,7 @@ def extract_pages(wiki_dir: Path, cache_dir: Path | None = None) -> tuple[list[P
     if cache_dir is not None:
         cache_dir.mkdir(parents=True, exist_ok=True)
 
-    for md in _iter_wiki_markdown(wiki_dir):
+    for md in wiki_markdown_pages(wiki_dir):
         # Hash the raw bytes first so we can skip parse on cache hit.
         try:
             raw = md.read_bytes()
@@ -555,10 +500,7 @@ def extract_pages(wiki_dir: Path, cache_dir: Path | None = None) -> tuple[list[P
             except (OSError, json.JSONDecodeError, KeyError):
                 pass  # fall through to re-parse
 
-        page = parse_page(wiki_dir, md)
-        if page is None:
-            stats["errors"] += 1
-            continue
+        page = parse_page(wiki_dir, md, raw)
         pages.append(page)
         stats["cache_misses"] += 1
 
@@ -574,17 +516,6 @@ def extract_pages(wiki_dir: Path, cache_dir: Path | None = None) -> tuple[list[P
 # ---------------------------------------------------------------------------
 # Graph building
 # ---------------------------------------------------------------------------
-
-def _resolve_wikilink(target: str, by_title: dict[str, str], by_slug: dict[str, str]) -> str | None:
-    """Resolve a [[wikilink]] target to a node_id. Returns None if unresolvable."""
-    key = target.strip()
-    if key in by_title:
-        return by_title[key]
-    slug = _slugify(key)
-    if slug in by_slug:
-        return by_slug[slug]
-    return None
-
 
 PUBLISHER_DEMOTION_WEIGHT = 0.1  # publisher entities are hosting hubs, not topical bridges
 PUBLISHER_TAGS = {"publisher", "site", "platform", "host"}
@@ -615,12 +546,7 @@ def build_graph(pages: list[Page]) -> nx.Graph:
     """Build an undirected NetworkX graph from extracted pages."""
     g = nx.Graph()
 
-    by_title = {p.title: p.node_id for p in pages}
-    by_slug = {_slugify(p.title): p.node_id for p in pages}
-    # Also index by node_id tail for slug fallback.
-    for p in pages:
-        by_slug.setdefault(_slugify(p.node_id.rsplit("/", 1)[-1]), p.node_id)
-
+    lookup = WikilinkLookup((p.node_id, p.title) for p in pages)
     publisher_ids = {p.node_id for p in pages if _is_publisher(p)}
 
     for p in pages:
@@ -639,10 +565,15 @@ def build_graph(pages: list[Page]) -> nx.Graph:
             retention_mode=p.retention_mode,
         )
 
+    unresolved_count = 0
     for p in pages:
+        linked_pages: set[str] = set()
         for target in p.wikilinks:
-            resolved = _resolve_wikilink(target, by_title, by_slug)
-            if resolved and resolved != p.node_id:
+            resolved = lookup.resolve(target, p.node_id)
+            if resolved is None:
+                unresolved_count += 1
+            elif resolved != p.node_id and resolved not in linked_pages:
+                linked_pages.add(resolved)
                 # Down-weight edges that touch a publisher entity — they are
                 # hosting links, not topical bridges. Real concept↔concept edges
                 # keep weight 1.0 and dominate community detection.
@@ -662,6 +593,7 @@ def build_graph(pages: list[Page]) -> nx.Graph:
                         source="wikilink",
                     )
 
+    g.graph["broken_link_count"] = unresolved_count
     return g
 
 
@@ -999,6 +931,7 @@ def to_node_link(
         # identical wiki inputs produce byte-identical checked-in artifacts.
         "generated_at": generated_at,
         "source_signature": source_signature,
+        "broken_link_count": g.graph["broken_link_count"],
         "node_count": g.number_of_nodes(),
         "edge_count": g.number_of_edges(),
         "community_count": len(set(communities.values())) if communities else 0,
@@ -1029,6 +962,17 @@ def compute_wiki_signature_from_pages(pages: Any) -> str:
         count += 1
     h.update(f"count={count}".encode())
     return h.hexdigest()
+
+
+def atomic_write_text(path: Path, text: str) -> None:
+    """Publish a complete file on the same filesystem, preserving access modes."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix=f".{path.name}.", dir=path.parent) as tmp:
+        candidate = Path(tmp) / path.name
+        candidate.write_text(text, encoding="utf-8")
+        if path.exists():
+            candidate.chmod(S_IMODE(path.stat().st_mode))
+        candidate.replace(path)
 
 
 def write_checkpoint_tracker(
@@ -1166,8 +1110,7 @@ def write_checkpoint_tracker(
         lines.append("_No merge-cluster candidates (no community contains ≥ 3 checkpoints)._")
     lines += [""]
 
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text("\n".join(lines) + "\n")
+    atomic_write_text(out_path, "\n".join(lines) + "\n")
 
 
 def build(
@@ -1175,6 +1118,8 @@ def build(
     cache_dir: Path | None,
     out_path: Path,
     tracker_path: Path | None = None,
+    *,
+    expected_source_signature: str | None = None,
 ) -> dict[str, Any]:
     """Full pipeline: extract → build graph → detect communities → analyze → write.
 
@@ -1183,7 +1128,7 @@ def build(
     relative to repo root.  When omitted, the default resolves to
     ``<wiki_dir parent>/reports/checkpoint-graph-tracker.md``.
     """
-    t0 = time.time()
+    t0 = time.monotonic()
     pages, stats = extract_pages(wiki_dir, cache_dir)
     log.info("extracted %d pages (%s)", len(pages), stats)
 
@@ -1195,6 +1140,10 @@ def build(
 
     pages_by_id = {p.node_id: p for p in pages}
     payload = to_node_link(g, communities, analysis, pages_by_id, stats)
+    if stats.get("errors"):
+        raise RuntimeError("could not read all graph source pages")
+    if expected_source_signature is not None and payload["source_signature"] != expected_source_signature:
+        raise RuntimeError("wiki sources changed during graph build")
 
     # R15 — precompute spring_layout server-side so the UI doesn't have to
     # run its expensive FR loop on every load.
@@ -1209,20 +1158,6 @@ def build(
     # loading the canonical artifact, so vectors and cache-dependent backend
     # diagnostics are deliberately excluded from checked-in JSON.
 
-    elapsed = round(time.time() - t0, 3)
-    payload["build_seconds"] = 0.0
-
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    out_path.write_text(json.dumps(payload, indent=2))
-    log.info(
-        "wrote %s in %.2fs (%d nodes, %d edges, %d communities)",
-        out_path,
-        elapsed,
-        payload["node_count"],
-        payload["edge_count"],
-        payload["community_count"],
-    )
-
     # Write the checkpoint-graph tracker report.
     # Default: repo-root/reports/checkpoint-graph-tracker.md (wiki_dir.parent is repo root).
     resolved_tracker = tracker_path or wiki_dir.parent / "reports" / "checkpoint-graph-tracker.md"
@@ -1231,7 +1166,8 @@ def build(
         resolved_tracker,
         generated_at=int(payload.get("generated_at", 0)),
     )
-    log.info("wrote checkpoint tracker %s (build_seconds=%.3f)", resolved_tracker, elapsed)
+    atomic_write_text(out_path, json.dumps(payload, indent=2))
+    log.info("wrote graph %s and tracker %s in %.3fs", out_path, resolved_tracker, time.monotonic() - t0)
 
     return payload
 

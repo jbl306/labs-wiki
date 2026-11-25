@@ -1,7 +1,7 @@
 # Wiki Audit Log
 
 > Structured log of all wiki operations. Each entry is a YAML block.
-> Appended by `/wiki-ingest`, `/wiki-update`, `/wiki-lint`, `/wiki-orchestrate`.
+> Ingest and maintenance operations append entries here.
 
 ```yaml
 - timestamp: 2026-04-07T04:00:00Z
@@ -4958,3 +4958,8 @@ LLM-maintained persistent wikis (compile-once, file-back, lateral linking).
 - Preserved seven captured raw sources and eighteen compiled research pages from the runtime checkout. Six captures are ingested; the September 19 harness paper remains pending.
 - Consolidated repeated survey and cross-model-transfer sections, retained both provenance chains, clarified the six-benchmark Procedural Graphs comparison, and replaced the unresolved SkillOpt link with a plain reference.
 - Regenerated the index and graph from the public repository plus these research pages. Local session-summary snapshots and unrelated source drafts remain outside publication.
+
+## 2026-11-25 — Graph and index maintenance
+
+- Rebuilt the page catalog, graph and checkpoint tracker with recursive page discovery and shared link resolution.
+- Historical verification dates and source captures were preserved. The provenance check reports the missing April 17 watcher validation capture.

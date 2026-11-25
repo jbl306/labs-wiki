@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import fcntl
 import hashlib
 import html
 import io
@@ -65,6 +66,8 @@ from checkpoint_state import derive_knowledge_state, is_planning_only_checkpoint
 from ingest_transaction import (
     PROPOSAL_SCHEMA,
     ProposalError,
+    commit_receipt_path,
+    git_publish_manifest,
     prepare_and_publish,
     rebuild_graph_artifacts,
 )
@@ -1065,21 +1068,26 @@ def classify_ingest_route(
 # ---------------------------------------------------------------------------
 
 
-def parse_frontmatter(path: Path) -> tuple[dict, str]:
-    """Return (frontmatter_dict, body) from a markdown file."""
-    content = path.read_text()
-    if not content.startswith("---"):
-        return {}, content
-
-    parts = content.split("---", 2)
-    if len(parts) < 3:
-        return {}, content
+def parse_frontmatter(path: Path, *, header_only: bool = False) -> tuple[dict, str]:
+    """Return frontmatter and body, optionally reading only the header."""
+    with path.open(encoding="utf-8") as stream:
+        first = stream.readline()
+        if first.rstrip() != "---":
+            return {}, "" if header_only else first + stream.read()
+        lines = []
+        for line in stream:
+            if line.rstrip() == "---":
+                break
+            lines.append(line)
+        else:
+            return {}, "" if header_only else first + "".join(lines)
+        body = "" if header_only else stream.read().strip()
 
     fm: dict = {}
     current_key: str | None = None
     current_list: list[str] | None = None
 
-    for line in parts[1].strip().split("\n"):
+    for line in lines:
         stripped = line.strip()
         if not stripped or stripped.startswith("#"):
             continue
@@ -1124,10 +1132,15 @@ def parse_frontmatter(path: Path) -> tuple[dict, str]:
                 continue
 
             fm[key] = value.strip('"').strip("'")
+            if key == "title" and value.startswith('"'):
+                try:
+                    fm[key] = json.loads(value)
+                except ValueError:
+                    pass  # Older captures also use YAML-only quoting.
             current_key = key
             current_list = None
 
-    return fm, parts[2].strip()
+    return fm, body
 
 
 def slugify(title: str) -> str:
@@ -3615,8 +3628,8 @@ def commit_wiki_changes(
     """Stage and commit only manifest-listed ingest changes.
 
     Returns True when a commit was created, False when there was nothing to
-    commit or git is unavailable. Raises only on subprocess invocation
-    errors that aren't related to "nothing to commit".
+    commit or Git is unavailable. A missing or invalid manifest path rejects
+    the entire commit before staging.
     """
     git = ["git", "-C", str(project_root), "--no-pager"]
     # Skip if not a git repo or git missing
@@ -3638,21 +3651,20 @@ def commit_wiki_changes(
     stage_paths: list[str] = []
     root_resolved = project_root.resolve()
     for value in requested_paths:
-        candidate = (project_root / value).resolve()
-        try:
-            relative = candidate.relative_to(root_resolved)
-        except ValueError:
-            log.warning("Refusing to stage out-of-tree ingest path: %s", value)
-            continue
-        relative_text = str(relative)
-        if relative_text not in stage_paths and candidate.exists():
-            stage_paths.append(relative_text)
+        relative = Path(value)
+        candidate = root_resolved / relative
+        if (
+            relative.is_absolute() or ".." in relative.parts
+            or candidate.resolve() != candidate or not candidate.is_file()
+        ):
+            raise RuntimeError(f"missing or invalid ingest manifest path: {value!r}")
+        if value not in stage_paths:
+            stage_paths.append(value)
     if not stage_paths:
-        log.warning("Skipping git commit: ingest manifest had no existing paths")
-        return False
+        raise RuntimeError("empty ingest commit manifest")
     subprocess.run(
         [*git, "add", "--", *stage_paths],
-        check=False,
+        check=True,
         timeout=30,
     )
 
@@ -3665,14 +3677,17 @@ def commit_wiki_changes(
         log.info("git auto-commit: nothing staged")
         return False
 
+    if diff.returncode != 1:
+        raise RuntimeError("git could not inspect staged ingest paths")
+
     short_title = (title or "raw source")[:60]
-    short_notes = (notes or "auto-ingest").strip().splitlines()[0][:200]
+    short_notes = ((notes or "").strip() or "auto-ingest").splitlines()[0][:200]
     msg = (
         f"wiki(auto-ingest): {short_title}\n\n{short_notes}\n\n"
         "Co-authored-by: Codex <codex@openai.com>"
     )
     commit = subprocess.run(
-        [*git, "commit", "--only", "-m", msg, "--no-verify", "--", *stage_paths],
+        [*git, "commit", "--only", "-m", msg, "--", *stage_paths],
         capture_output=True, text=True, timeout=30,
     )
     if commit.returncode != 0:
@@ -3680,11 +3695,6 @@ def commit_wiki_changes(
         return False
     log.info("git auto-commit: %s", short_title)
     return True
-
-
-def git_publish_manifest(paths: list[str]) -> list[str]:
-    """Exclude local runtime outboxes from a manifest-scoped Git commit."""
-    return [path for path in paths if path != "wiki/.kg-pending.jsonl"]
 
 
 def call_codex_cli_ingest(
@@ -3862,7 +3872,31 @@ def ingest_raw_source(
     refresh_fetch: bool = False,
     validation_run: bool = False,
 ) -> bool:
-    """Process a single raw source file. Returns True on success."""
+    """Serialize the full ingest, including source enrichment and Git finalization."""
+    runtime = project_root / ".cache/wiki-watcher"
+    runtime.mkdir(parents=True, exist_ok=True)
+    with (runtime / "ingest.lock").open("a") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        receipt = project_root / commit_receipt_path(raw_path)
+        if receipt.exists():
+            log.error("Source %s has an unconfirmed Git manifest at %s", raw_path.name, receipt)
+            return False
+        return _ingest_raw_source_locked(
+            raw_path, project_root, token, model, force=force,
+            refresh_fetch=refresh_fetch, validation_run=validation_run,
+        )
+
+
+def _ingest_raw_source_locked(
+    raw_path: Path,
+    project_root: Path,
+    token: str,
+    model: str | None = None,
+    *,
+    force: bool = False,
+    refresh_fetch: bool = False,
+    validation_run: bool = False,
+) -> bool:
     log.info("Processing: %s", raw_path)
 
     # Parse raw source
@@ -4125,23 +4159,26 @@ def ingest_raw_source(
                 )
                 return False
 
-            # Git publication is attempted before external side effects so a
-            # success notification never precedes the manifest-scoped commit.
-            # The canonical transaction is already durable even when auto-commit
-            # is disabled or fails.
             if not validation_run:
+                commit_manifest = git_publish_manifest(manifest)
+                receipt = project_root / commit_receipt_path(raw_path)
                 try:
-                    # The local KG outbox must survive a crash between commit and
-                    # replay, but it is runtime state and must never enter Git.
-                    commit_manifest = git_publish_manifest(manifest)
-                    commit_wiki_changes(
-                        project_root,
-                        title=title,
-                        notes=result.get("notes", ""),
-                        paths=commit_manifest,
+                    committed = commit_wiki_changes(
+                        project_root, title=title, notes=result.get("notes", ""), paths=commit_manifest,
                     )
-                except Exception as exc:
-                    log.warning("git auto-commit failed (non-fatal): %s", exc)
+                except (OSError, RuntimeError, subprocess.SubprocessError) as exc:
+                    log.error("Git publication failed for %s: %s", raw_path.name, exc)
+                    committed = False
+                if not committed:
+                    log.error("source=%s canonical_publication=published git_commit=unconfirmed", raw_path.name)
+                    send_ntfy(
+                        f"Wiki: Git commit unconfirmed for {raw_path.name}",
+                        "Canonical files published. Inspect the saved ingest manifest before committing.",
+                        tags="books,warning",
+                    )
+                    return False
+                receipt.unlink()
+                log.info("source=%s canonical_publication=published git_commit=committed", raw_path.name)
 
             try:
                 replay_pending_kg_facts(project_root)

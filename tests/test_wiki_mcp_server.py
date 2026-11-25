@@ -1,4 +1,5 @@
 import asyncio
+import hashlib
 import json
 import os
 import sys
@@ -14,6 +15,73 @@ import wiki_mcp_server as server  # noqa: E402
 
 
 class WikiReadTests(unittest.TestCase):
+
+    def test_read_continuations_preserve_every_character(self):
+        import re
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wiki = root / "wiki"
+            wiki.mkdir()
+            text = "# Alpha\n" + ("abcé " * 580) + "\n\nlast line\n"
+            (wiki / "alpha.md").write_text(text)
+            parts = []
+            cursor = {"start_line": 1, "start_column": 1}
+            with patch.object(server, "WIKI_ROOT", root), patch.object(server, "WIKI_DIR", wiki):
+                while True:
+                    reply = server.wiki_read("wiki/alpha.md", max_chars=600, **cursor)
+                    self.assertLessEqual(len(reply), 600)
+                    content = reply.split("Content:\n", 1)[1]
+                    marker = re.search(r"\n\n\[content truncated; continue with start_line=(\d+), start_column=(\d+)\]$", content)
+                    if marker is None:
+                        parts.append(content)
+                        break
+                    parts.append(content[:marker.start()])
+                    new_cursor = dict(zip(("start_line", "start_column"), map(int, marker.groups())))
+                    self.assertGreater(tuple(new_cursor.values()), tuple(cursor.values()))
+                    cursor = new_cursor
+            self.assertEqual("".join(parts), text)
+
+    def test_section_read_cites_raw_bytes_and_skips_fenced_headings(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wiki = root / "wiki"
+            wiki.mkdir()
+            page = wiki / "example.md"
+            raw = (
+                b"# Example\r\n## Setup\r\n```sh\r\n# Example comment\r\n"
+                b"## Fake heading\r\n```\r\nreal instructions\r\n"
+                b"~~~~\r\n## Another fake heading\r\n~~~~\r\n## Next\r\n"
+            )
+            page.write_bytes(raw)
+            with patch.object(server, "WIKI_ROOT", root), patch.object(server, "WIKI_DIR", wiki):
+                result = server.wiki_read("example", section="Setup")
+                self.assertIn("#L2-L10 ", result)
+                self.assertIn("real instructions", result)
+                self.assertNotIn("## Next", result)
+                self.assertIn("revision=sha256:" + hashlib.sha256(raw).hexdigest(), result)
+                self.assertIn("not found", server.wiki_read("example", section="Fake heading"))
+                self.assertIn("Invalid line range", server.wiki_read("example", start_line=12))
+                self.assertIn("Invalid line range", server.wiki_read("example", section="Setup", start_line=11))
+                page.write_bytes(b"")
+                self.assertIn("empty", server.wiki_read("example", start_line=1))
+
+    def test_typed_reads_disambiguate_shared_filenames_and_titles(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            wiki = root / "wiki"
+            for directory, page_type in (("concepts", "concept"), ("entities", "entity")):
+                path = wiki / directory / "shared.md"
+                path.parent.mkdir(parents=True)
+                path.write_text(f"---\ntype: {page_type}\ntitle: Shared Display Name\n---\n{page_type} body")
+            with patch.object(server, "WIKI_ROOT", root), patch.object(server, "WIKI_DIR", wiki):
+                for lookup in ("shared", "Shared Display Name"):
+                    with self.subTest(lookup=lookup):
+                        result = server.wiki_read(lookup, page_type="entity")
+                        self.assertIn("entity body", result)
+                        self.assertNotIn("concept body", result)
+                self.assertIn("not found", server.wiki_read("shared", page_type="source"))
+
     def test_direct_page_reads_skip_the_corpus_scan_and_preserve_title_lookup(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)

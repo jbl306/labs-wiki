@@ -8,6 +8,9 @@ from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
 
+from wiki_links import WikilinkLookup, build_wikilink_lookup, related_wikilinks, wiki_markdown_pages, wikilink_targets
+from wiki_schema import parse_page_text, validate_sources
+
 REQUIRED_FIELDS = ["title", "type", "created", "sources"]
 VALID_TYPES = {"source", "concept", "entity", "synthesis"}
 TYPE_DIR_MAP = {
@@ -39,110 +42,16 @@ KNOWLEDGE_STATE_NEUTRAL = 5  # awarded when the field is absent
 _NUM_RE = re.compile(r"\b\d[\d,\.]*\b")
 _CODE_FENCE_RE = re.compile(r"^```", re.MULTILINE)
 _BLOCKQUOTE_RE = re.compile(r"^>", re.MULTILINE)
-_FENCED_BLOCK_RE = re.compile(r"^```[^\n]*\n.*?^```\s*$", re.MULTILINE | re.DOTALL)
-
-
-def strip_fenced_code(text: str) -> str:
-    """Remove fenced code before interpreting double brackets as wikilinks."""
-    return _FENCED_BLOCK_RE.sub("", text)
-
-
-def slugify_wikilink(text: str) -> str:
-    """Normalize a wikilink target similarly to the graph builder."""
-    text = text.lower().strip()
-    text = re.sub(r"[^\w\s-]", "", text)
-    text = re.sub(r"[\s_-]+", "-", text)
-    return text.strip("-")
-
-
-def parse_frontmatter(path: Path) -> dict | None:
-    """Extract YAML frontmatter from a markdown file."""
-    try:
-        content = path.read_text()
-    except Exception:
-        return None
-
-    if not content.startswith("---"):
-        return None
-
-    parts = content.split("---", 2)
-    if len(parts) < 3:
-        return None
-
-    fm: dict = {}
-    for line in parts[1].strip().split("\n"):
-        line = line.strip()
-        if ":" in line and not line.startswith("-") and not line.startswith("#"):
-            key, _, value = line.partition(":")
-            fm[key.strip()] = value.strip().strip('"').strip("'")
-
-    if "sources" not in fm:
-        for line in parts[1].strip().split("\n"):
-            if line.strip() == "sources:":
-                fm["sources"] = "present"
-
-    return fm
 
 
 def parse_frontmatter_full(path: Path) -> tuple[dict, str, str]:
-    """Return (frontmatter_dict, frontmatter_text, body) for a markdown file.
-
-    Used by --write-scores to round-trip the file without losing keys.
-    """
+    """Preserve the original frontmatter/body boundaries for --write-scores."""
     content = path.read_text()
-    if not content.startswith("---"):
+    fm, _, error = parse_page_text(content)
+    if error:
         return {}, "", content
-    parts = content.split("---", 2)
-    if len(parts) < 3:
-        return {}, "", content
-    fm: dict = {}
-    for line in parts[1].strip().split("\n"):
-        s = line.strip()
-        if ":" in s and not s.startswith("-") and not s.startswith("#"):
-            key, _, value = s.partition(":")
-            fm[key.strip()] = value.strip().strip('"').strip("'")
-    return fm, parts[1], parts[2]
-
-
-def _count_sources(fm: dict, body: str) -> int:
-    """Count source entries — frontmatter list lines starting with `- `."""
-    # We cannot count list items from the simplified `parse_frontmatter` above
-    # (it overwrites with "present"), so re-parse from the file body context
-    # supplied by the caller. Since the simplified fm collapses lists, callers
-    # that need exact counts should pass `body` plus a re-parse from the file.
-    # Default behavior here: any non-empty `sources` value counts as 1.
-    val = fm.get("sources", "")
-    if not val:
-        return 0
-    if val == "present":
-        return 1
-    return 1
-
-
-def count_sources_from_text(fm_text: str) -> int:
-    """Count `- ` entries in the `sources:` block of raw frontmatter text."""
-    if not fm_text:
-        return 0
-    in_block = False
-    count = 0
-    for raw in fm_text.strip().split("\n"):
-        s = raw.strip()
-        if s.startswith("sources:"):
-            in_block = True
-            tail = s.split(":", 1)[1].strip()
-            if tail.startswith("[") and tail.endswith("]"):
-                inner = tail[1:-1].strip()
-                return 0 if not inner else len([x for x in inner.split(",") if x.strip()])
-            continue
-        if in_block:
-            if s.startswith("- "):
-                count += 1
-                continue
-            if not s or s.startswith("#"):
-                continue
-            # Hit the next key
-            break
-    return count
+    end = content.index("\n---", 4)
+    return fm, content[3:end + 1], content[end + 4:]
 
 
 def _wordcount_score(words: int, max_pts: int) -> float:
@@ -222,7 +131,8 @@ def compute_quality_score(
 
     # 4. Sources list length
     if sources_count is None:
-        sources_count = _count_sources(fm, body)
+        sources = fm.get("sources")
+        sources_count = len(sources) if isinstance(sources, list) else 0
     score += 15.0 * min(sources_count, SOURCES_SATURATION) / SOURCES_SATURATION
 
     # 5. Staleness curve
@@ -242,44 +152,26 @@ def compute_quality_score(
     return max(0, min(100, int(round(score))))
 
 
-def build_inbound_counter(pages: list[Path]) -> Counter:
-    """Walk every page, collect [[wikilink]] targets, return Counter keyed by slug."""
+def build_inbound_counter(pages: list[Path], wiki_dir: Path, lookup: WikilinkLookup) -> Counter:
+    """Walk every page, collect [[wikilink]] targets, return counts keyed by page ID."""
     counter: Counter = Counter()
     for p in pages:
         try:
             text = p.read_text(errors="ignore")
         except OSError:
             continue
-        for target in re.findall(r"\[\[([^\]]+)\]\]", strip_fenced_code(text)):
-            slug = slugify_wikilink(target)
-            counter[slug] += 1
+        source_id = p.relative_to(wiki_dir).with_suffix("").as_posix()
+        fm, body, _ = parse_page_text(text)
+        for target in [*wikilink_targets(body), *related_wikilinks(fm)]:
+            resolved = lookup.resolve(target, source_id)
+            if resolved is not None:
+                counter[resolved] += 1
     return counter
 
 
 def find_wikilinks(path: Path) -> list[str]:
     """Extract all [[wikilink]] targets from a file."""
-    content = strip_fenced_code(path.read_text())
-    return re.findall(r"\[\[([^\]]+)\]\]", content)
-
-
-def build_wikilink_lookup(pages: list[Path]) -> tuple[set[str], set[str]]:
-    """Build exact-title and slug lookups for valid wiki page targets."""
-    page_titles: set[str] = set()
-    page_slugs: set[str] = set()
-    for p in pages:
-        fm = parse_frontmatter(p)
-        title = p.stem.replace("-", " ").title()
-        if fm and "title" in fm:
-            title = str(fm["title"])
-        page_titles.add(title)
-        page_slugs.add(slugify_wikilink(title))
-        page_slugs.add(slugify_wikilink(p.stem))
-    return page_titles, page_slugs
-
-
-def wikilink_exists(link: str, page_titles: set[str], page_slugs: set[str]) -> bool:
-    """Return True if the link resolves by exact title or filename slug."""
-    return link in page_titles or slugify_wikilink(link) in page_slugs
+    return wikilink_targets(path.read_text())
 
 
 def lint_wiki(
@@ -297,26 +189,23 @@ def lint_wiki(
         errors.append("wiki/ directory does not exist")
         return errors, warnings, scores
 
-    pages = list(wiki_path.rglob("*.md"))
-    pages = [
-        p for p in pages
-        if p.name not in ("index.md", "log.md", "hot.md", "hot-snapshot.md")
-        and "/meta/" not in str(p).replace("\\", "/")
-    ]
+    pages = [page for page in wiki_markdown_pages(wiki_path) if page.name != "hot-snapshot.md"]
 
     if not pages:
         return errors, warnings, scores
 
-    page_titles, page_slugs = build_wikilink_lookup(pages)
-    inbound_counter = build_inbound_counter(pages)
+    lookup = build_wikilink_lookup(wiki_path, pages)
+    inbound_counter = build_inbound_counter(pages, wiki_path, lookup)
 
     index_path = wiki_path / "index.md"
     index_content = index_path.read_text() if index_path.exists() else ""
 
+    indexed = set(re.findall(r"^- \[\[([^\]\n]+)\]\]", index_content, re.MULTILINE))
     now = datetime.now(timezone.utc)
 
     for page in pages:
         rel = page.relative_to(root)
+        node_id = page.relative_to(wiki_path).with_suffix("").as_posix()
         fm, fm_text, body = parse_frontmatter_full(page)
 
         if not fm:
@@ -324,8 +213,11 @@ def lint_wiki(
             continue
 
         for field in REQUIRED_FIELDS:
-            if field not in fm and not (field == "sources" and "sources:" in fm_text):
+            if field not in fm:
                 errors.append(f"{rel}: missing required field '{field}'")
+
+        if "sources" in fm:
+            errors.extend(f"{rel}: {error}" for error in validate_sources(fm["sources"], root))
 
         page_type = fm.get("type", "")
         if page_type and page_type not in VALID_TYPES:
@@ -333,23 +225,24 @@ def lint_wiki(
 
         if page_type in TYPE_DIR_MAP:
             expected_dir = TYPE_DIR_MAP[page_type]
-            if expected_dir not in str(rel):
+            if rel.parts[:2] != ("wiki", expected_dir):
                 errors.append(f"{rel}: type '{page_type}' should be in wiki/{expected_dir}/")
 
-        wikilinks = re.findall(r"\[\[([^\]]+)\]\]", strip_fenced_code(body))
-        for link in wikilinks:
-            if not wikilink_exists(link, page_titles, page_slugs):
+        wikilinks = wikilink_targets(body)
+        related_links = related_wikilinks(fm)
+        for link in dict.fromkeys([*wikilinks, *related_links]):
+            if lookup.resolve(link, node_id) is None:
                 errors.append(f"{rel}: broken wikilink [[{link}]]")
 
         title = fm.get("title", "")
-        if title and title not in index_content and str(rel) not in index_content:
+        if title and title not in indexed and str(rel) not in indexed:
             warnings.append(f"{rel}: orphan page (not found in index.md)")
 
         # Staleness warning (separate from score signal)
         last_verified = fm.get("last_verified", "")
         if last_verified:
             try:
-                verified_date = datetime.strptime(last_verified, "%Y-%m-%d").replace(
+                verified_date = datetime.strptime(str(last_verified), "%Y-%m-%d").replace(
                     tzinfo=timezone.utc
                 )
                 days_old = (now - verified_date).days
@@ -359,13 +252,11 @@ def lint_wiki(
                 pass
 
         # --- New quality score ---
-        slug = page.stem
-        wikilinks_in = inbound_counter.get(slug, 0)
-        wikilinks_out = len(set(slugify_wikilink(w) for w in wikilinks))
-        sources_count = count_sources_from_text(fm_text)
+        wikilinks_in = inbound_counter.get(node_id, 0)
+        wikilinks_out = len({lookup.resolve(link, node_id) or link for link in wikilinks})
         claim = has_specific_claim(body)
         score = compute_quality_score(
-            fm, body, wikilinks_out, wikilinks_in, claim, now, sources_count,
+            fm, body, wikilinks_out, wikilinks_in, claim, now,
         )
         scores[str(rel)] = score
 

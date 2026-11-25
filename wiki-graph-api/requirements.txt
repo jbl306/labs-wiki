@@ -1,6 +1,7 @@
 fastapi==0.115.0
 uvicorn[standard]==0.32.0
 networkx==3.3
+pyyaml>=6.0.0,<7
 # R14 — semantic NL query endpoint (POST /graph/query) and node embeddings.
 # Default: TF-IDF (sklearn), which keeps the homelab API process lightweight.
 # sentence-transformers remains an optional code path for custom images via

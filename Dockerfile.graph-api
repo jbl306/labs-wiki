@@ -11,6 +11,7 @@ COPY wiki-graph-api/requirements.txt /app/requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY wiki-graph-api/ /app/
+COPY scripts/wiki_links.py scripts/wiki_schema.py /app/
 
 ENV WIKI_PATH=/app/wiki \
     CACHE_DIR=/data/cache \

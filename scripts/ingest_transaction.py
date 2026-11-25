@@ -21,6 +21,7 @@ import yaml
 from jsonschema import Draft202012Validator
 
 from compile_index import compile_index
+from wiki_links import build_wikilink_lookup, wiki_markdown_pages, wikilink_targets
 from wiki_schema import parse_page_text, validate_page
 
 PROPOSAL_SCHEMA: dict[str, Any] = {
@@ -495,7 +496,11 @@ def _prevalidate_proposal(
 def _copy_transaction_inputs(project_root: Path, stage_root: Path) -> None:
     shutil.copytree(project_root / "wiki", stage_root / "wiki", dirs_exist_ok=True)
     (stage_root / "raw").mkdir(parents=True, exist_ok=True)
-    for source in (project_root / "raw").rglob("*.md"):
+    raw_root = project_root / "raw"
+    for source in raw_root.rglob("*.md"):
+        resolved = source.resolve()
+        if not resolved.is_relative_to(raw_root) or resolved.suffix.lower() != ".md":
+            continue
         relative = source.relative_to(project_root)
         destination = stage_root / relative
         destination.parent.mkdir(parents=True, exist_ok=True)
@@ -589,15 +594,32 @@ def _write_mutations(
         raise ProposalError("a successful proposal must contain exactly one source page mutation")
 
     expected_raw = raw_path.resolve().relative_to(project_root.resolve()).as_posix()
-    source_frontmatter, _body, parse_error = parse_page_text((stage_root / source_path).read_text())
-    if parse_error or expected_raw not in {str(value) for value in source_frontmatter.get("sources", [])}:
-        raise ProposalError(f"source page provenance must include {expected_raw}")
-    if expected_source_hash and _normalize_source_hash(
-        source_frontmatter.get("source_hash")
-    ) != _normalize_source_hash(expected_source_hash):
-        raise ProposalError("source page source_hash does not match the deterministic preflight hash")
+    expected_hash = _normalize_source_hash(expected_source_hash)
+    if not expected_hash:
+        raise ProposalError("transaction requires the deterministic current-raw hash")
 
+    # Cross-page links may point forward in the same proposal.
+    wiki_dir = stage_root / "wiki"
+    lookup = build_wikilink_lookup(wiki_dir, wiki_markdown_pages(wiki_dir))
     for relative in mutation_paths:
+        frontmatter, body, _ = parse_page_text((stage_root / relative).read_text())
+        if expected_raw not in frontmatter["sources"]:
+            raise ProposalError(f"{relative}: provenance must include {expected_raw}")
+        if frontmatter["source_hash"] != expected_hash:
+            raise ProposalError(f"{relative}: source_hash does not match the deterministic preflight hash")
+        links = wikilink_targets(body)
+        for entry in frontmatter["related"]:
+            if not isinstance(entry, str) or not re.fullmatch(r"\[\[[^\]\n]+\]\]", entry.strip()):
+                raise ProposalError(f"{relative}: related entries must be wikilinks")
+            targets = wikilink_targets(entry)
+            if len(targets) != 1:
+                raise ProposalError(f"{relative}: invalid related wikilink {entry!r}")
+            links.extend(targets)
+        node_id = Path(relative).relative_to("wiki").with_suffix("").as_posix()
+        for link in links:
+            if lookup.resolve(link, node_id) is None:
+                raise ProposalError(f"{relative}: unresolved wikilink [[{link}]]")
+
         if relative.startswith("wiki/synthesis/"):
             from audit_synthesis import audit_page
 
@@ -725,11 +747,7 @@ def _compute_wiki_signature(wiki_dir: Path) -> str:
     """Mirror the graph builder's deterministic source signature contract."""
     digest = hashlib.sha256()
     count = 0
-    for page in sorted(wiki_dir.rglob("*.md")):
-        if page.name in {"index.md", "hot.md", "log.md"}:
-            continue
-        if "/.obsidian/" in page.as_posix() or "/meta/" in page.as_posix():
-            continue
+    for page in wiki_markdown_pages(wiki_dir):
         relative = page.relative_to(wiki_dir).as_posix()
         digest.update(relative.encode("utf-8", errors="ignore"))
         digest.update(b"\0")
@@ -806,6 +824,15 @@ def rebuild_graph_artifacts(
     _build_graph(project_root.resolve(), runtime_root)
 
 
+def git_publish_manifest(paths: list[str]) -> list[str]:
+    """Exclude the runtime knowledge-graph outbox from Git publication."""
+    return [path for path in paths if path != "wiki/.kg-pending.jsonl"]
+
+
+def commit_receipt_path(raw_path: Path) -> Path:
+    return Path(".cache/wiki-watcher/uncommitted") / f"{raw_path.name}.json"
+
+
 def _prepare_and_publish_locked(
     proposal: dict[str, Any],
     project_root: Path,
@@ -821,6 +848,8 @@ def _prepare_and_publish_locked(
     raw_path = raw_path.resolve()
     raw_relative = raw_path.relative_to(project_root).as_posix()
     runtime_root = runtime_scripts or Path(__file__).resolve().parent
+    if (project_root / commit_receipt_path(raw_path)).exists():
+        raise ProposalError(f"prior Git manifest is unconfirmed for {raw_path.name}")
     validated_paths = _prevalidate_proposal(proposal, project_root)
 
     candidate_paths = [
@@ -832,7 +861,7 @@ def _prepare_and_publish_locked(
     if proposal.get("kg_facts"):
         candidate_paths.append("wiki/.kg-pending.jsonl")
     if not validation_run:
-        candidate_paths.append("wiki/log.md")
+        candidate_paths.extend(["wiki/log.md", commit_receipt_path(raw_path).as_posix()])
     candidate_paths = [path for path in dict.fromkeys(candidate_paths) if path]
     before = {relative: _digest_or_none(project_root / relative) for relative in candidate_paths}
 
@@ -873,7 +902,20 @@ def _prepare_and_publish_locked(
             )
             final_paths.append("wiki/log.md")
 
-        _atomic_publish(project_root, stage_root, final_paths, before)
+        publish_paths = final_paths
+        if not validation_run:
+            # Install the receipt first. A process interruption at any later
+            # point leaves a visible manifest for inspection before another run.
+            receipt = commit_receipt_path(raw_path)
+            staged_receipt = stage_root / receipt
+            staged_receipt.parent.mkdir(parents=True, exist_ok=True)
+            staged_receipt.write_text(json.dumps({
+                "source": raw_path.name,
+                "prepared_at": datetime.now(timezone.utc).isoformat(),
+                "manifest": git_publish_manifest(final_paths),
+            }) + "\n")
+            publish_paths = [receipt.as_posix(), *final_paths]
+        _atomic_publish(project_root, stage_root, publish_paths, before)
         return list(dict.fromkeys(final_paths))
 
 

@@ -1,11 +1,3 @@
-function lerp(start, end, amount) {
-  return start + (end - start) * amount;
-}
-
-function zoomProgressForScale(scale) {
-  return Math.max(0, Math.min(1, (scale - 0.55) / 2.75));
-}
-
 function rectOverlaps(a, b, padding = 0) {
   return !(
     a.x + a.w + padding < b.x ||
@@ -38,29 +30,31 @@ export function buildLabelTargets({
   view,
   nodeRadius,
   measureText,
+  pinnedIds = new Set(),
+  communityLabel = () => "",
+  focused = false,
+  neighbors,
 }) {
-  const zoomT = zoomProgressForScale(view.scale);
-  const labelDegreeThreshold = view.scale >= 1.8 ? 0 : view.scale >= 1.05 ? 2 : 5;
-  const labelMaxChars = view.scale >= 2.1 ? 56 : view.scale >= 1.4 ? 42 : 32;
-  const maxLabels = view.scale >= 2.3 ? 150 : view.scale >= 1.35 ? 95 : 40;
+  const mobile = canvasSize.width < 760;
+  const zoom = view.scale / (view.fitScale || view.scale);
+  const overview = zoom < 1.65 && !focused;
+  const maxLabels = overview ? (mobile ? 4 : 9)
+    : Math.min(mobile ? 12 : 40, Math.max(mobile ? 6 : 16, Math.round(zoom * 6)));
   const occupiedLabelRects = [];
   const labelTargets = [];
-  const labelCandidates = nodes
-    .filter((node) => node.degree >= labelDegreeThreshold || highlightedId === node.id)
-    .sort((a, b) => {
-      const aHighlighted = highlightedId === a.id ? 1 : 0;
-      const bHighlighted = highlightedId === b.id ? 1 : 0;
-      return bHighlighted - aHighlighted || b.degree - a.degree;
-    });
-
+  const labeledCommunities = new Set();
+  const priority = (node) => (node.id === highlightedId ? 3 : pinnedIds.has(node.id) ? 2 : neighbors?.has(node.id) ? 1 : 0);
+  const labelCandidates = [...nodes].sort((a, b) =>
+    priority(b) - priority(a) || (b.degree || 0) - (a.degree || 0));
   for (const node of labelCandidates) {
-    const highlighted = highlightedId === node.id;
-    if (!highlighted && occupiedLabelRects.length >= maxLabels) break;
-
-    const label = node.title.slice(0, labelMaxChars);
-    const screenFontPx = highlighted
-      ? Math.round(lerp(13, 21, zoomT))
-      : Math.round(lerp(10, 18, zoomT));
+    if (labelTargets.length >= maxLabels) break;
+    const highlighted = node.id === highlightedId || pinnedIds.has(node.id);
+    const group = overview && !highlighted && node.community != null && communityLabel(node.community);
+    if (group && labeledCommunities.has(node.community)) continue;
+    const title = group || node.title || node.id;
+    const limit = mobile ? 24 : 36;
+    const label = title.length > limit ? title.slice(0, limit - 1).trimEnd() + "…" : title;
+    const screenFontPx = highlighted ? 14 : 13;
     const fontWorldPx = screenFontPx / view.scale;
     const padX = (highlighted ? 8 : 6) / view.scale;
     const padY = (highlighted ? 5 : 4) / view.scale;
@@ -77,9 +71,12 @@ export function buildLabelTargets({
       h: labelHeight * view.scale,
     };
 
-    if (!highlighted && occupiedLabelRects.some((rect) => rectOverlaps(rect, screenRect, 6))) {
+    if (screenRect.x < 2 || screenRect.x + screenRect.w > canvasSize.width - 2 ||
+        screenRect.y < 2 || screenRect.y + screenRect.h > canvasSize.height - 2) continue;
+    if (occupiedLabelRects.some((rect) => rectOverlaps(rect, screenRect, 6))) {
       continue;
     }
+    if (group) labeledCommunities.add(node.community);
     occupiedLabelRects.push(screenRect);
     labelTargets.push({
       node,

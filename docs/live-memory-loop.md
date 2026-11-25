@@ -87,19 +87,14 @@ current primary sources for changing external facts. `wiki/hot.md` is optional
 task context. The previous mandatory startup ladder and cross-project snippet
 injection are retired.
 
-### 4. Native Codex checkpoints and manual skills
+### 4. Native Codex checkpoints
 
 Codex uses native SessionStart, Stop, and PreCompact hooks for selective Labs
 Wiki memory. SessionStart supplies the policy; Stop and PreCompact save staged
 facts through `mempalace_durable_hook`. See the [implementation and verification
 guide](codex-durable-memory.md).
 
-Manual skills remain available for distinct, explicitly requested operations:
-
-| Skill | Purpose | Trigger |
-|-------|-----------------|---------|
-| [`/wiki-save`](/home/jbl/.agents/skills/wiki-save/SKILL.md) | Publish a conversation summary as a raw source | Explicit user authorization |
-| [`/wiki-refresh-hot`](/home/jbl/.agents/skills/wiki-refresh-hot/SKILL.md) | Refresh the hot cache | Manual refresh |
+Publishing a summary as a wiki source requires explicit authorization for that content. Use an authorized [capture channel](capture-sources.md) for the selected summary. To refresh the local hot cache, run `python3 scripts/build_hot.py`.
 
 ### 5. Weekly safety-net cron
 
@@ -139,7 +134,7 @@ python /home/jbl/projects/labs-wiki/scripts/build_hot.py
 | Symptom | Check | Fix |
 |---------|-------|-----|
 | Watcher not firing | `systemctl --user status mempalace-watcher` | `systemctl --user restart mempalace-watcher` |
-| hot.md stale | timestamp in frontmatter | Run `/wiki-refresh-hot` or `python scripts/build_hot.py` |
+| hot.md stale | timestamp in frontmatter | Run `python3 scripts/build_hot.py` |
 | Mine thrashing (CPU high) | `journalctl --user -u mempalace-watcher -f` | Increase `MEMPALACE_WATCHER_DEBOUNCE` in the service unit |
 | New project not watched | `WATCHES` list in `mempalace-watcher.py` | Add entry, restart the service |
 | Self-trigger loop on hot.md | Confirm `ignore_substrings` for `labs-wiki-wiki` watch includes `hot.md` | Already in code; pull latest |
@@ -148,9 +143,9 @@ python /home/jbl/projects/labs-wiki/scripts/build_hot.py
 
 `mempalace mine` is pure local indexing: SHA hashing, markdown parsing, drawer generation, and embedding via local sentence-transformers into ChromaDB. No OpenAI/Anthropic calls. The only model-calling component — `auto_ingest.py`'s compile step — runs inside the `wiki-auto-ingest` Docker sidecar through the configured ingest backend, now Codex CLI by default, with source-aware priority and reasoning-effort routing.
 
-## Success criteria
+## Historical watcher targets
 
 1. Retrieval is scoped to the task under the current global `AGENTS.md` policy.
 2. `hot.md` timestamp is always within the last hour during active work.
-3. `/wiki-save` → searchable via `mempalace_search` within 60 seconds.
+3. Make an explicitly authorized wiki capture searchable via `mempalace_search` within 60 seconds.
 4. Weekly full-sweep finds ≤ 5% novel content (proving the watcher caught the rest).

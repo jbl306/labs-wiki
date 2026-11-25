@@ -123,22 +123,22 @@ python3 scripts/audit_synthesis.py --json-out reports/synthesis-audit.json
 python3 scripts/audit_synthesis.py --page wiki/synthesis/example.md --strict
 ```
 
-`--validation-run` is intended for review-only reruns of a single already-ingested raw file (e.g. verifying
-improved extraction quality). It requires `--force`, still writes raw snapshots and wiki pages, but
-suppresses the `wiki/log.md` append and ntfy notifications so the audit trail stays clean.
+`--validation-run --force` republishes accepted changes for a single raw file. For an isolated extraction check, use a disposable checkout and isolate external services. See the [validation-run behavior](docs/workflows.md#validation-run-policy).
 
 See [docs/capture-sources.md](docs/capture-sources.md) for setup instructions.
 
-## Skills
+## Wiki operations
 
-| Skill | Purpose |
-|-------|---------|
-| `/wiki-ingest` | Manually process raw sources into wiki pages (auto-ingest handles this normally) |
-| `/wiki-query` | Search and synthesize from wiki |
-| `/wiki-lint` | Check health: orphans, broken links, staleness |
-| `/wiki-update` | Revise pages with provenance tracking |
-| `/wiki-orchestrate` | Multi-step workflows (lint, fix, maintenance) |
-| `/wiki-setup` | Initialize or validate wiki structure |
+Run commands from the repository root. The [workflow guide](docs/workflows.md) covers targeted ingest, audits, and page updates.
+
+| Task | Entry point |
+|------|-------------|
+| Initialize missing directories and seed files | `python3 scripts/scaffold.py` |
+| Process one source | `python3 scripts/auto_ingest.py raw/example.md` |
+| Search and read wiki pages | Wiki MCP tools `wiki_search` and `wiki_read` |
+| Check wiki health | `python3 scripts/lint_wiki.py` |
+| Revise a page | [Wiki Update persona](agents/wiki-update.agent.md) |
+| Coordinate maintenance | [Wiki Orchestrate persona](agents/wiki-orchestrate.agent.md) |
 
 ## Services
 
@@ -153,13 +153,13 @@ Global `/home/jbl/.codex/AGENTS.md` owns shared policy. Codex CLI uses the repos
 
 | Tool | Config |
 |------|--------|
-| Codex CLI | `AGENTS.md` + `scripts/prompts/wiki_ingest_prompt.md` |
+| Codex CLI | `AGENTS.md` + `scripts/prompts/wiki_ingest_proposal_prompt.md` |
 
 ## Memory Model
 
 - **Provenance:** every wiki page traces to sources via `sources:` frontmatter
 - **Staleness:** pages not verified in 90+ days are flagged
-- **Quality:** 0-100 score based on structure (completeness, cross-refs, attribution, recency), not execution certainty
+- **Quality:** 0–100 score derived from links, sources, body length, verification date, knowledge state, and specific claims
 - **Synthesis evidence:** new synthesis pages declare within- vs cross-source
   scope and include a claim-level Evidence Map; `scripts/audit_synthesis.py`
   evaluates provenance, grounding, depth, and title quality

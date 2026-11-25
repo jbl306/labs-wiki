@@ -1,6 +1,6 @@
 # Workflows
 
-> Step-by-step guides for wiki operations. Sources are **automatically processed** — manual skills are available for targeted operations.
+The auto-ingest service processes pending sources. Run the commands below from the repository root.
 
 ## 1. Ingest a New Source
 
@@ -46,113 +46,33 @@ Add a raw source — it's automatically processed into wiki pages.
    docker logs wiki-auto-ingest
 
    # Or run lint
-   /wiki-lint
+   python3 scripts/lint_wiki.py
    ```
 
 4. **Manual alternative** (if auto-ingest is not running):
    ```bash
    python3 scripts/auto_ingest.py raw/2025-07-17-interesting-article.md
-   # Or use the wiki ingest skill:
-   /wiki-ingest raw/2025-07-17-interesting-article.md
    ```
 
 ## 2. Query the Wiki
 
-Search for information across wiki pages.
-
-### Steps
-
-1. **Ask a question:**
-   ```
-   /wiki-query What is positional encoding?
-   ```
-
-2. **What happens:**
-   - Reads `wiki/index.md` to find relevant pages
-   - Reads identified pages
-   - Synthesizes answer with `[[wikilink]]` citations
-   - Warns about stale pages if applicable
-
-3. **Tips:**
-   - Be specific — "How does RoPE handle longer sequences?" > "Tell me about encoding"
-   - The skill will tell you if information is missing
-   - Stale pages are cited with a warning
+Use the Wiki MCP tools in a connected client. For a question about positional encoding, call `wiki_search` with `query="positional encoding"`, then call `wiki_read` with a returned page title or path. Cite the pages you used with `[[wikilinks]]` and flag stale or missing evidence. In a local checkout, use `wiki/index.md` to find pages.
 
 ## 3. Lint the Wiki
 
-Check wiki health and get quality scores.
+```bash
+python3 scripts/lint_wiki.py
+```
 
-### Steps
-
-1. **Run a full audit:**
-   ```
-   /wiki-lint
-   ```
-
-2. **Auto-fix safe issues:**
-   ```
-   /wiki-lint --fix
-   ```
-
-3. **Run offline (Python):**
-   ```bash
-   python3 scripts/lint_wiki.py
-   ```
-
-4. **What's checked:**
-   - Missing required frontmatter → Error
-   - Broken `[[wikilinks]]` → Error
-   - Missing provenance → Error
-   - Orphan pages → Warning
-   - Stale pages (>90 days) → Warning
-   - Low quality score (<50) → Warning
+The report lists frontmatter and link errors, index and staleness warnings, and page scores. To persist recalculated scores during maintenance, run `python3 scripts/lint_wiki.py --write-scores`. Follow the [Wiki Lint persona](../agents/wiki-lint.agent.md) to investigate other findings. Rebuild a stale index with `python3 scripts/compile_index.py`.
 
 ## 4. Update a Page
 
-Revise an existing wiki page with new information.
+Follow the [Wiki Update persona](../agents/wiki-update.agent.md) for the target page. To find stale pages, start with the lint report. Read the original sources, revise supported claims and cross-references, and record the review in `last_verified`. Update `source_hash` when the source changes and log the revision in `wiki/log.md`.
 
-### Steps
+## 5. Coordinate Maintenance
 
-1. **Target a specific page:**
-   ```
-   /wiki-update wiki/concepts/positional-encoding.md
-   ```
-
-2. **Or update all stale pages:**
-   ```
-   /wiki-update --stale
-   ```
-
-3. **What happens:**
-   - Re-reads source(s) from `raw/`
-   - Checks if source content changed (hash comparison)
-   - Merges new information (never deletes existing content)
-   - Updates `source_hash`, `last_verified`, `quality_score`
-   - Updates cross-references
-   - Logs the operation
-
-## 5. Orchestrate a Full Pipeline
-
-Run lint → fix → maintenance cycle. (Ingestion is handled automatically by the auto-ingest service.)
-
-### Steps
-
-1. **Full pipeline (most common):**
-   ```
-   /wiki-orchestrate
-   ```
-
-2. **What happens:**
-   - Runs lint on all wiki pages
-   - Auto-fixes safe issues
-   - Reports remaining issues
-
-3. **Other modes:**
-   ```
-   /wiki-orchestrate audit         # Just full audit
-   /wiki-orchestrate maintenance   # Stale page review + index rebuild
-   /wiki-orchestrate ingest        # Manually ingest any remaining pending sources
-   ```
+The [Wiki Orchestrate persona](../agents/wiki-orchestrate.agent.md) describes the audit, maintenance and manual ingest workflows. An audit reports lint findings and proposed repairs. During authorized maintenance, review stale pages and tier changes, apply the selected repairs, then rerun lint. When the watcher is unavailable, use the manual trigger below for the selected sources.
 
 ---
 
@@ -220,8 +140,7 @@ already-ingested file without generating audit noise. A validation run:
 - **does not** send an ntfy notification
 - **does not** auto-commit the review output
 
-This keeps the production audit trail clean for review-only reruns, such as verifying improved article-body
-extraction or image ranking after a follow-up pass.
+The Codex ingest transaction also updates the index, graph, and checkpoint tracker and can replay pending knowledge-graph facts. For an isolated extraction check, use a disposable project root with external services isolated.
 
 ### Docker Service
 
@@ -281,7 +200,7 @@ python3 wiki-graph-api/graph_builder.py \
 
 This writes two artifacts:
 
-- `wiki/graph/graph.json` — node-link graph for the Cosmograph UI and the graph API
+- `wiki/graph/graph.json` — node-link graph for the WebGL and Canvas renderers and the graph API
 - `reports/checkpoint-graph-tracker.md` — **report-only** tracker comparing graph recommendations to heuristic frontmatter baselines
 
 ### Checkpoint graph tracker
@@ -299,16 +218,14 @@ It does **not** rewrite any wiki page, tier, or frontmatter field. Use it to eva
 
 ## Workflow Quick Reference
 
-| I want to... | Command |
+| Task | Entry point |
 |--------------|---------|
-| Add and process a new source | Copy to `raw/` → auto-processed, or `/wiki-ingest` |
+| Add and process a new source | Capture a pending source for the watcher, or run `python3 scripts/auto_ingest.py raw/example.md` |
 | Share from Android | Share → HTTP Shortcuts → auto-processed |
-| Find information | `/wiki-query <question>` |
-| Check wiki health | `/wiki-lint` |
-| Fix quality issues | `/wiki-lint --fix` |
-| Update a page with new info | `/wiki-update <path>` |
-| Process all pending sources | `/wiki-orchestrate` or `python3 scripts/auto_ingest.py` |
-| Run offline lint | `python3 scripts/lint_wiki.py` |
+| Find information | Wiki MCP tools `wiki_search` and `wiki_read` |
+| Check wiki health | `python3 scripts/lint_wiki.py` |
+| Update a page with new info | [Wiki Update persona](../agents/wiki-update.agent.md) |
+| Process all pending sources | `python3 scripts/auto_ingest.py --project-root .` |
 | Rebuild index | `python3 scripts/compile_index.py` |
 | Build knowledge graph + checkpoint tracker | `python3 wiki-graph-api/graph_builder.py --wiki wiki --cache wiki-graph-api/.cache --out wiki/graph/graph.json` |
 | Check auto-ingest logs | `docker logs -f wiki-auto-ingest` |

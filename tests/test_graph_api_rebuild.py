@@ -136,6 +136,14 @@ class GraphApiRebuildTests(unittest.TestCase):
             self.assertEqual(active["subgraph"]["edges"], [])
             self.assertEqual(query(q="telescope", include_archived=False, k=1)["nodes"], active["nodes"])
 
+            # A bounded TF-IDF vocabulary can omit a real page's entire title.
+            with patch.object(graph_api_main, "embed_query", return_value=[0.0]):
+                exact = query(q="  gAmMa  ", include_archived=False)["nodes"]
+                self.assertEqual([(n["title"], n["score"], n["match_type"]) for n in exact],
+                                 [("Gamma", 0.0, "exact_title")])
+                self.assertEqual(query(q="Delta", include_archived=False)["nodes"], [])
+                self.assertEqual(query(q="unrelated", include_archived=False)["nodes"], [])
+
             neighbors = client.get("/graph/neighbors/concepts/alpha?depth=2").json()
             self.assertEqual([n["depth"] for n in neighbors["nodes"]], [0, 1, 2])
             self.assertEqual(len(neighbors["edges"]), 2)

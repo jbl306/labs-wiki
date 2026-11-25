@@ -780,7 +780,9 @@ async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
 
     Body: ``{"q": "<text>", "k": 10, "include_archived": true}``.
     k defaults to 10 and is capped at 50. Disable include_archived to restrict
-    both ranked results and their neighboring subgraph to active pages.
+    both ranked results and their neighboring subgraph to active pages. An exact
+    title ranks first even when its tokens are absent from the embedding
+    vocabulary. Each hit reports its match type and measured cosine score.
     Response::
 
         {
@@ -819,20 +821,20 @@ async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
             "subgraph": {"nodes": [], "edges": []},
         }
 
-    scored: list[tuple[float, dict[str, Any]]] = []
+    title_query = q.strip().casefold()
+    has_query_signal = any(qvec)
+    scored: list[tuple[bool, float, dict[str, Any]]] = []
     for n in state.payload.get("nodes", []):
         if not include_archived and _archived_node(n):
             continue
-        vec = n.get(EMBEDDING_FIELD)
-        if not vec:
-            continue
-        s = _cosine(qvec, vec)
-        if s > 0:
-            scored.append((s, n))
+        exact_title = n["title"].strip().casefold() == title_query
+        score = _cosine(qvec, n.get(EMBEDDING_FIELD, [])) if has_query_signal else 0.0
+        if exact_title or score > 0:
+            scored.append((exact_title, score, n))
 
-    scored.sort(key=lambda r: r[0], reverse=True)
+    scored.sort(key=lambda hit: (hit[0], hit[1]), reverse=True)
     top = scored[:k]
-    top_ids = {n["id"] for _, n in top}
+    top_ids = {node["id"] for _, _, node in top}
 
     # 1-hop subgraph: union of neighbours of every top-K hit.
     sub_node_ids: set[str] = set(top_ids)
@@ -870,8 +872,8 @@ async def graph_query(payload: dict[str, Any] = Body(...)) -> dict[str, Any]:
         "k": k,
         "backend": backend,
         "nodes": [
-            {**_strip(n), "score": round(score, 4)}
-            for score, n in top
+            {**_strip(n), "score": round(score, 4), "match_type": "exact_title" if exact else "semantic"}
+            for exact, score, n in top
         ],
         "subgraph": {
             "nodes": [_strip(n) for n in sub_nodes],

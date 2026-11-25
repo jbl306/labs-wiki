@@ -43,7 +43,7 @@ Android Share / Browser / CLI / API
 ```
 
 **Primary path:** Fully automated. Drop a source → wiki pages appear.
-**Manual fallback:** `/wiki-ingest` skill or `python3 scripts/auto_ingest.py` for targeted re-processing.
+For one pending source, run `python3 scripts/auto_ingest.py raw/example.md` from the repository root.
 
 ### Services
 
@@ -103,7 +103,7 @@ evidence_origin_family_count: 2    # independent upstream domains/channels
 
 **Required fields:** `title`, `type`, `created`, `last_verified`, `source_hash`,
 `sources`, `concepts`, `related`, `tier`, and `tags`
-**Auto-populated by auto-ingest/skills:** `quality_score`
+To persist recalculated `quality_score` values during score maintenance, run `python3 scripts/lint_wiki.py --write-scores`.
 
 Synthesis pages additionally require `evidence_scope`, `evidence_source_count`,
 `evidence_origin_family_count`,
@@ -174,7 +174,7 @@ The `wiki-auto-ingest` Docker service handles source processing automatically:
 **Backend routing:** default `WIKI_INGEST_BACKEND=codex-cli`; `copilot-cli` and legacy GitHub Models remain compatibility paths.
 **Config:** `WIKI_INGEST_BACKEND`, `WIKI_INGEST_MODEL`, `CODEX_MODEL`, `WIKI_INGEST_EFFORT`, `WIKI_INGEST_MODEL_OVERRIDE`, `CODEX_MODEL_OVERRIDE`, `GITHUB_MODELS_TOKEN`/`GITHUB_TOKEN` for token-requiring compatibility backends, `DEBOUNCE_SECONDS`
 
-### Manual Ingest (`/wiki-ingest`)
+### Manual Ingest
 
 For targeted re-processing or when auto-ingest is not running:
 
@@ -214,7 +214,7 @@ This is useful after manual ingest or when sources already have rich metadata th
 - Never manually rewrite files in `raw/`; the only automated edits are `status` updates plus replacement of the deterministic fetched-content block for `type: url` sources and deterministic extracted-content block for `type: file` asset-backed sources
 - Every fact in a wiki page must trace to a source via `sources:` field
 - One raw source may produce multiple wiki pages (concepts, entities)
-- Always update `wiki/log.md` with timestamp, operation, and targets, **unless running in `--validation-run` mode** (review-only reruns suppress log and notification noise)
+- Always update `wiki/log.md` with timestamp, operation, and targets, **unless running in `--validation-run` mode** (validation reruns suppress the normal completion log and notification)
 - The Codex subprocess must not update raw status or `wiki/log.md`; those are
   transaction boundaries owned by the Python orchestrator after output and page
   validation pass
@@ -238,23 +238,23 @@ concepts alone are not a synthesis trigger.
 
 ### Validation-Run Mode
 
-Use `--validation-run --force` (and optionally `--refresh-fetch`) for review-only reruns of a single raw
+Use `--validation-run --force` (and optionally `--refresh-fetch`) for write-enabled reruns of a single raw
 file, such as verifying improved extraction or image ranking after a follow-up pass. Behavior:
 
 - Updates the raw fetched-content block and wiki pages as normal
 - **Suppresses** `wiki/log.md` append and ntfy notifications
-- Default production ingest path is unchanged; `--validation-run` must be passed explicitly
+- The Codex transaction refreshes the index, graph, and tracker and can replay pending knowledge-graph facts. Use a disposable project root with isolated services for extraction checks.
 
-### Query Workflow (`/wiki-query`)
+### Query Workflow
 
-1. Read `wiki/index.md` to identify relevant pages
-2. Read identified pages
+1. Search with the Wiki MCP tool `wiki_search` or consult `wiki/index.md`
+2. Read the relevant pages with `wiki_read` or open them in the checkout
 3. Synthesize answer from page content
 4. Cite sources using `[[wikilinks]]`
 5. If information is insufficient, say so — don't hallucinate
 6. **Good answers can be filed back as wiki pages** — comparisons, analyses, and connections should compound in the knowledge base
 
-### Lint Workflow (`/wiki-lint`)
+### Lint Workflow
 
 Check all pages in `wiki/` for:
 
@@ -267,13 +267,9 @@ Check all pages in `wiki/` for:
 | Missing provenance | Error | `sources:` must have at least one entry |
 | Low quality score | Warning | `quality_score` < 50 flagged for review |
 
-**Quality Score (0-100):**
-- Completeness: all required frontmatter fields present (25 pts)
-- Cross-references: has `related:` entries and `[[wikilinks]]` in body (25 pts)
-- Source attribution: every claim traceable via `sources:` (25 pts)
-- Recency: `last_verified` within 90 days (25 pts)
+The linter calculates the 0–100 quality score using the [scoring rubric](docs/memory-model.md#quality-scoring).
 
-### Update Workflow (`/wiki-update`)
+### Update Workflow
 
 1. Identify the page to update
 2. Make changes, preserving the provenance chain
@@ -282,19 +278,13 @@ Check all pages in `wiki/` for:
 5. Update `related:` links if cross-references changed
 6. Append operation to `wiki/log.md`
 
-### Orchestrate Workflow (`/wiki-orchestrate`)
+### Orchestrate Workflow
 
-Multi-step coordination (note: auto-ingest handles pending sources automatically):
+Follow the [Wiki Orchestrate persona](agents/wiki-orchestrate.agent.md) for multi-step work.
 
-1. Run `/wiki-lint` → collect issues
-2. Fix auto-fixable issues (rebuild index, update stale `last_verified`)
-3. Delegate gap analysis to **Wiki Curator** for synthesis opportunities
-4. Report remaining issues requiring human review
-
-Orchestrate modes:
-- `audit` — full quality audit with auto-fix
-- `maintenance` — stale page review + tier promotion + index rebuild
-- `ingest` — manually process any remaining pending sources (fallback)
+- **Audit** — run `python3 scripts/lint_wiki.py` and report findings and proposed fixes.
+- **Maintenance** — review stale claims against their sources before updating `last_verified`. Review tier changes with the Wiki Curator and rebuild the index after changes that affect it.
+- **Manual ingest** — when the watcher is down, run `python3 scripts/auto_ingest.py raw/example.md` for the selected source.
 
 ---
 
@@ -361,23 +351,6 @@ Domain personas are defined in `agents/`; global AGENTS.md owns workflow and tes
 
 ---
 
-## Skills
-
-Personal skills live in `/home/jbl/.agents/skills/`. Load the relevant wiki workflow:
-
-| Skill | Purpose |
-|-------|---------|
-| `wiki-setup` | Idempotent initialization — creates dirs, validates structure |
-| `wiki-ingest` | Manual source processing (fallback when auto-ingest unavailable) |
-| `wiki-query` | Search index, read pages, synthesize answers |
-| `wiki-lint` | Health checks: orphans, broken links, staleness, quality |
-| `wiki-update` | Revise existing pages with provenance tracking |
-| `wiki-orchestrate` | Audit, maintenance, and gap analysis workflows |
-
-**Routing guide:**
-- Wiki sources / pages / quality? → wiki-* skills above
-- Agent system / prompts? → context-engineering skills
-
 ## Context and session memory
 
 Use scoped MemPalace recall for relevant prior decisions and Wiki search/read for
@@ -410,7 +383,7 @@ For changes to wiki content, preserve these validation gates:
    Codex subprocess must not write it.
 6. `wiki/index.md` reflects all current pages
 
-Run `/wiki-lint` or `python scripts/lint_wiki.py` to check all rules.
+Run `python3 scripts/lint_wiki.py` for frontmatter, link, score and staleness checks. Verify source provenance, the index, and the operation log against the rules above.
 
 ---
 

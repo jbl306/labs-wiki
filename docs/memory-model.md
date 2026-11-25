@@ -17,7 +17,7 @@ raw/2025-07-17-rope-paper.md
 - Every wiki page must have `sources:` with at least one entry
 - Sources point to files in `raw/` (relative paths)
 - If information comes from multiple sources, list all of them
-- The `/wiki-lint` skill flags pages with missing provenance as errors
+- The linter flags a missing `sources` field. Review the listed sources to verify provenance.
 
 ## Staleness Detection
 
@@ -25,48 +25,30 @@ Wiki pages go stale when their source material may have changed or the informati
 
 | Field | Purpose | Updated By |
 |-------|---------|-----------|
-| `last_verified` | Date the page was last reviewed | `/wiki-update`, Auditor persona |
-| `source_hash` | SHA-256 of the raw source content | `/wiki-ingest`, `/wiki-update` |
+| `last_verified` | Date the page was last reviewed | [Wiki Update persona](../agents/wiki-update.agent.md) after source review |
+| `source_hash` | SHA-256 of the raw source content | Ingest pipeline or Wiki Update persona after a source change |
 
 ### Staleness Rules
 
 - Pages not verified in **90+ days** are flagged as stale
 - Pages with a `source_hash` mismatch (raw source changed) need re-ingestion
-- The Auditor agent runs staleness checks during `/wiki-lint`
-
-### Freshness Decay (Ebbinghaus-Inspired)
-
-Quality score degrades linearly with staleness:
-
-| Age Since Verification | Recency Score (out of 25) |
-|----------------------|-------------------------|
-| 0-90 days | 25 |
-| 91-180 days | 12 |
-| 180+ days | 0 |
-
-This is inspired by [agentmemory](https://github.com/rohitg00/agentmemory)'s Ebbinghaus-based memory decay.
+- Run `python3 scripts/lint_wiki.py` to see staleness warnings.
 
 ## Quality Scoring
 
-Every page gets a 0-100 quality score computed by `/wiki-lint`:
+Run `python3 scripts/lint_wiki.py` from the repository root to calculate page scores. The linter warns on scores below 50. During score maintenance, `--write-scores` writes the calculated values into page frontmatter.
 
-| Dimension | Points | What's Checked |
-|-----------|--------|---------------|
-| **Completeness** | 25 | All required frontmatter fields present |
-| **Cross-references** | 25 | Has `related:` entries and `[[wikilinks]]` in body |
-| **Attribution** | 25 | `sources:` has entries, claims traceable |
-| **Recency** | 25 | `last_verified` within 90 days |
+| Signal | Maximum points |
+|--------|----------------|
+| Inbound wikilinks | 20 |
+| Outbound wikilinks | 15 |
+| Body length | 15 |
+| Number of sources | 15 |
+| Recency of verification (full credit through day 30, falling to zero at day 180) | 15 |
+| Recorded knowledge state | 10 |
+| Specific claim (number, code or quotation) | 10 |
 
-### Score Thresholds
-
-| Score | Status | Action |
-|-------|--------|--------|
-| 80-100 | 🟢 Healthy | No action needed |
-| 50-79 | 🟡 Needs attention | Review recommended |
-| 30-49 | 🟠 Low quality | Flagged in lint report |
-| 0-29 | 🔴 Critical | Blocked from index until fixed |
-
-**Note:** `quality_score` measures page structure and linkage, not whether the source reflects executed work versus a tentative plan. That distinction is tracked through checkpoint classification and retention.
+Use `knowledge_state` and the underlying source to distinguish planned, executed and validated work.
 
 ## Consolidation Tiers
 
@@ -102,7 +84,7 @@ On every graph build, `wiki-graph-api/graph_builder.py` produces a second editor
 
 The comparison is written to `reports/checkpoint-graph-tracker.md` as a **report-only** artifact — it does not rewrite any wiki page or frontmatter. Its purpose is to surface disagreements between the heuristic classifier and the graph layer so they can be evaluated before any policy change is applied.
 
-Tier changes are tracked in `wiki/log.md` and performed by the Curator agent during `/wiki-orchestrate maintenance`.
+During maintenance, the [Wiki Curator](../agents/wiki-curator.agent.md) reviews tier changes. Record approved changes in `wiki/log.md`.
 
 ## Codex Durable Session Checkpoints
 

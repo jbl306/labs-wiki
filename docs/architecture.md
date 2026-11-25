@@ -72,7 +72,7 @@ The universal schema that all AI tools read. Defines conventions, workflows, fro
 
 ## Two-Phase Ingest Pipeline
 
-Sources are automatically processed by the `wiki-auto-ingest` service using **Codex CLI source-aware routing**. The pipeline can also be triggered manually via `/wiki-ingest` or `python3 scripts/auto_ingest.py`.
+Sources are automatically processed by the `wiki-auto-ingest` service using **Codex CLI source-aware routing**. For manual processing, pass the raw source path to `python3 scripts/auto_ingest.py`.
 
 ```mermaid
 flowchart LR
@@ -142,8 +142,6 @@ allocated path. The authenticated `/api/debug` endpoint returns only the
 request method and body length; capture diagnostics log operational metadata.
 
 The **`wiki-auto-ingest`** service (watchdog file watcher) detects new files within 5 seconds and automatically processes them via Codex CLI, creating wiki pages with cross-references. It prioritizes interactive sources ahead of session backlog, routes Copilot checkpoint exports to lower effort, and raises effort for document-heavy or complex repository sources.
-
-Manual processing is also available via `/wiki-ingest` skill or `python3 scripts/auto_ingest.py`.
 
 See [capture-sources.md](capture-sources.md) for setup instructions per channel.
 

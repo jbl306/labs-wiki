@@ -2,9 +2,7 @@
 
 Global `/home/jbl/.codex/AGENTS.md` owns workflow and testing policy. The repository's
 `AGENTS.md` owns wiki schema, provenance, transaction, and release constraints.
-Load personal `wiki-*` skills from `/home/jbl/.agents/skills` for the requested
-workflow. Domain personas live in `agents/`. Client-specific instruction copies
-and automatic instruction mirroring are retired.
+Run repository commands from the checkout root. See the [workflow guide](workflows.md) for commands and Wiki MCP tools, and [agents/](../agents/) for domain personas.
 
 ## Labs-Wiki MCP Server
 
@@ -48,7 +46,7 @@ same raw token in the MCP server process.
 
 ### How It Works
 
-Codex CLI is the primary unattended compile backend for `wiki-auto-ingest` (`WIKI_INGEST_BACKEND=codex-cli`). The orchestrator prepares a disposable workspace containing the selected source, domain context, `AGENTS.md`, and `scripts/prompts/wiki_ingest_prompt.md`. Codex proposes compiled output there; the orchestrator validates and publishes accepted results back into the repository.
+Codex CLI is the primary unattended compile backend for `wiki-auto-ingest` (`WIKI_INGEST_BACKEND=codex-cli`). The orchestrator copies wiki pages, raw Markdown, templates, and `AGENTS.md` into a disposable workspace. It builds the worker prompt from `scripts/prompts/wiki_ingest_proposal_prompt.md`. Codex proposes compiled output there; the orchestrator validates and publishes accepted results back into the repository.
 
 ### Usage
 
@@ -62,7 +60,6 @@ python3 scripts/auto_ingest.py raw/<source>.md --project-root .
 # Optional model/effort overrides
 WIKI_INGEST_MODEL=gpt-5.5 WIKI_INGEST_EFFORT=high \
   python3 scripts/auto_ingest.py raw/<source>.md --project-root . --force
-
-# Copilot CLI remains available only as a compatibility backend
-WIKI_INGEST_BACKEND=copilot-cli python3 scripts/auto_ingest.py raw/<source>.md --project-root .
 ```
+
+The shipped auto-ingest image includes Codex CLI. The optional `copilot-cli` backend requires a separate installation with the `gh copilot` command and a configured GitHub token.

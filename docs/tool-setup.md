@@ -37,6 +37,11 @@ The ingest API itself must set `WIKI_API_TOKEN`; capture endpoints return
 `503 Service Unavailable` without it. `WIKI_INGEST_API_TOKEN` must contain the
 same raw token in the MCP server process.
 
+For a bounded page read, call `wiki_read` with `max_chars`. If the result is
+truncated, repeat the call with the returned `start_line` and `start_column`
+and the same section or end line. Both positions start at one. Check the
+revision across chunks before joining the page text.
+
 ## Codex CLI
 
 ### Prerequisites

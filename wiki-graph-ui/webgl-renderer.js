@@ -6,17 +6,15 @@
 // dots looked drab. This renderer:
 //
 //   1. Uses the server's x/y directly — zero JS simulation, zero drift.
-//   2. Draws each node with a premultiplied-alpha glow shader (bright
-//      core + soft halo) that overlaps additively to read as bloom.
+//   2. Draws antialiased community-colored points and selection/health rings.
 //   3. Tracers thin links underneath in a single line draw call.
 //   4. Owns its own pan/zoom (wheel + drag + pinch) and click hit-test.
 //
 // Public API:
 //   const r = createWebglRenderer({ container, onPointClick, onBackgroundClick });
 //   r.syncData(nodes, edges);
-//   r.syncStyle({ colorOf, sizeOf, dimOf });
+//   r.syncStyle({ colorOf, sizeOf, dimOf, ringOf, edgeColorOf });
 //   r.focusNode(id);
-//   r.setSelectedNodes(idSet);
 //   r.fit();
 //   r.render();          // request a redraw
 //   r.destroy();
@@ -74,9 +72,7 @@ function hslToRgb(h, s, l, a) {
 
 // ---------- Shaders ------------------------------------------------------
 
-// Points: gl_PointSize discs textured via gl_PointCoord with a
-// power-curve falloff that yields a tight bright core + wide soft halo.
-// Output is premultiplied alpha so additive overlap reads as bloom.
+// Disc edges use antialiasing and premultiplied alpha.
 const POINT_VS = `#version 300 es
 precision highp float;
 in vec2 a_pos;
@@ -93,7 +89,7 @@ void main() {
   vec3 p = u_view * vec3(a_pos, 1.0);
   gl_Position = vec4(p.xy, 0.0, 1.0);
   // Inflate selected nodes slightly so their ring reads at any zoom.
-  float s = a_size * (a_selected > 0.5 ? 1.35 : 1.0);
+  float s = a_size * (abs(a_selected) > 0.5 ? 1.65 : 1.0);
   gl_PointSize = s * u_dpr;
   v_color = a_color;
   v_alpha = a_alpha;
@@ -112,38 +108,11 @@ void main() {
   float d = length(uv);
   if (d > 1.0) discard;
 
-  // High-contrast 3-band lighting tuned for richness over plastic shine:
-  //   - bright crisp inner core that *carries* the cluster color
-  //     (only a hint of white) so hubs read as glowing gems, not LEDs
-  //   - colored mid-band that fills the disc with saturated identity
-  //   - soft outer halo for bloom under additive blending
-  //   - thin antialiased rim so the disc doesn't blur into background
-  float coreMask = 1.0 - smoothstep(0.30, 0.42, d);
-  float midMask  = (1.0 - smoothstep(0.42, 0.92, d)) * (1.0 - coreMask);
-  float halo     = pow(max(0.0, 1.0 - d), 2.6) * 0.36;
-  float rim      = smoothstep(0.90, 0.98, d) * (1.0 - smoothstep(0.98, 1.0, d));
-
-  // Subtle specular pop biased upper-left. Kept low so colors aren't
-  // overpowered by white — was reading "cheap/plastic" before.
-  float spec = pow(max(0.0, 1.0 - length(uv - vec2(-0.28, -0.32)) * 1.55), 6.0) * 0.35 * coreMask;
-
-  // Selection: bright thin ring at d ~ 0.85 (slightly inside the rim).
-  float ring = v_selected * smoothstep(0.78, 0.84, d) * (1.0 - smoothstep(0.92, 0.98, d));
-
-  vec3 base = v_color.rgb;
-  // Brighten the core to ~1.7x the cluster color, with only a faint white
-  // wash (0.12) — preserves hue, keeps things looking *coloured* not bleached.
-  vec3 hot  = mix(base * 1.7, vec3(1.0), 0.12);
-  vec3 col  = hot * coreMask
-            + base * (midMask * 1.10 + halo * 0.85)
-            + base * rim * 0.70
-            + vec3(1.0, 0.98, 0.92) * spec
-            + vec3(0.95, 0.95, 1.0) * ring * 1.3;
-
-  float a = clamp(coreMask + midMask * 0.85 + halo * 0.55 + rim * 0.55 + ring * 0.95, 0.0, 1.0) * v_alpha;
-
-  // Premultiplied alpha so overlapping halos add into bloom under
-  // gl.blendFunc(ONE, ONE_MINUS_SRC_ALPHA).
+  float coverage = 1.0 - smoothstep(0.82, 1.0, d);
+  float ring = step(0.5, abs(v_selected)) * smoothstep(0.64, 0.78, d);
+  vec3 ringColor = v_selected < 0.0 ? vec3(1.0, 0.38, 0.40) : vec3(0.8, 1.0, 0.96);
+  vec3 col = mix(v_color.rgb, ringColor, ring);
+  float a = coverage * v_alpha;
   fragColor = vec4(col * a, a);
 }`;
 
@@ -245,7 +214,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   let nodes = [];
   let edges = [];
   let idToIdx = new Map();
-  let selectedSet = new Set();
+
   let needsRedraw = true;
   let rafPending = false;
 
@@ -284,6 +253,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       scale: cam.scale,
       viewW,
       viewH,
+      fitScale: overviewScale,
       worldToScreen,
       screenToWorld,
     };
@@ -295,10 +265,12 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     dpr = Math.max(1, window.devicePixelRatio || 1);
     const w = container.clientWidth | 0;
     const h = container.clientHeight | 0;
-    if (w === viewW && h === viewH && canvas.width === w * dpr) return;
+    const width = Math.max(1, Math.round(w * dpr));
+    const height = Math.max(1, Math.round(h * dpr));
+    if (w === viewW && h === viewH && canvas.width === width && canvas.height === height) return;
     viewW = w; viewH = h;
-    canvas.width = Math.max(1, w * dpr);
-    canvas.height = Math.max(1, h * dpr);
+    canvas.width = width;
+    canvas.height = height;
     gl.viewport(0, 0, canvas.width, canvas.height);
     needsRedraw = true;
     schedule();
@@ -350,8 +322,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
 
     // Edge geometry: pairs of endpoints expanded into a flat Float32Array.
     const linePos = new Float32Array(edges.length * 4);
-    const lineCol = new Float32Array(edges.length * 8);
-    let lp = 0, lc = 0;
+    let lp = 0;
     for (const e of edges) {
       const si = idToIdx.get(e.source);
       const ti = idToIdx.get(e.target);
@@ -360,35 +331,13 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       linePos[lp++] = positions[si * 2 + 1];
       linePos[lp++] = positions[ti * 2];
       linePos[lp++] = positions[ti * 2 + 1];
-      // Default link colour — overwritten by syncStyle if available.
-      const baseA = e.cross_community ? 0.30 : 0.18;
-      const r = 0.59, g = 0.67, b = 0.85;
-      for (let k = 0; k < 2; k++) {
-        lineCol[lc++] = r;
-        lineCol[lc++] = g;
-        lineCol[lc++] = b;
-        lineCol[lc++] = baseA;
-      }
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, lnPosBuf);
     gl.bufferData(gl.ARRAY_BUFFER, linePos, gl.STATIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, lnColBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, lineCol, gl.STATIC_DRAW);
-
-    // Pre-allocate styling buffers; syncStyle fills them.
-    gl.bindBuffer(gl.ARRAY_BUFFER, ptColBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nodes.length * 4), gl.DYNAMIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, ptSizeBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nodes.length), gl.DYNAMIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, ptAlphaBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nodes.length), gl.DYNAMIC_DRAW);
-    gl.bindBuffer(gl.ARRAY_BUFFER, ptSelBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(nodes.length), gl.DYNAMIC_DRAW);
 
     // Wire VAOs once now that buffer sizes are known.
     bindVAOs();
     rebuildBins();
-    fit();
     needsRedraw = true;
     schedule();
   }
@@ -422,10 +371,15 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     gl.bindVertexArray(null);
   }
 
-  // styleCache lets us re-upload only what changed.
-  let lastSizes = null;
-  function syncStyle({ colorOf, sizeOf, dimOf }) {
-    if (!nodes.length) return;
+  function syncStyle({ colorOf, sizeOf, dimOf, ringOf, edgeColorOf }) {
+    const lineColors = new Float32Array(edges.length * 8);
+    for (let i = 0; i < edges.length; i++) {
+      const color = edgeColorOf(edges[i]);
+      lineColors.set(color, i * 8);
+      lineColors.set(color, i * 8 + 4);
+    }
+    gl.bindBuffer(gl.ARRAY_BUFFER, lnColBuf);
+    gl.bufferData(gl.ARRAY_BUFFER, lineColors, gl.DYNAMIC_DRAW);
     const colors = new Float32Array(nodes.length * 4);
     const sizes = new Float32Array(nodes.length);
     const alphas = new Float32Array(nodes.length);
@@ -440,7 +394,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       colors[i * 4 + 3] = rgba[3];
       sizes[i] = Math.max(2, sizeOf(n));
       alphas[i] = dim ? 0.18 : 1.0;
-      sels[i] = selectedSet.has(n.id) ? 1.0 : 0.0;
+      sels[i] = ringOf(n);
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, ptColBuf);
     gl.bufferData(gl.ARRAY_BUFFER, colors, gl.DYNAMIC_DRAW);
@@ -450,20 +404,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     gl.bufferData(gl.ARRAY_BUFFER, alphas, gl.DYNAMIC_DRAW);
     gl.bindBuffer(gl.ARRAY_BUFFER, ptSelBuf);
     gl.bufferData(gl.ARRAY_BUFFER, sels, gl.DYNAMIC_DRAW);
-    lastSizes = sizes;
-    needsRedraw = true;
-    schedule();
-  }
 
-  function setSelectedNodes(idSet) {
-    selectedSet = idSet ? new Set(idSet) : new Set();
-    if (!nodes.length) return;
-    const sels = new Float32Array(nodes.length);
-    for (let i = 0; i < nodes.length; i++) {
-      sels[i] = selectedSet.has(nodes[i].id) ? 1.0 : 0.0;
-    }
-    gl.bindBuffer(gl.ARRAY_BUFFER, ptSelBuf);
-    gl.bufferData(gl.ARRAY_BUFFER, sels, gl.DYNAMIC_DRAW);
     needsRedraw = true;
     schedule();
   }
@@ -477,8 +418,9 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   // can't zoom out past "everything fits".
   let bbox = null; // { minX, maxX, minY, maxY }
   let fitScale = 0.05;
+  let overviewScale = 0.4;
 
-  function fit() {
+  function fit({ all = true } = {}) {
     if (!nodes.length || !viewW || !viewH) return;
     // Percentile-trimmed bbox so a handful of disconnected outliers don't
     // squash the dense core to a postage stamp. Server x/y range can be
@@ -498,22 +440,28 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     const ysArr = ys.subarray(0, valid);
     const sortedX = Array.from(xsArr).sort((a, b) => a - b);
     const sortedY = Array.from(ysArr).sort((a, b) => a - b);
-    const lo = Math.floor(valid * 0.03);
-    const hi = Math.min(valid - 1, Math.ceil(valid * 0.97));
+    const lo = all ? 0 : Math.floor(valid * 0.03);
+    const hi = all ? valid - 1 : Math.min(valid - 1, Math.ceil(valid * 0.97));
     const minX = sortedX[lo], maxX = sortedX[hi];
     const minY = sortedY[lo], maxY = sortedY[hi];
-    bbox = { minX, maxX, minY, maxY };
+    bbox = { minX: sortedX[0], maxX: sortedX[valid - 1], minY: sortedY[0], maxY: sortedY[valid - 1] };
     const w = Math.max(maxX - minX, 1);
     const h = Math.max(maxY - minY, 1);
     const padding = 0.10;
     const sx = viewW * (1 - padding * 2) / w;
     const sy = viewH * (1 - padding * 2) / h;
-    cam.scale = Math.min(sx, sy);
+    cam.scale = Math.min(sx, sy, 3);
+    overviewScale = cam.scale;
     fitScale = cam.scale * 0.85; // allow a touch of zoom-out room beyond fit
     cam.x = (minX + maxX) / 2;
     cam.y = (minY + maxY) / 2;
     needsRedraw = true;
     schedule();
+  }
+
+  function restoreCamera(snapshot) {
+    cam = { x: snapshot.x, y: snapshot.y, scale: snapshot.scale };
+    render();
   }
 
   // Keep the camera centre within bbox + a tight slack on every side.
@@ -805,7 +753,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   return {
     syncData,
     syncStyle,
-    setSelectedNodes,
+    restoreCamera,
     focusNode,
     fit,
     zoomBy,

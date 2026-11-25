@@ -2,7 +2,7 @@
 
 > How to add sources to labs-wiki from any device.
 
-All channels feed into the **Wiki Ingest API** (`wiki-ingest-api/`), which writes standardized markdown files to `raw/`. The **`wiki-auto-ingest`** service then automatically processes them into wiki pages via the default Codex CLI backend within seconds.
+The Wiki Ingest API writes captured sources to `raw/`. The GitHub issue workflow commits its capture directly to the repository. The `wiki-auto-ingest` service processes pending sources when they reach its shared checkout.
 
 ### Specially Handled URL Types
 
@@ -263,7 +263,7 @@ Create an issue in the labs-wiki repo with the label `ingest`:
 4. **Label:** Add the `ingest` label
 
 A GitHub Action will automatically:
-- Create a `raw/` file from the issue
+- Create `raw/<issue-creation-date>-github-issue-<number>.md`. A repeated label event reuses the original capture.
 - Commit it to the repo
 - Close the issue with a confirmation comment
 

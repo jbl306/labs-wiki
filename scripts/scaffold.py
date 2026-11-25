@@ -21,15 +21,15 @@ REQUIRED_DIRS = [
 INDEX_SEED = """# Wiki Index
 
 > Auto-generated catalog of all wiki pages. Do not edit manually.
-> Rebuilt by `/wiki-ingest`, `/wiki-update`, and `/wiki-orchestrate`.
+> Rebuild with `python3 scripts/compile_index.py`.
 
-*No pages yet. Run `/wiki-ingest` to process sources from `raw/`.*
+*No pages yet. Add a source to `raw/` for ingest.*
 """
 
 LOG_SEED = """# Wiki Audit Log
 
 > Structured log of all wiki operations. Each entry is a YAML block.
-> Appended by `/wiki-ingest`, `/wiki-update`, `/wiki-lint`, `/wiki-orchestrate`.
+> Ingest and maintenance operations append entries here.
 
 """
 

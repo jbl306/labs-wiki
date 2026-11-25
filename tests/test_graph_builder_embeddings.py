@@ -45,13 +45,43 @@ class GraphBuilderEmbeddingTests(unittest.TestCase):
     def test_graph_resolves_title_and_filename_links_and_ignores_missing_targets(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             wiki = Path(tmp)
-            (wiki / 'alpha.md').write_text('---\ntitle: Alpha\n---\n[[rope]] [[Missing Page]]')
+            (wiki / 'alpha.md').write_bytes(
+                b'---\r\ntitle: Alpha\r\n---\r\n# Alpha\r\n\r\n[[rope]] [[Missing Page]]\r\n'
+                b'\r\n```toml\r\n[[ignored.example]]\r\n```\r\n'
+            )
             (wiki / 'rope.md').write_text('---\ntitle: Rotary Position Embeddings\n---\n[[Alpha]]')
             pages, _stats = graph_builder.extract_pages(wiki)
             graph = graph_builder.build_graph(pages)
             self.assertEqual(set(graph.nodes), {'alpha', 'rope'})
             self.assertEqual(graph.number_of_edges(), 1)
             self.assertEqual(graph['alpha']['rope']['weight'], 2.0)
+            self.assertEqual(graph.graph['broken_link_count'], 1)
+            self.assertEqual(graph.nodes['alpha']['summary'], '[[rope]] [[Missing Page]]')
+            self.assertEqual(
+                graph_builder.compute_wiki_signature_from_pages(pages),
+                graph_builder.compute_wiki_signature(wiki),
+            )
+
+    def test_literal_pipe_title_aliases_and_qualified_paths_resolve_to_page_ids(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            wiki = Path(tmp)
+            concepts = wiki / "concepts"
+            sources = wiki / "sources"
+            concepts.mkdir()
+            sources.mkdir()
+            (concepts / "suite.md").write_text("---\ntitle: Suite\n---\n# Suite\n")
+            (concepts / "notes.md").write_text("---\ntitle: 'Suite | Field\n  Notes'\n---\n# Field Notes\n")
+            (sources / "report.md").write_text(
+                "---\ntitle: Report\nrelated:\n  - '[[Suite | Field\n    Notes]]'\n---\n"
+                "[[Suite | Field Notes]] [[Suite | Field Notes|details]] [[Suite|display]] "
+                "[[concepts/notes.md#Summary|details]] [[../concepts/notes#Summary]] "
+                "[[wiki/concepts/notes]] [[#Here]] [[concepts/absent|Suite]]"
+            )
+            pages, _ = graph_builder.extract_pages(wiki)
+            graph = graph_builder.build_graph(pages)
+            self.assertEqual(set(graph["sources/report"]), {"concepts/notes", "concepts/suite"})
+            self.assertEqual(graph["sources/report"]["concepts/notes"]["weight"], 1.0)
+            self.assertEqual(graph.graph["broken_link_count"], 1)
 
     def setUp(self) -> None:
         self._old_backend = os.environ.get("WIKI_GRAPH_EMBEDDING_BACKEND")

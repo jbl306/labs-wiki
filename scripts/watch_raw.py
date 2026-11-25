@@ -1,24 +1,23 @@
 #!/usr/bin/env python3
-"""
-File watcher for labs-wiki raw/ directory.
-
-Uses watchdog to detect new .md files, debounces writes, and triggers
-auto_ingest.py for each new pending source.
-"""
+"""Watch, reconcile and report pending Labs Wiki captures."""
 
 from __future__ import annotations
 
+import argparse
+import fcntl
+import json
 import logging
 import os
-import sys
+import tempfile
 import threading
 import time
-import traceback
+from datetime import datetime, timezone
 from pathlib import Path
 
-from watchdog.events import FileCreatedEvent, FileModifiedEvent, FileSystemEventHandler
+from watchdog.events import FileSystemEventHandler
 from watchdog.observers import Observer
 
+from ingest_transaction import commit_receipt_path
 from auto_ingest import (
     _backend_requires_token,
     _selected_backend,
@@ -26,165 +25,255 @@ from auto_ingest import (
     ingest_raw_source,
     notify_ingest_failure,
     parse_frontmatter,
-    process_all_pending,
 )
 
 log = logging.getLogger("watch-raw")
-
 DEBOUNCE_SECONDS = float(os.environ.get("DEBOUNCE_SECONDS", "5"))
 POLL_INTERVAL = float(os.environ.get("POLL_INTERVAL", "1"))
+RECONCILE_SECONDS = 60
+MAX_ATTEMPTS = 5
+
+
+def write_ingest_state(path: Path, state: dict) -> None:
+    """Atomically replace one operator-readable runtime receipt."""
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", dir=path.parent, delete=False) as out:
+        tmp_path = Path(out.name)
+        try:
+            json.dump(state, out)
+            out.write("\n")
+            out.flush()
+            os.fsync(out.fileno())
+        except BaseException:
+            tmp_path.unlink(missing_ok=True)
+            raise
+    try:
+        tmp_path.replace(path)
+    finally:
+        tmp_path.unlink(missing_ok=True)
+
+
+def _retry_path(root: Path, raw: Path) -> Path:
+    return root / ".cache/wiki-watcher/retries" / f"{raw.name}.json"
+
+
+def _retry_record(root: Path, raw: Path) -> dict:
+    try:
+        return json.loads(_retry_path(root, raw).read_text())
+    except FileNotFoundError:
+        return {"attempts": 0, "next_attempt": 0}
+
+
+def _due(root: Path, raw: Path, record: dict) -> bool:
+    return (
+        not _held(root, raw) and not (root / commit_receipt_path(raw)).exists()
+        and record["attempts"] < MAX_ATTEMPTS
+        and record["next_attempt"] <= time.time()
+    )
+
+
+def _record_attempt(root: Path, raw: Path, attempts: int, outcome: str) -> None:
+    delay = min(3600, 60 * 3 ** (attempts - 1))
+    write_ingest_state(_retry_path(root, raw), {
+        "attempts": attempts, "next_attempt": time.time() + delay, "outcome": outcome,
+    })
+
+
+def _held(root: Path, raw: Path) -> bool:
+    return (root / ".cache/wiki-watcher/holds" / raw.name).exists()
+
+
+def backlog(root: Path) -> tuple[dict, list[Path]]:
+    """Inspect durable source and retry state without changing it."""
+    raw_dir = root / "raw"
+    if not raw_dir.is_dir():
+        raise FileNotFoundError(raw_dir)
+    summary = {
+        "pending": 0, "failed": 0, "held": 0, "exhausted": 0, "retrying": 0,
+        "unreadable": [], "oldest_pending": None, "oldest_failed": None,
+        "oldest_unsuccessful_pending": None,
+        "unconfirmed_git_commits": sorted(
+            path.stem for path in (root / ".cache/wiki-watcher/uncommitted").glob("*.json")
+        ),
+    }
+    due = []
+    now = time.time()
+    for raw in sorted(raw_dir.glob("*.md")):
+        try:
+            fm, _ = parse_frontmatter(raw, header_only=True)
+            status = fm.get("status")
+            if not status:
+                summary["unreadable"].append(raw.name)
+                continue
+            if status not in {"pending", "failed"}:
+                continue
+            summary[status] += 1
+            try:
+                captured = datetime.fromisoformat(str(fm.get("captured", "")).replace("Z", "+00:00"))
+                captured_at = captured.replace(tzinfo=captured.tzinfo or timezone.utc).timestamp()
+            except (ValueError, OverflowError):
+                captured_at = raw.stat().st_mtime
+            item = {"file": raw.name, "age_seconds": max(0, int(now - captured_at))}
+            key = "oldest_" + status
+            if summary[key] is None or item["age_seconds"] > summary[key]["age_seconds"]:
+                summary[key] = item
+            if status == "pending":
+                retry = _retry_record(root, raw)
+                if retry.get("outcome") == "pending_after_attempt":
+                    oldest = summary["oldest_unsuccessful_pending"]
+                    if oldest is None or item["age_seconds"] > oldest["age_seconds"]:
+                        summary["oldest_unsuccessful_pending"] = {**item, "attempts": retry["attempts"]}
+                if _held(root, raw):
+                    summary["held"] += 1
+                elif (root / commit_receipt_path(raw)).exists():
+                    continue
+                elif retry["attempts"] >= MAX_ATTEMPTS:
+                    summary["exhausted"] += 1
+                elif retry["next_attempt"] > now:
+                    summary["retrying"] += 1
+                else:
+                    due.append(raw)
+        except FileNotFoundError:
+            continue  # A concurrent removal is reflected in the next scan.
+        except (OSError, ValueError, KeyError, TypeError):
+            summary["unreadable"].append(raw.name)
+    return summary, due
 
 
 class RawFileHandler(FileSystemEventHandler):
-    """Handle new .md files in the raw/ directory."""
+    """The observer only records events. The main loop is the sole consumer."""
 
     def __init__(self, project_root: Path, token: str, model_override: str | None) -> None:
-        super().__init__()
         self.project_root = project_root
         self.token = token
         self.model_override = model_override
         self._pending: dict[str, float] = {}
-        self._inflight: set[str] = set()
         self._lock = threading.Lock()
-        self._timer: threading.Timer | None = None
 
-    def on_created(self, event: FileCreatedEvent) -> None:
-        if event.is_directory:
-            return
-        self._schedule(event.src_path)
+    def on_created(self, event) -> None:
+        if not event.is_directory:
+            self._schedule(event.src_path)
 
-    def on_modified(self, event: FileModifiedEvent) -> None:
-        if event.is_directory:
-            return
-        self._schedule(event.src_path)
+    on_modified = on_created
+
+    def on_moved(self, event) -> None:
+        if not event.is_directory:
+            self._schedule(event.dest_path)
 
     def _schedule(self, path: str) -> None:
-        """Debounce: wait for file writes to settle before processing."""
-        if not path.endswith(".md"):
-            return
-        # Ignore files in subdirectories (e.g., raw/assets/)
-        raw_dir = str(self.project_root / "raw")
-        if os.path.dirname(path) != raw_dir:
-            return
+        raw = Path(path)
+        if raw.parent == self.project_root / "raw" and raw.suffix == ".md":
+            with self._lock:
+                self._pending[str(raw)] = time.monotonic() + DEBOUNCE_SECONDS
 
+    def reconcile(self) -> None:
+        summary, due = backlog(self.project_root)
+        log.info("watcher_backlog %s", json.dumps(summary))
         with self._lock:
-            if path in self._inflight:
-                log.debug("Skipping schedule for %s (already in flight)", os.path.basename(path))
-                return
-            self._pending[path] = time.time()
-            if self._timer is not None:
-                self._timer.cancel()
-            self._timer = threading.Timer(DEBOUNCE_SECONDS, self._process_pending)
-            self._timer.start()
+            for raw in due:
+                self._pending.setdefault(str(raw), time.monotonic() + DEBOUNCE_SECONDS)
 
     def _process_pending(self) -> None:
-        """Process all debounced files."""
         with self._lock:
-            to_process = dict(self._pending)
-            self._pending.clear()
+            due = [Path(name) for name, at in self._pending.items() if at <= time.monotonic()]
+            for raw in due:
+                del self._pending[str(raw)]
 
-        prioritized: list[tuple[int, str, Path]] = []
-        for path_str in to_process:
-            raw_path = Path(path_str)
-            if not raw_path.exists():
-                continue
+        prioritized = []
+        for raw in due:
             try:
-                fm, _ = parse_frontmatter(raw_path)
-            except Exception as exc:
-                log.exception("Failed to parse %s", raw_path.name)
-                notify_ingest_failure(
-                    raw_path,
-                    backend=_selected_backend(),
-                    detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
-                )
-                continue
-            try:
-                if fm.get("status") != "pending":
-                    log.debug("Skipping %s (status: %s)", raw_path.name, fm.get("status"))
-                    continue
-                route = classify_ingest_route(fm, model_override=self.model_override, body=None)
-                prioritized.append((route.priority, raw_path.name, raw_path))
-            except Exception as exc:
-                log.exception("Failed to classify %s", raw_path.name)
-                notify_ingest_failure(
-                    raw_path,
-                    backend=_selected_backend(),
-                    detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
-                )
-
-        for _, _, raw_path in sorted(prioritized):
-            try:
-                with self._lock:
-                    if str(raw_path) in self._inflight:
-                        log.debug("Skipping %s (already in flight)", raw_path.name)
-                        continue
-                    self._inflight.add(str(raw_path))
-
-                fm, _ = parse_frontmatter(raw_path)
+                fm, _ = parse_frontmatter(raw, header_only=True)
                 if fm.get("status") != "pending":
                     continue
-
-                log.info("New pending source detected: %s", raw_path.name)
-                ingest_raw_source(raw_path, self.project_root, self.token, self.model_override)
+                retry = _retry_record(self.project_root, raw)
+                if not _due(self.project_root, raw, retry):
+                    continue
+                try:
+                    route = classify_ingest_route(fm, model_override=self.model_override)
+                except Exception:
+                    _record_attempt(self.project_root, raw, retry["attempts"] + 1, "pending_after_attempt")
+                    raise
+                prioritized.append((route.priority, raw))
+            except FileNotFoundError:
+                continue
             except Exception as exc:
-                log.exception("Failed to process %s", raw_path.name)
-                notify_ingest_failure(
-                    raw_path,
-                    backend=_selected_backend(),
-                    detail=f"{type(exc).__name__}: {exc}\n\n{traceback.format_exc()}",
-                )
-            finally:
-                with self._lock:
-                    self._inflight.discard(str(raw_path))
+                log.exception("Failed to inspect %s", raw.name)
+                notify_ingest_failure(raw, backend=_selected_backend(), detail=f"{type(exc).__name__}: {exc}")
+
+        for _, raw in sorted(prioritized):
+            try:
+                retry = _retry_record(self.project_root, raw)
+                if not _due(self.project_root, raw, retry):
+                    continue
+                attempts = retry["attempts"] + 1
+                # Reserve only the source about to run. Queued work does not
+                # consume an attempt if the worker restarts.
+                _record_attempt(self.project_root, raw, attempts, "started")
+                try:
+                    ingest_raw_source(raw, self.project_root, self.token, self.model_override)
+                finally:
+                    fm, _ = parse_frontmatter(raw, header_only=True)
+                    if fm.get("status") == "pending":
+                        _record_attempt(self.project_root, raw, attempts, "pending_after_attempt")
+                    else:
+                        _retry_path(self.project_root, raw).unlink(missing_ok=True)
+            except Exception as exc:
+                log.exception("Failed to process %s", raw.name)
+                notify_ingest_failure(raw, backend=_selected_backend(), detail=f"{type(exc).__name__}: {exc}")
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--status", action="store_true", help="Print backlog and unconfirmed Git commits as JSON")
+    parser.add_argument("--project-root", type=Path, default=os.environ.get("PROJECT_ROOT", "."))
+    args = parser.parse_args()
+    root = args.project_root.resolve()
+    if args.status:
+        print(json.dumps(backlog(root)[0], indent=2))
+        return
+
     logging.basicConfig(
         level=logging.DEBUG if os.environ.get("LOG_LEVEL", "").upper() == "DEBUG" else logging.INFO,
         format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
     )
-
-    project_root = Path(os.environ.get("PROJECT_ROOT", ".")).resolve()
     backend = _selected_backend()
     token = os.environ.get("GITHUB_MODELS_TOKEN", os.environ.get("GITHUB_TOKEN", ""))
-    model_override = (
+    model = (
         os.environ.get("WIKI_INGEST_MODEL_OVERRIDE", "").strip()
         or os.environ.get("GITHUB_MODELS_MODEL_OVERRIDE", "").strip()
         or os.environ.get("CODEX_MODEL_OVERRIDE", "").strip()
         or None
     )
-
     if _backend_requires_token(backend) and not token:
-        log.error("No API token. Set GITHUB_MODELS_TOKEN/GITHUB_TOKEN for backend=%s.", backend)
-        sys.exit(1)
+        parser.error(f"GITHUB_MODELS_TOKEN/GITHUB_TOKEN is required for {backend}")
+    if not (root / "raw").is_dir():
+        parser.error(f"Missing raw directory under {root}")
+    runtime = root / ".cache/wiki-watcher"
+    runtime.mkdir(parents=True, exist_ok=True)
+    with (runtime / "watcher.lock").open("a") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            parser.error("Another watcher owns this project root")
 
-    raw_dir = project_root / "raw"
-    if not raw_dir.exists():
-        log.error("raw/ directory not found at %s", raw_dir)
-        sys.exit(1)
-
-    # Process any existing pending sources on startup
-    log.info("Checking for existing pending sources...")
-    count = process_all_pending(project_root, token, model_override)
-    if count:
-        log.info("Processed %d existing pending source(s)", count)
-
-    # Start watching
-    handler = RawFileHandler(project_root, token, model_override)
-    observer = Observer()
-    observer.schedule(handler, str(raw_dir), recursive=False)
-    observer.start()
-
-    log.info("👀 Watching %s for new sources (debounce: %ss)", raw_dir, DEBOUNCE_SECONDS)
-
-    try:
-        while observer.is_alive():
-            observer.join(timeout=POLL_INTERVAL)
-    except KeyboardInterrupt:
-        log.info("Shutting down...")
-        observer.stop()
-    observer.join()
+        handler = RawFileHandler(root, token, model)
+        observer = Observer()
+        observer.schedule(handler, str(root / "raw"), recursive=False)
+        observer.start()
+        next_scan = 0.0
+        try:
+            while observer.is_alive():
+                if time.monotonic() >= next_scan:
+                    handler.reconcile()
+                    next_scan = time.monotonic() + RECONCILE_SECONDS
+                handler._process_pending()
+                observer.join(timeout=POLL_INTERVAL)
+            raise RuntimeError("Raw file observer stopped unexpectedly")
+        except KeyboardInterrupt:
+            log.info("Shutting down watcher")
+        finally:
+            observer.stop()
+            observer.join()
 
 
 if __name__ == "__main__":

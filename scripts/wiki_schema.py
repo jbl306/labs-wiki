@@ -58,16 +58,34 @@ def _is_iso_date(value: object) -> bool:
 
 
 def _raw_source_path(repo_root: Path, value: object) -> Path | None:
-    text = str(value or "").strip()
-    candidate = Path(text)
-    if not text or candidate.is_absolute() or candidate.suffix.casefold() != ".md":
+    if not isinstance(value, str):
+        return None
+    candidate = Path(value.strip())
+    if candidate.parts[:1] != ("raw",) or ".." in candidate.parts or candidate.suffix.casefold() != ".md":
         return None
     root = repo_root.resolve()
-    raw_root = (root / "raw").resolve()
-    resolved = (root / candidate).resolve()
-    if not resolved.is_relative_to(raw_root):
+    try:
+        resolved = (root / candidate).resolve()
+    except (ValueError, RuntimeError, OSError):
+        return None
+    if not resolved.is_relative_to(root / "raw") or resolved.suffix.casefold() != ".md":
         return None
     return resolved
+
+
+def validate_sources(sources: object, repo_root: Path) -> list[str]:
+    """Verify that the page cites existing Markdown documents under raw/."""
+    errors: list[str] = []
+    if not isinstance(sources, list) or not sources:
+        errors.append("sources must be a non-empty list")
+    else:
+        for source in sources:
+            resolved = _raw_source_path(repo_root, source)
+            if resolved is None:
+                errors.append(f"sources entry must be a contained raw/*.md path: {source!r}")
+            elif not resolved.is_file():
+                errors.append(f"sources entry does not exist: {source!r}")
+    return errors
 
 
 def validate_page_text(
@@ -115,16 +133,7 @@ def validate_page_text(
     if not isinstance(source_hash, str) or not HASH_RE.fullmatch(source_hash.strip()):
         errors.append("source_hash must be a full SHA-256 hex digest")
 
-    sources = frontmatter.get("sources")
-    if not isinstance(sources, list) or not sources:
-        errors.append("sources must be a non-empty list")
-    else:
-        for source in sources:
-            resolved = _raw_source_path(repo_root, source)
-            if resolved is None:
-                errors.append(f"sources entry must be a contained raw/*.md path: {source!r}")
-            elif not resolved.is_file():
-                errors.append(f"sources entry does not exist: {source!r}")
+    errors.extend(validate_sources(frontmatter.get("sources"), repo_root))
 
     for field in ("concepts", "related", "tags"):
         if not isinstance(frontmatter.get(field), list):

@@ -1,7 +1,7 @@
 // Minimal labs-wiki graph viewer.
 // Two renderers ship in this image:
 //   - "canvas":  the R1-R19 zero-dependency Canvas + Fruchterman-Reingold path
-//   - "webgl":   custom WebGL2 renderer with glow shader (default).
+//   - "webgl":   custom WebGL2 renderer (default).
 //                Uses server-precomputed x/y from /graph/export/json — zero JS
 //                simulation, no drift. See webgl-renderer.js.
 // Pick at runtime via ?renderer=canvas in the URL or by editing config.js.
@@ -30,8 +30,8 @@ const RENDERER = (() => {
   } catch (_) {}
   return cfg.renderer === "canvas" ? "canvas" : "webgl";
 })();
-const USE_WEBGL = RENDERER === "webgl";
-let gpuRenderer = null; // populated in initWebgl() if USE_WEBGL
+let tryWebgl = RENDERER === "webgl";
+let gpuRenderer = null;
 let gpuLabels = null;   // adaptive HTML label overlay (webgl mode only)
 
 // Map of community id -> short human-friendly label, computed in
@@ -111,22 +111,28 @@ function enrichGraph(graph) {
   }
 }
 
+const tagSpellings = new Map([["nba", "NBA"], ["ml", "ML"], ["llm", "LLM"], ["mcp", "MCP"], ["nextjs", "Next.js"]]);
 function prettyTag(tag) {
   return String(tag)
     .replace(/[-_]+/g, " ")
-    .replace(/\b\w/g, (ch) => ch.toUpperCase());
+    .replace(/\b\w+/g, word => tagSpellings.get(word.toLowerCase()) || word[0].toUpperCase() + word.slice(1));
 }
 
 const state = {
   graph: null,
   filtered: { nodes: [], edges: [] },
   highlightedId: null,
+  adjacency: new Map(),
   search: "",
   typeFilter: "",
   tierFilter: "",
   communityFilter: "",
   checkpointClassFilter: "",
   staleOnly: false,
+  includeArchived: false,
+  beforeSearch: null,
+  selectionVersion: 0,
+  askVersion: 0,
   surprises: false,
   communityColors: new Map(),
   visibleNodes: [],
@@ -147,21 +153,31 @@ const state = {
   // R17 — checkpoint health overlay
   health: {
     active: false,
+    trackerStatus: "idle",
     disagreements: [],          // raw rows from /graph/checkpoint-tracker
     disagreeNodeIds: new Set(), // node ids with current!=recommended
     rowsByNodeId: new Map(),    // node id → tracker row (for the side panel)
   },
 };
 
-// R17 — fixed color palette per checkpoint_class for the health overlay.
-const CHECKPOINT_CLASS_COLORS = {
-  planning: "#3b82f6",   // blue
-  executed: "#f59e0b",   // amber
-  validated: "#22c55e",  // green
-  recurring: "#a855f7",  // purple
-  incident: "#ef4444",   // red
-};
-const CHECKPOINT_DEFAULT_COLOR = "#9ca3af"; // gray fallback
+const COMMUNITY_PALETTE = ["#73c5bc", "#d8ae75", "#8daee1", "#c599bc", "#a6bb86", "#c79183"];
+const NEUTRAL = "#8492a5";
+const classColors = new Map();
+
+function nodeColor(node) {
+  if (state.health.active) return classColors.get(node.checkpoint_class) || NEUTRAL;
+  return state.communityColors.get(node.community) || NEUTRAL;
+}
+
+function isArchived(node) {
+  return node.tier?.trim().toLowerCase() === "archive" ||
+    node.retention_mode?.trim().toLowerCase() === "archive" ||
+    /(?:^|\/)_?archiv(?:e|es|ed)\//i.test(node.path || node.id);
+}
+
+function scopeNodes() {
+  return state.graph.nodes.filter(n => state.includeArchived || !isArchived(n));
+}
 
 const STALE_DAYS_THRESHOLD = 90;
 const STALE_MS_THRESHOLD = STALE_DAYS_THRESHOLD * 24 * 60 * 60 * 1000;
@@ -175,14 +191,6 @@ async function initWebgl() {
   host.removeAttribute("hidden");
   const canvasEl = document.getElementById("graph");
   if (canvasEl) canvasEl.style.display = "none";
-  // The canvas-only zoom buttons drive view.scale in 2D mode. In webgl
-  // mode we keep them visible too — their click handlers route through
-  // gpuRenderer.zoomBy() so users still get +/- buttons.
-  const viewControls = document.getElementById("view-controls");
-  if (viewControls) {
-    viewControls.querySelector("#zoom-fit")?.removeAttribute("hidden");
-    viewControls.querySelector("#zoom-level")?.setAttribute("hidden", "");
-  }
   try {
     const mod = await import("./webgl-renderer.js?v=__BUILD_ID__");
     gpuRenderer = mod.createWebglRenderer({
@@ -201,16 +209,20 @@ async function initWebgl() {
     // Adaptive HTML label overlay over the canvas.
     try {
       const lblMod = await import("./labels-overlay.js?v=__BUILD_ID__");
-      gpuLabels = lblMod.createLabelOverlay({ container: host, renderer: gpuRenderer });
+      gpuLabels = lblMod.createLabelOverlay({ container: host, renderer: gpuRenderer, communityLabel: clusterLabel });
       gpuLabels.setOnLabelClick((node) => {
         if (state.pathMode) handlePathClick(node);
         else selectNode(node);
       });
-      gpuRenderer.onTransform((cam) => gpuLabels.layout(cam));
+
     } catch (e) {
       console.warn("label overlay init failed:", e);
       gpuLabels = null;
     }
+    gpuRenderer.onTransform((cam) => {
+      gpuLabels?.layout(cam);
+      document.getElementById("zoom-level").textContent = `${Math.round(cam.scale * 100)}%`;
+    });
     // Debug hooks for headless tests + manual console inspection.
     window.__pwCam = () => gpuRenderer.getCamera();
     window.__pwNodes = () => gpuRenderer.getNodes();
@@ -221,7 +233,7 @@ async function initWebgl() {
       // centre of the canvas (so a tap will reliably land on it).
       const cam = gpuRenderer.getCamera();
       const nodes = gpuRenderer.getNodes ? gpuRenderer.getNodes() : null;
-      const canvas = document.getElementById("graph") || document.querySelector("canvas");
+      const canvas = host.querySelector("canvas");
       if (!nodes || !nodes.length || !canvas) return null;
       const rect = canvas.getBoundingClientRect();
       const cx = rect.left + rect.width / 2;
@@ -241,7 +253,9 @@ async function initWebgl() {
     return gpuRenderer;
   } catch (e) {
     console.error("webgl renderer failed, falling back to canvas:", e);
+    tryWebgl = false;
     gpuRenderer = null;
+    host.replaceChildren();
     if (canvasEl) canvasEl.style.display = "";
     host.setAttribute("hidden", "");
     return null;
@@ -253,36 +267,34 @@ function syncGpuStyle() {
   const healthActive = state.health.active;
   const askActive = state.ask.active && state.ask.subgraphIds.size > 0;
   const dimNonPath = state.pathMode && state.pathNodes.size > 0;
+  const selected = new Set(state.pathNodes);
+  if (state.highlightedId) selected.add(state.highlightedId);
+  if (askActive) for (const id of state.ask.nodeIds) selected.add(id);
+  const pathEdges = new Set(state.pathEdges.map(e => askEdgeKey(e.source, e.target)));
+  const neighborhood = state.adjacency.get(state.highlightedId);
   gpuRenderer.syncStyle({
-    colorOf: (n) => healthActive
-      ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
-      : colorForCommunity(n.community),
-    sizeOf: (n) => {
-      // Aggressive tightening — at fit-zoom the previous range still bloomed
-      // into mush. New range puts hubs at ~16px and leaves at ~3-4px
-      // (multiplied by DPR for the actual gl_PointSize). Cluster structure
-      // reads cleanly without overlapping halos.
-      const deg = Math.max(1, n.degree || 1);
-      return Math.max(3, Math.min(16, 3 + Math.log2(deg + 1) * 2.4));
+    colorOf: nodeColor,
+    sizeOf: n => Math.min(13, 3.2 + Math.log2(1 + (n.degree || 0)) * 1.5),
+    ringOf: n => healthActive && state.health.disagreeNodeIds.has(n.id) ? -1 : Number(selected.has(n.id)),
+    edgeColorOf: e => {
+      const key = askEdgeKey(e.source, e.target);
+      if (pathEdges.has(key) || (askActive && state.ask.edgeKeys.has(key))) return [0.37, 0.92, 0.83, 0.85];
+      if (dimNonPath || askActive) return [0.49, 0.56, 0.63, 0.055];
+      if (state.highlightedId) return e.source === state.highlightedId || e.target === state.highlightedId
+        ? [0.48, 0.75, 0.75, 0.55] : [0.49, 0.56, 0.63, 0.04];
+      if (state.surprises && e.cross_community) return [0.96, 0.59, 0.48, 0.8];
+      return [0.49, 0.56, 0.63, 0.13];
     },
     dimOf: (n) => {
       const onPath = state.pathNodes.has(n.id);
       const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
-      return (dimNonPath && !onPath) || (askActive && !inAskSub);
+      return (dimNonPath && !onPath) || (askActive && !inAskSub) ||
+        (state.highlightedId && n.id !== state.highlightedId && !neighborhood?.has(n.id));
     },
   });
-  // Selection ring sync.
-  const sel = new Set();
-  if (state.highlightedId) sel.add(state.highlightedId);
-  for (const id of state.pathNodes) sel.add(id);
-  if (askActive) for (const id of state.ask.nodeIds) sel.add(id);
-  gpuRenderer.setSelectedNodes(sel);
   if (gpuLabels) {
-    // Pin labels for everything the user is currently focused on so they
-    // never disappear under collision pressure.
-    gpuLabels.setPinned(sel);
-    const cam = gpuRenderer.getCamera();
-    if (cam) gpuLabels.layout(cam);
+    gpuLabels.setPinned(selected, state.highlightedId, neighborhood, Boolean(state.search.trim() || selected.size || state.communityFilter));
+    gpuLabels.layout(gpuRenderer.getCamera());
   }
 }
 
@@ -310,45 +322,6 @@ async function fetchJSON(path) {
   return res.json();
 }
 
-// Curated 16-stop neon-on-dark palette inspired by Gephi/Cosmograph showcases
-// and the Karpathy llm-graph aesthetic — high saturation, mid-high lightness,
-// hue-cycled so adjacent communities read as distinct under WebGL antialiasing.
-// Each entry is `hsl(h s% l%)` so cosmos-renderer's parseColor handles it.
-const COMMUNITY_PALETTE = [
-  "hsl(190 95% 62%)", // cyan
-  "hsl(285 88% 70%)", // violet
-  "hsl(48 100% 62%)", // amber
-  "hsl(330 92% 68%)", // magenta-pink
-  "hsl(155 80% 56%)", // mint
-  "hsl(15 92% 64%)",  // coral
-  "hsl(220 95% 70%)", // azure
-  "hsl(95 78% 60%)",  // lime
-  "hsl(270 90% 72%)", // lavender
-  "hsl(35 100% 60%)", // tangerine
-  "hsl(175 88% 55%)", // teal
-  "hsl(310 88% 70%)", // orchid
-  "hsl(75 85% 60%)",  // chartreuse
-  "hsl(205 95% 66%)", // sky
-  "hsl(355 90% 68%)", // rose
-  "hsl(125 75% 58%)", // emerald
-];
-
-function colorForCommunity(community) {
-  if (state.communityColors.has(community)) return state.communityColors.get(community);
-  const safe = Number.isFinite(community) ? community : 0;
-  // Stable bucket into the curated palette; falls back to golden-angle HSL
-  // for very high community ids so we never collide visually for neighbours.
-  let color;
-  if (safe >= 0 && safe < COMMUNITY_PALETTE.length) {
-    color = COMMUNITY_PALETTE[safe];
-  } else {
-    const hue = (safe * 137.508) % 360;
-    color = `hsl(${hue} 88% 64%)`;
-  }
-  state.communityColors.set(community, color);
-  return color;
-}
-
 function applyFilters() {
   if (!state.graph) return;
   const q = state.search.trim().toLowerCase();
@@ -360,14 +333,14 @@ function applyFilters() {
   const staleOnly = state.staleOnly;
   const now = Date.now();
 
-  const nodes = state.graph.nodes.filter((n) => {
+  const nodes = scopeNodes().filter((n) => {
     if (typeF && n.page_type !== typeF) return false;
     if (tierF && n.tier !== tierF) return false;
     if (communityF !== "" && String(n.community) !== String(communityF)) return false;
     if (ckptClassF && (n.checkpoint_class || "") !== ckptClassF) return false;
     if (staleOnly && !isNodeStale(n, now)) return false;
     if (!q) return true;
-    const hay = (n.title + " " + (n.original_title || "") + " " + (n.tags || []).join(" ") + " " + (n.summary || "")).toLowerCase();
+    const hay = (n.title + " " + (n.original_title || "") + " " + (n.tags || []).join(" ")).toLowerCase();
     return hay.includes(q);
   });
   const ids = new Set(nodes.map((n) => n.id));
@@ -378,19 +351,27 @@ function applyFilters() {
   }
 
   state.filtered = { nodes, edges };
-  if (USE_WEBGL) {
-    // Cosmograph owns layout — no FR loop needed. Sync data, then re-style.
-    gpuRenderer && gpuRenderer.syncData(nodes, edges);
-    syncGpuStyle();
-    if (gpuLabels) {
-      gpuLabels.setNodes(nodes);
-      const cam = gpuRenderer && gpuRenderer.getCamera();
-      if (cam) gpuLabels.layout(cam);
-    }
-    return;
+  state.adjacency = buildAdjacency(edges);
+  if (state.pathStart && (!ids.has(state.pathStart) || (state.pathEnd && !ids.has(state.pathEnd)) ||
+      [...state.pathNodes].some(id => !ids.has(id)))) clearPathSelection({ redraw: false });
+  if (gpuRenderer) {
+    gpuRenderer.syncData(nodes, edges);
+    gpuLabels?.setNodes(nodes);
   }
-  positionNodes(state.filtered.nodes, state.filtered.edges);
-  fitViewToNodes(state.filtered.nodes);
+  fitViewToNodes({ all: Boolean(q) });
+  if (!q && state.beforeSearch) {
+    if (gpuRenderer) gpuRenderer.restoreCamera(state.beforeSearch);
+    else { Object.assign(view, state.beforeSearch); updateZoomLevel(); }
+    state.beforeSearch = null;
+  }
+  updateSearchResults(q);
+  updateAskResultsList();
+  updateStats();
+  updateLegend();
+  document.getElementById("empty-graph").hidden = nodes.length > 0;
+  document.getElementById("empty-message").textContent = state.graph.nodes.length ? "No matching pages" : "The graph has no pages";
+  document.getElementById("empty-clear").hidden = !state.graph.nodes.length;
+  draw();
 }
 
 // ---------- Simple force-directed layout (Fruchterman-Reingold-ish) ---------
@@ -401,14 +382,8 @@ function positionNodes(nodes, edges) {
 
   const byId = new Map(nodes.map((n) => [n.id, n]));
 
-  // R15 — when the server precomputed spring_layout (every node has x/y on
-  // arrival from /graph/export/json), skip the full Fruchterman-Reingold loop.
-  // Only the velocity scratch fields are reset, then we run a brief 5-iter
-  // settle pass so any newly-filtered subset relaxes minor overlaps without
-  // throwing away the global structure.
-  const allPrecomputed = nodes.length > 0 && nodes.every(
-    (n) => Number.isFinite(n.x) && Number.isFinite(n.y) && n.__server_layout !== false,
-  );
+  // Keep exported coordinates stable across searches and camera restoration.
+  if (nodes.every(n => Number.isFinite(n.x) && Number.isFinite(n.y))) return;
 
   for (const n of nodes) {
     if (n.x == null || n.y == null) {
@@ -418,8 +393,8 @@ function positionNodes(nodes, edges) {
     n.vx = 0; n.vy = 0;
   }
 
-  const ITER = allPrecomputed ? 5 : 120;
-  let t = (allPrecomputed ? W / 80 : W / 10);
+  const ITER = 120;
+  let t = W / 10;
   for (let it = 0; it < ITER; it++) {
     // Repulsive
     for (let i = 0; i < nodes.length; i++) {
@@ -460,13 +435,13 @@ function positionNodes(nodes, edges) {
 const canvas = document.getElementById("graph");
 const ctx = canvas.getContext("2d");
 const isCoarsePointer = window.matchMedia && window.matchMedia("(pointer: coarse)").matches;
-const view = { scale: 0.35, tx: 0, ty: 0 };
+const view = { scale: 0.35, fitScale: 0.35, tx: 0, ty: 0 };
 const MIN_SCALE = 0.05;
 const MAX_SCALE = isCoarsePointer ? 6 : 4.5;
 const ZOOM_STEP = 1.22;
 
 function clampScale(nextScale) {
-  return Math.max(MIN_SCALE, Math.min(MAX_SCALE, nextScale));
+  return Math.max(Math.min(MIN_SCALE, view.fitScale), Math.min(MAX_SCALE, nextScale));
 }
 
 function updateZoomLevel() {
@@ -475,14 +450,14 @@ function updateZoomLevel() {
 }
 
 function nodeRadius(node) {
-  return Math.max(3, 3 + Math.log2(1 + node.degree) * 2);
+  return Math.max(3, 3 + Math.log2(1 + (node.degree || 0)) * 2);
 }
 
 function resize() {
-  if (USE_WEBGL) return; // webgl renderer manages its own canvas sizing
+  if (gpuRenderer) return; // webgl renderer manages its own canvas sizing
   const dpr = window.devicePixelRatio || 1;
-  canvas.width = canvas.clientWidth * dpr;
-  canvas.height = canvas.clientHeight * dpr;
+  canvas.width = Math.round(canvas.clientWidth * dpr);
+  canvas.height = Math.round(canvas.clientHeight * dpr);
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
   updateZoomLevel();
   draw();
@@ -533,7 +508,7 @@ function pathRoundedRect(x, y, width, height, radius) {
 }
 
 function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.clientHeight / 2) {
-  if (USE_WEBGL) return;
+  if (gpuRenderer) return;
   const worldPoint = screenToWorld(anchorX, anchorY);
   const clampedScale = clampScale(nextScale);
   view.scale = clampedScale;
@@ -543,8 +518,9 @@ function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.
   draw();
 }
 
-function fitViewToNodes(nodes = state.filtered.nodes) {
-  if (USE_WEBGL) { gpuRenderer && gpuRenderer.fit(); return; }
+function fitViewToNodes({ all = true } = {}) {
+  if (gpuRenderer) { gpuRenderer.fit({ all }); return; }
+  const nodes = state.filtered.nodes;
   if (!nodes.length || !canvas.clientWidth || !canvas.clientHeight) return;
 
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -559,14 +535,15 @@ function fitViewToNodes(nodes = state.filtered.nodes) {
   const width = Math.max(maxX - minX, 120);
   const height = Math.max(maxY - minY, 120);
   const gutter = isCoarsePointer ? 56 : 80;
-  const availableWidth = Math.max(canvas.clientWidth - gutter * 2, 120);
-  const availableHeight = Math.max(canvas.clientHeight - gutter * 2, 120);
-  const nextScale = clampScale(Math.min(availableWidth / width, availableHeight / height));
+  const availableWidth = canvas.clientWidth - 2 * Math.min(gutter, canvas.clientWidth * 0.14);
+  const availableHeight = canvas.clientHeight - 2 * Math.min(gutter, canvas.clientHeight * 0.14);
+  const nextScale = Math.min(MAX_SCALE, availableWidth / width, availableHeight / height);
   const targetX = canvas.clientWidth / 2;
-  const targetY = isCoarsePointer ? canvas.clientHeight * 0.46 : canvas.clientHeight / 2;
+  const targetY = !all && isCoarsePointer ? canvas.clientHeight * 0.46 : canvas.clientHeight / 2;
   const centerX = (minX + maxX) / 2;
   const centerY = (minY + maxY) / 2;
 
+  view.fitScale = nextScale;
   view.scale = nextScale;
   view.tx = targetX - canvas.clientWidth / 2 - centerX * nextScale;
   view.ty = targetY - canvas.clientHeight / 2 - centerY * nextScale;
@@ -575,7 +552,7 @@ function fitViewToNodes(nodes = state.filtered.nodes) {
 }
 
 function centerNodeInView(node) {
-  if (USE_WEBGL) { gpuRenderer && gpuRenderer.focusNode(node.id); return; }
+  if (gpuRenderer) { gpuRenderer.focusNode(node.id); return; }
   const targetX = canvas.clientWidth / 2;
   const targetY = isCoarsePointer ? canvas.clientHeight * 0.3 : canvas.clientHeight / 2;
   view.tx = targetX - canvas.clientWidth / 2 - node.x * view.scale;
@@ -587,17 +564,16 @@ function centerNodeInView(node) {
 function buildAdjacency(edges) {
   const adj = new Map();
   for (const e of edges) {
-    if (!adj.has(e.source)) adj.set(e.source, []);
-    if (!adj.has(e.target)) adj.set(e.target, []);
-    adj.get(e.source).push(e.target);
-    adj.get(e.target).push(e.source);
+    if (!adj.has(e.source)) adj.set(e.source, new Set());
+    if (!adj.has(e.target)) adj.set(e.target, new Set());
+    adj.get(e.source).add(e.target);
+    adj.get(e.target).add(e.source);
   }
   return adj;
 }
 
-function bfsShortestPath(startId, endId, edges) {
+function bfsShortestPath(startId, endId, adj) {
   if (startId === endId) return [startId];
-  const adj = buildAdjacency(edges);
   if (!adj.has(startId) || !adj.has(endId)) return null;
   const prev = new Map();
   prev.set(startId, null);
@@ -694,72 +670,77 @@ function escapeHTML(s) {
 
 const askEdgeKey = (s, t) => s < t ? `${s}|${t}` : `${t}|${s}`;
 
+function appendPageButton(list, node, text, onClick) {
+  const li = document.createElement("li");
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = text;
+  button.title = node.title || node.id;
+  button.addEventListener("click", () => onClick(node));
+  li.appendChild(button);
+  list.appendChild(li);
+}
+
 function clearAskResults({ redraw = true } = {}) {
-  state.ask = {
-    active: false,
-    nodeIds: new Set(),
-    subgraphIds: new Set(),
-    edgeKeys: new Set(),
-    results: [],
-  };
-  const panel = document.getElementById("ask-results");
-  panel?.classList.add("hidden");
-  document.getElementById("ask-graph-clear")?.classList.add("hidden");
+  state.askVersion++;
+  state.ask.active = false;
+  state.ask.nodeIds.clear();
+  state.ask.subgraphIds.clear();
+  state.ask.edgeKeys.clear();
+  state.ask.results = [];
+  document.getElementById("ask-results").classList.add("hidden");
+  document.getElementById("ask-results-list").replaceChildren();
+  document.getElementById("ask-graph-clear").classList.add("hidden");
   if (redraw) draw();
 }
 
+function updateAskResultsList() {
+  if (!state.ask.active) return;
+  const list = document.getElementById("ask-results-list");
+  list.replaceChildren();
+  const known = new Map(scopeNodes().map(n => [n.id, n]));
+  const results = state.ask.results.filter(result => known.has(result.id));
+  document.getElementById("ask-meta").textContent = results.length
+    ? `${results.length} matching ${results.length === 1 ? "page" : "pages"} · ${state.ask.backend}`
+    : "No matching pages.";
+  for (const result of results) {
+    const node = known.get(result.id);
+    appendPageButton(list, node, node.title, navigateToNode);
+  }
+}
+
 async function runAskGraph(q) {
+  clearAskResults();
   const text = (q || "").trim();
   if (!text) return;
+  const version = state.askVersion;
   const meta = document.getElementById("ask-meta");
-  const list = document.getElementById("ask-results-list");
-  const panel = document.getElementById("ask-results");
-  panel?.classList.remove("hidden");
-  if (meta) meta.textContent = "querying…";
-  if (list) list.innerHTML = "";
+  document.getElementById("ask-results").classList.remove("hidden");
+  document.getElementById("ask-graph-clear").classList.remove("hidden");
+  meta.textContent = "Searching…";
   try {
     const res = await fetch(`${API_BASE}/graph/query`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ q: text, k: 10 }),
+      body: JSON.stringify({ q: text, k: 10, include_archived: state.includeArchived }),
     });
     if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const data = await res.json();
-    if (data.error) {
-      if (meta) meta.textContent = `backend: ${data.backend} — ${data.error}`;
-      return;
-    }
-    const top = data.nodes || [];
-    const subNodes = (data.subgraph && data.subgraph.nodes) || [];
-    const subEdges = (data.subgraph && data.subgraph.edges) || [];
-
+    if (version !== state.askVersion) return;
+    if (data.error) throw new Error(data.error);
     state.ask.active = true;
-    state.ask.results = top;
-    state.ask.nodeIds = new Set(top.map((n) => n.id));
-    state.ask.subgraphIds = new Set(subNodes.map((n) => n.id));
-    // Always include the top-K themselves in the subgraph set.
-    for (const n of top) state.ask.subgraphIds.add(n.id);
-    state.ask.edgeKeys = new Set(subEdges.map((e) => askEdgeKey(e.source, e.target)));
-
-    if (meta) meta.textContent = `backend: ${data.backend} · top ${top.length} of ${data.k}`;
-    if (list) {
-      list.innerHTML = "";
-      for (const n of top) {
-        const li = document.createElement("li");
-        li.textContent = `${n.title} (${n.page_type}, score ${n.score})`;
-        li.title = n.id;
-        li.addEventListener("click", () => {
-          const local = state.filtered.nodes.find((x) => x.id === n.id);
-          if (local) selectNode(local);
-        });
-        list.appendChild(li);
-      }
+    state.ask.backend = data.backend;
+    state.ask.results = data.nodes || [];
+    state.ask.nodeIds = new Set(state.ask.results.map(n => n.id));
+    if (state.ask.nodeIds.size) {
+      state.ask.subgraphIds = new Set([...state.ask.nodeIds, ...(data.subgraph?.nodes || []).map(n => n.id)]);
+      state.ask.edgeKeys = new Set((data.subgraph?.edges || []).map(e => askEdgeKey(e.source, e.target)));
     }
-    document.getElementById("ask-graph-clear")?.classList.remove("hidden");
+    updateAskResultsList();
     draw();
   } catch (e) {
-    if (meta) meta.textContent = `error: ${e.message}`;
+    if (version === state.askVersion) meta.textContent = `Query unavailable: ${e.message}`;
   }
 }
 
@@ -779,11 +760,13 @@ async function loadCheckpointTracker() {
   try {
     const data = await fetchJSON("/graph/checkpoint-tracker");
     if (!data || !data.available) {
+      state.health.trackerStatus = "unavailable";
       state.health.disagreements = [];
       state.health.disagreeNodeIds = new Set();
       state.health.rowsByNodeId = new Map();
       return;
     }
+    state.health.trackerStatus = "available";
     const rows = data.disagreements || [];
     state.health.disagreements = rows;
     const ids = new Set();
@@ -797,6 +780,7 @@ async function loadCheckpointTracker() {
     state.health.disagreeNodeIds = ids;
     state.health.rowsByNodeId = byId;
   } catch (e) {
+    state.health.trackerStatus = "unavailable";
     state.health.disagreements = [];
     state.health.disagreeNodeIds = new Set();
     state.health.rowsByNodeId = new Map();
@@ -807,15 +791,23 @@ function enterCheckpointHealth() {
   state.health.active = true;
   document.getElementById("checkpoint-health-toggle")?.setAttribute("aria-pressed", "true");
   // Lazy-load the tracker the first time we enter the overlay.
-  if (!state.health.disagreements.length) {
-    loadCheckpointTracker().then(() => draw());
+  if (["idle", "unavailable"].includes(state.health.trackerStatus)) {
+    state.health.trackerStatus = "loading";
+    loadCheckpointTracker().then(() => {
+      if (!state.health.active) return;
+      if (state.highlightedId) showCheckpointDetail({ id: state.highlightedId });
+      updateLegend();
+      draw();
+    });
   }
+  updateLegend();
   draw();
 }
 function exitCheckpointHealth() {
   state.health.active = false;
   document.getElementById("checkpoint-health-toggle")?.setAttribute("aria-pressed", "false");
   document.getElementById("checkpoint-detail")?.classList.add("hidden");
+  updateLegend();
   draw();
 }
 function showCheckpointDetail(node) {
@@ -858,7 +850,7 @@ function handlePathClick(node) {
   }
   if (!state.pathEnd) {
     state.pathEnd = node.id;
-    const path = bfsShortestPath(state.pathStart, state.pathEnd, state.graph?.edges || []);
+    const path = bfsShortestPath(state.pathStart, state.pathEnd, state.adjacency);
     if (path && path.length) {
       state.pathNodes = new Set(path);
       const edges = [];
@@ -879,7 +871,7 @@ function handlePathClick(node) {
 }
 
 function draw() {
-  if (USE_WEBGL) { syncGpuStyle(); return; }
+  if (gpuRenderer) { syncGpuStyle(); return; }
   ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
   const { nodes, edges } = state.filtered;
   state.visibleNodes = [];
@@ -921,10 +913,13 @@ function draw() {
       strokeStyle = "rgba(94,234,212,0.6)";
     } else if (dimNonPath || askActive) {
       strokeStyle = "rgba(120,130,150,0.06)";
+    } else if (state.highlightedId) {
+      strokeStyle = e.source === state.highlightedId || e.target === state.highlightedId
+        ? "rgba(122,191,191,0.55)" : "rgba(125,143,161,0.04)";
     } else if (state.surprises && e.cross_community) {
       strokeStyle = "rgba(248,113,113,0.85)";
     } else {
-      strokeStyle = "rgba(120,130,150,0.25)";
+      strokeStyle = "rgba(125,143,161,0.15)";
     }
     ctx.strokeStyle = strokeStyle;
     ctx.lineWidth = (isOnPath || isAskEdge) ? 2.5 / view.scale : 0.8 / view.scale;
@@ -937,17 +932,17 @@ function draw() {
 
   // Nodes
   const healthActive = state.health.active;
+  const neighborhood = state.adjacency.get(state.highlightedId);
   for (const n of visibleNodes) {
     const r = nodeRadius(n);
     const onPath = state.pathNodes.has(n.id);
     const inAskTop = askActive && state.ask.nodeIds.has(n.id);
     const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
-    const dimNode = (dimNonPath && !onPath) || (askActive && !inAskSub);
+    const dimNode = (dimNonPath && !onPath) || (askActive && !inAskSub) ||
+      (state.highlightedId && n.id !== state.highlightedId && !neighborhood?.has(n.id));
     ctx.globalAlpha = dimNode ? 0.18 : 1.0;
     // R17 — checkpoint-health colors override community palette.
-    const fillColor = healthActive
-      ? (CHECKPOINT_CLASS_COLORS[n.checkpoint_class] || CHECKPOINT_DEFAULT_COLOR)
-      : colorForCommunity(n.community);
+    const fillColor = nodeColor(n);
     ctx.fillStyle = fillColor;
     if (state.highlightedId === n.id) {
       ctx.fillStyle = "rgba(94,234,212,0.18)";
@@ -986,6 +981,10 @@ function draw() {
   state.labelTargets = buildLabelTargets({
     nodes: visibleNodes,
     highlightedId: state.highlightedId,
+    pinnedIds: new Set([...state.pathNodes, ...state.ask.nodeIds]),
+    neighbors: neighborhood,
+    focused: Boolean(state.search.trim() || state.highlightedId || state.pathNodes.size || state.ask.active || state.communityFilter),
+    communityLabel: clusterLabel,
     canvasSize: { width: canvas.clientWidth, height: canvas.clientHeight },
     view,
     nodeRadius,
@@ -1016,25 +1015,40 @@ function findNode(id) {
   return state.filtered.nodes.find((n) => n.id === id);
 }
 
+let detailOpener = null;
 function clearSelection({ redraw = true } = {}) {
+  state.selectionVersion++;
+  const panel = document.getElementById("node-panel");
+  const restoreFocus = panel.contains(document.activeElement);
   state.highlightedId = null;
-  document.body.classList.remove("node-panel-open");
-  document.getElementById("node-panel").classList.add("hidden");
+  panel.classList.add("hidden");
+  document.getElementById("checkpoint-detail").classList.add("hidden");
+  if (restoreFocus) {
+    const fallback = document.getElementById(mobileDrawer.matches ? "sidebar-toggle" : "search");
+    (detailOpener?.matches("button, a, input, select, [tabindex]") && detailOpener.isConnected && detailOpener.getClientRects().length && !detailOpener.closest("[inert]") ? detailOpener : fallback).focus();
+  }
+  detailOpener = null;
   if (redraw) draw();
 }
 
-function openNodePanel() {
-  document.body.classList.add("node-panel-open");
+function navigateToNode(node) {
+  if (!findNode(node.id)) resetFilters({ includeArchived: state.includeArchived });
+  if (state.pathMode) {
+    if (mobileDrawer.matches) closeSidebar();
+    handlePathClick(node);
+  } else {
+    selectNode(node);
+  }
 }
 
 function selectNode(node) {
+  const panel = document.getElementById("node-panel");
+  if (!panel.contains(document.activeElement)) detailOpener = document.activeElement;
+  if (mobileDrawer.matches && document.body.classList.contains("sidebar-open")) closeSidebar(false);
   state.highlightedId = node.id;
   centerNodeInView(node);
   showNodePanel(node);
-  // R17 — when health overlay is active, show disagreement detail too.
-  if (state.health.active && state.health.disagreeNodeIds.has(node.id)) {
-    showCheckpointDetail(node);
-  }
+  if (state.health.active) showCheckpointDetail(node);
   draw();
 }
 
@@ -1061,7 +1075,7 @@ function pinchDistance() {
 }
 
 canvas.addEventListener("pointerdown", (e) => {
-  if (USE_WEBGL) return;
+  if (gpuRenderer) return;
   canvas.setPointerCapture(e.pointerId);
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
   pointerDownAt = performance.now();
@@ -1081,7 +1095,7 @@ canvas.addEventListener("pointerdown", (e) => {
 });
 
 canvas.addEventListener("pointermove", (e) => {
-  if (USE_WEBGL) return;
+  if (gpuRenderer) return;
   if (!activePointers.has(e.pointerId)) return;
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
@@ -1124,7 +1138,7 @@ canvas.addEventListener("pointermove", (e) => {
 });
 
 function endPointer(e) {
-  if (USE_WEBGL) return;
+  if (gpuRenderer) return;
   if (!activePointers.has(e.pointerId)) return;
   activePointers.delete(e.pointerId);
 
@@ -1151,7 +1165,7 @@ canvas.addEventListener("pointerup", endPointer);
 canvas.addEventListener("pointercancel", endPointer);
 
 canvas.addEventListener("wheel", (e) => {
-  if (USE_WEBGL) return;
+  if (gpuRenderer) return;
   e.preventDefault();
   const factor = Math.exp(-e.deltaY * 0.001);
   const rect = canvas.getBoundingClientRect();
@@ -1183,149 +1197,242 @@ function handleTap(clientX, clientY) {
   }
 }
 
-async function showNodePanel(node) {
-  document.getElementById("node-panel").classList.remove("hidden");
-  if (isCoarsePointer) {
-    closeSidebar();
-    openNodePanel();
-  }
+function showNodePanel(node, { focus = true } = {}) {
+  const version = ++state.selectionVersion;
+  const panel = document.getElementById("node-panel");
+  panel.classList.remove("hidden");
+  if (focus) panel.scrollTop = 0;
   document.getElementById("node-title").textContent = node.title;
-  document.getElementById("node-meta").textContent =
-    `${node.page_type || "page"} · tier=${node.tier || "—"} · degree=${node.degree} · ${clusterLabel(node.community)}`;
-  document.getElementById("node-summary").textContent = node.summary || "";
+  if (focus) document.getElementById("node-title").focus({ preventScroll: true });
+  document.getElementById("node-meta").textContent = [node.page_type, node.tier,
+    Number.isFinite(node.degree) && `${node.degree} links`, clusterLabel(node.community)].filter(Boolean).join(" · ");
+  const summary = document.getElementById("node-summary");
+  summary.textContent = node.summary || "";
+  fetchPage();
+  fetchNeighbors();
 
-  // R20 — fetch + render the page body so users can review the wiki content
-  // inline without leaving the graph. Wikilinks navigate within the graph.
-  const contentEl = document.getElementById("node-content");
-  if (contentEl) {
-    contentEl.innerHTML = "<div class='muted'>loading page…</div>";
-    fetchJSON(`/graph/page/${encodePathId(node.id)}?_=${Date.now()}`)
-      .then((data) => {
-        contentEl.innerHTML = renderMarkdown(data.body || "");
-        // Intercept wikilink clicks → navigate within the graph if we know
-        // the target; otherwise just fall through (no-op href="#").
-        contentEl.querySelectorAll("a.wikilink").forEach((a) => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const target = a.dataset.target || "";
-            const candidates = state.graph.nodes.filter((n) =>
-              n.title === target ||
-              n.id === target ||
-              n.id.endsWith("/" + target + ".md") ||
-              n.id.endsWith("/" + target.toLowerCase().replace(/\s+/g, "-") + ".md")
-            );
-            if (candidates.length) {
-              const local = state.filtered.nodes.find((x) => x.id === candidates[0].id);
-              if (local) selectNode(local);
-            }
-          });
-        });
-      })
-      .catch((e) => {
-        contentEl.innerHTML = `<div class='muted'>page unavailable: ${e.message}</div>`;
-      });
+  async function fetchPage() {
+    const content = document.getElementById("node-content");
+    content.textContent = "Loading page…";
+    try {
+      const data = await fetchJSON(`/graph/page/${encodePathId(node.id)}`);
+      if (version !== state.selectionVersion) return;
+      content.innerHTML = renderMarkdown(data.body || "");
+      const heading = content.firstElementChild;
+      if (heading?.tagName === "H1" && displayTitle(heading.textContent.trim()) === node.title) heading.remove();
+      // The export summary is often the (possibly truncated) opening paragraph.
+      // Keep the full rendered paragraph and its links when they overlap.
+      const opening = content.querySelector("p")?.textContent.trim();
+      const intro = (node.summary || "").replace(/(?:\.\.\.|…)$/, "").trim();
+      const plainIntro = document.createElement("div");
+      plainIntro.innerHTML = renderMarkdown(intro);
+      if (intro && opening?.startsWith(plainIntro.textContent.trim())) summary.textContent = "";
+      const pages = scopeNodes();
+      const titles = new Map();
+      for (const page of pages) {
+        titles.set(page.title.toLowerCase(), page);
+        titles.set(page.original_title.toLowerCase(), page);
+      }
+      for (const link of content.querySelectorAll("a.wikilink")) {
+        const raw = link.dataset.target;
+        let target = raw;
+        let local;
+        while (target) {
+          local = titles.get(target.toLowerCase());
+          if (local) break;
+          const separator = Math.max(target.lastIndexOf("|"), target.lastIndexOf("#"));
+          if (separator < 0) break;
+          target = target.slice(0, separator).trimEnd();
+        }
+        if (local && raw.slice(target.length).indexOf("|") === -1) link.textContent = local.title;
+        if (!local) {
+          const slug = target.toLowerCase().replace(/\s+/g, "-").replace(/\.md$/, "");
+          local = raw.startsWith("#") ? node : pages.find(n => n.id === target || n.id.endsWith("/" + slug));
+        }
+        if (local) link.addEventListener("click", e => { e.preventDefault(); navigateToNode(local); });
+        else link.replaceWith(document.createTextNode(link.textContent));
+      }
+    } catch (e) {
+      if (version === state.selectionVersion) content.textContent = `Page unavailable: ${e.message}`;
+    }
   }
 
-  const ul = document.getElementById("node-neighbors");
-  ul.innerHTML = "<li class='muted'>loading…</li>";
-  try {
-    const data = await fetchJSON(`/graph/neighbors/${encodePathId(node.id)}?depth=1`);
-    const neighbors = data.nodes.filter((n) => n.id !== node.id);
-    ul.innerHTML = "";
-    for (const n of neighbors) {
-      const li = document.createElement("li");
-      li.textContent = `${n.title}  · ${n.page_type}`;
-      li.addEventListener("click", () => {
-        const local = state.filtered.nodes.find((x) => x.id === n.id);
-        if (local) {
-          selectNode(local);
-          return;
-        }
-        state.highlightedId = n.id;
-        showNodePanel(n);
-        draw();
-      });
-      ul.appendChild(li);
+  async function fetchNeighbors() {
+    const list = document.getElementById("node-neighbors");
+    list.textContent = "Loading…";
+    try {
+      const data = await fetchJSON(`/graph/neighbors/${encodePathId(node.id)}?depth=1`);
+      if (version !== state.selectionVersion) return;
+      const known = new Map(scopeNodes().map(n => [n.id, n]));
+      list.replaceChildren();
+      for (const item of data.nodes) {
+        const neighbor = known.get(item.id);
+        if (neighbor && neighbor.id !== node.id) appendPageButton(list, neighbor, neighbor.title, navigateToNode);
+      }
+      if (!list.childElementCount) list.textContent = "No neighbors in this view.";
+    } catch (e) {
+      if (version === state.selectionVersion) list.textContent = `Neighbors unavailable: ${e.message}`;
     }
-    if (!neighbors.length) ul.innerHTML = "<li class='muted'>no neighbours</li>";
-  } catch (e) {
-    ul.innerHTML = `<li class='muted'>error: ${e.message}</li>`;
   }
 }
 
 // ---------- UI wiring ------------------------------------------------------
 
-function populateTypes() {
-  const select = document.getElementById("type-filter");
-  select.innerHTML = "<option value=''>(any)</option>";
-  const types = Array.from(new Set(state.graph.nodes.map((n) => n.page_type))).filter(Boolean).sort();
-  for (const t of types) {
-    const opt = document.createElement("option");
-    opt.value = t; opt.textContent = t;
-    select.appendChild(opt);
+function countsBy(nodes, field) {
+  const counts = new Map();
+  for (const n of nodes) {
+    const value = n[field];
+    if (value !== "" && value != null) counts.set(value, 1 + (counts.get(value) || 0));
   }
+  return [...counts].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])));
 }
 
-function populateCommunities() {
-  const select = document.getElementById("community-filter");
-  if (!select) return;
-  // Distinct community values from graph.nodes, sorted numerically.
-  const communities = Array.from(
-    new Set(
-      state.graph.nodes
-        .map((n) => n.community)
-        .filter((c) => c != null && c !== ""),
-    ),
-  ).sort((a, b) => Number(a) - Number(b));
-  // Preserve current selection if still valid.
-  const current = select.value;
-  select.innerHTML = "<option value=''>(any)</option>";
-  for (const c of communities) {
-    const opt = document.createElement("option");
-    opt.value = String(c);
-    opt.textContent = clusterLabel(c);
-    select.appendChild(opt);
+function populateFilters() {
+  const nodes = scopeNodes();
+  enrichGraph({ nodes });
+  function options(id, key, values, label = String) {
+    const select = document.getElementById(id);
+    select.length = 1;
+    for (const [value] of values) select.add(new Option(label(value), String(value)));
+    select.value = state[key];
+    state[key] = select.value;
   }
-  if (current && communities.some((c) => String(c) === current)) {
-    select.value = current;
-  }
+  const communities = countsBy(nodes, "community");
+  state.communityColors = new Map(communities.slice(0, COMMUNITY_PALETTE.length).map(([c], i) => [c, COMMUNITY_PALETTE[i]]));
+  const classes = countsBy(nodes, "checkpoint_class");
+  classColors.clear();
+  classes.forEach(([name], i) => classColors.set(name, COMMUNITY_PALETTE[i] || `hsl(${Math.round(i * 137.5) % 360} 44% 65%)`));
+  options("type-filter", "typeFilter", countsBy(nodes, "page_type"));
+  options("tier-filter", "tierFilter", countsBy(nodes, "tier"));
+  options("community-filter", "communityFilter", communities, clusterLabel);
+  options("checkpoint-class-filter", "checkpointClassFilter", classes);
+}
+
+function updateSearchResults(q) {
+  const list = document.getElementById("search-results");
+  const meta = document.getElementById("search-meta");
+  list.replaceChildren();
+  list.hidden = !q || !state.filtered.nodes.length;
+  meta.textContent = "";
+  if (!q) return;
+  const nodes = [...state.filtered.nodes].sort((a, b) => a.title.localeCompare(b.title));
+  meta.textContent = `${nodes.length} matching ${nodes.length === 1 ? "page" : "pages"}`;
+  for (const node of nodes) appendPageButton(list, node, node.title, navigateToNode);
 }
 
 function updateStats() {
-  const s = state.graph;
+  const {nodes, edges} = state.filtered;
   document.getElementById("stats").textContent =
-    `${s.node_count} nodes · ${s.edge_count} edges · ${s.community_count} clusters · updated ${s.generated_at ? new Date(s.generated_at * 1000).toLocaleString() : "—"}`;
+    `${nodes.length} pages · ${edges.length} edges · ${countsBy(nodes, "community").length} communities`;
 }
 
 function updateLegend() {
+  if (!state.graph) return;
   const el = document.getElementById("legend");
-  const top = (state.graph.communities || []).slice(0, 6);
-  el.innerHTML = top
-    .map((c) => `<span class='swatch' style='background:${colorForCommunity(c.community)}'></span>${clusterLabel(c.community)} · ${c.size}`)
-    .join("<br/>");
-}
-
-async function loadGraph() {
-  document.getElementById("connection-state").textContent = "loading graph…";
-  try {
-    state.graph = await fetchJSON("/graph/export/json");
-    enrichGraph(state.graph);
-    if (USE_WEBGL) await initWebgl();
-    populateTypes();
-    populateCommunities();
-    updateStats();
-    updateLegend();
-    resize();
-    applyFilters();
-    document.getElementById("connection-state").textContent = "connected";
-  } catch (e) {
-    document.getElementById("connection-state").textContent = `error: ${e.message}`;
+  el.replaceChildren();
+  const nodes = state.filtered.nodes;
+  if (!nodes.length) return;
+  const health = state.health.active;
+  const heading = document.createElement("h3");
+  heading.textContent = health ? "Checkpoint health" : "Communities";
+  el.appendChild(heading);
+  function row(label, count, color) {
+    const div = document.createElement("div");
+    div.className = "legend-row";
+    const swatch = document.createElement("span");
+    swatch.className = "swatch";
+    swatch.style.backgroundColor = color;
+    const number = document.createElement("span");
+    number.className = "count";
+    number.textContent = count;
+    div.append(swatch, document.createTextNode(label), number);
+    el.appendChild(div);
+  }
+  const counts = countsBy(nodes, health ? "checkpoint_class" : "community");
+  const colors = health ? classColors : state.communityColors;
+  let remaining = nodes.length;
+  for (const [value, count] of counts) {
+    if (colors.has(value)) {
+      row(health ? value : clusterLabel(value), count, colors.get(value));
+      remaining -= count;
+    }
+  }
+  if (remaining) row(health ? "Unclassified" : "Other communities", remaining, NEUTRAL);
+  if (health && state.health.trackerStatus === "available") {
+    row("Disagreement ring", nodes.filter(n => state.health.disagreeNodeIds.has(n.id)).length, "#ef6666");
+  } else if (health) {
+    const status = document.createElement("span");
+    status.className = "muted";
+    status.textContent = state.health.trackerStatus === "loading" ? "Loading disagreements…" : "Disagreement data unavailable";
+    el.appendChild(status);
   }
 }
 
+let loadVersion = 0;
+async function loadGraph() {
+  const version = ++loadVersion;
+  const connection = document.getElementById("connection-state");
+  connection.textContent = "Loading graph…";
+  try {
+    const graph = await fetchJSON("/graph/export/json");
+    if (version !== loadVersion) return;
+    state.graph = graph;
+    if (tryWebgl) await initWebgl();
+    if (version !== loadVersion) return;
+    if (!gpuRenderer) positionNodes(graph.nodes, graph.edges);
+    populateFilters();
+    resize();
+    applyFilters();
+    if (state.highlightedId) showNodePanel(findNode(state.highlightedId), { focus: false });
+    connection.textContent = "Connected";
+  } catch (e) {
+    if (version === loadVersion) connection.textContent = `Graph unavailable: ${e.message}`;
+    return;
+  }
+  const buildTime = document.getElementById("build-time");
+  try {
+    const stats = await fetchJSON("/graph/stats");
+    if (version !== loadVersion) return;
+    const timestamp = Date.parse(stats.last_rebuild);
+    buildTime.textContent = Number.isFinite(timestamp)
+      ? `Last rebuild ${new Date(timestamp).toLocaleString()}` : "Last rebuild unavailable";
+    if (stats.sync_status === "error") connection.textContent = "Graph refresh failed";
+  } catch {
+    if (version === loadVersion) buildTime.textContent = "Last rebuild unavailable";
+  }
+}
+
+function resetFilters({ includeArchived = false } = {}) {
+  const archiveChanged = state.includeArchived !== includeArchived;
+  state.includeArchived = includeArchived;
+  state.search = state.typeFilter = state.tierFilter = state.communityFilter = state.checkpointClassFilter = "";
+  state.staleOnly = state.surprises = false;
+  for (const id of ["search", "type-filter", "tier-filter", "community-filter", "checkpoint-class-filter"]) {
+    document.getElementById(id).value = "";
+  }
+  document.getElementById("stale-only-toggle").checked = false;
+  document.getElementById("surprises-toggle").checked = false;
+  document.getElementById("archive-toggle").checked = includeArchived;
+  if (archiveChanged && state.graph) {
+    populateFilters();
+    clearAskResults({ redraw: false });
+  }
+  applyFilters();
+}
+
 function bindUI() {
-  document.getElementById("search").addEventListener("input", (e) => {
-    state.search = e.target.value; applyFilters();
+  const search = document.getElementById("search");
+  search.addEventListener("input", (e) => {
+    if (state.graph && !state.search.trim() && e.target.value.trim()) {
+      state.beforeSearch = gpuRenderer ? gpuRenderer.getCamera() : { ...view };
+    }
+    state.search = e.target.value;
+    applyFilters();
+  });
+  search.addEventListener("keydown", e => {
+    const first = document.querySelector("#search-results button");
+    if (e.key === "ArrowDown" && first) { e.preventDefault(); first.focus(); }
+    if (e.key === "Enter" && first) { e.preventDefault(); first.click(); }
   });
   document.getElementById("type-filter").addEventListener("change", (e) => {
     state.typeFilter = e.target.value; applyFilters();
@@ -1345,30 +1452,23 @@ function bindUI() {
   document.getElementById("stale-only-toggle")?.addEventListener("change", (e) => {
     state.staleOnly = e.target.checked; applyFilters();
   });
-  document.getElementById("clear-filters")?.addEventListener("click", () => {
-    state.search = "";
-    state.typeFilter = "";
-    state.tierFilter = "";
-    state.communityFilter = "";
-    state.checkpointClassFilter = "";
-    state.staleOnly = false;
-    const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
-    const setChecked = (id, val) => { const el = document.getElementById(id); if (el) el.checked = val; };
-    setVal("search", "");
-    setVal("type-filter", "");
-    setVal("tier-filter", "");
-    setVal("community-filter", "");
-    setVal("checkpoint-class-filter", "");
-    setChecked("stale-only-toggle", false);
+  document.getElementById("archive-toggle").addEventListener("change", e => {
+    state.includeArchived = e.target.checked;
+    if (!state.graph) return;
+    populateFilters();
+    clearAskResults({ redraw: false });
     applyFilters();
+    if (state.highlightedId) showNodePanel(findNode(state.highlightedId), { focus: false });
   });
+  document.getElementById("clear-filters").addEventListener("click", () => resetFilters());
+  document.getElementById("empty-clear").addEventListener("click", () => resetFilters());
   document.getElementById("rebuild-btn").addEventListener("click", () => loadGraph());
   document.getElementById("zoom-in").addEventListener("click", () => {
-    if (USE_WEBGL && gpuRenderer) gpuRenderer.zoomBy(1.5);
+    if (gpuRenderer) gpuRenderer.zoomBy(1.5);
     else setScale(view.scale * ZOOM_STEP);
   });
   document.getElementById("zoom-out").addEventListener("click", () => {
-    if (USE_WEBGL && gpuRenderer) gpuRenderer.zoomBy(1 / 1.5);
+    if (gpuRenderer) gpuRenderer.zoomBy(1 / 1.5);
     else setScale(view.scale / ZOOM_STEP);
   });
   document.getElementById("zoom-fit").addEventListener("click", () => fitViewToNodes());
@@ -1376,6 +1476,7 @@ function bindUI() {
     if (state.pathMode) exitPathMode(); else enterPathMode();
   });
   document.getElementById("path-panel-close")?.addEventListener("click", () => exitPathMode());
+  document.getElementById("ask-graph").addEventListener("input", () => clearAskResults());
   document.getElementById("ask-graph")?.addEventListener("keydown", (e) => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -1400,11 +1501,19 @@ function bindUI() {
   toggle?.addEventListener("click", () => {
     document.body.classList.contains("sidebar-open") ? closeSidebar() : openSidebar();
   });
-  closeBtn?.addEventListener("click", closeSidebar);
-  backdrop?.addEventListener("click", closeSidebar);
+  closeBtn?.addEventListener("click", () => closeSidebar());
+  backdrop?.addEventListener("click", () => closeSidebar());
+  mobileDrawer.addEventListener("change", () => closeSidebar(false));
+  closeSidebar(false);
   // Allow Esc to dismiss the drawer for keyboard users.
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.body.classList.contains("sidebar-open")) {
+    if (e.key === "Tab" && document.body.classList.contains("sidebar-open")) {
+      const focusable = [...document.querySelectorAll("#sidebar button, #sidebar input, #sidebar select, #sidebar summary")]
+        .filter(el => !el.disabled && el.checkVisibility());
+      const first = focusable[0], last = focusable.at(-1);
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    } else if (e.key === "Escape" && document.body.classList.contains("sidebar-open")) {
       closeSidebar();
     } else if (e.key === "Escape" && state.pathMode) {
       exitPathMode();
@@ -1420,14 +1529,33 @@ function bindUI() {
   window.addEventListener("orientationchange", () => setTimeout(resize, 100));
 }
 
+const mobileDrawer = window.matchMedia("(max-width: 900px)");
 function openSidebar() {
-  document.body.classList.remove("node-panel-open");
+  if (!mobileDrawer.matches) return;
   document.body.classList.add("sidebar-open");
-  document.getElementById("sidebar-toggle")?.setAttribute("aria-expanded", "true");
+  const sidebar = document.getElementById("sidebar");
+  sidebar.inert = false;
+  sidebar.setAttribute("role", "dialog");
+  sidebar.setAttribute("aria-modal", "true");
+  document.getElementById("canvas-host").inert = true;
+  document.getElementById("node-panel").inert = true;
+  document.getElementById("sidebar-backdrop").hidden = false;
+  document.getElementById("sidebar-toggle").setAttribute("aria-expanded", "true");
+  document.getElementById("search").focus({ preventScroll: true });
 }
-function closeSidebar() {
+function closeSidebar(restoreFocus = true) {
+  const sidebar = document.getElementById("sidebar");
+  const toggle = document.getElementById("sidebar-toggle");
+  const hadFocus = sidebar.contains(document.activeElement);
   document.body.classList.remove("sidebar-open");
-  document.getElementById("sidebar-toggle")?.setAttribute("aria-expanded", "false");
+  sidebar.removeAttribute("role");
+  sidebar.removeAttribute("aria-modal");
+  sidebar.inert = mobileDrawer.matches;
+  document.getElementById("canvas-host").inert = false;
+  document.getElementById("node-panel").inert = false;
+  document.getElementById("sidebar-backdrop").hidden = true;
+  toggle.setAttribute("aria-expanded", "false");
+  if (mobileDrawer.matches && (restoreFocus || hadFocus)) toggle.focus();
 }
 
 function subscribeSSE() {

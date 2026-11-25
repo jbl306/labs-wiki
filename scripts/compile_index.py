@@ -2,32 +2,17 @@
 """Compile wiki/index.md from all wiki pages, clustered by page type."""
 
 import argparse
-import sys
 from pathlib import Path
+
+from wiki_links import wiki_markdown_pages
+from wiki_schema import parse_page_text
 
 
 def parse_frontmatter_simple(path: Path) -> dict | None:
     """Extract key frontmatter fields from a markdown file."""
-    try:
-        content = path.read_text()
-    except Exception:
+    fm, body, error = parse_page_text(path.read_text())
+    if error:
         return None
-
-    if not content.startswith("---"):
-        return None
-
-    parts = content.split("---", 2)
-    if len(parts) < 3:
-        return None
-
-    fm: dict = {}
-    for line in parts[1].strip().split("\n"):
-        line = line.strip()
-        if ":" in line and not line.startswith("-") and not line.startswith("#"):
-            key, _, value = line.partition(":")
-            fm[key.strip()] = value.strip().strip('"').strip("'")
-
-    body = parts[2].strip()
     first_para = body.split("\n\n")[0] if body else ""
     first_para = first_para.replace("#", "").strip()
     if len(first_para) > 120:
@@ -53,8 +38,8 @@ def compile_index(wiki_dir: str = ".") -> str:
         cat_dir = wiki_path / category
         if not cat_dir.exists():
             continue
-        for page in sorted(cat_dir.glob("*.md")):
-            if page.name in ("index.md", "log.md", ".gitkeep"):
+        for page in wiki_markdown_pages(cat_dir):
+            if page.name == "hot-snapshot.md":
                 continue
             fm = parse_frontmatter_simple(page)
             if fm:
@@ -63,20 +48,19 @@ def compile_index(wiki_dir: str = ".") -> str:
                     "summary": fm.get("_summary", ""),
                     "tier": fm.get("tier", ""),
                     "score": fm.get("quality_score", ""),
-                    "path": str(page.relative_to(root)),
                 })
 
     lines = [
         "# Wiki Index",
         "",
         "> Auto-generated catalog of all wiki pages. Do not edit manually.",
-        "> Rebuilt by `/wiki-ingest`, `/wiki-update`, and `/wiki-orchestrate`.",
+        "> Rebuild with `python3 scripts/compile_index.py`.",
         "",
     ]
 
     total = sum(len(v) for v in categories.values())
     if total == 0:
-        lines.append("*No pages yet. Run `/wiki-ingest` to process sources from `raw/`.*")
+        lines.append("*No pages yet. Add a source to `raw/` for ingest.*")
         return "\n".join(lines) + "\n"
 
     section_names = {
@@ -94,7 +78,7 @@ def compile_index(wiki_dir: str = ".") -> str:
         lines.append("")
         for p in sorted(pages, key=lambda x: x["title"]):
             tier = f"T:{p['tier']}" if p["tier"] else ""
-            score = f"score: {p['score']}" if p["score"] else ""
+            score = f"score: {p['score']}" if p["score"] != "" else ""
             meta = ", ".join(filter(None, [tier, score]))
             meta_str = f" ({meta})" if meta else ""
             summary = f" — {p['summary']}" if p["summary"] else ""

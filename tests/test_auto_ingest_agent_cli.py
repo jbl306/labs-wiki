@@ -132,6 +132,69 @@ class AgentCliBackendTests(unittest.TestCase):
             notify.assert_called_once()
             self.assertIn("ValueError: bad route", notify.call_args.kwargs["detail"])
 
+    def test_observer_handles_atomic_arrival_during_startup_scan(self) -> None:
+        from time import monotonic
+
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "raw").mkdir()
+            path = root / "raw/arrives.md"
+            initial_scan = watch_raw.RawFileHandler.reconcile
+            def scan(handler):
+                initial_scan(handler)
+                incoming = root / "incoming"
+                incoming.write_text("---\nstatus: pending\n---\nArrived during startup")
+                incoming.rename(path)
+            stop_at = monotonic() + 5
+            def process(handler):
+                if monotonic() > stop_at:
+                    self.fail("startup arrival missed by observer")
+                consume(handler)
+            consume = watch_raw.RawFileHandler._process_pending
+            with (
+                patch.object(sys, "argv", ["watch_raw.py", "--project-root", str(root)]),
+                patch.object(watch_raw.RawFileHandler, "reconcile", scan),
+                patch.object(watch_raw.RawFileHandler, "_process_pending", process),
+                patch("watch_raw.POLL_INTERVAL", 0.02),
+                patch("watch_raw.DEBOUNCE_SECONDS", 0.01),
+                patch("watch_raw.ingest_raw_source", side_effect=KeyboardInterrupt) as ingest,
+            ):
+                watch_raw.main()
+            self.assertEqual(ingest.call_args.args[0], path)
+
+    def test_watcher_retry_budget_and_hold_survive_restart(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp, patch("watch_raw.DEBOUNCE_SECONDS", 0):
+            root = Path(tmp)
+            (root / "raw").mkdir()
+            raw = root / "raw/retry.md"
+            raw.write_text("---\ncaptured: 2026-01-01T00:00:00Z\nstatus: pending\n---\nNote")
+            hold = root / ".cache/wiki-watcher/holds" / raw.name
+            hold.parent.mkdir(parents=True)
+            hold.touch()
+            now = 1_800_000_000
+            with patch("watch_raw.ingest_raw_source", return_value=False) as run:
+                for attempt in range(watch_raw.MAX_ATTEMPTS):
+                    handler = watch_raw.RawFileHandler(root, "", None)
+                    with patch("watch_raw.time.time", return_value=now):
+                        handler.reconcile()
+                        handler._process_pending()
+                        if attempt == 0:
+                            run.assert_not_called()
+                            self.assertEqual(watch_raw.backlog(root)[0]["held"], 1)
+                            hold.unlink()
+                            handler.reconcile()
+                            handler._process_pending()
+                        # A filesystem event during backoff does not replay the attempt.
+                        handler._schedule(str(raw))
+                        handler._process_pending()
+                        self.assertEqual(run.call_count, attempt + 1)
+                        summary, due = watch_raw.backlog(root)
+                        self.assertEqual(due, [])
+                        self.assertEqual(summary["oldest_unsuccessful_pending"]["attempts"], attempt + 1)
+                    now += 7200
+                self.assertEqual(summary["exhausted"], 1)
+                self.assertIn("status: pending", raw.read_text())
+
     def test_direct_cli_exception_notifies_and_exits_failed(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -480,6 +543,33 @@ Original filename: notes.docx
             commit.assert_not_called()
             self.assertIn("status: ingested", raw_path.read_text())
 
+    def test_canonical_publication_with_unconfirmed_commit_reports_failure(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "raw").mkdir()
+            raw = root / "raw/example.md"
+            raw.write_text("---\ntitle: Example\ntype: text\nstatus: pending\n---\nUseful source body")
+            def publish(*_args, **_kwargs):
+                manifest = ["raw/example.md", "wiki/index.md"]
+                watch_raw.write_ingest_state(root / auto_ingest.commit_receipt_path(raw), {"manifest": manifest})
+                auto_ingest.update_raw_status(raw, "ingested")
+                return manifest
+            with (
+                patch("auto_ingest._selected_backend", return_value="codex-cli"),
+                patch("auto_ingest.call_codex_cli_ingest", return_value={"status": "success", "notes": "done"}),
+                patch("auto_ingest.prepare_and_publish", side_effect=publish),
+                patch("auto_ingest.commit_wiki_changes", return_value=False),
+                patch("auto_ingest.send_ntfy") as notify,
+                patch("auto_ingest.replay_pending_kg_facts") as replay,
+            ):
+                self.assertFalse(auto_ingest.ingest_raw_source(raw, root, ""))
+                self.assertIn("unconfirmed", notify.call_args.args[0])
+                replay.assert_not_called()
+            summary, due = watch_raw.backlog(root)
+            self.assertEqual(summary["unconfirmed_git_commits"], ["example.md"])
+            self.assertEqual(due, [])
+            self.assertIn("status: ingested", raw.read_text())
+
     def test_commit_stages_only_manifest_paths(self) -> None:
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -501,7 +591,6 @@ Original filename: notes.docx
                     paths=[
                         "wiki/sources/example.md",
                         "raw/example.md",
-                        "../outside.md",
                     ],
                 )
 
@@ -512,6 +601,19 @@ Original filename: notes.docx
                 ["--", "wiki/sources/example.md", "raw/example.md"],
             )
             self.assertNotIn("wiki/", add_command)
+
+    def test_incomplete_manifest_rejects_entire_commit_before_staging(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "present.md").touch()
+            for invalid in ("missing.md", "../outside.md", "."):
+                with self.subTest(invalid=invalid), patch(
+                    "auto_ingest.subprocess.run", return_value=subprocess.CompletedProcess([], 0),
+                ) as git:
+                    with self.assertRaisesRegex(RuntimeError, "manifest path"):
+                        auto_ingest.commit_wiki_changes(root, "example", "ok", ["present.md", invalid])
+                    self.assertEqual(git.call_count, 1)
+                    self.assertIn("rev-parse", git.call_args.args[0])
 
     def test_git_publish_manifest_excludes_runtime_kg_outbox(self) -> None:
         self.assertEqual(

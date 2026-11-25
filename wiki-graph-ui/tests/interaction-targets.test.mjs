@@ -75,3 +75,22 @@ test("mobile taps keep a usable minimum hit radius when fit-to-screen zoom is ti
 
   assert.equal(hit?.id, node.id);
 });
+
+test("overview labels choose one hub per community and phone zoom reveals page titles", () => {
+  const nodes = [
+    { id: "energy", title: "Energy model", degree: 18, community: 1, x: -75, y: 0 },
+    { id: "coast", title: "Coastal model", degree: 10, community: 2, x: 70, y: 0 },
+    { id: "wind", title: "Wind model", degree: 1, community: 1, x: 0, y: 90 },
+  ];
+  const options = {
+    nodes, highlightedId: null, canvasSize, nodeRadius, measureText,
+    view: { scale: 1, fitScale: 1, tx: 0, ty: 0 },
+    communityLabel: community => community === 1 ? "Energy" : "Water",
+  };
+  const overview = buildLabelTargets(options);
+  assert.deepEqual(overview.map(target => target.label), ["Energy", "Water"]);
+  assert.ok(overview.every(target => target.fontWorldPx * options.view.scale >= 13));
+  const detail = buildLabelTargets({ ...options, view: { ...options.view, scale: 2 } });
+  assert.ok(detail.some(target => target.label === "Wind model"));
+  assert.ok(detail.every(target => target.label === target.node.title));
+});

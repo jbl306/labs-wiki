@@ -24,11 +24,8 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(REPO_ROOT / "scripts"))
 
-from lint_wiki import (  # noqa: E402  (path-injected import)
-    build_wikilink_lookup,
-    find_wikilinks,
-    wikilink_exists,
-)
+from lint_wiki import find_wikilinks  # noqa: E402
+from wiki_links import build_wikilink_lookup  # noqa: E402
 
 
 def parse_frontmatter(path: Path) -> dict | None:
@@ -206,11 +203,12 @@ def evaluate_fixture(fx: dict[str, Any]) -> dict[str, Any]:
 
     # ---- broken_link_count -----------------------------------------------
     all_wiki_pages = _all_pages()
-    titles, slugs = build_wikilink_lookup(all_wiki_pages)
+    lookup = build_wikilink_lookup(WIKI_DIR, all_wiki_pages)
     broken_links: list[dict[str, str]] = []
     for p in pages:
+        node_id = p.relative_to(WIKI_DIR).with_suffix("").as_posix()
         for link in find_wikilinks(p):
-            if not wikilink_exists(link, titles, slugs):
+            if lookup.resolve(link, node_id) is None:
                 broken_links.append({"page": str(p.relative_to(REPO_ROOT)), "link": link})
 
     # ---- date_accuracy ---------------------------------------------------

@@ -27,31 +27,37 @@ REPO = Path(__file__).resolve().parents[1]
 PENDING = REPO / "wiki" / ".kg-pending.jsonl"
 
 
-def auto_commit_wiki() -> None:
-    """Stage wiki/ + raw/ and commit with Co-authored-by trailer if any changes."""
+def auto_commit_wiki() -> bool:
+    """Commit periodic wiki and raw snapshots without touching other staged paths."""
     try:
         subprocess.run(
             ["git", "-C", str(REPO), "add", "wiki", "raw"],
             check=True, capture_output=True,
         )
         diff = subprocess.run(
-            ["git", "-C", str(REPO), "diff", "--cached", "--quiet"],
+            ["git", "-C", str(REPO), "diff", "--cached", "--quiet", "--", "wiki", "raw"],
+            capture_output=True,
         )
         if diff.returncode == 0:
-            return  # nothing staged
+            return True  # nothing staged
+        if diff.returncode != 1:
+            diff.check_returncode()
         msg = (
             "wiki(auto-ingest): periodic snapshot\n\n"
-            "Auto-committed by scripts/replay_kg_facts.py cron.\n\n"
-            "Co-authored-by: Copilot <223556219+Copilot@users.noreply.github.com>"
+            "Auto-committed by scripts/replay_kg_facts.py cron."
         )
         subprocess.run(
-            ["git", "-C", str(REPO), "commit", "--no-verify", "-m", msg],
+            ["git", "-C", str(REPO), "commit", "--only", "-m", msg, "--", "wiki", "raw"],
             check=True, capture_output=True,
         )
         print("[commit] staged wiki/raw changes committed")
+        return True
     except subprocess.CalledProcessError as exc:
-        print(f"[commit] failed: {exc.stderr.decode(errors='ignore')[:200]}",
-              file=sys.stderr)
+        detail = (exc.stderr or b"").decode(errors="replace").strip()
+        print(f"[commit] failed: {detail[:200] or str(exc)}", file=sys.stderr)
+    except OSError as exc:
+        print(f"[commit] failed: {exc}", file=sys.stderr)
+    return False
 
 
 def main() -> int:
@@ -63,8 +69,8 @@ def main() -> int:
     path = Path(args.file)
     if not path.exists():
         print(f"No pending facts at {path}", file=sys.stderr)
-        if not args.dry_run:
-            auto_commit_wiki()
+        if not args.dry_run and not auto_commit_wiki():
+            return 1
         return 0
 
     try:
@@ -129,8 +135,8 @@ def main() -> int:
             kg.close()
 
     print(f"Replayed {applied} fact(s); {len(remaining)} remaining.")
-    if not args.dry_run:
-        auto_commit_wiki()
+    if not args.dry_run and not auto_commit_wiki():
+        return 1
     return 0 if not remaining else 1
 
 

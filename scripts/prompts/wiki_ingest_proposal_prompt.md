@@ -34,8 +34,9 @@ tags: []
 ```
 
 - `source_hash` must equal the exact 64-character `SOURCE_HASH` supplied by the orchestrator for every create or update, including multi-source concepts, entities, and synthesis pages. Preserve earlier provenance in `sources`, but never carry forward an older `source_hash`.
-- `sources` must be a non-empty YAML list of contained, existing `raw/*.md` paths.
+- `sources` must be a non-empty YAML list of contained, existing `raw/*.md` paths and include `RAW_PATH` on every page.
 - `concepts`, `related`, and `tags` must be YAML lists even when empty.
+- Each entry in `related` is a wikilink. Its target and every body wikilink must resolve to an existing page or a page proposed in this batch.
 - Entity pages require `## Overview` and a populated `## Key Facts` table. Use `Unknown` only when the source does not state the value.
 - Concept pages must be standalone and deep enough to explain mechanism, trade-offs, limitations, and a concrete example.
 

@@ -39,10 +39,10 @@ export function renderMarkdown(src) {
   function inline(s) {
     let t = escapeHTML(s);
     // Wikilinks [[Page]] or [[Page|alias]]
-    t = t.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, (_, target, alias) => {
-      const safeTarget = target.trim();
-      const text = (alias || target).trim();
-      return `<a class="wikilink" data-target="${safeTarget.replace(/"/g, "&quot;")}" href="#">${text}</a>`;
+    t = t.replace(/\[\[([^\[\]\n]+)\]\]/g, (_, raw) => {
+      const target = raw.trim().replace(/\\\|/g, "|");
+      const text = target.split("|").at(-1).trim() || target;
+      return `<a class="wikilink" data-target="${target}" href="#">${text}</a>`;
     });
     // Inline code
     t = t.replace(/`([^`]+)`/g, "<code>$1</code>");

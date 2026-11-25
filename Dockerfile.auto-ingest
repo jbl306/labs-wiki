@@ -16,7 +16,7 @@ COPY scripts/requirements-auto-ingest.txt /opt/labs-wiki/requirements.txt
 RUN pip install --no-cache-dir -r /opt/labs-wiki/requirements.txt
 
 COPY --chmod=755 scripts/auto_ingest.py scripts/watch_raw.py scripts/audit_synthesis.py /opt/labs-wiki/scripts/
-COPY --chmod=755 scripts/ingest_transaction.py scripts/wiki_schema.py /opt/labs-wiki/scripts/
+COPY --chmod=755 scripts/ingest_transaction.py scripts/wiki_schema.py scripts/wiki_links.py /opt/labs-wiki/scripts/
 COPY --chmod=755 scripts/checkpoint_classifier.py scripts/checkpoint_state.py /opt/labs-wiki/scripts/
 COPY --chmod=755 scripts/compile_index.py /opt/labs-wiki/scripts/
 COPY --chmod=755 wiki-graph-api/graph_builder.py /opt/labs-wiki/scripts/graph_builder.py

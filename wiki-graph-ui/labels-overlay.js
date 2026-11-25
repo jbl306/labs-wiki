@@ -1,6 +1,6 @@
 import { buildLabelTargets } from "./interaction-targets.js?v=__BUILD_ID__";
 
-export function createLabelOverlay({ container, renderer, communityLabel }) {
+export function createLabelOverlay({ container, renderer, communityLabel, colorOf, nodeRadiusPx }) {
   const layer = document.createElement("div");
   layer.id = "webgl-labels";
   layer.style.cssText = [
@@ -34,99 +34,58 @@ export function createLabelOverlay({ container, renderer, communityLabel }) {
   let focused = false;
   let onLabelClick = null;
 
-  // Snapshot of the camera *at the time labels were last laid out*.
-  // The stage transform is computed against this so labels can ride along
-  // with the camera without per-label work.
   let layoutCam = null;
+  let dirty = true;
+  let settleTimer;
+  const pointers = new Set();
 
-  // Interaction tracking — drives both the gesture-transform behaviour
-  // and the throttled-layout behaviour.
-  let activePointers = 0;
-  let interacting = false;
-  let settleTimer = null;
-  let lastLayoutTs = 0;
-  let pendingCam = null;
-  let pendingTimer = null;
-  // Settle quickly once the user lifts their finger / stops scrolling so
-  // the labels snap to their final positions instead of lingering at the
-  // pre-zoom transform for a noticeable beat.
-  const LAYOUT_INTERVAL_MS = 30;
-  const SETTLE_MS = 50;
-
-  function setInteracting(on) {
-    if (interacting === on) return;
-    interacting = on;
-    if (!on) {
-      // Reset stage to identity and force a fresh layout in the new
-      // screen frame.
-      stage.style.transform = "";
-
-      const cam = pendingCam || renderer.getCamera();
-      pendingCam = null;
-      runLayout(cam);
-    }
+  // While the camera moves, the already positioned chips travel on one layer.
+  // Recompute their screen-space sizes and collisions when the gesture settles.
+  function settleSoon() {
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => {
+      settleTimer = null;
+      if (!pointers.size) layout(renderer.getCamera());
+    }, 70);
   }
-
-  function bumpInteraction() {
-    setInteracting(true);
-    if (settleTimer) clearTimeout(settleTimer);
-    settleTimer = setTimeout(() => setInteracting(false), SETTLE_MS);
+  const events = new AbortController();
+  const listener = { passive: true, signal: events.signal };
+  container.addEventListener("pointerdown", e => pointers.add(e.pointerId), listener);
+  function release(e) {
+    if (pointers.delete(e.pointerId) && !pointers.size) settleSoon();
   }
+  window.addEventListener("pointerup", release, listener);
+  window.addEventListener("pointercancel", release, listener);
+  container.addEventListener("wheel", settleSoon, listener);
 
-  // We listen on the container so any gesture inside the graph host (touch,
-  // mouse, wheel) triggers gesture mode. passive:true so we never fight the
-  // canvas's own pointer handlers.
-  container.addEventListener("pointerdown", () => {
-    activePointers += 1;
-    bumpInteraction();
-  }, { passive: true });
-  const releasePointer = () => {
-    activePointers = Math.max(0, activePointers - 1);
-    if (activePointers === 0) bumpInteraction();
-  };
-  container.addEventListener("pointerup", releasePointer, { passive: true });
-  container.addEventListener("pointercancel", releasePointer, { passive: true });
-  container.addEventListener("wheel", () => bumpInteraction(), { passive: true });
+  stage.addEventListener("click", e => {
+    const item = labels.get(e.target.dataset.id);
+    if (item) onLabelClick?.(item.node);
+  });
 
   function setNodes(newNodes) {
     nodes = newNodes;
-    runLayout(renderer.getCamera());
+    dirty = true;
   }
   function setPinned(ids, selectedId, neighborhood, focus) {
     pinned = ids;
     selected = selectedId;
     neighbors = neighborhood;
     focused = focus;
+    dirty = true;
   }
   function setOnLabelClick(cb) { onLabelClick = cb; }
 
-  // The renderer fires this every drawn frame. During an active gesture we
-  // *do not* re-layout; we just transform the stage to ride along with the
-  // camera. On settle we'll do a real layout once.
   function layout(cam) {
-    if (!cam) return;
-    if (interacting) {
-      pendingCam = cam;
+    if (!cam || !cam.viewW || !cam.viewH) return;
+    if (!dirty && layoutCam && (pointers.size || settleTimer)) {
       applyGestureTransform(cam);
-      // Camera is still moving — push the settle deadline out.
-      if (settleTimer) clearTimeout(settleTimer);
-      settleTimer = setTimeout(() => setInteracting(false), SETTLE_MS);
       return;
     }
-    const now = performance.now();
-    const since = now - lastLayoutTs;
-    if (since >= LAYOUT_INTERVAL_MS) {
+    if (dirty || !layoutCam || cam.x !== layoutCam.x || cam.y !== layoutCam.y ||
+        cam.scale !== layoutCam.scale || cam.viewW !== layoutCam.viewW || cam.viewH !== layoutCam.viewH) {
       runLayout(cam);
-      return;
     }
-    pendingCam = cam;
-    if (pendingTimer) return;
-    pendingTimer = setTimeout(() => {
-      pendingTimer = null;
-      const c = pendingCam;
-      pendingCam = null;
-      if (c) runLayout(c);
-    }, LAYOUT_INTERVAL_MS - since);
   }
 
   // Compute and apply the affine that maps the snapshot frame (when labels
@@ -136,13 +95,13 @@ export function createLabelOverlay({ container, renderer, communityLabel }) {
     const W = cam.viewW || layoutCam.viewW;
     const H = cam.viewH || layoutCam.viewH;
     const k = cam.scale / layoutCam.scale;
-    const tx = (W / 2) * (1 - k) + cam.scale * (layoutCam.x - cam.x);
-    const ty = (H / 2) * (1 - k) + cam.scale * (layoutCam.y - cam.y);
+    const tx = (W - layoutCam.viewW * k) / 2 + cam.scale * (layoutCam.x - cam.x);
+    const ty = (H - layoutCam.viewH * k) / 2 + cam.scale * (layoutCam.y - cam.y);
     stage.style.transform = `translate3d(${tx}px, ${ty}px, 0) scale(${k})`;
   }
 
   function runLayout(cam) {
-    lastLayoutTs = performance.now();
+    dirty = false;
     layoutCam = { x: cam.x, y: cam.y, scale: cam.scale, viewW: cam.viewW, viewH: cam.viewH };
     stage.style.transform = ""; // identity in the new frame
     const W = cam.viewW, H = cam.viewH;
@@ -151,41 +110,47 @@ export function createLabelOverlay({ container, renderer, communityLabel }) {
     const targets = buildLabelTargets({
       nodes, highlightedId: selected, pinnedIds: pinned, neighbors, focused, communityLabel,
       canvasSize: { width: W, height: H }, view,
-      nodeRadius: () => 4 / cam.scale,
+      nodeRadius: node => nodeRadiusPx(node) / cam.scale,
       measureText(label, worldFont) {
         measure.font = `500 ${Math.round(worldFont * cam.scale)}px ${fontFamily}`;
         return measure.measureText(label).width / cam.scale;
       },
     });
     const visible = new Set();
-    for (const { node, label, highlighted, screenRect } of targets) {
+    for (const { node, label, highlighted, community, screenRect } of targets) {
       visible.add(node.id);
-      let button = labels.get(node.id);
-      if (!button) {
-        button = document.createElement("button");
+      let item = labels.get(node.id);
+      if (!item) {
+        const button = document.createElement("button");
         button.type = "button";
         button.className = "webgl-label";
         button.dataset.id = node.id;
         stage.appendChild(button);
-        labels.set(node.id, button);
+        item = { button, node };
+        labels.set(node.id, item);
       }
-      button.onclick = () => onLabelClick?.(node);
-      button.setAttribute("aria-label", node.title || node.id);
-      button.title = node.title || node.id;
-      button.textContent = label;
+      const { button } = item;
+      item.node = node;
+      const title = node.title || node.id;
+      const description = community ? `${label} — open ${title}` : title;
+      if (button.getAttribute("aria-label") !== description) button.setAttribute("aria-label", description);
+      if (button.title !== title) button.title = title;
+      if (button.textContent !== label) button.textContent = label;
+      button.classList.toggle("community", community);
+      button.style.setProperty("--label-color", colorOf(node));
       button.classList.toggle("pinned", highlighted);
       button.style.width = `${Math.ceil(screenRect.w)}px`;
       button.style.height = `${Math.ceil(screenRect.h)}px`;
       button.style.transform = `translate3d(${Math.round(screenRect.x)}px, ${Math.round(screenRect.y)}px, 0)`;
     }
-    for (const [id, button] of labels) {
+    for (const [id, { button }] of labels) {
       if (!visible.has(id)) { button.remove(); labels.delete(id); }
     }
   }
 
   function destroy() {
     clearTimeout(settleTimer);
-    clearTimeout(pendingTimer);
+    events.abort();
     labels.clear();
     layer.remove();
   }

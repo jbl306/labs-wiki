@@ -13,7 +13,7 @@
 // Public API:
 //   const r = createWebglRenderer({ container, onPointClick, onBackgroundClick });
 //   r.syncData(nodes, edges);
-//   r.syncStyle({ colorOf, sizeOf, dimOf, ringOf, edgeColorOf });
+//   r.syncStyle({ colorOf, sizeOf, alphaOf, ringOf, edgeColorOf });
 //   r.focusNode(id);
 //   r.fit();
 //   r.render();          // request a redraw
@@ -108,7 +108,7 @@ void main() {
   float d = length(uv);
   if (d > 1.0) discard;
 
-  float coverage = 1.0 - smoothstep(0.82, 1.0, d);
+  float coverage = 1.0 - smoothstep(1.0 - fwidth(d), 1.0, d);
   float ring = step(0.5, abs(v_selected)) * smoothstep(0.64, 0.78, d);
   vec3 ringColor = v_selected < 0.0 ? vec3(1.0, 0.38, 0.40) : vec3(0.8, 1.0, 0.96);
   vec3 col = mix(v_color.rgb, ringColor, ring);
@@ -169,13 +169,13 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   // Build canvas inside container.
   const canvas = document.createElement("canvas");
   canvas.style.cssText = "position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab;";
-  container.style.position = container.style.position || "relative";
+  if (getComputedStyle(container).position === "static") container.style.position = "relative";
   container.appendChild(canvas);
 
   const gl = canvas.getContext("webgl2", {
     antialias: true,
     premultipliedAlpha: true,
-    alpha: false,
+    alpha: true,
     powerPreference: "high-performance",
   });
   if (!gl) throw new Error("webgl2 unavailable");
@@ -206,7 +206,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   const lnColBuf = gl.createBuffer();
 
   // Camera / state.
-  let dpr = Math.max(1, window.devicePixelRatio || 1);
+  let dpr = 1;
   let viewW = 0, viewH = 0;
   // Camera in world units. World x/y from server are in [-1000, 1000].
   let cam = { x: 0, y: 0, scale: 0.4 };
@@ -262,7 +262,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   // ---------- Resize / matrix --------------------------------------------
 
   function resize() {
-    dpr = Math.max(1, window.devicePixelRatio || 1);
+    dpr = Math.min(2, Math.max(1, window.devicePixelRatio || 1));
     const w = container.clientWidth | 0;
     const h = container.clientHeight | 0;
     const width = Math.max(1, Math.round(w * dpr));
@@ -272,6 +272,12 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     canvas.width = width;
     canvas.height = height;
     gl.viewport(0, 0, canvas.width, canvas.height);
+    if (fitBounds && w && h) {
+      const relativeZoom = cam.scale / overviewScale;
+      updateFitScale();
+      cam.scale = Math.min(20, Math.max(fitScale, overviewScale * relativeZoom));
+      clampCamera();
+    }
     needsRedraw = true;
     schedule();
   }
@@ -371,7 +377,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     gl.bindVertexArray(null);
   }
 
-  function syncStyle({ colorOf, sizeOf, dimOf, ringOf, edgeColorOf }) {
+  function syncStyle({ colorOf, sizeOf, alphaOf, ringOf, edgeColorOf }) {
     const lineColors = new Float32Array(edges.length * 8);
     for (let i = 0; i < edges.length; i++) {
       const color = edgeColorOf(edges[i]);
@@ -384,16 +390,18 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     const sizes = new Float32Array(nodes.length);
     const alphas = new Float32Array(nodes.length);
     const sels = new Float32Array(nodes.length);
+    const palette = new Map();
     for (let i = 0; i < nodes.length; i++) {
       const n = nodes[i];
-      const rgba = parseColor(colorOf(n));
-      const dim = dimOf ? dimOf(n) : false;
+      const color = colorOf(n);
+      if (!palette.has(color)) palette.set(color, parseColor(color));
+      const rgba = palette.get(color);
       colors[i * 4] = rgba[0];
       colors[i * 4 + 1] = rgba[1];
       colors[i * 4 + 2] = rgba[2];
       colors[i * 4 + 3] = rgba[3];
       sizes[i] = Math.max(2, sizeOf(n));
-      alphas[i] = dim ? 0.18 : 1.0;
+      alphas[i] = alphaOf(n);
       sels[i] = ringOf(n);
     }
     gl.bindBuffer(gl.ARRAY_BUFFER, ptColBuf);
@@ -417,8 +425,16 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   // trimmed bbox. fitScale is the minimum allowed cam.scale so users
   // can't zoom out past "everything fits".
   let bbox = null; // { minX, maxX, minY, maxY }
+  let fitBounds = null;
   let fitScale = 0.05;
   let overviewScale = 0.4;
+
+  function updateFitScale() {
+    const width = Math.max(fitBounds.maxX - fitBounds.minX, 1);
+    const height = Math.max(fitBounds.maxY - fitBounds.minY, 1);
+    overviewScale = Math.min(viewW * 0.8 / width, viewH * 0.8 / height, 3);
+    fitScale = overviewScale * 0.85;
+  }
 
   function fit({ all = true } = {}) {
     if (!nodes.length || !viewW || !viewH) return;
@@ -436,23 +452,16 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       }
     }
     if (!valid) return;
-    const xsArr = xs.subarray(0, valid);
-    const ysArr = ys.subarray(0, valid);
-    const sortedX = Array.from(xsArr).sort((a, b) => a - b);
-    const sortedY = Array.from(ysArr).sort((a, b) => a - b);
+    const sortedX = xs.subarray(0, valid).sort();
+    const sortedY = ys.subarray(0, valid).sort();
     const lo = all ? 0 : Math.floor(valid * 0.03);
     const hi = all ? valid - 1 : Math.min(valid - 1, Math.ceil(valid * 0.97));
     const minX = sortedX[lo], maxX = sortedX[hi];
     const minY = sortedY[lo], maxY = sortedY[hi];
     bbox = { minX: sortedX[0], maxX: sortedX[valid - 1], minY: sortedY[0], maxY: sortedY[valid - 1] };
-    const w = Math.max(maxX - minX, 1);
-    const h = Math.max(maxY - minY, 1);
-    const padding = 0.10;
-    const sx = viewW * (1 - padding * 2) / w;
-    const sy = viewH * (1 - padding * 2) / h;
-    cam.scale = Math.min(sx, sy, 3);
-    overviewScale = cam.scale;
-    fitScale = cam.scale * 0.85; // allow a touch of zoom-out room beyond fit
+    fitBounds = { minX, maxX, minY, maxY };
+    updateFitScale();
+    cam.scale = overviewScale;
     cam.x = (minX + maxX) / 2;
     cam.y = (minY + maxY) / 2;
     needsRedraw = true;
@@ -491,12 +500,12 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     zoomAt(cam.scale * factor, viewW / 2, viewH / 2);
   }
 
-  function focusNode(id) {
+  function focusNode(id, screenX = viewW / 2, screenY = viewH / 2) {
     const i = idToIdx.get(id);
     if (i == null) return;
-    cam.x = nodes[i].x;
-    cam.y = nodes[i].y;
     cam.scale = Math.max(cam.scale, 1.6);
+    cam.x = nodes[i].x - (screenX - viewW / 2) / cam.scale;
+    cam.y = nodes[i].y - (screenY - viewH / 2) / cam.scale;
     needsRedraw = true;
     schedule();
   }
@@ -568,6 +577,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   }
 
   canvas.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
     if (e.pointerType === "mouse") {
       try { canvas.setPointerCapture(e.pointerId); } catch (_) { /* ignore */ }
     }
@@ -575,6 +585,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     pressX = e.clientX; pressY = e.clientY; moved = false;
     pressType = e.pointerType || "mouse";
     if (pointers.size >= 2) {
+      moved = true;
       pinching = true;
       dragging = false;
       snapshotPinch();
@@ -586,8 +597,11 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
   });
 
   canvas.addEventListener("pointermove", (e) => {
-    if (!pointers.has(e.pointerId)) return;
-    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    const ptr = pointers.get(e.pointerId);
+    if (!ptr) return;
+    const prevX = ptr.x, prevY = ptr.y;
+    ptr.x = e.clientX;
+    ptr.y = e.clientY;
 
     if (pinching && pointers.size >= 2) {
       const pts = Array.from(pointers.values());
@@ -618,13 +632,10 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
 
     if (dragging && pointers.size === 1) {
       // Pan with one finger / mouse.
-      const ptr = pointers.get(e.pointerId);
-      const prevX = ptr.prevX != null ? ptr.prevX : pressX;
-      const prevY = ptr.prevY != null ? ptr.prevY : pressY;
-      const dx = e.clientX - prevX;
-      const dy = e.clientY - prevY;
-      ptr.prevX = e.clientX; ptr.prevY = e.clientY;
-      if (Math.hypot(e.clientX - pressX, e.clientY - pressY) > tapSlop()) moved = true;
+      if (!moved && Math.hypot(e.clientX - pressX, e.clientY - pressY) <= tapSlop()) return;
+      const dx = e.clientX - (moved ? prevX : pressX);
+      const dy = e.clientY - (moved ? prevY : pressY);
+      moved = true;
       const f = panFactor();
       cam.x -= (dx / cam.scale) * f;
       cam.y -= (dy / cam.scale) * f;
@@ -642,18 +653,14 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
       // If one finger remains after a pinch, transition cleanly into a drag.
       if (pointers.size === 1) {
         dragging = true;
-        // Reset the remaining pointer's prev so the first move after lift
-        // doesn't compute a giant delta.
-        const id = pointers.keys().next().value;
-        const p = pointers.get(id);
-        p.prevX = p.x; p.prevY = p.y;
+        moved = true;
       }
     }
     if (pointers.size === 0) {
       dragging = false;
       canvas.style.cursor = "grab";
       // Treat as click if not moved.
-      if (!moved) {
+      if (!moved && e.type === "pointerup") {
         const rect = canvas.getBoundingClientRect();
         const px = e.clientX - rect.left;
         const py = e.clientY - rect.top;
@@ -704,10 +711,9 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     rafPending = false;
     if (!needsRedraw) return;
     needsRedraw = false;
-    resize();
     if (!viewW || !viewH) return;
 
-    gl.clearColor(0.043, 0.055, 0.078, 1.0); // #0b0e14
+    gl.clearColor(0, 0, 0, 0);
     gl.clear(gl.COLOR_BUFFER_BIT);
 
     gl.enable(gl.BLEND);
@@ -743,6 +749,7 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
 
   function destroy() {
     ro.disconnect();
+    window.removeEventListener("resize", resize);
     transformObservers.clear();
     canvas.remove();
   }

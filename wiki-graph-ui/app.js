@@ -177,13 +177,15 @@ const state = {
   },
 };
 
-const COMMUNITY_PALETTE = ["#66d2bb", "#e7b36e", "#7eaeeb", "#cd96c9", "#b0ca82", "#e08c77"];
+const COMMUNITY_PALETTE = ["#22efbe", "#ffbd36", "#46a9ff", "#fa65cd", "#bcf34f", "#ff8259"];
+const OTHER_COMMUNITIES_COLOR = "#a596ff";
 const NEUTRAL = "#879ba5";
 const classColors = new Map();
 
 function nodeColor(node) {
   if (state.health.active) return classColors.get(node.checkpoint_class) || NEUTRAL;
-  return state.communityColors.get(node.community) || NEUTRAL;
+  if (node.community == null || node.community === "") return NEUTRAL;
+  return state.communityColors.get(node.community) || OTHER_COMMUNITIES_COLOR;
 }
 
 function isArchived(node) {
@@ -313,8 +315,8 @@ function graphStyle() {
       if ((dimNonPath && !state.pathNodes.has(n.id)) || (askActive && !state.ask.subgraphIds.has(n.id)) ||
           (state.highlightedId && n.id !== state.highlightedId && !neighborhood?.has(n.id))) return 0.16;
       if (selected.has(n.id) || neighborhood?.has(n.id) || state.health.active) return 1;
-      const base = state.communityColors.has(n.community) ? 0.59 : 0.48;
-      return Math.min(0.98, base + 0.10 * Math.sqrt(n.degree || 0));
+      const base = state.communityColors.has(n.community) ? 0.87 : 0.77;
+      return Math.min(1, base + 0.05 * Math.sqrt(n.degree || 0));
     },
     ringOf(n) {
       if (state.health.active && state.health.disagreeNodeIds.has(n.id)) return -1;
@@ -1337,7 +1339,7 @@ function populateFilters() {
   state.communityColors = new Map(communities.slice(0, COMMUNITY_PALETTE.length).map(([c], i) => [c, COMMUNITY_PALETTE[i]]));
   const classes = countsBy(nodes, "checkpoint_class");
   classColors.clear();
-  classes.forEach(([name], i) => classColors.set(name, COMMUNITY_PALETTE[i] || `hsl(${Math.round(i * 137.5) % 360} 44% 65%)`));
+  classes.forEach(([name], i) => classColors.set(name, COMMUNITY_PALETTE[i] || `hsl(${Math.round(i * 137.5) % 360} 85% 68%)`));
   options("type-filter", "typeFilter", countsBy(nodes, "page_type"));
   options("tier-filter", "tierFilter", countsBy(nodes, "tier"));
   options("community-filter", "communityFilter", communities, clusterLabel);
@@ -1465,7 +1467,7 @@ function updateLegend() {
     const remaining = new Map(communityCounts);
     const communities = new Map([...state.communityColors].map(([value, color]) => [String(value), color]));
     if (state.communityFilter && !communities.has(state.communityFilter)) {
-      communities.set(state.communityFilter, NEUTRAL);
+      communities.set(state.communityFilter, OTHER_COMMUNITIES_COLOR);
     }
     for (const [value, color] of communities) {
       row(clusterLabel(value), remaining.get(value) || 0, color, value);
@@ -1474,7 +1476,7 @@ function updateLegend() {
     const unassigned = remaining.get("") || 0;
     remaining.delete("");
     const other = [...remaining.values()].reduce((sum, count) => sum + count, 0);
-    if (other) row("Other communities", other, NEUTRAL);
+    if (other) row("Other communities", other, OTHER_COMMUNITIES_COLOR);
     if (unassigned) row("No community", unassigned, NEUTRAL);
     if (focusedCommunity && !communities.has(focusedCommunity)) {
       const select = document.getElementById("community-filter");

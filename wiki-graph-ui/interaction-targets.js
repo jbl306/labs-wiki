@@ -23,6 +23,25 @@ export function getNodeScreenPosition(node, canvasSize, view) {
   };
 }
 
+const degreeOrders = new WeakMap();
+
+function labelCandidates(nodes, highlightedId, pinnedIds, neighbors) {
+  let order = degreeOrders.get(nodes);
+  if (!order) {
+    order = [...nodes].sort((a, b) => (b.degree || 0) - (a.degree || 0));
+    degreeOrders.set(nodes, order);
+  }
+  if (highlightedId == null && !pinnedIds.size && !neighbors?.size) return order;
+  const selected = [], pinned = [], nearby = [], rest = [];
+  for (const node of order) {
+    if (node.id === highlightedId) selected.push(node);
+    else if (pinnedIds.has(node.id)) pinned.push(node);
+    else if (neighbors?.has(node.id)) nearby.push(node);
+    else rest.push(node);
+  }
+  return selected.concat(pinned, nearby, rest);
+}
+
 export function buildLabelTargets({
   nodes,
   highlightedId,
@@ -43,11 +62,12 @@ export function buildLabelTargets({
   const occupiedLabelRects = [];
   const labelTargets = [];
   const labeledCommunities = new Set();
-  const priority = (node) => (node.id === highlightedId ? 3 : pinnedIds.has(node.id) ? 2 : neighbors?.has(node.id) ? 1 : 0);
-  const labelCandidates = [...nodes].sort((a, b) =>
-    priority(b) - priority(a) || (b.degree || 0) - (a.degree || 0));
-  for (const node of labelCandidates) {
+  const widths = new Map();
+  for (const node of labelCandidates(nodes, highlightedId, pinnedIds, neighbors)) {
     if (labelTargets.length >= maxLabels) break;
+    const center = getNodeScreenPosition(node, canvasSize, view);
+    if (center.x < 2 || center.x > canvasSize.width - 2 ||
+        center.y < 2 || center.y > canvasSize.height - 2) continue;
     const highlighted = node.id === highlightedId || pinnedIds.has(node.id);
     const group = overview && !highlighted && node.community != null && communityLabel(node.community);
     if (group && labeledCommunities.has(node.community)) continue;
@@ -58,12 +78,17 @@ export function buildLabelTargets({
     const fontWorldPx = screenFontPx / view.scale;
     const padX = (highlighted ? 8 : 6) / view.scale;
     const padY = (highlighted ? 5 : 4) / view.scale;
-    const chipRadius = 10 / view.scale;
+    const chipRadius = 5 / view.scale;
     const offsetY = (highlighted ? 11 : 8) / view.scale;
-    const labelWidth = measureText(label, fontWorldPx) + padX * 2;
+    const key = screenFontPx + " " + label;
+    let labelWidth = widths.get(key);
+    if (labelWidth == null) {
+      labelWidth = measureText(label, fontWorldPx) + padX * 2 + 3 / view.scale;
+      widths.set(key, labelWidth);
+    }
     const labelHeight = fontWorldPx + padY * 2;
     const x = node.x - labelWidth / 2;
-    const y = node.y - nodeRadius(node) - labelHeight - offsetY;
+    let y = node.y - nodeRadius(node) - labelHeight - offsetY;
     const screenRect = {
       x: canvasSize.width / 2 + view.tx + x * view.scale,
       y: canvasSize.height / 2 + view.ty + y * view.scale,
@@ -71,10 +96,13 @@ export function buildLabelTargets({
       h: labelHeight * view.scale,
     };
 
-    if (screenRect.x < 2 || screenRect.x + screenRect.w > canvasSize.width - 2 ||
-        screenRect.y < 2 || screenRect.y + screenRect.h > canvasSize.height - 2) continue;
-    if (occupiedLabelRects.some((rect) => rectOverlaps(rect, screenRect, 6))) {
-      continue;
+    if (screenRect.x < 2 || screenRect.x + screenRect.w > canvasSize.width - 2) continue;
+    const blocked = () => screenRect.y < 2 || screenRect.y + screenRect.h > canvasSize.height - 2 ||
+      occupiedLabelRects.some(rect => rectOverlaps(rect, screenRect, 6));
+    if (blocked()) {
+      y = node.y + nodeRadius(node) + offsetY;
+      screenRect.y = center.y + (nodeRadius(node) + offsetY) * view.scale;
+      if (blocked()) continue;
     }
     if (group) labeledCommunities.add(node.community);
     occupiedLabelRects.push(screenRect);
@@ -82,6 +110,7 @@ export function buildLabelTargets({
       node,
       label,
       highlighted,
+      community: Boolean(group),
       fontWorldPx,
       chipRadius,
       worldRect: { x, y, w: labelWidth, h: labelHeight },

@@ -39,10 +39,15 @@ let gpuLabels = null;   // adaptive HTML label overlay (webgl mode only)
 // Used by populateCommunities() and updateLegend() so the filter shows
 // "Wiki & Knowledge Mgmt" instead of "cluster 0".
 const clusterLabels = new Map();
+const overviewLabels = new Map();
 function clusterLabel(c) {
   if (c == null || c === "") return "";
   const lbl = clusterLabels.get(String(c));
   return lbl ? lbl : `cluster ${c}`;
+}
+
+function overviewClusterLabel(c) {
+  return overviewLabels.get(String(c)) || clusterLabel(c);
 }
 
 // Trim verbose ingestion-source prefixes so labels in the graph and
@@ -109,6 +114,18 @@ function enrichGraph(graph) {
     }
     clusterLabels.set(String(c), parts.map(prettyTag).join(" · "));
   }
+  const nameCounts = new Map();
+  for (const name of clusterLabels.values()) {
+    for (const part of new Set([name, name.split(" · ")[0]])) {
+      nameCounts.set(part, 1 + (nameCounts.get(part) || 0));
+    }
+  }
+  overviewLabels.clear();
+  for (const [id, name] of clusterLabels) {
+    const primary = name.split(" · ")[0];
+    const shortName = nameCounts.get(primary) === 1 ? primary : name;
+    overviewLabels.set(id, nameCounts.get(shortName) === 1 ? shortName : `${shortName} (${id})`);
+  }
 }
 
 const tagSpellings = new Map([["nba", "NBA"], ["ml", "ML"], ["llm", "LLM"], ["mcp", "MCP"], ["nextjs", "Next.js"]]);
@@ -120,7 +137,7 @@ function prettyTag(tag) {
 
 const state = {
   graph: null,
-  filtered: { nodes: [], edges: [] },
+  filtered: { nodes: [], edges: [], communityCounts: new Map() },
   highlightedId: null,
   adjacency: new Map(),
   search: "",
@@ -160,8 +177,8 @@ const state = {
   },
 };
 
-const COMMUNITY_PALETTE = ["#73c5bc", "#d8ae75", "#8daee1", "#c599bc", "#a6bb86", "#c79183"];
-const NEUTRAL = "#8492a5";
+const COMMUNITY_PALETTE = ["#66d2bb", "#e7b36e", "#7eaeeb", "#cd96c9", "#b0ca82", "#e08c77"];
+const NEUTRAL = "#879ba5";
 const classColors = new Map();
 
 function nodeColor(node) {
@@ -209,7 +226,10 @@ async function initWebgl() {
     // Adaptive HTML label overlay over the canvas.
     try {
       const lblMod = await import("./labels-overlay.js?v=__BUILD_ID__");
-      gpuLabels = lblMod.createLabelOverlay({ container: host, renderer: gpuRenderer, communityLabel: clusterLabel });
+      gpuLabels = lblMod.createLabelOverlay({
+        container: host, renderer: gpuRenderer, communityLabel: overviewClusterLabel,
+        colorOf: nodeColor, nodeRadiusPx: node => nodeDiameter(node) / 2,
+      });
       gpuLabels.setOnLabelClick((node) => {
         if (state.pathMode) handlePathClick(node);
         else selectNode(node);
@@ -262,9 +282,23 @@ async function initWebgl() {
   }
 }
 
-function syncGpuStyle() {
-  if (!gpuRenderer) return;
-  const healthActive = state.health.active;
+function nodeDiameter(node) {
+  const base = state.communityColors.has(node.community) ? 3 : 2.1;
+  return Math.min(16, base + 1.05 * Math.sqrt(node.degree || 0));
+}
+
+function edgeStyle(r, g, b, alpha, width) {
+  return { rgba: [r / 255, g / 255, b / 255, alpha], stroke: `rgba(${r},${g},${b},${alpha})`, width };
+}
+const edgeStyles = {
+  normal: edgeStyle(151, 181, 184, 0.10, 0.75),
+  dim: edgeStyle(129, 150, 156, 0.035, 0.75),
+  neighbor: edgeStyle(120, 212, 192, 0.58, 1.2),
+  path: edgeStyle(105, 240, 212, 0.93, 2.3),
+  cross: edgeStyle(238, 161, 135, 0.75, 1.2),
+};
+
+function graphStyle() {
   const askActive = state.ask.active && state.ask.subgraphIds.size > 0;
   const dimNonPath = state.pathMode && state.pathNodes.size > 0;
   const selected = new Set(state.pathNodes);
@@ -272,30 +306,41 @@ function syncGpuStyle() {
   if (askActive) for (const id of state.ask.nodeIds) selected.add(id);
   const pathEdges = new Set(state.pathEdges.map(e => askEdgeKey(e.source, e.target)));
   const neighborhood = state.adjacency.get(state.highlightedId);
-  gpuRenderer.syncStyle({
-    colorOf: nodeColor,
-    sizeOf: n => Math.min(13, 3.2 + Math.log2(1 + (n.degree || 0)) * 1.5),
-    ringOf: n => healthActive && state.health.disagreeNodeIds.has(n.id) ? -1 : Number(selected.has(n.id)),
-    edgeColorOf: e => {
-      const key = askEdgeKey(e.source, e.target);
-      if (pathEdges.has(key) || (askActive && state.ask.edgeKeys.has(key))) return [0.37, 0.92, 0.83, 0.85];
-      if (dimNonPath || askActive) return [0.49, 0.56, 0.63, 0.055];
+  return {
+    selected, neighborhood,
+    focused: Boolean(state.search.trim() || selected.size || state.communityFilter),
+    alphaOf(n) {
+      if ((dimNonPath && !state.pathNodes.has(n.id)) || (askActive && !state.ask.subgraphIds.has(n.id)) ||
+          (state.highlightedId && n.id !== state.highlightedId && !neighborhood?.has(n.id))) return 0.16;
+      if (selected.has(n.id) || neighborhood?.has(n.id) || state.health.active) return 1;
+      const base = state.communityColors.has(n.community) ? 0.59 : 0.48;
+      return Math.min(0.98, base + 0.10 * Math.sqrt(n.degree || 0));
+    },
+    ringOf(n) {
+      if (state.health.active && state.health.disagreeNodeIds.has(n.id)) return -1;
+      return Number(selected.has(n.id));
+    },
+    edgeOf(e) {
+      if (pathEdges.size || askActive) {
+        const key = askEdgeKey(e.source, e.target);
+        if (pathEdges.has(key) || (askActive && state.ask.edgeKeys.has(key))) return edgeStyles.path;
+      }
+      if (dimNonPath || askActive) return edgeStyles.dim;
       if (state.highlightedId) return e.source === state.highlightedId || e.target === state.highlightedId
-        ? [0.48, 0.75, 0.75, 0.55] : [0.49, 0.56, 0.63, 0.04];
-      if (state.surprises && e.cross_community) return [0.96, 0.59, 0.48, 0.8];
-      return [0.49, 0.56, 0.63, 0.13];
+        ? edgeStyles.neighbor : edgeStyles.dim;
+      if (state.surprises && e.cross_community) return edgeStyles.cross;
+      return edgeStyles.normal;
     },
-    dimOf: (n) => {
-      const onPath = state.pathNodes.has(n.id);
-      const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
-      return (dimNonPath && !onPath) || (askActive && !inAskSub) ||
-        (state.highlightedId && n.id !== state.highlightedId && !neighborhood?.has(n.id));
-    },
+  };
+}
+
+function syncGpuStyle() {
+  const style = graphStyle();
+  gpuRenderer.syncStyle({
+    colorOf: nodeColor, sizeOf: nodeDiameter, alphaOf: style.alphaOf,
+    ringOf: style.ringOf, edgeColorOf: edge => style.edgeOf(edge).rgba,
   });
-  if (gpuLabels) {
-    gpuLabels.setPinned(selected, state.highlightedId, neighborhood, Boolean(state.search.trim() || selected.size || state.communityFilter));
-    gpuLabels.layout(gpuRenderer.getCamera());
-  }
+  gpuLabels?.setPinned(style.selected, state.highlightedId, style.neighborhood, style.focused);
 }
 
 function isNodeStale(node, now = Date.now()) {
@@ -333,16 +378,21 @@ function applyFilters() {
   const staleOnly = state.staleOnly;
   const now = Date.now();
 
-  const nodes = scopeNodes().filter((n) => {
+  const candidates = scopeNodes().filter((n) => {
     if (typeF && n.page_type !== typeF) return false;
     if (tierF && n.tier !== tierF) return false;
-    if (communityF !== "" && String(n.community) !== String(communityF)) return false;
     if (ckptClassF && (n.checkpoint_class || "") !== ckptClassF) return false;
     if (staleOnly && !isNodeStale(n, now)) return false;
     if (!q) return true;
     const hay = (n.title + " " + (n.original_title || "") + " " + (n.tags || []).join(" ")).toLowerCase();
     return hay.includes(q);
   });
+  const communityCounts = new Map();
+  for (const node of candidates) {
+    const id = String(node.community ?? "");
+    communityCounts.set(id, (communityCounts.get(id) || 0) + 1);
+  }
+  const nodes = communityF ? candidates.filter(n => String(n.community) === communityF) : candidates;
   const ids = new Set(nodes.map((n) => n.id));
   const edges = state.graph.edges.filter((e) => ids.has(e.source) && ids.has(e.target));
 
@@ -350,7 +400,7 @@ function applyFilters() {
     clearSelection({ redraw: false });
   }
 
-  state.filtered = { nodes, edges };
+  state.filtered = { nodes, edges, communityCounts };
   state.adjacency = buildAdjacency(edges);
   if (state.pathStart && (!ids.has(state.pathStart) || (state.pathEnd && !ids.has(state.pathEnd)) ||
       [...state.pathNodes].some(id => !ids.has(id)))) clearPathSelection({ redraw: false });
@@ -367,6 +417,7 @@ function applyFilters() {
   updateSearchResults(q);
   updateAskResultsList();
   updateStats();
+  document.getElementById("scope-clear").hidden = !(q || typeF || tierF || communityF || ckptClassF || staleOnly || state.includeArchived);
   updateLegend();
   document.getElementById("empty-graph").hidden = nodes.length > 0;
   document.getElementById("empty-message").textContent = state.graph.nodes.length ? "No matching pages" : "The graph has no pages";
@@ -439,6 +490,7 @@ const view = { scale: 0.35, fitScale: 0.35, tx: 0, ty: 0 };
 const MIN_SCALE = 0.05;
 const MAX_SCALE = isCoarsePointer ? 6 : 4.5;
 const ZOOM_STEP = 1.22;
+let canvasFitExtent;
 
 function clampScale(nextScale) {
   return Math.max(Math.min(MIN_SCALE, view.fitScale), Math.min(MAX_SCALE, nextScale));
@@ -450,18 +502,29 @@ function updateZoomLevel() {
 }
 
 function nodeRadius(node) {
-  return Math.max(3, 3 + Math.log2(1 + (node.degree || 0)) * 2);
+  return nodeDiameter(node) / (2 * view.scale);
 }
 
 function resize() {
   if (gpuRenderer) return; // webgl renderer manages its own canvas sizing
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width = Math.round(canvas.clientWidth * dpr);
-  canvas.height = Math.round(canvas.clientHeight * dpr);
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const width = Math.round(canvas.clientWidth * dpr), height = Math.round(canvas.clientHeight * dpr);
+  if (canvas.width === width && canvas.height === height) return;
+  canvas.width = width;
+  canvas.height = height;
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  if (canvasFitExtent && width && height) {
+    const oldScale = view.scale;
+    const zoomRatio = oldScale / view.fitScale;
+    view.fitScale = canvasFitScale();
+    view.scale = clampScale(view.fitScale * zoomRatio);
+    view.tx *= view.scale / oldScale;
+    view.ty *= view.scale / oldScale;
+  }
   updateZoomLevel();
-  draw();
+  scheduleCanvasDraw();
 }
+new ResizeObserver(resize).observe(canvas);
 window.addEventListener("resize", resize);
 
 function screenToWorld(x, y) {
@@ -515,7 +578,14 @@ function setScale(nextScale, anchorX = canvas.clientWidth / 2, anchorY = canvas.
   view.tx = anchorX - canvas.clientWidth / 2 - worldPoint.x * clampedScale;
   view.ty = anchorY - canvas.clientHeight / 2 - worldPoint.y * clampedScale;
   updateZoomLevel();
-  draw();
+  scheduleCanvasDraw();
+}
+
+function canvasFitScale() {
+  const gutter = isCoarsePointer ? 56 : 80;
+  const width = canvas.clientWidth - 2 * Math.min(gutter, canvas.clientWidth * 0.14);
+  const height = canvas.clientHeight - 2 * Math.min(gutter, canvas.clientHeight * 0.14);
+  return Math.min(MAX_SCALE, width / canvasFitExtent.width, height / canvasFitExtent.height);
 }
 
 function fitViewToNodes({ all = true } = {}) {
@@ -525,19 +595,14 @@ function fitViewToNodes({ all = true } = {}) {
 
   let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   for (const node of nodes) {
-    const r = nodeRadius(node);
-    minX = Math.min(minX, node.x - r);
-    minY = Math.min(minY, node.y - r);
-    maxX = Math.max(maxX, node.x + r);
-    maxY = Math.max(maxY, node.y + r);
+    minX = Math.min(minX, node.x);
+    minY = Math.min(minY, node.y);
+    maxX = Math.max(maxX, node.x);
+    maxY = Math.max(maxY, node.y);
   }
 
-  const width = Math.max(maxX - minX, 120);
-  const height = Math.max(maxY - minY, 120);
-  const gutter = isCoarsePointer ? 56 : 80;
-  const availableWidth = canvas.clientWidth - 2 * Math.min(gutter, canvas.clientWidth * 0.14);
-  const availableHeight = canvas.clientHeight - 2 * Math.min(gutter, canvas.clientHeight * 0.14);
-  const nextScale = Math.min(MAX_SCALE, availableWidth / width, availableHeight / height);
+  canvasFitExtent = { width: Math.max(maxX - minX, 120), height: Math.max(maxY - minY, 120) };
+  const nextScale = canvasFitScale();
   const targetX = canvas.clientWidth / 2;
   const targetY = !all && isCoarsePointer ? canvas.clientHeight * 0.46 : canvas.clientHeight / 2;
   const centerX = (minX + maxX) / 2;
@@ -548,15 +613,24 @@ function fitViewToNodes({ all = true } = {}) {
   view.tx = targetX - canvas.clientWidth / 2 - centerX * nextScale;
   view.ty = targetY - canvas.clientHeight / 2 - centerY * nextScale;
   updateZoomLevel();
-  draw();
+  scheduleCanvasDraw();
 }
 
 function centerNodeInView(node) {
-  if (gpuRenderer) { gpuRenderer.focusNode(node.id); return; }
-  const targetX = canvas.clientWidth / 2;
-  const targetY = isCoarsePointer ? canvas.clientHeight * 0.3 : canvas.clientHeight / 2;
-  view.tx = targetX - canvas.clientWidth / 2 - node.x * view.scale;
-  view.ty = targetY - canvas.clientHeight / 2 - node.y * view.scale;
+  const stage = document.getElementById("graph-stage").getBoundingClientRect();
+  const panel = document.getElementById("node-panel");
+  const reader = panel.getBoundingClientRect();
+  let targetX = stage.width / 2, targetY = stage.height / 2;
+  if (reader.left <= stage.left && reader.right >= stage.right) {
+    // The sheet can grow after the page and neighbors finish loading.
+    const top = reader.bottom - parseFloat(getComputedStyle(panel).maxHeight);
+    targetY = Math.max(26, (top - stage.top) / 2);
+  } else {
+    targetX = Math.min(targetX, Math.max(26, (reader.left - stage.left) / 2));
+  }
+  if (gpuRenderer) { gpuRenderer.focusNode(node.id, targetX, targetY); return; }
+  view.tx = targetX - stage.width / 2 - node.x * view.scale;
+  view.ty = targetY - stage.height / 2 - node.y * view.scale;
 }
 
 // ---------- Path mode (R13) -----------------------------------------------
@@ -679,6 +753,7 @@ function appendPageButton(list, node, text, onClick) {
   button.addEventListener("click", () => onClick(node));
   li.appendChild(button);
   list.appendChild(li);
+  return button;
 }
 
 function clearAskResults({ redraw = true } = {}) {
@@ -870,141 +945,105 @@ function handlePathClick(node) {
   clearPathSelection();
 }
 
+let canvasFrame = 0;
+let canvasStyle;
+let edgePaths;
+
+function scheduleCanvasDraw() {
+  if (!canvasFrame) canvasFrame = requestAnimationFrame(drawCanvas);
+}
+
 function draw() {
   if (gpuRenderer) { syncGpuStyle(); return; }
-  ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+  canvasStyle = null;
+  scheduleCanvasDraw();
+}
+
+function buildEdgePaths(nodes, edges, style) {
+  const byId = new Map(nodes.map(node => [node.id, node]));
+  const paths = new Map();
+  for (const edge of edges) {
+    const a = byId.get(edge.source), b = byId.get(edge.target);
+    if (!a || !b) continue;
+    const paint = style.edgeOf(edge);
+    if (!paths.has(paint)) paths.set(paint, new Path2D());
+    const path = paths.get(paint);
+    path.moveTo(a.x, a.y);
+    path.lineTo(b.x, b.y);
+  }
+  return paths;
+}
+
+function drawCanvas() {
+  canvasFrame = 0;
+  if (gpuRenderer) return;
+  const width = canvas.clientWidth, height = canvas.clientHeight;
+  ctx.clearRect(0, 0, width, height);
   const { nodes, edges } = state.filtered;
   state.visibleNodes = [];
   state.labelTargets = [];
-  if (!nodes.length) return;
+  if (!nodes.length || !width || !height) return;
 
-  const cx = canvas.clientWidth / 2;
-  const cy = canvas.clientHeight / 2;
-  const bounds = visibleWorldBounds();
-  const viewportPadding = 160 / view.scale;
-  const visibleNodes = nodes.filter((node) => isNodeVisible(node, bounds, viewportPadding));
-  state.visibleNodes = visibleNodes;
-  const visibleIds = new Set(visibleNodes.map((node) => node.id));
-  const nodeById = new Map(nodes.map((node) => [node.id, node]));
-
-  ctx.save();
-  ctx.translate(cx + view.tx, cy + view.ty);
-  ctx.scale(view.scale, view.scale);
-
-  // Edges
-  const pathEdgeKey = (s, t) => s < t ? `${s}|${t}` : `${t}|${s}`;
-  const pathEdgeSet = state.pathMode && state.pathEdges.length
-    ? new Set(state.pathEdges.map((e) => pathEdgeKey(e.source, e.target)))
-    : null;
-  const dimNonPath = state.pathMode && state.pathNodes.size > 0;
-  const askActive = state.ask.active && state.ask.subgraphIds.size > 0;
-
-  ctx.lineWidth = 0.8 / view.scale;
-  for (const e of edges) {
-    if (!visibleIds.has(e.source) && !visibleIds.has(e.target)) continue;
-    const a = nodeById.get(e.source), b = nodeById.get(e.target);
-    if (!a || !b) continue;
-    let strokeStyle;
-    const isOnPath = pathEdgeSet && pathEdgeSet.has(pathEdgeKey(e.source, e.target));
-    const isAskEdge = askActive && state.ask.edgeKeys.has(pathEdgeKey(e.source, e.target));
-    if (isOnPath) {
-      strokeStyle = "rgba(94,234,212,0.95)";
-    } else if (isAskEdge) {
-      strokeStyle = "rgba(94,234,212,0.6)";
-    } else if (dimNonPath || askActive) {
-      strokeStyle = "rgba(120,130,150,0.06)";
-    } else if (state.highlightedId) {
-      strokeStyle = e.source === state.highlightedId || e.target === state.highlightedId
-        ? "rgba(122,191,191,0.55)" : "rgba(125,143,161,0.04)";
-    } else if (state.surprises && e.cross_community) {
-      strokeStyle = "rgba(248,113,113,0.85)";
-    } else {
-      strokeStyle = "rgba(125,143,161,0.15)";
-    }
-    ctx.strokeStyle = strokeStyle;
-    ctx.lineWidth = (isOnPath || isAskEdge) ? 2.5 / view.scale : 0.8 / view.scale;
-    ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.stroke();
+  if (!canvasStyle) {
+    canvasStyle = graphStyle();
+    edgePaths = buildEdgePaths(nodes, edges, canvasStyle);
   }
-  ctx.lineWidth = 0.8 / view.scale;
+  const bounds = visibleWorldBounds();
+  const visibleNodes = nodes.filter(node => isNodeVisible(node, bounds, 20 / view.scale));
+  state.visibleNodes = visibleNodes;
+  ctx.save();
+  ctx.translate(width / 2 + view.tx, height / 2 + view.ty);
+  ctx.scale(view.scale, view.scale);
+  // Draw highlighted connections above the rest, regardless of export order.
+  for (const paint of [edgeStyles.normal, edgeStyles.dim, edgeStyles.cross, edgeStyles.neighbor, edgeStyles.path]) {
+    const path = edgePaths.get(paint);
+    if (!path) continue;
+    ctx.strokeStyle = paint.stroke;
+    ctx.lineWidth = paint.width / view.scale;
+    ctx.stroke(path);
+  }
 
-  // Nodes
-  const healthActive = state.health.active;
-  const neighborhood = state.adjacency.get(state.highlightedId);
   for (const n of visibleNodes) {
     const r = nodeRadius(n);
-    const onPath = state.pathNodes.has(n.id);
-    const inAskTop = askActive && state.ask.nodeIds.has(n.id);
-    const inAskSub = askActive && state.ask.subgraphIds.has(n.id);
-    const dimNode = (dimNonPath && !onPath) || (askActive && !inAskSub) ||
-      (state.highlightedId && n.id !== state.highlightedId && !neighborhood?.has(n.id));
-    ctx.globalAlpha = dimNode ? 0.18 : 1.0;
-    // R17 — checkpoint-health colors override community palette.
-    const fillColor = nodeColor(n);
-    ctx.fillStyle = fillColor;
-    if (state.highlightedId === n.id) {
-      ctx.fillStyle = "rgba(94,234,212,0.18)";
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, r + 9 / view.scale, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.fillStyle = fillColor;
-    }
+    const selected = canvasStyle.selected.has(n.id);
+    const disagreement = state.health.active && state.health.disagreeNodeIds.has(n.id);
+    ctx.globalAlpha = canvasStyle.alphaOf(n);
+    ctx.fillStyle = nodeColor(n);
     ctx.beginPath();
     ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
     ctx.fill();
-    if (onPath || inAskTop) {
-      ctx.strokeStyle = "#5eead4";
-      ctx.lineWidth = 2.5 / view.scale;
-      ctx.stroke();
-    } else if (state.highlightedId === n.id) {
-      ctx.strokeStyle = "#5eead4";
-      ctx.lineWidth = 2 / view.scale;
-      ctx.stroke();
-    }
-    // R17 — red disagreement ring.
-    if (healthActive && state.health.disagreeNodeIds.has(n.id)) {
-      ctx.strokeStyle = "#ef4444";
-      ctx.lineWidth = 2.5 / view.scale;
+    if (selected || disagreement) {
+      ctx.lineWidth = 1.6 / view.scale;
+      ctx.strokeStyle = disagreement ? "#ff6969" : "#c6fff2";
       ctx.beginPath();
-      ctx.arc(n.x, n.y, r + 4 / view.scale, 0, Math.PI * 2);
+      ctx.arc(n.x, n.y, r + 2 / view.scale, 0, Math.PI * 2);
       ctx.stroke();
     }
-    ctx.globalAlpha = 1.0;
   }
-
-  // As the user zooms in, relax the label threshold so mobile exploration
-  // reveals more context without needing to tap every single node.
+  ctx.globalAlpha = 1;
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
   state.labelTargets = buildLabelTargets({
-    nodes: visibleNodes,
-    highlightedId: state.highlightedId,
-    pinnedIds: new Set([...state.pathNodes, ...state.ask.nodeIds]),
-    neighbors: neighborhood,
-    focused: Boolean(state.search.trim() || state.highlightedId || state.pathNodes.size || state.ask.active || state.communityFilter),
-    communityLabel: clusterLabel,
-    canvasSize: { width: canvas.clientWidth, height: canvas.clientHeight },
-    view,
-    nodeRadius,
+    nodes, highlightedId: state.highlightedId, pinnedIds: canvasStyle.selected,
+    neighbors: canvasStyle.neighborhood, focused: canvasStyle.focused, communityLabel: overviewClusterLabel,
+    canvasSize: { width, height }, view, nodeRadius,
     measureText(label, fontWorldPx) {
-      ctx.font = `${fontWorldPx}px sans-serif`;
+      ctx.font = `500 ${fontWorldPx}px sans-serif`;
       return ctx.measureText(label).width;
     },
   });
 
   for (const target of state.labelTargets) {
-    const { node, label, highlighted, fontWorldPx, chipRadius, worldRect } = target;
-    ctx.font = `${fontWorldPx}px sans-serif`;
-    ctx.fillStyle = highlighted ? "rgba(11,13,18,0.92)" : "rgba(11,13,18,0.76)";
-    ctx.strokeStyle = highlighted ? "#5eead4" : "rgba(120,130,150,0.35)";
+    const { node, label, highlighted, community, fontWorldPx, chipRadius, worldRect } = target;
+    ctx.font = `500 ${fontWorldPx}px sans-serif`;
+    ctx.fillStyle = highlighted ? "rgba(20,46,48,.98)" : "rgba(16,29,33,.92)";
+    ctx.strokeStyle = highlighted ? "#66d2bb" : "rgba(121,160,157,.34)";
     ctx.lineWidth = (highlighted ? 1.5 : 1) / view.scale;
     pathRoundedRect(worldRect.x, worldRect.y, worldRect.w, worldRect.h, chipRadius);
     ctx.fill();
     ctx.stroke();
 
-    ctx.fillStyle = highlighted ? "#f8fafc" : "#e5e7eb";
+    ctx.fillStyle = community ? nodeColor(node) : "#e5efee";
     ctx.fillText(label, node.x, worldRect.y + worldRect.h / 2);
   }
 
@@ -1046,8 +1085,8 @@ function selectNode(node) {
   if (!panel.contains(document.activeElement)) detailOpener = document.activeElement;
   if (mobileDrawer.matches && document.body.classList.contains("sidebar-open")) closeSidebar(false);
   state.highlightedId = node.id;
-  centerNodeInView(node);
   showNodePanel(node);
+  centerNodeInView(node);
   if (state.health.active) showCheckpointDetail(node);
   draw();
 }
@@ -1057,8 +1096,7 @@ function selectNode(node) {
 // Unified pointer handling so mouse, touch, and pen all share one code path.
 // We track active pointers in a Map to support pinch-to-zoom on touch devices.
 const activePointers = new Map(); // pointerId -> {x, y}
-let pinchStartDist = 0;
-let pinchStartScale = 1;
+let previousPinch;
 let panPointerId = null;
 let panLastX = 0, panLastY = 0;
 let pointerDownAt = 0;
@@ -1066,16 +1104,15 @@ let pointerDownX = 0, pointerDownY = 0;
 let pointerMoved = false;
 const TAP_MAX_MS = 500;
 
-function pinchDistance() {
-  const pts = Array.from(activePointers.values());
-  if (pts.length < 2) return 0;
-  const dx = pts[0].x - pts[1].x;
-  const dy = pts[0].y - pts[1].y;
-  return Math.hypot(dx, dy);
+function pinchGeometry() {
+  const [a, b] = activePointers.values();
+  const rect = canvas.getBoundingClientRect();
+  return { x: (a.x + b.x) / 2 - rect.left, y: (a.y + b.y) / 2 - rect.top,
+    distance: Math.hypot(a.x - b.x, a.y - b.y) };
 }
 
 canvas.addEventListener("pointerdown", (e) => {
-  if (gpuRenderer) return;
+  if (gpuRenderer || e.button !== 0) return;
   canvas.setPointerCapture(e.pointerId);
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
   pointerDownAt = performance.now();
@@ -1088,8 +1125,8 @@ canvas.addEventListener("pointerdown", (e) => {
     panLastX = e.clientX;
     panLastY = e.clientY;
   } else if (activePointers.size === 2) {
-    pinchStartDist = pinchDistance();
-    pinchStartScale = view.scale;
+    pointerMoved = true;
+    previousPinch = pinchGeometry();
     panPointerId = null; // Pinch mode — disable single-finger pan.
   }
 });
@@ -1099,14 +1136,13 @@ canvas.addEventListener("pointermove", (e) => {
   if (!activePointers.has(e.pointerId)) return;
   activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
 
-  if (activePointers.size >= 2 && pinchStartDist > 0) {
-    const dist = pinchDistance();
-    const factor = dist / pinchStartDist;
-    const pts = Array.from(activePointers.values());
-    const rect = canvas.getBoundingClientRect();
-    const midX = (pts[0].x + pts[1].x) / 2 - rect.left;
-    const midY = (pts[0].y + pts[1].y) / 2 - rect.top;
-    setScale(pinchStartScale * factor, midX, midY);
+  if (activePointers.size >= 2 && previousPinch) {
+    const pinch = pinchGeometry();
+    view.tx += pinch.x - previousPinch.x;
+    view.ty += pinch.y - previousPinch.y;
+    const factor = previousPinch.distance > 0 ? pinch.distance / previousPinch.distance : 1;
+    setScale(view.scale * factor, pinch.x, pinch.y);
+    previousPinch = pinch;
     pointerMoved = true;
     return;
   }
@@ -1133,7 +1169,7 @@ canvas.addEventListener("pointermove", (e) => {
     view.ty += dy;
     panLastX = e.clientX;
     panLastY = e.clientY;
-    draw();
+    scheduleCanvasDraw();
   }
 });
 
@@ -1144,14 +1180,14 @@ function endPointer(e) {
 
   // If this was a quick, near-stationary press, treat it as a tap.
   if (
-    e.pointerId === panPointerId &&
+    e.type === "pointerup" && e.pointerId === panPointerId &&
     !pointerMoved &&
     performance.now() - pointerDownAt < TAP_MAX_MS
   ) {
     handleTap(e.clientX, e.clientY);
   }
 
-  if (activePointers.size < 2) pinchStartDist = 0;
+  previousPinch = activePointers.size >= 2 ? pinchGeometry() : null;
   if (activePointers.size === 0) panPointerId = null;
   else {
     // One finger lifted during a pinch — promote the remaining one to pan.
@@ -1201,7 +1237,7 @@ function showNodePanel(node, { focus = true } = {}) {
   const version = ++state.selectionVersion;
   const panel = document.getElementById("node-panel");
   panel.classList.remove("hidden");
-  if (focus) panel.scrollTop = 0;
+  if (focus) panel.querySelector(".reader-body").scrollTop = 0;
   document.getElementById("node-title").textContent = node.title;
   if (focus) document.getElementById("node-title").focus({ preventScroll: true });
   document.getElementById("node-meta").textContent = [node.page_type, node.tier,
@@ -1308,59 +1344,155 @@ function populateFilters() {
   options("checkpoint-class-filter", "checkpointClassFilter", classes);
 }
 
+const SEARCH_BATCH_SIZE = 24;
+let searchScope = "";
+let searchResultLimit = SEARCH_BATCH_SIZE;
+
 function updateSearchResults(q) {
   const list = document.getElementById("search-results");
   const meta = document.getElementById("search-meta");
+  const scope = JSON.stringify([q, state.typeFilter, state.tierFilter, state.communityFilter,
+    state.checkpointClassFilter, state.staleOnly, state.includeArchived]);
+  const sameScope = scope === searchScope;
+  if (!sameScope) searchResultLimit = SEARCH_BATCH_SIZE;
+  searchScope = scope;
+  const active = list.contains(document.activeElement) ? document.activeElement : null;
+  const oldIndex = active ? [...list.children].indexOf(active.parentElement) : -1;
+  const scrollTop = sameScope ? list.scrollTop : 0;
   list.replaceChildren();
   list.hidden = !q || !state.filtered.nodes.length;
-  meta.textContent = "";
-  if (!q) return;
+  if (list.hidden) {
+    meta.textContent = q ? "0 matching pages" : "";
+    if (active) document.getElementById("search").focus();
+    return;
+  }
   const nodes = [...state.filtered.nodes].sort((a, b) => a.title.localeCompare(b.title));
   meta.textContent = `${nodes.length} matching ${nodes.length === 1 ? "page" : "pages"}`;
-  for (const node of nodes) appendPageButton(list, node, node.title, navigateToNode);
+  const activeId = sameScope && active?.dataset.nodeId;
+  const focusedIndex = activeId ? nodes.findIndex(n => n.id === activeId) : -1;
+  searchResultLimit = Math.max(searchResultLimit, focusedIndex + 1);
+
+  let shown = 0;
+  const moreRow = document.createElement("li");
+  const more = document.createElement("button");
+  more.type = "button";
+  more.className = "search-more";
+  moreRow.appendChild(more);
+  more.addEventListener("click", () => {
+    searchResultLimit = shown + SEARCH_BATCH_SIZE;
+    appendBatch().focus();
+  });
+
+  function appendBatch() {
+    moreRow.remove();
+    const batch = document.createDocumentFragment();
+    const end = Math.min(searchResultLimit, nodes.length);
+    for (; shown < end; shown++) {
+      const node = nodes[shown];
+      appendPageButton(batch, node, node.title, navigateToNode).dataset.nodeId = node.id;
+    }
+    const firstNew = batch.querySelector("button");
+    list.appendChild(batch);
+    if (shown < nodes.length) {
+      more.textContent = `Show more (${nodes.length - shown} remaining)`;
+      list.appendChild(moreRow);
+    }
+    return firstNew;
+  }
+  appendBatch();
+  list.scrollTop = scrollTop;
+  if (active) {
+    const nearest = Math.min(shown - 1, Math.max(0, focusedIndex < 0 ? oldIndex : focusedIndex));
+    const keepMore = sameScope && active.classList.contains("search-more") && more.isConnected;
+    (keepMore ? more : list.children[nearest].firstElementChild).focus();
+  }
 }
 
 function updateStats() {
   const {nodes, edges} = state.filtered;
-  document.getElementById("stats").textContent =
-    `${nodes.length} pages · ${edges.length} edges · ${countsBy(nodes, "community").length} communities`;
+  for (const [unit, singular, count] of [
+    ["pages", "page", nodes.length],
+    ["edges", "edge", edges.length],
+    ["communities", "community", countsBy(nodes, "community").length],
+  ]) {
+    const number = document.getElementById(`stat-${unit}`);
+    number.textContent = count.toLocaleString();
+    number.nextElementSibling.textContent = count === 1 ? singular : unit;
+  }
 }
 
 function updateLegend() {
   if (!state.graph) return;
   const el = document.getElementById("legend");
+  const focusedCommunity = document.activeElement?.dataset.community;
   el.replaceChildren();
-  const nodes = state.filtered.nodes;
-  if (!nodes.length) return;
+  const { nodes, communityCounts } = state.filtered;
   const health = state.health.active;
   const heading = document.createElement("h3");
   heading.textContent = health ? "Checkpoint health" : "Communities";
+  el.setAttribute("aria-label", health ? "Checkpoint health of visible pages" : "Filter by community, with page counts matching the other filters");
   el.appendChild(heading);
-  function row(label, count, color) {
-    const div = document.createElement("div");
-    div.className = "legend-row";
+  function row(label, count, color, community = null) {
+    const item = document.createElement(community === null ? "div" : "button");
+    item.className = "legend-row";
+    if (community !== null) {
+      const pressed = state.communityFilter === community;
+      item.type = "button";
+      item.dataset.community = community;
+      item.setAttribute("aria-pressed", String(pressed));
+      item.disabled = !count && !pressed;
+      item.addEventListener("click", () => {
+        const select = document.getElementById("community-filter");
+        select.value = pressed ? "" : community;
+        select.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    }
     const swatch = document.createElement("span");
     swatch.className = "swatch";
     swatch.style.backgroundColor = color;
+    const name = document.createElement("span");
+    name.className = "legend-name";
+    name.textContent = label;
     const number = document.createElement("span");
     number.className = "count";
-    number.textContent = count;
-    div.append(swatch, document.createTextNode(label), number);
-    el.appendChild(div);
+    number.textContent = count.toLocaleString();
+    item.append(swatch, name, number);
+    el.appendChild(item);
+    if (focusedCommunity === community) item.focus({ preventScroll: true });
+    return item;
   }
-  const counts = countsBy(nodes, health ? "checkpoint_class" : "community");
-  const colors = health ? classColors : state.communityColors;
-  let remaining = nodes.length;
-  for (const [value, count] of counts) {
-    if (colors.has(value)) {
-      row(health ? value : clusterLabel(value), count, colors.get(value));
-      remaining -= count;
+  if (!health) {
+    const remaining = new Map(communityCounts);
+    const communities = new Map([...state.communityColors].map(([value, color]) => [String(value), color]));
+    if (state.communityFilter && !communities.has(state.communityFilter)) {
+      communities.set(state.communityFilter, NEUTRAL);
     }
+    for (const [value, color] of communities) {
+      row(clusterLabel(value), remaining.get(value) || 0, color, value);
+      remaining.delete(value);
+    }
+    const unassigned = remaining.get("") || 0;
+    remaining.delete("");
+    const other = [...remaining.values()].reduce((sum, count) => sum + count, 0);
+    if (other) row("Other communities", other, NEUTRAL);
+    if (unassigned) row("No community", unassigned, NEUTRAL);
+    if (focusedCommunity && !communities.has(focusedCommunity)) {
+      const select = document.getElementById("community-filter");
+      const fallback = el.querySelector("button:enabled") || document.getElementById("search");
+      (select.checkVisibility() ? select : fallback).focus();
+    }
+    return;
   }
-  if (remaining) row(health ? "Unclassified" : "Other communities", remaining, NEUTRAL);
-  if (health && state.health.trackerStatus === "available") {
-    row("Disagreement ring", nodes.filter(n => state.health.disagreeNodeIds.has(n.id)).length, "#ef6666");
-  } else if (health) {
+
+  let unclassified = nodes.length;
+  for (const [value, count] of countsBy(nodes, "checkpoint_class")) {
+    row(value, count, classColors.get(value));
+    unclassified -= count;
+  }
+  if (unclassified) row("Unclassified", unclassified, NEUTRAL);
+  if (state.health.trackerStatus === "available") {
+    row("Disagreement ring", nodes.filter(n => state.health.disagreeNodeIds.has(n.id)).length, "#ef6666").classList.add("disagreement");
+  } else {
     const status = document.createElement("span");
     status.className = "muted";
     status.textContent = state.health.trackerStatus === "loading" ? "Loading disagreements…" : "Disagreement data unavailable";
@@ -1368,14 +1500,34 @@ function updateLegend() {
   }
 }
 
+// Export freshness and the update stream have separate failure modes.
+let graphStatus = "Loading graph";
+let streamStatus = "Connected";
+function updateConnection() {
+  const text = graphStatus || streamStatus;
+  const el = document.getElementById("connection-state");
+  el.textContent = text;
+  el.dataset.state = text === "Live" ? "live" : text === "Loading graph" || text === "Connected" ? "loading" : "warning";
+}
+
 let loadVersion = 0;
 async function loadGraph() {
   const version = ++loadVersion;
-  const connection = document.getElementById("connection-state");
-  connection.textContent = "Loading graph…";
+  graphStatus = "Loading graph";
+  updateConnection();
+  if (!state.graph) {
+    document.getElementById("empty-graph").hidden = false;
+    document.getElementById("empty-message").textContent = "Loading graph…";
+    document.getElementById("empty-clear").hidden = true;
+  }
   try {
     const graph = await fetchJSON("/graph/export/json");
     if (version !== loadVersion) return;
+    if (!Array.isArray(graph?.nodes) || !Array.isArray(graph.edges) ||
+        !graph.nodes.every(n => typeof n?.id === "string" && typeof n.title === "string") ||
+        !graph.edges.every(e => typeof e?.source === "string" && typeof e.target === "string")) {
+      throw new Error("Invalid graph export");
+    }
     state.graph = graph;
     if (tryWebgl) await initWebgl();
     if (version !== loadVersion) return;
@@ -1384,9 +1536,13 @@ async function loadGraph() {
     resize();
     applyFilters();
     if (state.highlightedId) showNodePanel(findNode(state.highlightedId), { focus: false });
-    connection.textContent = "Connected";
-  } catch (e) {
-    if (version === loadVersion) connection.textContent = `Graph unavailable: ${e.message}`;
+    graphStatus = "";
+    updateConnection();
+  } catch {
+    if (version !== loadVersion) return;
+    graphStatus = state.graph ? "Reload failed" : "Graph unavailable";
+    updateConnection();
+    if (!state.graph) document.getElementById("empty-message").textContent = "Graph unavailable. Reload to try again.";
     return;
   }
   const buildTime = document.getElementById("build-time");
@@ -1396,7 +1552,10 @@ async function loadGraph() {
     const timestamp = Date.parse(stats.last_rebuild);
     buildTime.textContent = Number.isFinite(timestamp)
       ? `Last rebuild ${new Date(timestamp).toLocaleString()}` : "Last rebuild unavailable";
-    if (stats.sync_status === "error") connection.textContent = "Graph refresh failed";
+    if (stats.sync_status === "error") {
+      graphStatus = "Graph refresh failed";
+      updateConnection();
+    }
   } catch {
     if (version === loadVersion) buildTime.textContent = "Last rebuild unavailable";
   }
@@ -1461,7 +1620,12 @@ function bindUI() {
     if (state.highlightedId) showNodePanel(findNode(state.highlightedId), { focus: false });
   });
   document.getElementById("clear-filters").addEventListener("click", () => resetFilters());
-  document.getElementById("empty-clear").addEventListener("click", () => resetFilters());
+  for (const id of ["empty-clear", "scope-clear"]) {
+    document.getElementById(id).addEventListener("click", () => {
+      resetFilters();
+      document.getElementById(mobileDrawer.matches ? "sidebar-toggle" : "search").focus({ preventScroll: true });
+    });
+  }
   document.getElementById("rebuild-btn").addEventListener("click", () => loadGraph());
   document.getElementById("zoom-in").addEventListener("click", () => {
     if (gpuRenderer) gpuRenderer.zoomBy(1.5);
@@ -1477,11 +1641,9 @@ function bindUI() {
   });
   document.getElementById("path-panel-close")?.addEventListener("click", () => exitPathMode());
   document.getElementById("ask-graph").addEventListener("input", () => clearAskResults());
-  document.getElementById("ask-graph")?.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      runAskGraph(e.target.value);
-    }
+  document.getElementById("ask-form").addEventListener("submit", e => {
+    e.preventDefault();
+    runAskGraph(document.getElementById("ask-graph").value);
   });
   document.getElementById("ask-graph-clear")?.addEventListener("click", () => {
     const el = document.getElementById("ask-graph");
@@ -1537,6 +1699,7 @@ function openSidebar() {
   sidebar.inert = false;
   sidebar.setAttribute("role", "dialog");
   sidebar.setAttribute("aria-modal", "true");
+  document.querySelector(".masthead").inert = true;
   document.getElementById("canvas-host").inert = true;
   document.getElementById("node-panel").inert = true;
   document.getElementById("sidebar-backdrop").hidden = false;
@@ -1551,6 +1714,7 @@ function closeSidebar(restoreFocus = true) {
   sidebar.removeAttribute("role");
   sidebar.removeAttribute("aria-modal");
   sidebar.inert = mobileDrawer.matches;
+  document.querySelector(".masthead").inert = false;
   document.getElementById("canvas-host").inert = false;
   document.getElementById("node-panel").inert = false;
   document.getElementById("sidebar-backdrop").hidden = true;
@@ -1563,10 +1727,12 @@ function subscribeSSE() {
     const src = new EventSource(`${API_BASE}/events`, { withCredentials: true });
     src.addEventListener("graph-updated", () => loadGraph());
     src.addEventListener("hello", () => {
-      document.getElementById("connection-state").textContent = "connected (live)";
+      streamStatus = "Live";
+      updateConnection();
     });
     src.onerror = () => {
-      document.getElementById("connection-state").textContent = "reconnecting…";
+      streamStatus = "Reconnecting";
+      updateConnection();
     };
   } catch (e) {
     // SSE unsupported; static load is still fine.

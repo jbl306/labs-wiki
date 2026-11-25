@@ -173,6 +173,8 @@ See [docs/memory-model.md](docs/memory-model.md) for details.
 
 The knowledge graph links all wiki pages by wikilinks and tier co-occurrence, runs community detection, and identifies checkpoint health.
 
+In the graph UI, select a community in **Explore** to filter the map. Select it again to return to the wider view. Search by title or tag and press Enter to open a page, or use **Ask the graph** for a question. **Path** traces connections between two pages, and **Health** shows checkpoint classifications. On smaller screens, the **Explore** button opens the same controls.
+
 ```bash
 # Build the graph and generate the checkpoint tracker report
 python3 wiki-graph-api/graph_builder.py \

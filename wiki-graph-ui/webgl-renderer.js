@@ -1,3 +1,5 @@
+import { graphBounds } from "./interaction-targets.js?v=__BUILD_ID__";
+
 // Custom WebGL2 renderer for labs-wiki/wiki-graph-ui.
 //
 // Why custom: cosmos.gl ran its own force sim on top of the server's
@@ -90,7 +92,7 @@ void main() {
   gl_Position = vec4(p.xy, 0.0, 1.0);
   // Inflate selected nodes slightly so their ring reads at any zoom.
   float s = a_size * (abs(a_selected) > 0.5 ? 1.65 : 1.0);
-  gl_PointSize = 4.0 * s * u_dpr; // Include the glow around the original disc.
+  gl_PointSize = 2.2 * s * u_dpr; // Include the glow around the original disc.
   v_color = a_color;
   v_alpha = a_alpha;
   v_selected = a_selected;
@@ -104,12 +106,13 @@ in float v_selected;
 out vec4 fragColor;
 void main() {
   // Measure from the center in units of the solid node radius.
-  float d = length(gl_PointCoord * 2.0 - 1.0) * 4.0;
-  if (d >= 4.0) discard;
-  float core = 1.0 - smoothstep(0.70, 1.08, d);
-  float falloff = 1.0 - smoothstep(0.65, 4.0, d);
-  float halo = 0.58 * falloff * falloff;
-  float heat = 0.86 * (1.0 - smoothstep(0.0, 0.74, d));
+  float d = length(gl_PointCoord * 2.0 - 1.0) * 2.2;
+  if (d >= 2.2) discard;
+  float aa = clamp(fwidth(d) * 0.5, 0.035, 0.22);
+  float core = 1.0 - smoothstep(1.0 - aa, 1.0 + aa, d);
+  float falloff = 1.0 - smoothstep(0.90, 2.2, d);
+  float halo = 0.28 * falloff * falloff;
+  float heat = 0.86 * (1.0 - smoothstep(0.0, 0.45, d));
   vec3 col = mix(v_color.rgb, vec3(1.0), heat);
   float ring = step(0.5, abs(v_selected)) * (1.0 - smoothstep(0.08, 0.27, abs(d - 1.03)));
   vec3 ringColor = v_selected < 0.0 ? vec3(1.0, 0.38, 0.40) : vec3(0.8, 1.0, 0.96);
@@ -443,25 +446,11 @@ export function createWebglRenderer({ container, onPointClick, onBackgroundClick
     // Percentile-trimmed bbox so a handful of disconnected outliers don't
     // squash the dense core to a postage stamp. Server x/y range can be
     // [-1000, 1000] but 90% of nodes typically pack much tighter.
-    const xs = new Float64Array(nodes.length);
-    const ys = new Float64Array(nodes.length);
-    let valid = 0;
-    for (const n of nodes) {
-      if (Number.isFinite(n.x) && Number.isFinite(n.y)) {
-        xs[valid] = n.x;
-        ys[valid] = n.y;
-        valid++;
-      }
-    }
-    if (!valid) return;
-    const sortedX = xs.subarray(0, valid).sort();
-    const sortedY = ys.subarray(0, valid).sort();
-    const lo = all ? 0 : Math.floor(valid * 0.03);
-    const hi = all ? valid - 1 : Math.min(valid - 1, Math.ceil(valid * 0.97));
-    const minX = sortedX[lo], maxX = sortedX[hi];
-    const minY = sortedY[lo], maxY = sortedY[hi];
-    bbox = { minX: sortedX[0], maxX: sortedX[valid - 1], minY: sortedY[0], maxY: sortedY[valid - 1] };
-    fitBounds = { minX, maxX, minY, maxY };
+    const bounds = graphBounds(nodes, all);
+    if (!bounds) return;
+    bbox = bounds.full;
+    fitBounds = bounds.view;
+    const { minX, maxX, minY, maxY } = fitBounds;
     updateFitScale();
     cam.scale = overviewScale;
     cam.x = (minX + maxX) / 2;

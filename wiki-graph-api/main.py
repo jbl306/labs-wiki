@@ -22,6 +22,7 @@ Security:
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import json
 import logging
 import os
@@ -35,7 +36,7 @@ from typing import Any
 
 from fastapi import Body, FastAPI, Header, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.responses import JSONResponse, Response, StreamingResponse
 
 from graph_builder import (
     EMBEDDING_FIELD,
@@ -92,6 +93,7 @@ class GraphState:
         self.payload: dict[str, Any] = {}
         self.nodes_by_id: dict[str, dict[str, Any]] = {}
         self.adjacency: dict[str, list[dict[str, Any]]] = {}
+        self.overview: tuple[bytes, str] | None = None
         self.receipt: dict[str, Any] | None = None
         self.observed_source_signature: str | None = None
         self.checked_at: str | None = None
@@ -136,7 +138,21 @@ class GraphState:
             source, target = edge["source"], edge["target"]
             adjacency[source].append({"neighbor": target, **edge})
             adjacency[target].append({"neighbor": source, **edge})
+        # The map only needs layout, searchable metadata and the edge endpoints.
+        # Build its wire representation once, from this same snapshot.
+        fields = ("id", "title", "page_type", "tier", "tags", "last_verified",
+                  "checkpoint_class", "retention_mode", "community", "degree", "x", "y")
+        map_nodes = [{key: node[key] for key in fields if key in node} for node in nodes]
+        for node, compact in zip(nodes, map_nodes):
+            if node.get("path") and node["path"] != node["id"] + ".md":
+                compact["path"] = node["path"]
+        indices = {node["id"]: i for i, node in enumerate(nodes)}
+        links = [[indices[e["source"]], indices[e["target"]], bool(e.get("cross_community"))]
+                 for e in payload["edges"]]
+        overview = JSONResponse({"nodes": map_nodes, "links": links}).body
+        etag = '"' + hashlib.sha256(overview).hexdigest() + '"'
         self._refresh_query_embeddings(payload)
+        self.overview = (overview, etag)
         self.payload = payload
         self.nodes_by_id = nodes_by_id
         self.adjacency = adjacency
@@ -373,6 +389,7 @@ def graph_page(node_id: str) -> dict[str, Any]:
         "last_verified": node.get("last_verified", ""),
         "body": body,
         "bytes": len(body),
+        "summary": node.get("summary", ""),
     }
 
 
@@ -726,6 +743,17 @@ def graph_checkpoints(
         "returned": len(items[:limit]),
         "checkpoints": items[:limit],
     }
+
+
+@app.get("/graph/overview")
+def graph_overview(if_none_match: str = Header(default="")) -> Response:
+    if state.overview is None:
+        raise HTTPException(status_code=503, detail="graph unavailable")
+    body, etag = state.overview
+    headers = {"ETag": etag, "Cache-Control": "private, no-cache"}
+    if any(tag.strip().removeprefix("W/") in (etag, "*") for tag in if_none_match.split(",")):
+        return Response(status_code=304, headers=headers)
+    return Response(body, media_type="application/json", headers=headers)
 
 
 @app.get("/graph/export/json")

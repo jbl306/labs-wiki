@@ -90,7 +90,7 @@ void main() {
   gl_Position = vec4(p.xy, 0.0, 1.0);
   // Inflate selected nodes slightly so their ring reads at any zoom.
   float s = a_size * (abs(a_selected) > 0.5 ? 1.65 : 1.0);
-  gl_PointSize = s * u_dpr;
+  gl_PointSize = 4.0 * s * u_dpr; // Include the glow around the original disc.
   v_color = a_color;
   v_alpha = a_alpha;
   v_selected = a_selected;
@@ -103,16 +103,18 @@ in float v_alpha;
 in float v_selected;
 out vec4 fragColor;
 void main() {
-  // gl_PointCoord is in [0,1]; remap to [-1,1] disc.
-  vec2 uv = gl_PointCoord * 2.0 - 1.0;
-  float d = length(uv);
-  if (d > 1.0) discard;
-
-  float coverage = 1.0 - smoothstep(1.0 - fwidth(d), 1.0, d);
-  float ring = step(0.5, abs(v_selected)) * smoothstep(0.64, 0.78, d);
+  // Measure from the center in units of the solid node radius.
+  float d = length(gl_PointCoord * 2.0 - 1.0) * 4.0;
+  if (d >= 4.0) discard;
+  float core = 1.0 - smoothstep(0.70, 1.08, d);
+  float falloff = 1.0 - smoothstep(0.65, 4.0, d);
+  float halo = 0.58 * falloff * falloff;
+  float heat = 0.86 * (1.0 - smoothstep(0.0, 0.74, d));
+  vec3 col = mix(v_color.rgb, vec3(1.0), heat);
+  float ring = step(0.5, abs(v_selected)) * (1.0 - smoothstep(0.08, 0.27, abs(d - 1.03)));
   vec3 ringColor = v_selected < 0.0 ? vec3(1.0, 0.38, 0.40) : vec3(0.8, 1.0, 0.96);
-  vec3 col = mix(v_color.rgb, ringColor, ring);
-  float a = coverage * v_alpha;
+  col = mix(col, ringColor, ring);
+  float a = max(max(core, halo), ring) * v_alpha;
   fragColor = vec4(col * a, a);
 }`;
 

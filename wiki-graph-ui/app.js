@@ -177,8 +177,8 @@ const state = {
   },
 };
 
-const COMMUNITY_PALETTE = ["#22efbe", "#ffbd36", "#46a9ff", "#fa65cd", "#bcf34f", "#ff8259"];
-const OTHER_COMMUNITIES_COLOR = "#a596ff";
+const COMMUNITY_PALETTE = ["#00ffd5", "#ffad00", "#009dff", "#ff16bd", "#9cff00", "#ff5326"];
+const OTHER_COMMUNITIES_COLOR = "#9760ff";
 const NEUTRAL = "#879ba5";
 const classColors = new Map();
 
@@ -976,6 +976,32 @@ function buildEdgePaths(nodes, edges, style) {
   return paths;
 }
 
+// Rasterize each hue once so panning does not rebuild a blur for every node.
+const glowSprites = new Map();
+function glowSprite(color) {
+  if (glowSprites.has(color)) return glowSprites.get(color);
+  const sprite = document.createElement("canvas");
+  sprite.width = sprite.height = 80;
+  const paint = sprite.getContext("2d");
+  const glow = paint.createRadialGradient(40, 40, 0, 40, 40, 40);
+  for (const [position, opacity] of [[0, 1], [0.18, 1], [0.26, 0.56], [0.45, 0.34], [0.7, 0.075], [1, 0]]) {
+    glow.addColorStop(position, `rgba(255,255,255,${opacity})`);
+  }
+  paint.fillStyle = glow;
+  paint.fillRect(0, 0, 80, 80);
+  paint.globalCompositeOperation = "source-in";
+  paint.fillStyle = color;
+  paint.fillRect(0, 0, 80, 80);
+  paint.globalCompositeOperation = "source-over";
+  const core = paint.createRadialGradient(40, 40, 0, 40, 40, 7.4);
+  core.addColorStop(0, "rgba(255,255,255,0.86)");
+  core.addColorStop(1, "rgba(255,255,255,0)");
+  paint.fillStyle = core;
+  paint.fillRect(32, 32, 16, 16);
+  glowSprites.set(color, sprite);
+  return sprite;
+}
+
 function drawCanvas() {
   canvasFrame = 0;
   if (gpuRenderer) return;
@@ -1010,10 +1036,8 @@ function drawCanvas() {
     const selected = canvasStyle.selected.has(n.id);
     const disagreement = state.health.active && state.health.disagreeNodeIds.has(n.id);
     ctx.globalAlpha = canvasStyle.alphaOf(n);
-    ctx.fillStyle = nodeColor(n);
-    ctx.beginPath();
-    ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
-    ctx.fill();
+    const glowRadius = 4 * r;
+    ctx.drawImage(glowSprite(nodeColor(n)), n.x - glowRadius, n.y - glowRadius, 2 * glowRadius, 2 * glowRadius);
     if (selected || disagreement) {
       ctx.lineWidth = 1.6 / view.scale;
       ctx.strokeStyle = disagreement ? "#ff6969" : "#c6fff2";

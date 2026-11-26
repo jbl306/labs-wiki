@@ -148,8 +148,8 @@ button.legend-row[aria-pressed="true"] { background: #d7e8da; color: #123f32; fo
 #stats b { font: 500 12px/1 var(--mono); color: #e7eee7; }
 #graph-stage {
   flex: 1; min-height: 0; position: relative; isolation: isolate; overflow: hidden;
-  background-color: var(--ink);
-  background-image: radial-gradient(circle, #79938c1c .8px, transparent 1px);
+  background-color: #060b15;
+  background-image: radial-gradient(circle, #6289b01a .8px, transparent 1px);
   background-size: 22px 22px; background-position: center;
 }
 #graph, #graph-cosmos { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }

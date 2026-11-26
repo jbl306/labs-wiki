@@ -2,13 +2,13 @@
 // Two renderers ship in this image:
 //   - "canvas":  the R1-R19 zero-dependency Canvas + Fruchterman-Reingold path
 //   - "webgl":   custom WebGL2 renderer (default).
-//                Uses server-precomputed x/y from /graph/export/json — zero JS
+//                Uses server-precomputed x/y from /graph/overview — zero JS
 //                simulation, no drift. See webgl-renderer.js.
 // Pick at runtime via ?renderer=canvas in the URL or by editing config.js.
 // Everything below the renderer abstraction (filters, BFS path mode, NL ask,
 // checkpoint health, side panel, R12-R19 features) is renderer-agnostic.
 
-import { buildLabelTargets, pickNodeAtScreenPoint } from "./interaction-targets.js?v=__BUILD_ID__";
+import { buildLabelTargets, graphBounds, pickNodeAtScreenPoint } from "./interaction-targets.js?v=__BUILD_ID__";
 import {
   hasPointerMovedEnough,
   shouldUseCoarsePointerTapSlop,
@@ -64,7 +64,7 @@ function displayTitle(title) {
   return t || title;
 }
 
-// Run once after /graph/export/json arrives. (1) shorten every node title
+// Run once after the graph overview arrives. (1) shorten every node title
 // for display, keeping the original under `original_title` for search; and
 // (2) auto-name every community by its top tag.
 function enrichGraph(graph) {
@@ -595,13 +595,9 @@ function fitViewToNodes({ all = true } = {}) {
   const nodes = state.filtered.nodes;
   if (!nodes.length || !canvas.clientWidth || !canvas.clientHeight) return;
 
-  let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-  for (const node of nodes) {
-    minX = Math.min(minX, node.x);
-    minY = Math.min(minY, node.y);
-    maxX = Math.max(maxX, node.x);
-    maxY = Math.max(maxY, node.y);
-  }
+  const bounds = graphBounds(nodes, all);
+  if (!bounds) return;
+  const { minX, maxX, minY, maxY } = bounds.view;
 
   canvasFitExtent = { width: Math.max(maxX - minX, 120), height: Math.max(maxY - minY, 120) };
   const nextScale = canvasFitScale();
@@ -984,7 +980,7 @@ function glowSprite(color) {
   sprite.width = sprite.height = 80;
   const paint = sprite.getContext("2d");
   const glow = paint.createRadialGradient(40, 40, 0, 40, 40, 40);
-  for (const [position, opacity] of [[0, 1], [0.18, 1], [0.26, 0.56], [0.45, 0.34], [0.7, 0.075], [1, 0]]) {
+  for (const [position, opacity] of [[0, 1], [0.42, 1], [0.47, 0.26], [0.62, 0.13], [0.82, 0.035], [1, 0]]) {
     glow.addColorStop(position, `rgba(255,255,255,${opacity})`);
   }
   paint.fillStyle = glow;
@@ -993,7 +989,7 @@ function glowSprite(color) {
   paint.fillStyle = color;
   paint.fillRect(0, 0, 80, 80);
   paint.globalCompositeOperation = "source-over";
-  const core = paint.createRadialGradient(40, 40, 0, 40, 40, 7.4);
+  const core = paint.createRadialGradient(40, 40, 0, 40, 40, 8);
   core.addColorStop(0, "rgba(255,255,255,0.86)");
   core.addColorStop(1, "rgba(255,255,255,0)");
   paint.fillStyle = core;
@@ -1036,7 +1032,7 @@ function drawCanvas() {
     const selected = canvasStyle.selected.has(n.id);
     const disagreement = state.health.active && state.health.disagreeNodeIds.has(n.id);
     ctx.globalAlpha = canvasStyle.alphaOf(n);
-    const glowRadius = 4 * r;
+    const glowRadius = 2.2 * r;
     ctx.drawImage(glowSprite(nodeColor(n)), n.x - glowRadius, n.y - glowRadius, 2 * glowRadius, 2 * glowRadius);
     if (selected || disagreement) {
       ctx.lineWidth = 1.6 / view.scale;
@@ -1269,7 +1265,7 @@ function showNodePanel(node, { focus = true } = {}) {
   document.getElementById("node-meta").textContent = [node.page_type, node.tier,
     Number.isFinite(node.degree) && `${node.degree} links`, clusterLabel(node.community)].filter(Boolean).join(" · ");
   const summary = document.getElementById("node-summary");
-  summary.textContent = node.summary || "";
+  summary.textContent = "";
   fetchPage();
   fetchNeighbors();
 
@@ -1282,10 +1278,11 @@ function showNodePanel(node, { focus = true } = {}) {
       content.innerHTML = renderMarkdown(data.body || "");
       const heading = content.firstElementChild;
       if (heading?.tagName === "H1" && displayTitle(heading.textContent.trim()) === node.title) heading.remove();
-      // The export summary is often the (possibly truncated) opening paragraph.
+      // The page summary is often the (possibly truncated) opening paragraph.
       // Keep the full rendered paragraph and its links when they overlap.
       const opening = content.querySelector("p")?.textContent.trim();
-      const intro = (node.summary || "").replace(/(?:\.\.\.|…)$/, "").trim();
+      summary.textContent = data.summary || "";
+      const intro = (data.summary || "").replace(/(?:\.\.\.|…)$/, "").trim();
       const plainIntro = document.createElement("div");
       plainIntro.innerHTML = renderMarkdown(intro);
       if (intro && opening?.startsWith(plainIntro.textContent.trim())) summary.textContent = "";
@@ -1547,13 +1544,20 @@ async function loadGraph() {
     document.getElementById("empty-clear").hidden = true;
   }
   try {
-    const graph = await fetchJSON("/graph/export/json");
+    const overview = await fetchJSON("/graph/overview");
     if (version !== loadVersion) return;
-    if (!Array.isArray(graph?.nodes) || !Array.isArray(graph.edges) ||
-        !graph.nodes.every(n => typeof n?.id === "string" && typeof n.title === "string") ||
-        !graph.edges.every(e => typeof e?.source === "string" && typeof e.target === "string")) {
-      throw new Error("Invalid graph export");
+    const { nodes, links } = overview;
+    if (!Array.isArray(nodes) || !Array.isArray(links) ||
+        !nodes.every(n => typeof n?.id === "string" && typeof n.title === "string")) {
+      throw new Error("Invalid graph overview");
     }
+    const edges = links.map(([a, b, cross_community]) => {
+      if (!Number.isInteger(a) || !Number.isInteger(b) || !nodes[a] || !nodes[b]) {
+        throw new Error("Invalid graph edge");
+      }
+      return { source: nodes[a].id, target: nodes[b].id, cross_community };
+    });
+    const graph = { nodes, edges };
     state.graph = graph;
     if (tryWebgl) await initWebgl();
     if (version !== loadVersion) return;

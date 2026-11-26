@@ -156,3 +156,18 @@ export function pickNodeAtScreenPoint({
 
   return hit;
 }
+
+// Ignore sparse outliers for the initial overview. Explicit Fit includes every page.
+export function graphBounds(nodes, all) {
+  const xs = [], ys = [];
+  for (const { x, y } of nodes) {
+    if (Number.isFinite(x) && Number.isFinite(y)) { xs.push(x); ys.push(y); }
+  }
+  if (!xs.length) return null;
+  xs.sort((a, b) => a - b);
+  ys.sort((a, b) => a - b);
+  const last = xs.length - 1;
+  const bounds = (lo, hi) => ({ minX: xs[lo], maxX: xs[hi], minY: ys[lo], maxY: ys[hi] });
+  const full = bounds(0, last);
+  return { full, view: all ? full : bounds(Math.floor(xs.length * 0.03), Math.min(last, Math.ceil(xs.length * 0.97))) };
+}

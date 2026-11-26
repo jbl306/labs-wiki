@@ -88,6 +88,7 @@ class GraphApiRebuildTests(unittest.TestCase):
             self.assertTrue(response.json()["rebuild_skipped"])
             self.assertEqual(client.get("/graph/stats").json()["build_receipt"], receipt)
             self.assertEqual(canonical, self.graph_path.read_bytes())
+            old_etag = client.get("/graph/overview").headers["etag"]
         with self.client() as client:
             self.assertEqual(client.get("/graph/stats").json()["build_receipt"], receipt)
 
@@ -96,6 +97,10 @@ class GraphApiRebuildTests(unittest.TestCase):
         with self.client() as client:
             stats = client.get("/graph/stats").json()
             self.assertEqual(stats["node_count"], 2)
+            changed = client.get("/graph/overview", headers={"If-None-Match": old_etag})
+            self.assertEqual(changed.status_code, 200)
+            self.assertNotEqual(changed.headers["etag"], old_etag)
+            self.assertEqual(len(changed.json()["nodes"]), 2)
             self.assertEqual(stats["source_signature"], json.loads(self.published.read_text())["source_signature"])
             self.assertNotEqual(stats["source_signature"], receipt["source_signature"])
 
@@ -143,6 +148,16 @@ class GraphApiRebuildTests(unittest.TestCase):
                                  [("Gamma", 0.0, "exact_title")])
                 self.assertEqual(query(q="Delta", include_archived=False)["nodes"], [])
                 self.assertEqual(query(q="unrelated", include_archived=False)["nodes"], [])
+
+            overview = client.get("/graph/overview")
+            compact = overview.json()
+            full = client.get("/graph/export/json").json()
+            ids = [n["id"] for n in compact["nodes"]]
+            self.assertEqual(ids, [n["id"] for n in full["nodes"]])
+            self.assertEqual([(ids[a], ids[b], cross) for a, b, cross in compact["links"]],
+                             [(e["source"], e["target"], bool(e.get("cross_community"))) for e in full["edges"]])
+            self.assertTrue(all("summary" not in n and "embedding" not in n for n in compact["nodes"]))
+            self.assertEqual(client.get("/graph/overview", headers={"If-None-Match": overview.headers["etag"]}).status_code, 304)
 
             neighbors = client.get("/graph/neighbors/concepts/alpha?depth=2").json()
             self.assertEqual([n["depth"] for n in neighbors["nodes"]], [0, 1, 2])
